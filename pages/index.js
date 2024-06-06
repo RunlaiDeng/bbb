@@ -5,22 +5,20 @@ import Link from "next/link";
 const Home = () => {
   return (
     <>
-      <div className="font-black text-5xl text-center mt-6">Beny Bad Boy</div>
-      <Image
-        src={"/bbb.jpg"}
-        alt=""
-        height={400}
-        width={400}
-        className="text-center m-auto"
-      />
-      <Link
-        className="btn btn-primary w-auto m-auto mt-4"
-        href={
-          "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e"
-        }
-      >
-        IDO NOW!
-      </Link>
+      <div className="font-black text-5xl mt-6">$BBB</div>
+      <div className="grid grid-cols-2">
+        <div>
+          The most memeable memecoin in existence. The dogs have had their day,
+          it’s time for Pepe to take reign.
+        </div>
+        <Image
+          src={"/bbb.jpg"}
+          alt=""
+          height={200}
+          width={200}
+          className="text-center m-auto"
+        />
+      </div>
     </>
   );
 };
