@@ -9,7 +9,7 @@ const Home = () => {
       <div className="grid grid-cols-2">
         <div>
           The most memeable memecoin in existence. The dogs have had their day,
-          it’s time for Pepe to take reign.
+          it’s time for BBB to take reign.
         </div>
         <Image
           src={"/bbb.jpg"}
