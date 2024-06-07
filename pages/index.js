@@ -111,7 +111,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block mask mask-star-2"
+                className="m-auto hidden md:block mask mask-circle"
               />
             </div>
           </div>
