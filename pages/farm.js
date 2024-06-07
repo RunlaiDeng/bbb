@@ -1,13 +1,18 @@
 import Image from "next/image";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 const Farm = () => {
   const [data, setData] = useState({ value: 0 });
+
+  const { address } = useAccount();
+
+  console.log(address);
 
   return (
     <>
       <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
         <div className="card-body font-black">
-          <div className="grid xl:grid-cols-3 gap-2">
+          <div className="grid lg:grid-cols-3 gap-2">
             <div className="grid grid-cols-2 gap-2">
               <Image
                 src={"/farmer.png"}
