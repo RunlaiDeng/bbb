@@ -107,11 +107,11 @@ const Home = () => {
                 <div>Phase 3: Meme Takeover</div>
               </div>
               <Image
-                src={"/bbb.jpg"}
+                src={"/roadmapright.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block rounded-full"
+                className="m-auto hidden md:block mask mask-star-2"
               />
             </div>
           </div>
