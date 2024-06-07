@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Navbar from "../Navbar";
 import { useRouter } from "next/router";
+import Footer from "../Footer";
 const Layout = ({ children }) => {
   const router = useRouter();
 
@@ -9,6 +10,7 @@ const Layout = ({ children }) => {
       <div className="min-h-screen">
         <Navbar />
         {children}
+        <Footer />
       </div>
     </main>
   );
