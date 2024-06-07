@@ -7,7 +7,9 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
 
-  const [showMenu, setShowMenu] = useState(true);
+  const ido =
+    "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e";
+  const linktree = "https://linktr.ee/benybadboy";
 
   return (
     <div className="navbar items-center">
@@ -33,17 +35,12 @@ const Navbar = () => {
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none z-50">
                   <li>
-                    <Link href={"https://linktr.ee/benybadboy"} target="_blank">
+                    <Link href={linktree} target="_blank">
                       Contact
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      target="_blank"
-                      href={
-                        "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e"
-                      }
-                    >
+                    <Link target="_blank" href={ido}>
                       IDO NOW!
                     </Link>
                   </li>
@@ -56,20 +53,10 @@ const Navbar = () => {
       <div className="navbar-center flex"></div>
       <div className="navbar-end">
         <div className="hidden md:block">
-          <Link
-            href={"https://linktr.ee/benybadboy"}
-            target="_blank"
-            className="btn btn-accent mr-2"
-          >
+          <Link href={linktree} target="_blank" className="btn btn-accent mr-2">
             Contact
           </Link>
-          <Link
-            className="btn btn-primary mr-2"
-            target="_blank"
-            href={
-              "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e"
-            }
-          >
+          <Link className="btn btn-primary mr-2" target="_blank" href={ido}>
             IDO NOW!
           </Link>
         </div>
