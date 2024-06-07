@@ -10,8 +10,8 @@ const Layout = ({ children }) => {
       <div className="min-h-screen">
         <Navbar />
         {children}
-        <Footer />
       </div>
+      <Footer />
     </main>
   );
 };
