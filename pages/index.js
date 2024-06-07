@@ -69,7 +69,7 @@ const Home = () => {
         <div className="text-center font-black text-5xl mt-4">TOKENOMICS</div>
         <div className="card m-auto md:w-3/4 w-96">
           <div className="card-body">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid md:grid-cols-2 gap-2">
               <div className="grid gap-2">
                 <div>Token Supply:2 570 000 000</div>
                 <div>No Taxes, No Bullshit. It’s that simple.</div>
@@ -83,7 +83,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto"
+                className="m-auto hidden md:block"
               />
             </div>
           </div>
@@ -93,15 +93,15 @@ const Home = () => {
         <div className="text-center font-black text-5xl mt-4">ROADMAP</div>
         <div className="card m-auto md:w-3/4 w-96">
           <div className="card-body text-center">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid md:grid-cols-3 gap-2">
               <Image
                 src={"/roadmapleft.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto"
+                className="m-auto hidden md:block"
               />
-              <div>
+              <div className="md:mt-16">
                 <div>Phase 1: Meme Phase</div>
                 <div>Phase 2: Vibe and HODL</div>
                 <div>Phase 3: Meme Takeover</div>
@@ -111,7 +111,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto"
+                className="m-auto hidden md:block"
               />
             </div>
           </div>
