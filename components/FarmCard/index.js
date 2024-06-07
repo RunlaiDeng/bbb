@@ -30,7 +30,7 @@ const FarmCard = () => {
                 type="text"
                 placeholder="0"
                 className="input input-bordered col-span-5"
-                value={data.value * 3600000 + " BBB"}
+                value={data.value * 257 + " BBB"}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
