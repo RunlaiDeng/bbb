@@ -61,11 +61,39 @@ const Farm = () => {
                   +
                 </div>
               </div>
-              <div className="btn font-black btn-lg mt-4 w-full btn-secondary">
+              <div className="btn font-black btn-lg mt-4 w-full btn-success">
                 buy
               </div>
             </div>
-            <div>Collect Carrots</div>
+
+            <div>
+              <div>Workshop</div>
+              <div className="mt-6 grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <Image
+                    src={"/farmer.png"}
+                    alt=""
+                    height={50}
+                    width={50}
+                    className="mask mask-squircle m-auto"
+                  />{" "}
+                  <div className="font-black mt-4"> X 0</div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Image
+                    src={"/carrot.png"}
+                    alt=""
+                    height={50}
+                    width={50}
+                    className="mask mask-squircle m-auto"
+                  />{" "}
+                  <div className="font-black mt-4"> X 0</div>
+                </div>
+              </div>
+              <div className="btn font-black btn-lg mt-4 w-full btn-secondary">
+                Collect
+              </div>
+            </div>
           </div>
         </div>
       </div>
