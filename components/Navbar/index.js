@@ -6,32 +6,30 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
-  console.log(pathname);
-  const isHome = pathname === "/";
+
   return (
     <div className="navbar items-center h-10">
       <div className="navbar-start"></div>
       <div className="navbar-center flex"></div>
       <div className="navbar-end gap-2">
-        {isHome && (
-          <>
-            <Link
-              href={"https://linktr.ee/benybadboy"}
-              className="btn btn-accent"
-            >
-              Contact
-            </Link>
-            <Link
-              className="btn btn-primary"
-              href={
-                "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e"
-              }
-            >
-              IDO NOW!
-            </Link>
-          </>
-        )}
-        {!isHome && <ConnectButton />}
+        <>
+          <Link
+            href={"https://linktr.ee/benybadboy"}
+            className="btn btn-accent"
+          >
+            Contact
+          </Link>
+          <Link
+            className="btn btn-primary"
+            href={
+              "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e"
+            }
+          >
+            IDO NOW!
+          </Link>
+        </>
+
+        <ConnectButton />
       </div>
     </div>
   );
