@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-
+import Image from "next/image";
 const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
@@ -14,6 +14,16 @@ const Navbar = () => {
   return (
     <div className="navbar items-center">
       <div className="navbar-start">
+        <Image
+          src={"/bbb.jpg"}
+          height={50}
+          width={50}
+          alt=""
+          className="rounded-full cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        />
         <div className="md:hidden flex-none">
           <ul className="menu menu-horizontal px-1">
             <li>
