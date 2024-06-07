@@ -19,6 +19,7 @@ const Home = () => {
           className="text-center m-auto"
         />
       </div>
+      <div className="btn btn-secondary m-auto w-auto btn-lg mt-8">Coming Soon</div>
     </>
   );
 };
