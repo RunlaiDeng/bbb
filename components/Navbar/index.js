@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="navbar-center flex"></div>
       <div className="navbar-end gap-2">
         <Link href={"https://linktr.ee/benybadboy"} className="btn btn-accent">
-          Linktree
+          Contact
         </Link>
         <Link
           className="btn btn-primary"
