@@ -4,8 +4,17 @@ import { useAccount } from "wagmi";
 const FarmCard = () => {
   const [data, setData] = useState({ value: 0 });
   const { address } = useAccount();
+  const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
-  console.log(address);
+  const handleCopyClick = () => {
+    setTooltipText("Address copied!");
+    setTimeout(() => {
+      setTooltipText("Click copy contract address");
+    }, 1000);
+  };
+
+  const isCopied = tooltipText === "Address copied!";
+
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
       <div className="card-body font-black">
@@ -25,7 +34,7 @@ const FarmCard = () => {
           <div>
             <div>Buy Farmer</div>
 
-            <div className="mt-6 grid grid-cols-7 gap-2">
+            <div className="mt-8 grid grid-cols-7 gap-2">
               <input
                 type="text"
                 placeholder="0"
@@ -58,7 +67,7 @@ const FarmCard = () => {
                 +
               </div>
             </div>
-            <div className="btn font-black btn-lg mt-4 w-full btn-success">
+            <div className="btn font-black btn-lg mt-5 w-full btn-success">
               buy
             </div>
           </div>
@@ -66,25 +75,37 @@ const FarmCard = () => {
           <div>
             <div>Workshop</div>
             <div className="mt-6 grid grid-cols-2 gap-2">
-              <div className="grid grid-cols-2 gap-2">
-                <Image
-                  src={"/farmer.png"}
-                  alt=""
-                  height={50}
-                  width={50}
-                  className="mask mask-squircle m-auto"
-                />{" "}
-                <div className="font-black mt-4"> X 0</div>
+              <div
+                className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
+                data-tip={tooltipText}
+                onClick={handleCopyClick}
+              >
+                <div className="grid grid-cols-2 gap-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                  <Image
+                    src={"/farmer.png"}
+                    alt=""
+                    height={50}
+                    width={50}
+                    className="mask mask-squircle m-auto"
+                  />{" "}
+                  <div className="font-black mt-4"> X 0</div>
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <Image
-                  src={"/carrot.png"}
-                  alt=""
-                  height={50}
-                  width={50}
-                  className="mask mask-squircle m-auto"
-                />{" "}
-                <div className="font-black mt-4"> X 0</div>
+              <div
+                className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
+                data-tip={tooltipText}
+                onClick={handleCopyClick}
+              >
+                <div className="grid grid-cols-2 gap-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                  <Image
+                    src={"/carrot.png"}
+                    alt=""
+                    height={50}
+                    width={50}
+                    className="mask mask-squircle m-auto"
+                  />{" "}
+                  <div className="font-black mt-4"> X 0</div>
+                </div>
               </div>
             </div>
             <div className="btn font-black btn-lg mt-4 w-full btn-secondary">
