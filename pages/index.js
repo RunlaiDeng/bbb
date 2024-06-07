@@ -25,7 +25,7 @@ const Home = () => {
                 alt=""
                 height={200}
                 width={200}
-                className="text-center m-auto"
+                className="text-center m-auto rounded-full"
               />
             </div>
           </div>
@@ -42,7 +42,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block"
+                className="m-auto hidden md:block mask mask-heart"
               />
 
               <div className="grid gap-2">
@@ -83,7 +83,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block"
+                className="m-auto hidden md:block mask mask-hexagon"
               />
             </div>
           </div>
@@ -99,7 +99,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block"
+                className="m-auto hidden md:block mask mask-hexagon-2"
               />
               <div className="md:mt-16">
                 <div>Phase 1: Meme Phase</div>
@@ -111,7 +111,7 @@ const Home = () => {
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block"
+                className="m-auto hidden md:block rounded-full"
               />
             </div>
           </div>
