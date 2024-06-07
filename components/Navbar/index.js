@@ -5,7 +5,7 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
   return (
-    <div className="navbar items-center h-20">
+    <div className="navbar items-center h-10">
       <div className="navbar-start"></div>
       <div className="navbar-center flex"></div>
       <div className="navbar-end gap-2">

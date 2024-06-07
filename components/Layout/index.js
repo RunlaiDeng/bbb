@@ -6,17 +6,9 @@ const Layout = ({ children }) => {
 
   return (
     <main>
-      <div className="min-h-screen z-50 relative">
+      <div className="min-h-screen">
         <Navbar />
-        <div className="mt-8 w-96 m-auto md:w-1/2 card ">
-          <div className="card-body">
-            <div className="text-3xl">
-              <span className="font-black text-blue-500"></span>
-            </div>
-            <div className="text-xs text-slate-500 mt-2"></div>
-            {children}
-          </div>
-        </div>
+        {children}
       </div>
     </main>
   );
