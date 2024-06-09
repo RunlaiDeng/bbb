@@ -1,5 +1,6 @@
 import ERC20ABI from "../abi/ERC20ABI.json";
 import BBBFarmerABI from "../abi/BBBFarmerABI.json";
+import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 
 export const contracts = {
   551: {
@@ -10,6 +11,10 @@ export const contracts = {
     carrotfarmer: {
       address: "0x710DA3C5C6a69A466FB1c456172103B3761BB422",
       abi: BBBFarmerABI,
+    },
+    referralProgram: {
+      addres: "0x1C209871D579C00bb2eaBe75C24eCd77caa49f71",
+      abi: ReferralProgramABI,
     },
   },
 };
