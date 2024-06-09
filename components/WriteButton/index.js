@@ -25,13 +25,13 @@ const WriteButton = (props) => {
     writeContract: write,
     isPending: isLoading,
     isSuccess: isStarted,
+    isError,
     error: error,
   } = useWriteContract();
 
   if (error) {
     console.error(error);
   }
-
   const {
     data: txData,
     isSuccess: txSuccess,
@@ -61,16 +61,12 @@ const WriteButton = (props) => {
       <div
         className={
           props.className +
-          (props?.disabled || !write || error != null || isLoading
+          (props?.disabled || !write || isError || isLoading
             ? " btn-disabled"
             : "")
         }
         disabled={
-          (props?.disabled ||
-            !write ||
-            error != null ||
-            isLoading ||
-            isStarted) &&
+          (props?.disabled || !write || isError || isLoading || isStarted) &&
           !txSuccess
         }
         style={{ minWidth: 112 }}
