@@ -54,6 +54,11 @@ const FarmCard = () => {
                 className="btn btn-primary btn-square m-auto"
                 onMouseDown={() => {
                   if (!internalId) {
+                    if (data.value >= 1) {
+                      setData({ ...data, value: data.value-- });
+                    } else {
+                      setData({ ...data, value: 0 });
+                    }
                     const internalId = setInterval(() => {
                       if (data.value >= 1) {
                         setData({ ...data, value: data.value-- });
@@ -75,6 +80,7 @@ const FarmCard = () => {
                 className="btn btn-accent btn-square m-auto"
                 onMouseDown={() => {
                   if (!internalId) {
+                    setData({ ...data, value: data.value++ });
                     const internalId = setInterval(() => {
                       setData({ ...data, value: data.value++ });
                     }, 100);
