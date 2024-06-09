@@ -90,6 +90,7 @@ const FarmCard = () => {
                 onMouseUp={release}
                 onMouseLeave={release}
                 onTouchStart={decrease}
+                onTouchEnd={release}
                 onTouchMove={release}
               >
                 -
@@ -103,6 +104,7 @@ const FarmCard = () => {
                 onMouseUp={release}
                 onMouseLeave={release}
                 onTouchStart={increase}
+                onTouchEnd={release}
                 onTouchMove={release}
               >
                 +
