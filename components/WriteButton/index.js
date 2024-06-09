@@ -58,52 +58,50 @@ const WriteButton = (props) => {
   return (
     mounted &&
     (isConnected ? (
-      <>
-        {
-          <button
-            className={
-              props.className +
-              (props?.disabled || !write || error != null || isLoading
-                ? " btn-disabled"
-                : "")
-            }
-            disabled={
-              (props?.disabled ||
-                !write ||
-                error != null ||
-                isLoading ||
-                isStarted) &&
-              !txSuccess
-            }
-            style={{ minWidth: 112 }}
-            onClick={() => {
-              if (!isConnected) {
-                alert("please connect wallet");
-                return;
-              }
-              write?.(props?.data);
-              if (txData) {
-                try {
-                  addRecentTransaction({
-                    hash: hash,
-                    description: props?.buttonName,
-                  });
-                } catch (e) {}
-              }
-            }}
-          >
-            {isLoading && "Waiting for approval"}
-            {isStarted && !txSuccess && (
-              <>
-                <span className="loading loading-spinner"></span>loading
-              </>
-            )}
-            {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
-          </button>
+      <div
+        className={
+          props.className +
+          (props?.disabled || !write || error != null || isLoading
+            ? " btn-disabled"
+            : "")
         }
-      </>
+        disabled={
+          (props?.disabled ||
+            !write ||
+            error != null ||
+            isLoading ||
+            isStarted) &&
+          !txSuccess
+        }
+        style={{ minWidth: 112 }}
+        onClick={() => {
+          if (!isConnected) {
+            alert("please connect wallet");
+            return;
+          }
+          write?.(props?.data);
+          if (txData) {
+            try {
+              addRecentTransaction({
+                hash: hash,
+                description: props?.buttonName,
+              });
+            } catch (e) {}
+          }
+        }}
+      >
+        {isLoading && "Waiting for approval"}
+        {isStarted && !txSuccess && (
+          <>
+            <span className="loading loading-spinner"></span>loading
+          </>
+        )}
+        {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
+      </div>
     ) : (
-      <ConnectButton />
+      <div className={props.className}>
+        <ConnectButton />
+      </div>
     ))
   );
 };
