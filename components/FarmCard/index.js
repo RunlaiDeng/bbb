@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
+import WriteButton from "../WriteButton";
+import ERC20ABI from "@/abi/ERC20ABI.json";
+import BBBFarmerABI from "@/abi/BBBFarmerABI.json";
 const FarmCard = () => {
   const [data, setData] = useState({ value: 0 });
   const { address } = useAccount();
@@ -43,6 +46,38 @@ const FarmCard = () => {
     clearInterval(internalId);
     setIntervalId(undefined);
   };
+
+  const approve = {
+    buttonName: "Approve",
+    data: {
+      abi: ERC20ABI,
+      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      functionName: "approve",
+      args: [address, 0],
+    },
+  };
+
+  const buy = {
+    buttonName: "Buy",
+    data: {
+      abi: BBBFarmerABI,
+      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      functionName: "buy",
+      args: [data.value],
+    },
+  };
+
+  const collect = {
+    buttonName: "Collect",
+    data: {
+      abi: BBBFarmerABI,
+      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      functionName: "collect",
+      args: [],
+    },
+  };
+
+  let showApprove = false;
 
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
@@ -110,9 +145,18 @@ const FarmCard = () => {
                 +
               </div>
             </div>
-            <div className="btn font-black btn-lg mt-5 w-full btn-success">
-              buy
-            </div>
+            {!showApprove && (
+              <WriteButton
+                {...buy}
+                className="btn font-black btn-lg mt-5 w-full btn-success"
+              />
+            )}
+            {showApprove && (
+              <WriteButton
+                {...approve}
+                className="btn font-black btn-lg mt-5 w-full btn-accent"
+              />
+            )}
           </div>
 
           <div>
@@ -151,9 +195,10 @@ const FarmCard = () => {
                 </div>
               </div>
             </div>
-            <div className="btn font-black btn-lg mt-4 w-full btn-secondary">
-              Collect
-            </div>
+            <WriteButton
+              {...collect}
+              className="btn font-black btn-lg mt-4 w-full btn-secondary"
+            />
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider coolMode locale={locale}>
+        <RainbowKitProvider locale={locale}>
           <Layout>
             <Component {...pageProps} />
           </Layout>
