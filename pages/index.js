@@ -55,7 +55,7 @@ const Home = () => {
                 </div>
                 <div>
                   BBB is here to make memecoins great again. Launched stealth
-                  with no presale, zero taxes, LP burnt and contract renounced,
+                  with no presale, zero taxes,
                   $BBB is a coin for the people, forever. Fueled by pure memetic
                   power, let $BBB show you the way.
                 </div>
