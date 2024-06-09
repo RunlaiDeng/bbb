@@ -24,7 +24,7 @@ const Navbar = () => {
             router.push("/");
           }}
         />
-        <div className="md:hidden flex-none">
+        <div className="xl:hidden flex-none">
           <ul className="menu menu-horizontal px-1">
             <li>
               <details>
@@ -62,7 +62,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-center flex"></div>
       <div className="navbar-end">
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           <Link href={linktree} target="_blank" className="btn btn-accent mr-2">
             Contact
           </Link>

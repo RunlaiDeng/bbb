@@ -30,7 +30,6 @@ const WriteButton = (props) => {
 
   if (error) {
     console.error(error);
-    Notify.failure(error.message);
   }
 
   const {
@@ -49,24 +48,31 @@ const WriteButton = (props) => {
     Notify.failure(txError.message);
   }
 
-  console.log(txSuccess);
-
   useEffect(() => {
-    props?.callback?.(txSuccess);
+    if (txSuccess) {
+      props?.callback?.(txSuccess);
+      Notify.success("Transaction successful!");
+    }
   }, [txSuccess]);
 
   return (
     mounted &&
     (isConnected ? (
-      <div className={props.className}>
+      <>
         {
           <button
             className={
-              (props?.disabled || !write || isLoading ? "btn-disabled " : "") +
-              "lit-btn small"
+              props.className +
+              (props?.disabled || !write || error != null || isLoading
+                ? " btn-disabled"
+                : "")
             }
             disabled={
-              (props?.disabled || !write || isLoading || isStarted) &&
+              (props?.disabled ||
+                !write ||
+                error != null ||
+                isLoading ||
+                isStarted) &&
               !txSuccess
             }
             style={{ minWidth: 112 }}
@@ -95,7 +101,7 @@ const WriteButton = (props) => {
             {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
           </button>
         }
-      </div>
+      </>
     ) : (
       <ConnectButton />
     ))

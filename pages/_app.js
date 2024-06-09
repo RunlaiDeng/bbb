@@ -11,12 +11,27 @@ import { xdc } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
+const xdcParentNet = {
+  id: 551,
+  name: "XDC Devnet",
+  network: "XDC Devnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "XDC",
+    symbol: "XDC",
+  },
+  rpcUrls: {
+    public: { http: ["https://devnetstats.apothem.network/devnet"] },
+    default: { http: ["https://devnetstats.apothem.network/devnet"] },
+  },
+};
+
 const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
-  chains: [xdc],
+  chains: [xdc, xdcParentNet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

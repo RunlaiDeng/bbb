@@ -1,13 +1,20 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId, useReadContracts } from "wagmi";
 import WriteButton from "../WriteButton";
-import ERC20ABI from "@/abi/ERC20ABI.json";
-import BBBFarmerABI from "@/abi/BBBFarmerABI.json";
+import { contracts } from "@/config";
+import Link from "next/link";
+import copy from "copy-to-clipboard";
+
 const FarmCard = () => {
   const [data, setData] = useState({ value: 0 });
   const { address } = useAccount();
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
+
+  const chainId = useChainId();
+
+  const bbb = contracts[chainId]?.bbb;
+  const farmer = contracts[chainId]?.carrotfarmer;
 
   const handleCopyClick = () => {
     setTooltipText("Address copied!");
@@ -47,37 +54,78 @@ const FarmCard = () => {
     setIntervalId(undefined);
   };
 
+  const { data: reads0, refetch: refetch0 } = useReadContracts({
+    contracts: [
+      { ...bbb, functionName: "allowance", args: [address, farmer?.address] },
+      { ...bbb, functionName: "balanceOf", args: [address] },
+      { ...farmer, functionName: "getPendingPoint", args: [address] },
+      { ...farmer, functionName: "users", args: [address] },
+      { ...farmer, functionName: "pointToken", args: [] },
+    ],
+  });
+
+  const allowance = reads0?.[0]?.result;
+  const bbbBalance = reads0?.[1]?.result;
+  const pendingPoint = reads0?.[2]?.result;
+  const user = reads0?.[3]?.result;
+  const pointToken = reads0?.[4]?.result;
+  const stake = user?.[0];
+
+  const MAX_UINT256 = BigInt(
+    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  );
+
+  const refetch = () => {
+    refetch0();
+  };
+
   const approve = {
     buttonName: "Approve",
     data: {
-      abi: ERC20ABI,
-      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      ...bbb,
       functionName: "approve",
-      args: [address, 0],
+      args: [farmer?.address, MAX_UINT256],
+    },
+    callback: () => {
+      refetch();
     },
   };
 
   const buy = {
     buttonName: "Buy",
     data: {
-      abi: BBBFarmerABI,
-      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      ...farmer,
       functionName: "buy",
       args: [data.value],
+    },
+    callback: () => {
+      refetch();
     },
   };
 
   const collect = {
     buttonName: "Collect",
     data: {
-      abi: BBBFarmerABI,
-      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      ...farmer,
       functionName: "collect",
       args: [],
     },
+    callback: () => {
+      refetch();
+    },
   };
 
-  let showApprove = false;
+  let showApprove = true;
+  if (allowance && allowance > data?.value * 1e18 * 257) {
+    showApprove = false;
+  }
+
+  let bbbIsEnough = true;
+  if (data.value * 257 > BigInt(bbbBalance || 0) / BigInt(1e18)) {
+    bbbIsEnough = false;
+  }
+
+  console.log(stake, pendingPoint);
 
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
@@ -157,6 +205,18 @@ const FarmCard = () => {
                 className="btn font-black btn-lg mt-5 w-full btn-accent"
               />
             )}
+            {!bbbIsEnough && (
+              <Link
+                className="underline"
+                href={
+                  "https://app.xspswap.finance/swap#/swap?outputCurrency=" +
+                  bbb?.address
+                }
+                target="_blank"
+              >
+                BBB is not enough ?
+              </Link>
+            )}
           </div>
 
           <div>
@@ -165,7 +225,10 @@ const FarmCard = () => {
               <div
                 className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
                 data-tip={tooltipText}
-                onClick={handleCopyClick}
+                onClick={() => {
+                  copy(farmer?.address);
+                  handleCopyClick();
+                }}
               >
                 <div className="grid grid-cols-2 gap-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
                   <Image
@@ -175,13 +238,19 @@ const FarmCard = () => {
                     width={50}
                     className="mask mask-squircle m-auto"
                   />{" "}
-                  <div className="font-black mt-4"> X 0</div>
+                  <div className="font-black mt-4">
+                    {" "}
+                    X {stake?.toString() || 0}
+                  </div>
                 </div>
               </div>
               <div
                 className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
                 data-tip={tooltipText}
-                onClick={handleCopyClick}
+                onClick={() => {
+                  copy(pointToken);
+                  handleCopyClick();
+                }}
               >
                 <div className="grid grid-cols-2 gap-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
                   <Image
@@ -191,7 +260,10 @@ const FarmCard = () => {
                     width={50}
                     className="mask mask-squircle m-auto"
                   />{" "}
-                  <div className="font-black mt-4"> X 0</div>
+                  <div className="font-black mt-4">
+                    {" "}
+                    X {pendingPoint?.toString() || 0}
+                  </div>
                 </div>
               </div>
             </div>
