@@ -17,6 +17,33 @@ const FarmCard = () => {
 
   const [internalId, setIntervalId] = useState();
 
+  const increase = () => {
+    if (!internalId) {
+      const internalId = setInterval(() => {
+        setData({ ...data, value: data.value++ });
+      }, 100);
+      setIntervalId(internalId);
+    }
+  };
+
+  const decrease = () => {
+    if (!internalId) {
+      const internalId = setInterval(() => {
+        if (data.value >= 1) {
+          setData({ ...data, value: data.value-- });
+        } else {
+          setData({ ...data, value: 0 });
+        }
+      }, 100);
+      setIntervalId(internalId);
+    }
+  };
+
+  const release = () => {
+    clearInterval(internalId);
+    setIntervalId(undefined);
+  };
+
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
       <div className="card-body font-black">
@@ -52,45 +79,29 @@ const FarmCard = () => {
               />
               <div
                 className="btn btn-primary btn-square m-auto"
-                onMouseDown={() => {
-                  if (!internalId) {
-                    if (data.value >= 1) {
-                      setData({ ...data, value: data.value-- });
-                    } else {
-                      setData({ ...data, value: 0 });
-                    }
-                    const internalId = setInterval(() => {
-                      if (data.value >= 1) {
-                        setData({ ...data, value: data.value-- });
-                      } else {
-                        setData({ ...data, value: 0 });
-                      }
-                    }, 100);
-                    setIntervalId(internalId);
+                onClick={() => {
+                  if (data.value >= 1) {
+                    setData({ ...data, value: data.value - 1 });
+                  } else {
+                    setData({ ...data, value: 0 });
                   }
                 }}
-                onMouseUp={() => {
-                  clearInterval(internalId);
-                  setIntervalId(undefined);
-                }}
+                onMouseDown={decrease}
+                onMouseUp={release}
+                onTouchStart={decrease}
+                onTouchMove={release}
               >
                 -
               </div>
               <div
                 className="btn btn-accent btn-square m-auto"
-                onMouseDown={() => {
-                  if (!internalId) {
-                    setData({ ...data, value: data.value++ });
-                    const internalId = setInterval(() => {
-                      setData({ ...data, value: data.value++ });
-                    }, 100);
-                    setIntervalId(internalId);
-                  }
+                onClick={() => {
+                  setData({ ...data, value: data.value + 1 });
                 }}
-                onMouseUp={() => {
-                  clearInterval(internalId);
-                  setIntervalId(undefined);
-                }}
+                onMouseDown={increase}
+                onMouseUp={release}
+                onTouchStart={increase}
+                onTouchMove={release}
               >
                 +
               </div>
