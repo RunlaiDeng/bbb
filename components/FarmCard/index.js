@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 const FarmCard = () => {
   const [data, setData] = useState({ value: 0 });
@@ -14,6 +14,8 @@ const FarmCard = () => {
   };
 
   const isCopied = tooltipText === "Address copied!";
+
+  const [internalId, setIntervalId] = useState();
 
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
@@ -50,18 +52,38 @@ const FarmCard = () => {
               />
               <div
                 className="btn btn-primary btn-square m-auto"
-                onClick={() => {
-                  if (data.value - 1 >= 0) {
-                    setData({ value: data.value - 1 });
+                onMouseDown={() => {
+                  if (!internalId) {
+                    const internalId = setInterval(() => {
+                      if (data.value >= 1) {
+                        setData({ ...data, value: data.value-- });
+                      } else {
+                        setData({ ...data, value: 0 });
+                      }
+                    }, 100);
+                    setIntervalId(internalId);
                   }
+                }}
+                onMouseUp={() => {
+                  clearInterval(internalId);
+                  setIntervalId(undefined);
                 }}
               >
                 -
               </div>
               <div
                 className="btn btn-accent btn-square m-auto"
-                onClick={() => {
-                  setData({ value: data.value + 1 });
+                onMouseDown={() => {
+                  if (!internalId) {
+                    const internalId = setInterval(() => {
+                      setData({ ...data, value: data.value++ });
+                    }, 100);
+                    setIntervalId(internalId);
+                  }
+                }}
+                onMouseUp={() => {
+                  clearInterval(internalId);
+                  setIntervalId(undefined);
                 }}
               >
                 +
