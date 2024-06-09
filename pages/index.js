@@ -74,8 +74,7 @@ const Home = () => {
                 <div>Token Supply:2 570 000 000</div>
                 <div>No Taxes, No Bullshit. It’s that simple.</div>
                 <div>
-                  No Taxes, No Bullshit. It’s that simple. LP tokens are burnt,
-                  and contract ownership is renounced.
+                  No Taxes, No Bullshit. It’s that simple. 
                 </div>
               </div>
               <Image
