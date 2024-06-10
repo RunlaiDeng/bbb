@@ -1,11 +1,17 @@
 import WriteButton from "@/components/WriteButton";
 import { contracts } from "@/config";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
+import copy from "copy-to-clipboard";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
+
 const ReferralProgram = () => {
   const [data, setData] = useState({});
   const chainId = useChainId();
   const { address } = useAccount();
+  const router = useRouter();
+  const { leaderAddress } = router.query;
 
   const referralProgram = contracts[chainId]?.referralProgram;
 
@@ -43,18 +49,41 @@ const ReferralProgram = () => {
     haveReferrers = true;
   }
 
+  useEffect(() => {
+    setData({ leader: leaderAddress });
+  }, [leaderAddress]);
+
   return (
     <>
+      <div className="card md:w-1/2 w-96 m-auto">
+        <div className="card-body">
+          <div
+            className="btn btn-success m-auto text-center"
+            onClick={() => {
+              copy(
+                window.location.href.split("?")?.[0] +
+                  "/?leaderAddress=" +
+                  address
+              );
+              Notify.success("Copy successful!");
+            }}
+          >
+            Copy your referral link
+          </div>
+        </div>
+      </div>
+
       {!haveLeader && (
         <div className="card md:w-1/2 w-96 m-auto">
           <div className="card-body">
-            <div className="font-black text-center mt-12">
+            <div className="font-black text-center">
               Submit Your Leader Address
             </div>
             <input
               type="text"
               placeholder="0x"
               className="input input-bordered w-full"
+              defaultValue={leaderAddress}
               onChange={(e) => setData({ ...data, leader: e.target.value })}
             />
             <WriteButton {...submit} className="btn btn-primary" />
@@ -71,6 +100,7 @@ const ReferralProgram = () => {
           </div>
         </div>
       )}
+
       {haveReferrers && (
         <div className="card md:w-1/2 w-96 m-auto">
           <div className="card-body">
