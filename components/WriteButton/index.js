@@ -6,11 +6,13 @@ import {
 } from "wagmi";
 import { useEffect, useState } from "react";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+
 import lang from "../../lang/index";
 const WriteButton = (props) => {
+  const { openConnectModal } = useConnectModal();
   const { locale, locales, defaultLocale, asPath } = useRouter();
   const addRecentTransaction = useAddRecentTransaction();
   const [mounted, setMounted] = useState(false);
@@ -28,7 +30,6 @@ const WriteButton = (props) => {
     isError,
     error: error,
   } = useWriteContract();
-
 
   if (error) {
     console.error(error);
@@ -96,8 +97,13 @@ const WriteButton = (props) => {
         {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
       </div>
     ) : (
-      <div className={props.className}>
-        <ConnectButton />
+      <div
+        className={props.className}
+        onClick={() => {
+          openConnectModal();
+        }}
+      >
+        Connect Wallet
       </div>
     ))
   );

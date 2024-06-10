@@ -49,29 +49,33 @@ const ReferralProgram = () => {
     haveReferrers = true;
   }
 
+  const { isConnected } = useAccount();
+
   useEffect(() => {
     setData({ leader: leaderAddress });
   }, [leaderAddress]);
 
   return (
     <>
-      <div className="card md:w-1/2 w-96 m-auto">
-        <div className="card-body">
-          <div
-            className="btn btn-success m-auto text-center"
-            onClick={() => {
-              copy(
-                window.location.href.split("?")?.[0] +
-                  "/?leaderAddress=" +
-                  address
-              );
-              Notify.success("Copy successful!");
-            }}
-          >
-            Copy your referral link
+      {isConnected && (
+        <div className="card md:w-1/2 w-96 m-auto">
+          <div className="card-body">
+            <div
+              className="btn btn-success m-auto text-center"
+              onClick={() => {
+                copy(
+                  window.location.href.split("?")?.[0] +
+                    "/?leaderAddress=" +
+                    address
+                );
+                Notify.success("Copy successful!");
+              }}
+            >
+              Copy your referral link
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {!haveLeader && (
         <div className="card md:w-1/2 w-96 m-auto">
