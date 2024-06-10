@@ -6,6 +6,7 @@ const ReferralProgram = () => {
   const [data, setData] = useState({});
   const chainId = useChainId();
   const { address } = useAccount();
+  console.log(chainId)
   const referralProgram = contracts[chainId]?.referralProgram;
 
   const { data: reads0, refetch } = useReadContracts({

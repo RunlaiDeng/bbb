@@ -17,7 +17,7 @@ export const contracts = {
       abi: ReferralProgramABI,
     },
   },
-  51: {
+  50: {
     referralProgram: {
       address: "0x1c880eF8B4AD49f615820f6fab33f9a6c8D36fb2",
       abi: ReferralProgramABI,
