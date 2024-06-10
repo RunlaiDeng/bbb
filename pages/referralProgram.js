@@ -6,7 +6,7 @@ const ReferralProgram = () => {
   const [data, setData] = useState({});
   const chainId = useChainId();
   const { address } = useAccount();
-  console.log(chainId)
+
   const referralProgram = contracts[chainId]?.referralProgram;
 
   const { data: reads0, refetch } = useReadContracts({
@@ -31,14 +31,16 @@ const ReferralProgram = () => {
     },
   };
 
-  let haveLeader = true;
-  if (leader == "0x0000000000000000000000000000000000000000") {
-    haveLeader = false;
+  let haveLeader = false;
+
+  if (leader && leader != "0x0000000000000000000000000000000000000000") {
+    haveLeader = true;
   }
 
-  let haveReferrers = true;
-  if (referrersList?.length == 0) {
-    haveReferrers = false;
+  let haveReferrers = false;
+
+  if (referrersList && referrersList?.length != 0) {
+    haveReferrers = true;
   }
 
   return (
