@@ -62,8 +62,9 @@ const ReferralProgram = () => {
         <div className="card md:w-1/2 w-96 m-auto">
           <div className="card-body">
             <div className="font-black text-center mt-12">
-              Your Leader Address {leader}
+              Your Leader Address
             </div>
+            <div className="text-center">{leader}</div>
           </div>
         </div>
       )}
@@ -74,7 +75,11 @@ const ReferralProgram = () => {
               Your Referral Addresses
             </div>
             {referrersList?.map((referrer) => {
-              return <div key={referrer} className="text-center">{referrer}</div>;
+              return (
+                <div key={referrer} className="text-center">
+                  {referrer}
+                </div>
+              );
             })}
           </div>
         </div>
