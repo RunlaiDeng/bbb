@@ -22,6 +22,25 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "leader",
+        "type": "address"
+      }
+    ],
+    "name": "getReferrersList",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "",
         "type": "address"
       }

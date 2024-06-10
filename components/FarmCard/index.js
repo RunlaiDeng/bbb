@@ -125,6 +125,7 @@ const FarmCard = () => {
     bbbIsEnough = false;
   }
 
+  
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
       <div className="card-body font-black">

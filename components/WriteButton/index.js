@@ -29,6 +29,7 @@ const WriteButton = (props) => {
     error: error,
   } = useWriteContract();
 
+
   if (error) {
     console.error(error);
   }
@@ -75,7 +76,7 @@ const WriteButton = (props) => {
             alert("please connect wallet");
             return;
           }
-          write?.(props?.data);
+          write?.({ ...props?.data });
           if (txData) {
             try {
               addRecentTransaction({

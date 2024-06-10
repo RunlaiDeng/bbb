@@ -8,11 +8,15 @@ const ReferralProgram = () => {
   const { address } = useAccount();
   const referralProgram = contracts[chainId]?.referralProgram;
 
-  const { data: reads0 } = useReadContracts({
+  const { data: reads0, refetch } = useReadContracts({
     contracts: [
-      { ...referralProgram, functionName: "referrersList", args: [address] },
+      { ...referralProgram, functionName: "getReferrersList", args: [address] },
+      { ...referralProgram, functionName: "leaders", args: [address] },
     ],
   });
+
+  const referrersList = reads0?.[0]?.result;
+  const leader = reads0?.[1]?.result;
 
   const submit = {
     buttonName: "Submit",
@@ -21,23 +25,60 @@ const ReferralProgram = () => {
       functionName: "register",
       args: [data?.leader],
     },
+    callback: () => {
+      refetch();
+    },
   };
+
+  let haveLeader = true;
+  if (leader == "0x0000000000000000000000000000000000000000") {
+    haveLeader = false;
+  }
+
+  let haveReferrers = true;
+  if (referrersList?.length == 0) {
+    haveReferrers = false;
+  }
+
   return (
     <>
-      <div className="card md:w-1/2 w-96 m-auto">
-        <div className="card-body">
-          <div className="font-black text-center mt-12">
-            Submit Your Leader Address
+      {!haveLeader && (
+        <div className="card md:w-1/2 w-96 m-auto">
+          <div className="card-body">
+            <div className="font-black text-center mt-12">
+              Submit Your Leader Address
+            </div>
+            <input
+              type="text"
+              placeholder="0x"
+              className="input input-bordered w-full"
+              onChange={(e) => setData({ ...data, leader: e.target.value })}
+            />
+            <WriteButton {...submit} className="btn btn-primary" />
           </div>
-          <input
-            type="text"
-            placeholder="0x"
-            className="input input-bordered w-full"
-            onChange={(e) => setData({ ...data, leader: e.target.value })}
-          />
-          <WriteButton {...submit} className="btn btn-primary" />
         </div>
-      </div>
+      )}
+      {haveLeader && (
+        <div className="card md:w-1/2 w-96 m-auto">
+          <div className="card-body">
+            <div className="font-black text-center mt-12">
+              Your Leader Address {leader}
+            </div>
+          </div>
+        </div>
+      )}
+      {haveReferrers && (
+        <div className="card md:w-1/2 w-96 m-auto">
+          <div className="card-body">
+            <div className="font-black text-center mt-12">
+              Your Referral Addresses
+            </div>
+            {referrersList?.map((referrer) => {
+              return <div key={referrer} className="text-center">{referrer}</div>;
+            })}
+          </div>
+        </div>
+      )}
     </>
   );
 };
