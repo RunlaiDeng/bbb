@@ -13,7 +13,7 @@ export const contracts = {
       abi: BBBFarmerABI,
     },
     referralProgram: {
-      address: "0x403c0a197aD872d422A53efA1e46A11ee6F9be25",
+      address: "0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0",
       abi: ReferralProgramABI,
     },
   },
