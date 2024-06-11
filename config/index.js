@@ -9,7 +9,7 @@ export const contracts = {
       abi: ERC20ABI,
     },
     carrotfarmer: {
-      address: "0x787ED2Cc8B2a50217fA36D965944Df19Fb976045",
+      address: "0x314c3908E559dEBe1fCe7DfA9283867e3616501D",
       abi: BBBFarmerABI,
     },
     referralProgram: {

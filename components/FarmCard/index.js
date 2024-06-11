@@ -59,7 +59,7 @@ const FarmCard = () => {
       { ...bbb, functionName: "allowance", args: [address, farmer?.address] },
       { ...bbb, functionName: "balanceOf", args: [address] },
       { ...farmer, functionName: "getPendingPoint", args: [address] },
-      { ...farmer, functionName: "users", args: [address] },
+      { ...farmer, functionName: "balanceOf", args: [address] },
       { ...farmer, functionName: "pointToken", args: [] },
     ],
   });
@@ -67,9 +67,8 @@ const FarmCard = () => {
   const allowance = reads0?.[0]?.result;
   const bbbBalance = reads0?.[1]?.result;
   const pendingPoint = reads0?.[2]?.result;
-  const user = reads0?.[3]?.result;
+  const stake = reads0?.[3]?.result;
   const pointToken = reads0?.[4]?.result;
-  const stake = user?.[0];
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -125,7 +124,6 @@ const FarmCard = () => {
     bbbIsEnough = false;
   }
 
-  
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
       <div className="card-body font-black">

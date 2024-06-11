@@ -725,11 +725,6 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "stake",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "last",
         "type": "uint256"
       },
