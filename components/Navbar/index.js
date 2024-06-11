@@ -11,6 +11,8 @@ const Navbar = () => {
     "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e";
   const linktree = "https://linktr.ee/benybadboy";
 
+  const afterIDO = false;
+
   return (
     <div className="navbar items-center">
       <div className="navbar-start">
@@ -44,6 +46,17 @@ const Navbar = () => {
                   </svg>
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none z-50">
+                  {afterIDO && (
+                    <>
+                      <li>
+                        <Link href={"/farm"}>Farm</Link>
+                      </li>
+                      <li>
+                        <Link href={"/referralProgram"}>Referral Program</Link>
+                      </li>
+                    </>
+                  )}
+
                   <li>
                     <Link href={linktree} target="_blank">
                       Contact
@@ -63,6 +76,17 @@ const Navbar = () => {
       <div className="navbar-center flex"></div>
       <div className="navbar-end">
         <div className="hidden xl:block">
+          {afterIDO && (
+            <>
+              <Link className="btn btn-warning mr-2" href={"/farm"}>
+                Farm
+              </Link>
+              <Link className="btn btn-success mr-2" href={"/referralProgram"}>
+                Referral Program
+              </Link>
+            </>
+          )}
+
           <Link href={linktree} target="_blank" className="btn btn-accent mr-2">
             Contact
           </Link>

@@ -105,22 +105,25 @@ const ReferralProgram = () => {
         </div>
       )}
 
-      {haveReferrers && (
-        <div className="card md:w-1/2 w-96 m-auto">
-          <div className="card-body">
-            <div className="font-black text-center mt-12">
-              Your Referral Addresses
-            </div>
-            {referrersList?.map((referrer) => {
-              return (
-                <div key={referrer} className="text-center">
-                  {referrer}
-                </div>
-              );
-            })}
+      <div className="card md:w-1/2 w-96 m-auto">
+        <div className="card-body">
+          <div className="font-black text-center mt-12">
+            Your Referral Addresses
           </div>
+          {haveReferrers && (
+            <>
+              {referrersList?.map((referrer) => {
+                return (
+                  <div key={referrer} className="text-center">
+                    {referrer}
+                  </div>
+                );
+              })}
+            </>
+          )}
+          {!haveReferrers && <div className="text-center">No Referrals</div>}
         </div>
-      )}
+      </div>
     </>
   );
 };
