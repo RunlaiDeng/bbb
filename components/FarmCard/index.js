@@ -116,12 +116,12 @@ const FarmCard = () => {
   };
 
   let showApprove = true;
-  if (allowance && allowance > data?.value * 1e18 * 2570) {
+  if (allowance && allowance > data?.value * 1e18 * 25700) {
     showApprove = false;
   }
 
   let bbbIsEnough = true;
-  if (data.value * 2570 > BigInt(bbbBalance || 0) / BigInt(1e18)) {
+  if (data.value * 25700 > BigInt(bbbBalance || 0) / BigInt(1e18)) {
     bbbIsEnough = false;
   }
 
@@ -150,7 +150,7 @@ const FarmCard = () => {
                 type="text"
                 placeholder="0"
                 className="input input-bordered col-span-5"
-                value={data.value * 2570 + " BBB"}
+                value={data.value * 25700 + " BBB"}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
