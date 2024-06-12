@@ -5,6 +5,9 @@ import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 export const dexLink =
   "https://app.xspswap.finance/#/swap?outputCurrency=0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1";
 
+export const chartLink =
+  "https://www.geckoterminal.com/xdc/pools/0xf8ca0db7eba5e0760b66d77cb83a15fde9ad0e20";
+
 export const contracts = {
   551: {
     bbb: {
