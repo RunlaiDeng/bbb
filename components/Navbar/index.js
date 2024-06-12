@@ -7,8 +7,6 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
 
-  const ido =
-    "https://xdc.sale/presale/0x6182c5cC8D21a63708e567684F6A01b691f24a5e";
   const linktree = "https://linktr.ee/benybadboy";
 
   const afterIDO = false;
@@ -62,11 +60,6 @@ const Navbar = () => {
                       Contact
                     </Link>
                   </li>
-                  <li>
-                    <Link target="_blank" href={ido}>
-                      IDO NOW!
-                    </Link>
-                  </li>
                 </ul>
               </details>
             </li>
@@ -89,9 +82,6 @@ const Navbar = () => {
 
           <Link href={linktree} target="_blank" className="btn btn-accent mr-2">
             Contact
-          </Link>
-          <Link className="btn btn-primary mr-2" target="_blank" href={ido}>
-            IDO NOW!
           </Link>
         </div>
 

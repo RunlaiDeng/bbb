@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { dexLink } from "@/config";
 const Home = () => {
   return (
     <>
@@ -16,9 +17,13 @@ const Home = () => {
                   their day, it’s time for BBB to take reign.
                 </div>
 
-                <div className="btn btn-secondary m-auto w-auto md:btn-lg mt-8">
-                  Coming Soon
-                </div>
+                <Link
+                  className="btn btn-secondary m-auto w-auto md:btn-lg mt-8 w-36 md:w-72"
+                  href={dexLink}
+                  target="_blank"
+                >
+                  BUY
+                </Link>
               </div>
               <Image
                 src={"/bbb.jpg"}
@@ -55,9 +60,9 @@ const Home = () => {
                 </div>
                 <div>
                   BBB is here to make memecoins great again. Launched stealth
-                  with no presale, zero taxes,
-                  $BBB is a coin for the people, forever. Fueled by pure memetic
-                  power, let $BBB show you the way.
+                  with no presale, zero taxes, $BBB is a coin for the people,
+                  forever. Fueled by pure memetic power, let $BBB show you the
+                  way.
                 </div>
                 <div>Meme killer is here, its a not financial advise</div>
               </div>
@@ -73,9 +78,7 @@ const Home = () => {
               <div className="grid gap-2">
                 <div>Token Supply:2 570 000 000</div>
                 <div>No Taxes, No Bullshit. It’s that simple.</div>
-                <div>
-                  No Taxes, No Bullshit. It’s that simple. 
-                </div>
+                <div>No Taxes, No Bullshit. It’s that simple.</div>
               </div>
               <Image
                 src={"/tokenomics.png"}

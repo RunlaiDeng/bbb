@@ -5,7 +5,7 @@ import WriteButton from "../WriteButton";
 import { contracts } from "@/config";
 import Link from "next/link";
 import copy from "copy-to-clipboard";
-
+import { dexLink } from "@/config";
 const FarmCard = () => {
   const [data, setData] = useState({ value: 0 });
   const { address } = useAccount();
@@ -203,13 +203,7 @@ const FarmCard = () => {
               />
             )}
             {!bbbIsEnough && (
-              <Link
-                className="underline"
-                href={
-                  "https://app.xspswap.finance/swap#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
-                }
-                target="_blank"
-              >
+              <Link className="underline" href={dexLink} target="_blank">
                 BBB is not enough ?
               </Link>
             )}

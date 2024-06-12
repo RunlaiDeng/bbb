@@ -7,6 +7,7 @@ import copy from "copy-to-clipboard";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const ReferralProgram = () => {
+  const [mounted, setMounted] = useState(false);
   const [data, setData] = useState({});
   const chainId = useChainId();
   const { address } = useAccount();
@@ -55,76 +56,82 @@ const ReferralProgram = () => {
     setData({ leader: leaderAddress });
   }, [leaderAddress]);
 
-  return (
-    <>
-      {isConnected && (
-        <div className="card md:w-1/2 w-96 m-auto">
-          <div className="card-body">
-            <div
-              className="btn btn-success m-auto text-center"
-              onClick={() => {
-                copy(
-                  window.location.href.split("?")?.[0] +
-                    "/?leaderAddress=" +
-                    address
-                );
-                Notify.success("Copy successful!");
-              }}
-            >
-              Copy your referral link
-            </div>
-          </div>
-        </div>
-      )}
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-      {!haveLeader && (
-        <div className="card md:w-1/2 w-96 m-auto">
-          <div className="card-body">
-            <div className="font-black text-center">
-              Submit Your Leader Address
+  return (
+    mounted && (
+      <>
+        {isConnected && (
+          <div className="card md:w-1/2 w-96 m-auto">
+            <div className="card-body">
+              <div
+                className="btn btn-success m-auto text-center"
+                onClick={() => {
+                  copy(
+                    window.location.href.split("?")?.[0] +
+                      "/?leaderAddress=" +
+                      address
+                  );
+                  Notify.success("Copy successful!");
+                }}
+              >
+                Copy your referral link
+              </div>
             </div>
-            <input
-              type="text"
-              placeholder="0x"
-              className="input input-bordered w-full"
-              defaultValue={leaderAddress}
-              onChange={(e) => setData({ ...data, leader: e.target.value })}
-            />
-            <WriteButton {...submit} className="btn btn-primary" />
           </div>
-        </div>
-      )}
-      {haveLeader && (
+        )}
+
+        {!haveLeader && (
+          <div className="card md:w-1/2 w-96 m-auto">
+            <div className="card-body">
+              <div className="font-black text-center">
+                Submit Your Leader Address
+              </div>
+              <input
+                type="text"
+                placeholder="0x"
+                className="input input-bordered w-full"
+                defaultValue={leaderAddress}
+                onChange={(e) => setData({ ...data, leader: e.target.value })}
+              />
+              <WriteButton {...submit} className="btn btn-primary" />
+            </div>
+          </div>
+        )}
+        {haveLeader && (
+          <div className="card md:w-1/2 w-96 m-auto">
+            <div className="card-body">
+              <div className="font-black text-center mt-12">
+                Your Leader Address
+              </div>
+              <div className="text-center">{leader}</div>
+            </div>
+          </div>
+        )}
+
         <div className="card md:w-1/2 w-96 m-auto">
           <div className="card-body">
             <div className="font-black text-center mt-12">
-              Your Leader Address
+              Your Referral Addresses
             </div>
-            <div className="text-center">{leader}</div>
+            {haveReferrers && (
+              <>
+                {referrersList?.map((referrer) => {
+                  return (
+                    <div key={referrer} className="text-center">
+                      {referrer}
+                    </div>
+                  );
+                })}
+              </>
+            )}
+            {!haveReferrers && <div className="text-center">No Referrals</div>}
           </div>
         </div>
-      )}
-
-      <div className="card md:w-1/2 w-96 m-auto">
-        <div className="card-body">
-          <div className="font-black text-center mt-12">
-            Your Referral Addresses
-          </div>
-          {haveReferrers && (
-            <>
-              {referrersList?.map((referrer) => {
-                return (
-                  <div key={referrer} className="text-center">
-                    {referrer}
-                  </div>
-                );
-              })}
-            </>
-          )}
-          {!haveReferrers && <div className="text-center">No Referrals</div>}
-        </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 

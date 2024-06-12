@@ -2,6 +2,9 @@ import ERC20ABI from "../abi/ERC20ABI.json";
 import BBBFarmerABI from "../abi/BBBFarmerABI.json";
 import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 
+export const dexLink =
+  "https://app.xspswap.finance/#/swap?outputCurrency=0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1";
+
 export const contracts = {
   551: {
     bbb: {
@@ -9,11 +12,11 @@ export const contracts = {
       abi: ERC20ABI,
     },
     carrotfarmer: {
-      address: "0x314c3908E559dEBe1fCe7DfA9283867e3616501D",
+      address: "0x903aA9a8BEaC496c4A4649063eceCeb6Ca522Ea4",
       abi: BBBFarmerABI,
     },
     referralProgram: {
-      address: "0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0",
+      address: "0x2828e5DfC0C71Bb92f00fBD3d6DC9A04E24b8f87",
       abi: ReferralProgramABI,
     },
   },
