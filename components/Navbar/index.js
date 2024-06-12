@@ -71,16 +71,16 @@ const Navbar = () => {
         <div className="hidden xl:block">
           {afterIDO && (
             <>
-              <Link className="btn btn-warning mr-2" href={"/farm"}>
+              <Link className="btn mr-2" href={"/farm"}>
                 Farm
               </Link>
-              <Link className="btn btn-success mr-2" href={"/referralProgram"}>
+              <Link className="btn mr-2" href={"/referralProgram"}>
                 Referral Program
               </Link>
             </>
           )}
 
-          <Link href={linktree} target="_blank" className="btn btn-accent mr-2">
+          <Link href={linktree} target="_blank" className="btn mr-2">
             Contact
           </Link>
         </div>

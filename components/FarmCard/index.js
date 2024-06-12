@@ -158,7 +158,7 @@ const FarmCard = () => {
                 disabled
               />
               <div
-                className="btn btn-primary btn-square m-auto"
+                className="btn  btn-square m-auto"
                 onClick={() => {
                   if (data.value >= 1) {
                     setData({ ...data, value: data.value - 1 });
@@ -176,7 +176,7 @@ const FarmCard = () => {
                 -
               </div>
               <div
-                className="btn btn-accent btn-square m-auto"
+                className="btn btn-success btn-square m-auto"
                 onClick={() => {
                   setData({ ...data, value: data.value + 1 });
                 }}
@@ -199,7 +199,7 @@ const FarmCard = () => {
             {showApprove && (
               <WriteButton
                 {...approve}
-                className="btn font-black btn-lg mt-5 w-full btn-accent"
+                className="btn font-black btn-lg mt-5 w-full btn-success"
               />
             )}
             {!bbbIsEnough && (
@@ -259,7 +259,7 @@ const FarmCard = () => {
             </div>
             <WriteButton
               {...collect}
-              className="btn font-black btn-lg mt-4 w-full btn-secondary"
+              className="btn font-black btn-lg mt-4 w-full btn-success"
             />
           </div>
         </div>

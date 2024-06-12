@@ -84,7 +84,7 @@ const ReferralProgram = () => {
         )}
 
         {!haveLeader && (
-          <div className="card md:w-1/2 w-96 m-auto">
+          <div className="card w-96 m-auto">
             <div className="card-body">
               <div className="font-black text-center">
                 Submit Your Leader Address
@@ -96,7 +96,7 @@ const ReferralProgram = () => {
                 defaultValue={leaderAddress}
                 onChange={(e) => setData({ ...data, leader: e.target.value })}
               />
-              <WriteButton {...submit} className="btn btn-primary" />
+              <WriteButton {...submit} className="btn btn-success" />
             </div>
           </div>
         )}
