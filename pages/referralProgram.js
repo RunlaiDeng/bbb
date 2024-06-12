@@ -84,6 +84,10 @@ const ReferralProgram = () => {
         {isConnected && (
           <div className="card w-96 m-auto">
             <div className="card-body">
+              <label className="input input-bordered flex items-center gap-2">
+                <div className="text-xs">Referral Farm Protit</div>
+                <div>10 % </div>
+              </label>
               <label
                 className="input input-bordered flex items-center gap-2 m-auto cursor-pointer"
                 onClick={() => {
