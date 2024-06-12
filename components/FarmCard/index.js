@@ -15,6 +15,7 @@ const FarmCard = () => {
 
   const bbb = contracts[chainId]?.bbb;
   const farmer = contracts[chainId]?.carrotfarmer;
+  const mutilCall = contracts[chainId]?.multicallAddress;
 
   const handleCopyClick = () => {
     setTooltipText("Address copied!");
@@ -62,6 +63,7 @@ const FarmCard = () => {
       { ...farmer, functionName: "balanceOf", args: [address] },
       { ...farmer, functionName: "pointToken", args: [] },
     ],
+    multicallAddress: mutilCall?.address,
   });
 
   const allowance = reads0?.[0]?.result;

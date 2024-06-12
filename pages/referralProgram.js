@@ -6,6 +6,7 @@ import { useAccount, useChainId, useReadContracts } from "wagmi";
 import copy from "copy-to-clipboard";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Link from "next/link";
+
 const ReferralProgram = () => {
   const [mounted, setMounted] = useState(false);
   const [data, setData] = useState({});
@@ -16,11 +17,14 @@ const ReferralProgram = () => {
 
   const referralProgram = contracts[chainId]?.referralProgram;
 
+  const mutilCall = contracts[chainId]?.multicallAddress;
+
   const { data: reads0, refetch } = useReadContracts({
     contracts: [
       { ...referralProgram, functionName: "getReferrersList", args: [address] },
       { ...referralProgram, functionName: "leaders", args: [address] },
     ],
+    multicallAddress: mutilCall?.address,
   });
 
   const referrersList = reads0?.[0]?.result;

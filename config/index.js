@@ -28,5 +28,14 @@ export const contracts = {
       address: "0xAf103E2E469aAA90f85310fA406E9693E79f0333",
       abi: ReferralProgramABI,
     },
+    bbb: {
+      address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+      abi: ERC20ABI,
+    },
+    carrotfarmer: {
+      address: "0xEfE58DBA778b3a019856ce1AF627235C818A3198",
+      abi: BBBFarmerABI,
+    },
+    multicallAddress: { address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF" },
   },
 };
