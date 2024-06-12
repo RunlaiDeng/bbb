@@ -209,6 +209,7 @@ const FarmCard = () => {
                 BBB is not enough ?
               </Link>
             )}
+            <div className="text-xs">Purchase at least one to unlock the referral bonus.</div>
           </div>
 
           <div>
