@@ -6,7 +6,7 @@ import { dexLink } from "@/config";
 const Home = () => {
   return (
     <>
-      <div className="">
+      <div className="bg-gray-500 bg-opacity-10">
         <div className="card m-auto md:w-3/4 w-96">
           <div className="card-body">
             <div className="font-black text-5xl mt-6">$BBB</div>
