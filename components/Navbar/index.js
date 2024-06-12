@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const linktree = "https://linktr.ee/benybadboy";
 
-  const afterIDO = false;
+  const afterIDO = true;
 
   return (
     <div className="navbar items-center">
