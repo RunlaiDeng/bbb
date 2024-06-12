@@ -43,11 +43,11 @@ const Home = () => {
           <div className="card-body">
             <div className="grid grid-cols-2 gap-2">
               <Image
-                src={"/about.png"}
+                src={"/endgame.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block mask mask-heart"
+                className="m-auto hidden md:block "
               />
 
               <div className="grid gap-2">
@@ -81,11 +81,11 @@ const Home = () => {
                 <div>No Taxes, No Bullshit. It’s that simple.</div>
               </div>
               <Image
-                src={"/tokenomics.png"}
+                src={"/endgame.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block mask mask-hexagon"
+                className="m-auto hidden md:block "
               />
             </div>
           </div>
@@ -97,11 +97,11 @@ const Home = () => {
           <div className="card-body text-center">
             <div className="grid md:grid-cols-3 gap-2">
               <Image
-                src={"/roadmapleft.png"}
+                src={"/endgame.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block mask mask-hexagon-2"
+                className="m-auto hidden md:block "
               />
               <div className="md:mt-16">
                 <div>Phase 1: Meme Phase</div>
@@ -109,11 +109,11 @@ const Home = () => {
                 <div>Phase 3: Meme Takeover</div>
               </div>
               <Image
-                src={"/roadmapright.png"}
+                src={"/endgame.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block mask mask-circle"
+                className="m-auto hidden md:block "
               />
             </div>
           </div>
