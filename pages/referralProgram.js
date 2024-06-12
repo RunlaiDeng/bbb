@@ -53,15 +53,22 @@ const ReferralProgram = () => {
   const { isConnected } = useAccount();
 
   useEffect(() => {
-    setData({ leader: leaderAddress });
+    setData({ ...data, leader: leaderAddress });
   }, [leaderAddress]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const referralLink =
-    window.location.href.split("?")?.[0] + "/?leaderAddress=" + address;
+  useEffect(() => {
+    setData({
+      ...data,
+      referralLink:
+        window.location.href.split("?")?.[0] + "/?leaderAddress=" + address,
+    });
+  }, [address]);
+
+  const referralLink = data?.referralLink;
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Discover the magic of benybadboy! 🌟 Unlock exclusive perks with my referral link! 🎉 &via=benybadboybbb &url=" +
