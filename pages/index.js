@@ -43,11 +43,11 @@ const Home = () => {
           <div className="card-body">
             <div className="grid grid-cols-2 gap-2">
               <Image
-                src={"/endgame.png"}
+                src={"/about.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block "
+                className="m-auto hidden md:block rounded-full"
               />
 
               <div className="grid gap-2">
@@ -81,11 +81,11 @@ const Home = () => {
                 <div>No Taxes, No Bullshit. It’s that simple.</div>
               </div>
               <Image
-                src={"/endgame.png"}
+                src={"/tokenomics.png"}
                 height={200}
                 width={200}
                 alt=""
-                className="m-auto hidden md:block "
+                className="m-auto hidden md:block rounded-full"
               />
             </div>
           </div>
