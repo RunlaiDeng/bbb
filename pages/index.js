@@ -18,7 +18,7 @@ const Home = () => {
                 </div>
 
                 <Link
-                  className="btn btn-secondary m-auto w-auto md:btn-lg mt-8 w-36 md:w-72"
+                  className="btn btn-secondary m-auto w-auto md:btn-lg mt-8 md:mt-16 w-36 md:w-72"
                   href={dexLink}
                   target="_blank"
                 >
