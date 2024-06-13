@@ -44,17 +44,15 @@ const Navbar = () => {
                   </svg>
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none z-50">
-                  {afterIDO && (
-                    <>
-                      <li>
-                        <Link href={"/farm"}>Farm</Link>
-                      </li>
-                      <li>
-                        <Link href={"/referralProgram"}>Referral Program</Link>
-                      </li>
-                    </>
-                  )}
-
+                  <li>
+                    <Link href={"/chart"}>Chart</Link>
+                  </li>
+                  <li>
+                    <Link href={"/farm"}>Farm</Link>
+                  </li>
+                  <li>
+                    <Link href={"/referralProgram"}>Referral Program</Link>
+                  </li>
                   <li>
                     <Link href={linktree} target="_blank">
                       Contact
@@ -69,16 +67,15 @@ const Navbar = () => {
       <div className="navbar-center flex"></div>
       <div className="navbar-end">
         <div className="hidden xl:block">
-          {afterIDO && (
-            <>
-              <Link className="btn mr-2" href={"/farm"}>
-                Farm
-              </Link>
-              <Link className="btn mr-2" href={"/referralProgram"}>
-                Referral Program
-              </Link>
-            </>
-          )}
+          <Link className="btn mr-2" href={"/chart"}>
+            Chart
+          </Link>
+          <Link className="btn mr-2" href={"/farm"}>
+            Farm
+          </Link>
+          <Link className="btn mr-2" href={"/referralProgram"}>
+            Referral Program
+          </Link>
 
           <Link href={linktree} target="_blank" className="btn mr-2">
             Contact
