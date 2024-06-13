@@ -45,9 +45,6 @@ const Navbar = () => {
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none z-50">
                   <li>
-                    <Link href={"/chart"}>Chart</Link>
-                  </li>
-                  <li>
                     <Link href={"/farm"}>Farm</Link>
                   </li>
                   <li>
@@ -58,6 +55,9 @@ const Navbar = () => {
                       Contact
                     </Link>
                   </li>
+                  <li>
+                    <Link href={"/chart"}>Chart</Link>
+                  </li>
                 </ul>
               </details>
             </li>
@@ -67,18 +67,17 @@ const Navbar = () => {
       <div className="navbar-center flex"></div>
       <div className="navbar-end">
         <div className="hidden xl:block">
-          <Link className="btn mr-2" href={"/chart"}>
-            Chart
-          </Link>
           <Link className="btn mr-2" href={"/farm"}>
             Farm
           </Link>
           <Link className="btn mr-2" href={"/referralProgram"}>
             Referral Program
           </Link>
-
           <Link href={linktree} target="_blank" className="btn mr-2">
             Contact
+          </Link>
+          <Link className="btn mr-2" href={"/chart"}>
+            Chart
           </Link>
         </div>
 
