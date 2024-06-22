@@ -84,6 +84,9 @@ const ReferralProgram = () => {
         {isConnected && (
           <div className="card w-96 m-auto">
             <div className="card-body">
+              <div className="font-black text-center">
+                Your Referral Program
+              </div>
               <label className="input input-bordered flex items-center gap-2">
                 <div className="text-xs">Referral Bonus</div>
                 <div>10 % </div>
@@ -169,33 +172,46 @@ const ReferralProgram = () => {
             </div>
           </div>
         )}
-        {haveLeader && (
+        {/* {haveLeader && (
           <div className="card md:w-1/2 w-96 m-auto">
             <div className="card-body">
-              <div className="font-black text-center mt-12">
+              <div className="font-black text-center">
                 Your Leader Address
               </div>
               <div className="text-center">{leader}</div>
             </div>
           </div>
-        )}
+        )} */}
 
         <div className="card md:w-1/2 w-96 m-auto">
           <div className="card-body">
-            <div className="font-black text-center mt-12">
+            <div className="font-black text-center">
               Your Referral Addresses
             </div>
             {haveReferrers && (
-              <>
-                {referrersList?.map((referrer) => {
-                  return (
-                    <div key={referrer} className="text-center">
-                      {referrer}
-                    </div>
-                  );
-                })}
-              </>
+              <div className="overflow-x-auto">
+                <table className="table">
+                  {/* head */}
+                  <thead className="text-center">
+                    <tr>
+                      <th></th>
+                      <th>Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referrersList?.map((referrer, index) => {
+                      return (
+                        <tr key={referrer} className="text-center">
+                          <th># {index}</th>
+                          <td>{referrer}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             )}
+
             {!haveReferrers && <div className="text-center">No Referrals</div>}
           </div>
         </div>
