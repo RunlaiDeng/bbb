@@ -225,7 +225,7 @@ const FarmCard = () => {
                   handleCopyClick();
                 }}
               >
-                <div className="grid grid-cols-3 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                <div className="grid grid-cols-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
                   <Image
                     src={"/farmer.png"}
                     alt=""
@@ -233,9 +233,8 @@ const FarmCard = () => {
                     width={50}
                     className="mask mask-squircle m-auto"
                   />{" "}
-                  <div className="font-black mt-4"> X</div>
                   <div className="font-black mt-4">
-                    {stake?.toString() || 0}
+                    X{stake?.toString() || 0}
                   </div>
                 </div>
               </div>
@@ -247,7 +246,7 @@ const FarmCard = () => {
                   handleCopyClick();
                 }}
               >
-                <div className="grid grid-cols-3 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                <div className="grid grid-cols-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
                   <Image
                     src={"/carrot.png"}
                     alt=""
@@ -255,9 +254,8 @@ const FarmCard = () => {
                     width={50}
                     className="mask mask-squircle m-auto"
                   />{" "}
-                  <div className="font-black mt-4"> X</div>
                   <div className="font-black mt-4">
-                    {pendingPoint?.toString() || 0}
+                    X{pendingPoint?.toString() || 0}
                   </div>
                 </div>
               </div>
