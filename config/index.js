@@ -33,7 +33,7 @@ export const contracts = {
       abi: ERC20ABI,
     },
     carrotfarmer: {
-      address: "0xEfE58DBA778b3a019856ce1AF627235C818A3198",
+      address: "0xd659E7D0390F19Db21c3e16f17fBD7F138f3b969",
       abi: BBBFarmerABI,
     },
     multicallAddress: { address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF" },
