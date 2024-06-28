@@ -1,10 +1,9 @@
 import "../styles/globals.css";
-import { themeChange } from "theme-change";
+
 import React from "react";
 import Layout from "../components/Layout";
-
 import "@rainbow-me/rainbowkit/styles.css";
-
+import { http } from "wagmi";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { xdc } from "wagmi/chains";
@@ -32,6 +31,9 @@ const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
   chains: [xdc, xdcParentNet],
+  transports: {
+    [xdc.id]: http("https://rpc.xdcrpc.com"),
+  },
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
