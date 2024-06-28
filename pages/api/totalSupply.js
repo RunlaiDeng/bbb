@@ -17,5 +17,5 @@ const contract = getContract({
 export default async function handler(req, res) {
   const result = await contract.read.totalSupply();
 
-  res.status(200).send((result / BigInt(10e18))?.toString());
+  res.status(200).send((result / BigInt(1e18))?.toString());
 }
