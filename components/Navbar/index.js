@@ -87,7 +87,7 @@ const Navbar = () => {
           chainStatus="icon"
           showBalance="false"
         />
-        <div className="dropdown ml-2 hidden xl:block dropdown-end">
+        {/* <div className="dropdown ml-2 hidden xl:block dropdown-end">
           <div tabIndex={0} role="button" className="btn m-1">
             Theme
             <svg
@@ -132,7 +132,7 @@ const Navbar = () => {
               />
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
     </div>
   );
