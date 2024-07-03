@@ -89,11 +89,9 @@ const ReferralProgram = () => {
           </Link>
         </div>
         {isConnected && (
-          <div className="card w-96 m-auto shadow-2xl mt-5">
+          <div className="card w-96 m-auto mt-5">
             <div className="card-body">
-              <div className="font-black text-center">
-                Your Referral Program
-              </div>
+       
               <label className="input input-bordered flex items-center gap-2">
                 <div className="text-xs">Referral Bonus</div>
                 <div>10 % </div>
@@ -180,7 +178,7 @@ const ReferralProgram = () => {
           </div>
         )}
 
-        <div className="card md:w-1/2 w-96 m-auto shadow-2xl mt-5">
+        <div className="card md:w-3/4 w-96 m-auto shadow-2xl mt-5">
           <div className="card-body">
             <div className="font-black text-center">
               Your Referral Addresses
