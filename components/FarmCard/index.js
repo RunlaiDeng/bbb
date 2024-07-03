@@ -135,7 +135,7 @@ const FarmCard = () => {
               width={200}
               className="mask mask-squircle m-auto"
             />
-            <div className="text-5xl font-black text-center mt-20">
+            <div className="text-5xl font-black text-center mt-28">
               X {data.value}
             </div>
           </div>
@@ -229,7 +229,7 @@ const FarmCard = () => {
                   handleCopyClick();
                 }}
               >
-                <div className="grid grid-cols-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
                   <Image
                     src={"/farmer.png"}
                     alt=""
@@ -250,7 +250,7 @@ const FarmCard = () => {
                   handleCopyClick();
                 }}
               >
-                <div className="grid grid-cols-2 rounded-2xl shadow-2xl p-1 cursor-pointer">
+                <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
                   <Image
                     src={"/carrot.png"}
                     alt=""
