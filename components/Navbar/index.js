@@ -63,21 +63,36 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
+        <div className="hidden xl:block">
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/farm"}
+          >
+            Farm
+          </Link>
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/referralProgram"}
+          >
+            Referral Program
+          </Link>
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={linktree}
+            target="_blank"
+          >
+            Contact
+          </Link>
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/chart"}
+            target="_blank"
+          >
+            Chart
+          </Link>
+        </div>
       </div>
-      <div className="navbar-center flex hidden xl:block">
-        <Link className="btn mx-1" href={"/farm"}>
-          Farm
-        </Link>
-        <Link className="btn mx-1" href={"/referralProgram"}>
-          Referral Program
-        </Link>
-        <Link href={linktree} target="_blank" className="btn mx-1">
-          Contact
-        </Link>
-        <Link className="btn mx-1" href={"/chart"}>
-          Chart
-        </Link>
-      </div>
+      <div className="navbar-center flex hidden xl:block"></div>
       <div className="navbar-end">
         <ConnectButton
           accountStatus={{
