@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import { dexLink } from "@/config";
 const Navbar = () => {
   const router = useRouter();
   const pathname = router.pathname;
@@ -45,6 +46,16 @@ const Navbar = () => {
                 </summary>
                 <ul className="p-2 bg-base-100 rounded-t-none z-50">
                   <li>
+                    <Link href={"/buy"} target="_blank">
+                      Buy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={"/chart"} target="_blank">
+                      Chart
+                    </Link>
+                  </li>
+                  <li>
                     <Link href={"/farm"}>Farm</Link>
                   </li>
                   <li>
@@ -55,15 +66,26 @@ const Navbar = () => {
                       Contact
                     </Link>
                   </li>
-                  <li>
-                    <Link href={"/chart"}>Chart</Link>
-                  </li>
                 </ul>
               </details>
             </li>
           </ul>
         </div>
         <div className="hidden xl:block">
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/buy"}
+            target="_blank"
+          >
+            Buy $BBB
+          </Link>
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/chart"}
+            target="_blank"
+          >
+            Chart
+          </Link>
           <Link
             className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
             href={"/farm"}
@@ -82,13 +104,6 @@ const Navbar = () => {
             target="_blank"
           >
             Contact
-          </Link>
-          <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/chart"}
-            target="_blank"
-          >
-            Chart
           </Link>
         </div>
       </div>
