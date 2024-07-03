@@ -1,0 +1,37 @@
+const Help = () => {
+  return (
+    <>
+      <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
+        <div className="card-body">
+          <div className="collapse collapse-plus bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              <kbd className="kbd">1</kbd> What is farm ?
+            </div>
+            <div className="collapse-content">
+              <p>
+                Use your $BBB or tokens to buy farmers who can harvest tokens.
+                tokens is liquid and can be swapped easily.
+              </p>
+            </div>
+          </div>
+          <div className="collapse collapse-plus bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              <kbd className="kbd">2</kbd> What is referral program ?
+            </div>
+            <div className="collapse-content">
+              <p>
+                A referral program is a marketing strategy where existing
+                customers are rewarded for referring new customers. Refer
+                friends to earn 10% of their mining rewards.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Help;

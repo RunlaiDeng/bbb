@@ -117,14 +117,11 @@ const FarmCard = () => {
   };
 
   let showApprove = true;
-  if (allowance && allowance > data?.value * 1e18 * 257000) {
+  if (allowance && allowance > (data?.value || 0) * 1e18 * 257000) {
     showApprove = false;
   }
 
-  let bbbIsEnough = true;
-  if (data.value * 257000 > BigInt(bbbBalance || 0) / BigInt(1e18)) {
-    bbbIsEnough = false;
-  }
+  let bbbIsEnough = false;
 
   return (
     <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
@@ -204,14 +201,21 @@ const FarmCard = () => {
                 className="btn font-black btn-lg mt-5 w-full btn-success"
               />
             )}
-            {!bbbIsEnough && (
-              <Link className="underline" href={dexLink} target="_blank">
-                BBB is not enough ?
-              </Link>
-            )}
             <div className="text-xs">
               Purchase at least one to unlock the referral bonus.
             </div>
+            <div className="mt-1 text-xs">
+              Available {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
+            </div>
+            {!bbbIsEnough && (
+              <Link
+                className="underline text-xs"
+                href={dexLink}
+                target="_blank"
+              >
+                BBB is not enough ?
+              </Link>
+            )}
           </div>
 
           <div>

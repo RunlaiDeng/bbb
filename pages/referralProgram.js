@@ -81,6 +81,13 @@ const ReferralProgram = () => {
   return (
     mounted && (
       <>
+        <div className="grid grid-cols-3 m-auto md:w-3/4 w-96">
+          <div></div>
+          <div className="text-center font-black mt-2">Referral Program</div>
+          <Link className="text-right" href="/help">
+            <button className="btn">?</button>
+          </Link>
+        </div>
         {isConnected && (
           <div className="card w-96 m-auto shadow-2xl mt-5">
             <div className="card-body">
@@ -172,16 +179,6 @@ const ReferralProgram = () => {
             </div>
           </div>
         )}
-        {/* {haveLeader && (
-          <div className="card md:w-1/2 w-96 m-auto">
-            <div className="card-body">
-              <div className="font-black text-center">
-                Your Leader Address
-              </div>
-              <div className="text-center">{leader}</div>
-            </div>
-          </div>
-        )} */}
 
         <div className="card md:w-1/2 w-96 m-auto shadow-2xl mt-5">
           <div className="card-body">
@@ -202,7 +199,7 @@ const ReferralProgram = () => {
                     {referrersList?.map((referrer, index) => {
                       return (
                         <tr key={referrer} className="text-center">
-                          <th># {index+1}</th>
+                          <th># {index + 1}</th>
                           <td>{referrer}</td>
                         </tr>
                       );
