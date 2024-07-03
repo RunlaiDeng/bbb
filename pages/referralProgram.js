@@ -82,7 +82,7 @@ const ReferralProgram = () => {
     mounted && (
       <>
         {isConnected && (
-          <div className="card w-96 m-auto">
+          <div className="card w-96 m-auto shadow-2xl mt-5">
             <div className="card-body">
               <div className="font-black text-center">
                 Your Referral Program
@@ -156,7 +156,7 @@ const ReferralProgram = () => {
         )}
 
         {!haveLeader && (
-          <div className="card w-96 m-auto">
+          <div className="card w-96 m-auto shadow-2xl mt-5">
             <div className="card-body">
               <div className="font-black text-center">
                 Submit Your Leader Address
@@ -183,7 +183,7 @@ const ReferralProgram = () => {
           </div>
         )} */}
 
-        <div className="card md:w-1/2 w-96 m-auto">
+        <div className="card md:w-1/2 w-96 m-auto shadow-2xl mt-5">
           <div className="card-body">
             <div className="font-black text-center">
               Your Referral Addresses

@@ -33,6 +33,7 @@ const config = getDefaultConfig({
   chains: [xdc, xdcParentNet],
   transports: {
     [xdc.id]: http("https://rpc.xdcrpc.com"),
+    [xdcParentNet.id]: http("https://devnetstats.apothem.network/devnet"),
   },
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
