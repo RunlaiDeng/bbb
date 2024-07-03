@@ -81,104 +81,107 @@ const ReferralProgram = () => {
   return (
     mounted && (
       <>
-        <div className="grid grid-cols-3 m-auto md:w-3/4 w-96">
+        <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
           <div></div>
           <div className="text-center font-black mt-2">Referral Program</div>
           <Link className="text-right" href="/help">
             <button className="btn">?</button>
           </Link>
         </div>
-        {isConnected && (
-          <div className="card w-96 m-auto mt-5">
-            <div className="card-body">
-       
-              <label className="input input-bordered flex items-center gap-2">
-                <div className="text-xs">Referral Bonus</div>
-                <div>10 % </div>
-              </label>
-              <label
-                className="input input-bordered flex items-center gap-2 m-auto cursor-pointer"
-                onClick={() => {
-                  copy(
-                    window.location.href.split("?")?.[0] +
-                      "/?leaderAddress=" +
-                      address
-                  );
-                  Notify.success("Copy successful!");
-                }}
-              >
-                <div className="text-xs">Referral Link</div>
-                <div>
-                  {referralLink.substring(0, 15) +
-                    "...." +
-                    referralLink.split("leaderAddress=")?.[1].substring(35, 45)}
-                </div>
-                <svg
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="1469"
-                  width="20"
-                  height="20"
-                  className="cursor-pointer"
+        <div className="border-b pb-1 m-auto md:w-3/4 w-96">
+          {isConnected && (
+            <div className="card w-96 m-auto mt-5">
+              <div className="card-body">
+                <label className="input input-bordered flex items-center gap-2">
+                  <div className="text-xs">Referral Bonus</div>
+                  <div>10 % </div>
+                </label>
+                <label
+                  className="input input-bordered flex items-center gap-2 m-auto cursor-pointer"
+                  onClick={() => {
+                    copy(
+                      window.location.href.split("?")?.[0] +
+                        "/?leaderAddress=" +
+                        address
+                    );
+                    Notify.success("Copy successful!");
+                  }}
                 >
-                  <path
-                    d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                    fill="#5E6570"
-                    p-id="1470"
-                  ></path>
-                  <path
-                    d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                    fill="#5E6570"
-                    p-id="1471"
-                  ></path>
-                  <path
-                    d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
-                    fill="#5E6570"
-                    p-id="1472"
-                  ></path>
-                  <path
-                    d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
-                    fill="#5E6570"
-                    p-id="1473"
-                  ></path>
-                  <path
-                    d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
-                    fill="#5E6570"
-                    p-id="1474"
-                  ></path>
-                </svg>
-              </label>
-              <Link
-                className="btn btn-success"
-                href={shareLink}
-                target="_blank"
-              >
-                Share To X
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {!haveLeader && (
-          <div className="card w-96 m-auto shadow-2xl mt-5">
-            <div className="card-body">
-              <div className="font-black text-center">
-                Submit Your Leader Address
+                  <div className="text-xs">Referral Link</div>
+                  <div>
+                    {referralLink.substring(0, 15) +
+                      "...." +
+                      referralLink
+                        .split("leaderAddress=")?.[1]
+                        .substring(35, 45)}
+                  </div>
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="1469"
+                    width="20"
+                    height="20"
+                    className="cursor-pointer"
+                  >
+                    <path
+                      d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
+                      fill="#5E6570"
+                      p-id="1470"
+                    ></path>
+                    <path
+                      d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
+                      fill="#5E6570"
+                      p-id="1471"
+                    ></path>
+                    <path
+                      d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
+                      fill="#5E6570"
+                      p-id="1472"
+                    ></path>
+                    <path
+                      d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
+                      fill="#5E6570"
+                      p-id="1473"
+                    ></path>
+                    <path
+                      d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
+                      fill="#5E6570"
+                      p-id="1474"
+                    ></path>
+                  </svg>
+                </label>
+                <Link
+                  className="btn btn-success"
+                  href={shareLink}
+                  target="_blank"
+                >
+                  Share To X
+                </Link>
               </div>
-              <input
-                type="text"
-                placeholder="0x"
-                className="input input-bordered w-full"
-                defaultValue={leaderAddress}
-                onChange={(e) => setData({ ...data, leader: e.target.value })}
-              />
-              <WriteButton {...submit} className="btn btn-success" />
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="card md:w-3/4 w-96 m-auto shadow-2xl mt-5">
+          {!haveLeader && (
+            <div className="card w-96 m-auto mt-5">
+              <div className="card-body">
+                <div className="font-black text-center">
+                  Submit Your Leader Address
+                </div>
+                <input
+                  type="text"
+                  placeholder="0x"
+                  className="input input-bordered w-full"
+                  defaultValue={leaderAddress}
+                  onChange={(e) => setData({ ...data, leader: e.target.value })}
+                />
+                <WriteButton {...submit} className="btn btn-success" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="card md:w-3/4 w-96 m-auto mt-5">
           <div className="card-body">
             <div className="font-black text-center">
               Your Referral Addresses

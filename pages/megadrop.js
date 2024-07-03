@@ -80,14 +80,14 @@ const Megadrop = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96">
+      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
         <div></div>
         <div className="text-center font-black mt-2">MEGADROP</div>
         <Link className="text-right" href="/help">
           <button className="btn">?</button>
         </Link>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
+      <div className="card m-auto md:w-3/4 w-96 mt-10">
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-5xl">
@@ -114,7 +114,7 @@ const Megadrop = () => {
           </div>
         </div>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-5">
+      <div className="card m-auto md:w-3/4 w-96 mt-5">
         <div className="card-body font-black">
           <div className="">Airdrop History</div>
         </div>
