@@ -87,7 +87,7 @@ const Megadrop = () => {
           <button className="btn">?</button>
         </Link>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-10">
+      <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-5xl">

@@ -1,7 +1,14 @@
 const Help = () => {
   return (
     <>
-      <div className="card m-auto md:w-3/4 w-96 shadow-2xl mt-10">
+      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
+        <div></div>
+        <div className="text-center font-black mt-2">
+          Frequently Asked Questions
+        </div>
+        <div></div>
+      </div>
+      <div className="card m-auto md:w-3/4 w-96 mt-10">
         <div className="card-body">
           <div className="collapse collapse-plus bg-base-200">
             <input type="checkbox" />
