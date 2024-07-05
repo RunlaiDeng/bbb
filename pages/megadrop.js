@@ -214,7 +214,7 @@ const Megadrop = () => {
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
-            <div className="text-right">
+            {/* <div className="text-right">
               <div
                 className="btn btn-success w-max"
                 onClick={() => {
@@ -223,7 +223,7 @@ const Megadrop = () => {
               >
                 Wanna Drop Memes?
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="overflow-x-auto">
             <table className="table">
@@ -447,7 +447,7 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="0.00"
-                value={257000}
+                value={0}
                 disabled
               />
               <div className="font-black">BBB</div>
