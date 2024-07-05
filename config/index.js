@@ -24,7 +24,7 @@ export const contracts = {
       abi: ReferralProgramABI,
     },
     mbbb: {
-      address: "0xFDc5126B7C788316591F9793eCaE290Bb4Cd7e2d",
+      address: "0x6dfda506A1B0513d941E7778c7B8F90e8Fa1C21D",
       abi: mBBBABI,
     },
   },

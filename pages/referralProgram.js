@@ -200,7 +200,7 @@ const ReferralProgram = () => {
                     {referrersList?.map((referrer, index) => {
                       return (
                         <tr key={referrer} className="text-center">
-                          <th># {index + 1}</th>
+                          <th>{index}</th>
                           <td>{referrer}</td>
                         </tr>
                       );

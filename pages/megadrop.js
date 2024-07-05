@@ -8,10 +8,10 @@ const Megadrop = () => {
   const chainId = useChainId();
   const { address } = useAccount();
   const [data, setData] = useState({
-    aName: "Memes",
-    aSymbol: "MEMES",
-    aTotalSupply: 1000000000,
-    aDropPercent: 100,
+    dName: "Memes",
+    dSymbol: "MEMES",
+    dTotalSupply: 1000000000,
+    dDropPercent: 100,
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -39,11 +39,11 @@ const Megadrop = () => {
   const allowance = reads0?.[0]?.result;
   const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
-  const DropTokenLength = reads0?.[3]?.result;
+  const dropTokenLength = reads0?.[3]?.result;
 
   const searchDropTokens = [];
 
-  for (let i = 0; i < DropTokenLength; i++) {
+  for (let i = 0; i < dropTokenLength; i++) {
     searchDropTokens.push({
       ...mbbb,
       functionName: "getDropToken",
@@ -58,7 +58,39 @@ const Megadrop = () => {
 
   const dropTokens = reads1?.map((item) => item?.result);
 
-  console.log(dropTokens);
+  const searchClaimAmt = [];
+
+  for (let i = 0; i < dropTokenLength; i++) {
+    searchClaimAmt.push({
+      ...mbbb,
+      functionName: "getClaimAmt",
+      args: [i, address],
+    });
+  }
+
+  const { data: reads2 } = useReadContracts({
+    contracts: searchClaimAmt,
+    multicallAddress: mutilCall?.address,
+  });
+
+  const claimAmts = reads2?.map((item) => item?.result);
+
+  const searchClaimed = [];
+
+  for (let i = 0; i < dropTokenLength; i++) {
+    searchClaimed.push({
+      ...mbbb,
+      functionName: "claimed",
+      args: [address, i],
+    });
+  }
+
+  const { data: reads3 } = useReadContracts({
+    contracts: searchClaimed,
+    multicallAddress: mutilCall?.address,
+  });
+
+  const claimed = reads3?.map((item) => item?.result);
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -108,17 +140,19 @@ const Megadrop = () => {
       ...mbbb,
       functionName: "drop",
       args: [
-        data?.aName,
-        data?.aSymbol,
-        BigInt(data?.aTotalSupply) * BigInt(1e18),
-        data?.aDropPercent,
+        data?.dName,
+        data?.dSymbol,
+        BigInt(data?.dTotalSupply) * BigInt(1e18),
+        data?.dDropPercent,
       ],
     },
     callback: () => {
       refetch();
-      document.getElementById("airdropModal").close();
+      document.getElementById("dropModal").close();
     },
   };
+
+  console.log(claimAmts);
 
   const bbbIsEnough = false;
 
@@ -163,20 +197,62 @@ const Megadrop = () => {
           </div>
         </div>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-5">
+      <div className="card m-auto md:w-3/4 w-96 mt-5 border-b">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
-            <div className="">Airdrop History</div>
+            <div className="">Drop History</div>
             <div className="text-right">
               <div
                 className="btn btn-success w-max"
                 onClick={() => {
-                  document.getElementById("airdropModal").showModal();
+                  document.getElementById("dropModal").showModal();
                 }}
               >
                 Wanna Aidrop?
               </div>
             </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="table">
+              {/* head */}
+              <thead className="text-center">
+                <tr>
+                  <th></th>
+                  <th>Memes Symbol</th>
+                  <th>Drop Amount</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dropTokens?.map((item, index) => {
+                  const claim = {
+                    buttonName: "Claim",
+                    data: {
+                      ...mbbb,
+                      functionName: "claim",
+                      args: [index],
+                    },
+                    callback: () => {
+                      refetch();
+                    },
+                  };
+                  return (
+                    <tr key={index} className="text-center">
+                      <th>{index}</th>
+                      <td>{item?.symbol}</td>
+                      <td>{claimAmts?.[index]?.toString() / 1e18}</td>
+                      <td>
+                        {claimed?.[index] ? (
+                          <>Claimed</>
+                        ) : (
+                          <WriteButton {...claim} className="btn btn-success" />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -275,7 +351,7 @@ const Megadrop = () => {
           <WriteButton {...unStake} className="btn mt-5 w-full btn-success" />
         </div>
       </dialog>
-      <dialog id="airdropModal" className="modal font-black">
+      <dialog id="dropModal" className="modal font-black">
         <div className="modal-box">
           <div className="grid grid-cols-3">
             <form method="dialog">
@@ -292,9 +368,9 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="Memes"
-                value={data?.aName}
+                value={data?.dName}
                 onChange={(e) => {
-                  setData({ ...data, aName: e.target.value });
+                  setData({ ...data, dName: e.target.value });
                 }}
               />
             </label>
@@ -304,9 +380,9 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="MEMES"
-                value={data?.aSymbol}
+                value={data?.dSymbol}
                 onChange={(e) => {
-                  setData({ ...data, aSymbol: e.target.value });
+                  setData({ ...data, dSymbol: e.target.value });
                 }}
               />
             </label>
@@ -316,15 +392,15 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="0.00"
-                value={data?.aTotalSupply}
+                value={data?.dTotalSupply}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
-                    setData({ ...data, aTotalSupply: newValue });
+                    setData({ ...data, dTotalSupply: newValue });
                   }
                 }}
               />
-              <div className="font-black">{data?.aSymbol || "MEMES"}</div>
+              <div className="font-black">{data?.dSymbol || "MEMES"}</div>
             </label>
             <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
               Drop Percent
@@ -332,11 +408,11 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="0.00"
-                value={data?.aDropPercent}
+                value={data?.dDropPercent}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue) && newValue <= 100) {
-                    setData({ ...data, aDropPercent: newValue });
+                    setData({ ...data, dDropPercent: newValue });
                   }
                 }}
               />
