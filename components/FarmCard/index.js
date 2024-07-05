@@ -17,7 +17,8 @@ const FarmCard = () => {
   const farmer = contracts[chainId]?.carrotfarmer;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
-  const handleCopyClick = () => {
+  const handleCopyClick = (msg) => {
+    copy(msg);
     setTooltipText("Address copied!");
     setTimeout(() => {
       setTooltipText("Click copy contract address");
@@ -225,8 +226,7 @@ const FarmCard = () => {
                 className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
                 data-tip={tooltipText}
                 onClick={() => {
-                  copy(farmer?.address);
-                  handleCopyClick();
+                  handleCopyClick(farmer?.address);
                 }}
               >
                 <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
@@ -246,8 +246,7 @@ const FarmCard = () => {
                 className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
                 data-tip={tooltipText}
                 onClick={() => {
-                  copy(pointToken);
-                  handleCopyClick();
+                  handleCopyClick(pointToken);
                 }}
               >
                 <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">

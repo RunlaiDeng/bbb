@@ -4,7 +4,20 @@ import WriteButton from "@/components/WriteButton";
 import { useState } from "react";
 import Link from "next/link";
 import { dexLink } from "@/config";
+import copy from "copy-to-clipboard";
 const Megadrop = () => {
+  const [tooltipText, setTooltipText] = useState("Click copy contract address");
+
+  const handleCopyClick = (msg) => {
+    copy(msg);
+    setTooltipText("Address copied!");
+    setTimeout(() => {
+      setTooltipText("Click copy contract address");
+    }, 1000);
+  };
+
+  const isCopied = tooltipText === "Address copied!";
+
   const chainId = useChainId();
   const { address } = useAccount();
   const [data, setData] = useState({
@@ -239,7 +252,19 @@ const Megadrop = () => {
                   return (
                     <tr key={index} className="text-center">
                       <th>{index}</th>
-                      <td>{item?.symbol}</td>
+                      <td>
+                        <div
+                          className={`cursor-pointer tooltip ${
+                            isCopied ? "tooltip-success" : ""
+                          }`}
+                          data-tip={tooltipText}
+                          onClick={() => {
+                            handleCopyClick(item?.token);
+                          }}
+                        >
+                          {item?.symbol}
+                        </div>
+                      </td>
                       <td>{claimAmts?.[index]?.toString() / 1e18}</td>
                       <td>
                         {claimed?.[index] ? (
@@ -357,9 +382,7 @@ const Megadrop = () => {
             <form method="dialog">
               <button className="btn">X</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">
-              Drop Memes
-            </h3>
+            <h3 className="font-bold text-lg text-center mt-2">Drop Memes</h3>
           </div>
           <div className="text-center mt-5">
             <label className="input input-bordered flex items-center gap-2 w-full m-auto">
