@@ -1,6 +1,30 @@
 import FarmCard from "@/components/FarmCard";
 import Link from "next/link";
+import { contracts } from "@/config";
+import { useChainId } from "wagmi";
 const Farm = () => {
+  const chainId = useChainId();
+
+  const farmerList = [
+    {
+      farmer: {
+        name: "Carrot Farmer",
+        img: "/farmer0/carrotFarmer.png",
+        ...contracts[chainId]?.carrotFarmer,
+      },
+      burnToken: { name: "BBB", ...contracts[chainId]?.bbb },
+      rewardsTokenImg: "/farmer0/carrot.png",
+    },
+    // {
+    //   farmer: {
+    //     name: "Carrot Puree Farmer",
+    //     img: "/farmer1/carrotPureeFarmer.png",
+    //     ...contracts[chainId]?.carrotPureeFarmer,
+    //   },
+    //   burnToken: { name: "CAR", ...contracts[chainId]?.car },
+    //   rewardsTokenImg: "/farmer1/carrotPuree.png",
+    // },
+  ];
   return (
     <>
       <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
@@ -10,7 +34,9 @@ const Farm = () => {
           <button className="btn">?</button>
         </Link>
       </div>
-      <FarmCard />
+      {farmerList?.map((farmer, index) => {
+        return <FarmCard key={index} {...farmer} />;
+      })}
     </>
   );
 };

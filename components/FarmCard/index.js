@@ -6,15 +6,19 @@ import { contracts } from "@/config";
 import Link from "next/link";
 import copy from "copy-to-clipboard";
 import { dexLink } from "@/config";
-const FarmCard = () => {
+const FarmCard = (props) => {
   const [data, setData] = useState({ value: 0 });
   const { address } = useAccount();
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
+  const { burnToken, farmer, rewardsTokenImg } = props;
+
+  const burnTokenName = burnToken?.name;
+  const farmerImg = farmer?.img;
+  const farmerName = farmer?.name;
+
   const chainId = useChainId();
 
-  const bbb = contracts[chainId]?.bbb;
-  const farmer = contracts[chainId]?.carrotfarmer;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
   const handleCopyClick = (msg) => {
@@ -58,8 +62,12 @@ const FarmCard = () => {
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
-      { ...bbb, functionName: "allowance", args: [address, farmer?.address] },
-      { ...bbb, functionName: "balanceOf", args: [address] },
+      {
+        ...burnToken,
+        functionName: "allowance",
+        args: [address, farmer?.address],
+      },
+      { ...burnToken, functionName: "balanceOf", args: [address] },
       { ...farmer, functionName: "getPendingPoint", args: [address] },
       { ...farmer, functionName: "balanceOf", args: [address] },
       { ...farmer, functionName: "pointToken", args: [] },
@@ -68,7 +76,9 @@ const FarmCard = () => {
   });
 
   const allowance = reads0?.[0]?.result;
-  const bbbBalance = reads0?.[1]?.result;
+
+  console.log(burnToken, address, farmer?.address);
+  const burnTokenBalance = reads0?.[1]?.result;
   const pendingPoint = reads0?.[2]?.result;
   const stake = reads0?.[3]?.result;
   const pointToken = reads0?.[4]?.result;
@@ -84,7 +94,7 @@ const FarmCard = () => {
   const approve = {
     buttonName: "Approve",
     data: {
-      ...bbb,
+      ...burnToken,
       functionName: "approve",
       args: [farmer?.address, MAX_UINT256],
     },
@@ -122,7 +132,7 @@ const FarmCard = () => {
     showApprove = false;
   }
 
-  let bbbIsEnough = false;
+  let burnTokenIsEnough = false;
 
   return (
     <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
@@ -130,7 +140,7 @@ const FarmCard = () => {
         <div className="grid lg:grid-cols-3 gap-2">
           <div className="grid grid-cols-2 gap-2">
             <Image
-              src={"/farmer.png"}
+              src={farmerImg}
               alt=""
               height={200}
               width={200}
@@ -141,14 +151,14 @@ const FarmCard = () => {
             </div>
           </div>
           <div>
-            <div>Buy Farmer</div>
+            <div>Buy {farmerName}</div>
 
             <div className="mt-8 grid grid-cols-7 gap-2">
               <input
                 type="text"
                 placeholder="0"
                 className="input input-bordered col-span-5"
-                value={data.value * 257000 + " BBB"}
+                value={data.value * 257000 + " " + burnTokenName}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
@@ -206,15 +216,16 @@ const FarmCard = () => {
               Purchase at least one to unlock the referral bonus.
             </div>
             <div className="mt-1 text-xs">
-              Available {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
+              Available {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()}{" "}
+              {burnTokenName}
             </div>
-            {!bbbIsEnough && (
+            {!burnTokenIsEnough && (
               <Link
                 className="underline text-xs"
                 href={dexLink}
                 target="_blank"
               >
-                BBB is not enough ?
+                {burnTokenName} is not enough ?
               </Link>
             )}
           </div>
@@ -231,7 +242,7 @@ const FarmCard = () => {
               >
                 <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
                   <Image
-                    src={"/farmer.png"}
+                    src={farmerImg}
                     alt=""
                     height={50}
                     width={50}
@@ -251,7 +262,7 @@ const FarmCard = () => {
               >
                 <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
                   <Image
-                    src={"/carrot.png"}
+                    src={rewardsTokenImg}
                     alt=""
                     height={50}
                     width={50}

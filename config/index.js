@@ -15,7 +15,7 @@ export const contracts = {
       address: "0x1796a4cAf25f1a80626D8a2D26595b19b11697c9",
       abi: ERC20ABI,
     },
-    carrotfarmer: {
+    carrotFarmer: {
       address: "0x903aA9a8BEaC496c4A4649063eceCeb6Ca522Ea4",
       abi: BBBFarmerABI,
     },
@@ -27,6 +27,10 @@ export const contracts = {
       address: "0x281902021DE6D51da90B5Fc47F8b4F036Af8E336",
       abi: mBBBABI,
     },
+    car: {
+      address: "0x5A739D602057F217d8AEb2f26E6e57F9f05cEf78",
+      abi: ERC20ABI,
+    },
   },
   50: {
     referralProgram: {
@@ -37,7 +41,7 @@ export const contracts = {
       address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
       abi: ERC20ABI,
     },
-    carrotfarmer: {
+    carrotFarmer: {
       address: "0xd659E7D0390F19Db21c3e16f17fBD7F138f3b969",
       abi: BBBFarmerABI,
     },
