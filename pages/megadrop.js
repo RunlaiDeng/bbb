@@ -25,6 +25,7 @@ const Megadrop = () => {
     dSymbol: "MEMES",
     dTotalSupply: 1000000000,
     dDropPercent: 100,
+    drop: 0,
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -183,7 +184,7 @@ const Megadrop = () => {
           <button className="btn">?</button>
         </Link>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
+      <div className="card m-auto md:w-3/4 w-96 mt-10 ">
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-5xl">
@@ -210,11 +211,11 @@ const Megadrop = () => {
           </div>
         </div>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-5 border-b">
+      <div className="card m-auto md:w-3/4 w-96 mt-5">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
-            {/* <div className="text-right">
+            <div className="text-right">
               <div
                 className="btn btn-success w-max"
                 onClick={() => {
@@ -223,9 +224,36 @@ const Megadrop = () => {
               >
                 Wanna Drop Memes?
               </div>
-            </div> */}
+            </div>
           </div>
-          <div className="overflow-x-auto">
+          <div className="border-b rounded-none">
+            <div className="flex gap-2">
+              <div
+                className={
+                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
+                  (data?.drop == 0 ? " text-green-500 bg-inherit" : "")
+                }
+                onClick={() => {
+                  setData({ ...data, drop: 0 });
+                }}
+              >
+                Official
+              </div>
+              <div
+                className={
+                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
+                  (data?.drop == 1 ? " text-green-500 bg-inherit" : "")
+                }
+                onClick={() => {
+                  setData({ ...data, drop: 1 });
+                }}
+              >
+                Community
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto border-b rounded-none">
             <table className="table">
               {/* head */}
               <thead className="text-center">
@@ -237,45 +265,49 @@ const Megadrop = () => {
                 </tr>
               </thead>
               <tbody>
-                {dropTokens?.map((item, index) => {
-                  const claim = {
-                    buttonName: "Claim",
-                    data: {
-                      ...mbbb,
-                      functionName: "claim",
-                      args: [index],
-                    },
-                    callback: () => {
-                      refetch();
-                    },
-                  };
-                  return (
-                    <tr key={index} className="text-center">
-                      <th>{index}</th>
-                      <td>
-                        <div
-                          className={`cursor-pointer tooltip ${
-                            isCopied ? "tooltip-success" : ""
-                          }`}
-                          data-tip={tooltipText}
-                          onClick={() => {
-                            handleCopyClick(item?.token);
-                          }}
-                        >
-                          {item?.symbol}
-                        </div>
-                      </td>
-                      <td>{claimAmts?.[index]?.toString() / 1e18}</td>
-                      <td>
-                        {claimed?.[index] ? (
-                          <>Claimed</>
-                        ) : (
-                          <WriteButton {...claim} className="btn btn-success" />
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {data?.drop == 1 &&
+                  dropTokens?.map((item, index) => {
+                    const claim = {
+                      buttonName: "Claim",
+                      data: {
+                        ...mbbb,
+                        functionName: "claim",
+                        args: [index],
+                      },
+                      callback: () => {
+                        refetch();
+                      },
+                    };
+                    return (
+                      <tr key={index} className="text-center">
+                        <th>{index}</th>
+                        <td>
+                          <div
+                            className={`cursor-pointer tooltip ${
+                              isCopied ? "tooltip-success" : ""
+                            }`}
+                            data-tip={tooltipText}
+                            onClick={() => {
+                              handleCopyClick(item?.token);
+                            }}
+                          >
+                            {item?.symbol}
+                          </div>
+                        </td>
+                        <td>{claimAmts?.[index]?.toString() / 1e18}</td>
+                        <td>
+                          {claimed?.[index] ? (
+                            <>Claimed</>
+                          ) : (
+                            <WriteButton
+                              {...claim}
+                              className="btn btn-success"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -447,7 +479,7 @@ const Megadrop = () => {
                 type="text"
                 className="grow"
                 placeholder="0.00"
-                value={0}
+                value={257000}
                 disabled
               />
               <div className="font-black">BBB</div>

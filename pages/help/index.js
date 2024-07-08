@@ -35,6 +35,34 @@ const Help = () => {
               </p>
             </div>
           </div>
+          <div className="collapse collapse-plus bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              <kbd className="kbd">2</kbd> What is megadrop ?
+            </div>
+            <div className="collapse-content">
+              <p>
+                Megadrop allows you to stake BBB to receive MBBB, and you can
+                unstake MBBB to get BBB back. While holding MBBB, you will
+                periodically receive various airdrops.
+              </p>
+            </div>
+          </div>
+          <div className="collapse collapse-plus bg-base-200">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              <kbd className="kbd">2</kbd> What is drop ?
+            </div>
+            <div className="collapse-content">
+              <p>
+                There are two types of airdrops: official airdrops and community
+                airdrops. Official airdrops are distributed by the project team
+                based on MBBB snapshots, while community airdrops can be created
+                by anyone. Creating a community airdrop requires spending
+                257,000 BBB.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>
