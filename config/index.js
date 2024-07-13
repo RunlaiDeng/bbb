@@ -7,7 +7,7 @@ export const dexLink =
   "https://app.xspswap.finance/#/swap?outputCurrency=0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1";
 
 export const chartLink =
-  "https://www.geckoterminal.com/xdc/pools/0xf8ca0db7eba5e0760b66d77cb83a15fde9ad0e20";
+  "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
 
 export const contracts = {
   551: {
