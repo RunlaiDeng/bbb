@@ -135,153 +135,157 @@ const FarmCard = (props) => {
   let burnTokenIsEnough = false;
 
   return (
-    <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
-      <div className="card-body font-black">
-        <div className="grid lg:grid-cols-3 gap-2">
-          <div className="grid grid-cols-2 gap-2">
-            <Image
-              src={farmerImg}
-              alt=""
-              height={200}
-              width={200}
-              className="mask mask-squircle m-auto"
-            />
-            <div className="text-5xl font-black text-center mt-28">
-              X {data.value}
-            </div>
-          </div>
-          <div>
-            <div>Buy {farmerName}</div>
-
-            <div className="mt-8 grid grid-cols-7 gap-2">
-              <input
-                type="text"
-                placeholder="0"
-                className="input input-bordered col-span-5"
-                value={data.value * 257000 + " " + burnTokenName}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (/^\d*$/.test(newValue)) {
-                    setData({ value: newValue });
-                  }
-                }}
-                disabled
+    <>
+      <div className=""></div>
+      <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
+        <div className="card-body font-black">
+          <div className="grid lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Image
+                src={farmerImg}
+                alt=""
+                height={200}
+                width={200}
+                className="mask mask-squircle m-auto"
               />
-              <div
-                className="btn  btn-square m-auto"
-                onClick={() => {
-                  if (data.value >= 1) {
-                    setData({ ...data, value: data.value - 1 });
-                  } else {
-                    setData({ ...data, value: 0 });
-                  }
-                }}
-                onMouseDown={decrease}
-                onMouseUp={release}
-                onMouseLeave={release}
-                onTouchStart={decrease}
-                onTouchEnd={release}
-                onTouchMove={release}
-              >
-                -
-              </div>
-              <div
-                className="btn btn-success btn-square m-auto"
-                onClick={() => {
-                  setData({ ...data, value: data.value + 1 });
-                }}
-                onMouseDown={increase}
-                onMouseUp={release}
-                onMouseLeave={release}
-                onTouchStart={increase}
-                onTouchEnd={release}
-                onTouchMove={release}
-              >
-                +
+              <div className="text-5xl font-black text-center mt-28">
+                X {data.value}
               </div>
             </div>
-            {!showApprove && (
-              <WriteButton
-                {...buy}
-                className="btn font-black btn-lg mt-5 w-full btn-success"
-              />
-            )}
-            {showApprove && (
-              <WriteButton
-                {...approve}
-                className="btn font-black btn-lg mt-5 w-full btn-success"
-              />
-            )}
-            <div className="text-xs">
-              Purchase at least one to unlock the referral bonus.
-            </div>
-            <div className="mt-1 text-xs">
-              Available {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()}{" "}
-              {burnTokenName}
-            </div>
-            {!burnTokenIsEnough && (
-              <Link
-                className="underline text-xs"
-                href={dexLink}
-                target="_blank"
-              >
-                {burnTokenName} is not enough ?
-              </Link>
-            )}
-          </div>
+            <div>
+              <div>Buy {farmerName}</div>
 
-          <div>
-            <div>Workshop</div>
-            <div className="mt-6 grid grid-cols-2 gap-2">
-              <div
-                className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
-                data-tip={tooltipText}
-                onClick={() => {
-                  handleCopyClick(farmer?.address);
-                }}
-              >
-                <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
-                  <Image
-                    src={farmerImg}
-                    alt=""
-                    height={50}
-                    width={50}
-                    className="mask mask-squircle m-auto"
-                  />{" "}
-                  <div className="font-black mt-4">
-                    X{stake?.toString() || 0}
+              <div className="mt-8 grid grid-cols-7 gap-2">
+                <input
+                  type="text"
+                  placeholder="0"
+                  className="input input-bordered col-span-5"
+                  value={data.value * 257000 + " " + burnTokenName}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    if (/^\d*$/.test(newValue)) {
+                      setData({ value: newValue });
+                    }
+                  }}
+                  disabled
+                />
+                <div
+                  className="btn  btn-square m-auto"
+                  onClick={() => {
+                    if (data.value >= 1) {
+                      setData({ ...data, value: data.value - 1 });
+                    } else {
+                      setData({ ...data, value: 0 });
+                    }
+                  }}
+                  onMouseDown={decrease}
+                  onMouseUp={release}
+                  onMouseLeave={release}
+                  onTouchStart={decrease}
+                  onTouchEnd={release}
+                  onTouchMove={release}
+                >
+                  -
+                </div>
+                <div
+                  className="btn btn-success btn-square m-auto"
+                  onClick={() => {
+                    setData({ ...data, value: data.value + 1 });
+                  }}
+                  onMouseDown={increase}
+                  onMouseUp={release}
+                  onMouseLeave={release}
+                  onTouchStart={increase}
+                  onTouchEnd={release}
+                  onTouchMove={release}
+                >
+                  +
+                </div>
+              </div>
+              {!showApprove && (
+                <WriteButton
+                  {...buy}
+                  className="btn font-black btn-lg mt-5 w-full btn-success"
+                />
+              )}
+              {showApprove && (
+                <WriteButton
+                  {...approve}
+                  className="btn font-black btn-lg mt-5 w-full btn-success"
+                />
+              )}
+              <div className="text-xs">
+                Purchase at least one to unlock the referral bonus.
+              </div>
+              <div className="mt-1 text-xs">
+                Available{" "}
+                {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()}{" "}
+                {burnTokenName}
+              </div>
+              {!burnTokenIsEnough && (
+                <Link
+                  className="underline text-xs"
+                  href={dexLink}
+                  target="_blank"
+                >
+                  {burnTokenName} is not enough ?
+                </Link>
+              )}
+            </div>
+
+            <div>
+              <div>Workshop</div>
+              <div className="mt-6 grid grid-cols-2 gap-2">
+                <div
+                  className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
+                  data-tip={tooltipText}
+                  onClick={() => {
+                    handleCopyClick(farmer?.address);
+                  }}
+                >
+                  <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
+                    <Image
+                      src={farmerImg}
+                      alt=""
+                      height={50}
+                      width={50}
+                      className="mask mask-squircle m-auto"
+                    />{" "}
+                    <div className="font-black mt-4">
+                      X{stake?.toString() || 0}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
+                  data-tip={tooltipText}
+                  onClick={() => {
+                    handleCopyClick(pointToken);
+                  }}
+                >
+                  <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
+                    <Image
+                      src={rewardsTokenImg}
+                      alt=""
+                      height={50}
+                      width={50}
+                      className="mask mask-squircle m-auto"
+                    />{" "}
+                    <div className="font-black mt-4">
+                      X{pendingPoint?.toString() || 0}
+                    </div>
                   </div>
                 </div>
               </div>
-              <div
-                className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
-                data-tip={tooltipText}
-                onClick={() => {
-                  handleCopyClick(pointToken);
-                }}
-              >
-                <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
-                  <Image
-                    src={rewardsTokenImg}
-                    alt=""
-                    height={50}
-                    width={50}
-                    className="mask mask-squircle m-auto"
-                  />{" "}
-                  <div className="font-black mt-4">
-                    X{pendingPoint?.toString() || 0}
-                  </div>
-                </div>
-              </div>
+              <WriteButton
+                {...collect}
+                className="btn font-black btn-lg mt-4 w-full btn-success"
+              />
             </div>
-            <WriteButton
-              {...collect}
-              className="btn font-black btn-lg mt-4 w-full btn-success"
-            />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

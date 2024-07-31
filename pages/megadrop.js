@@ -46,6 +46,11 @@ const Megadrop = () => {
         functionName: "getDropTokenLength",
         args: [],
       },
+      {
+        ...mbbb,
+        functionName: "price",
+        args: [],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -54,6 +59,7 @@ const Megadrop = () => {
   const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
   const dropTokenLength = reads0?.[3]?.result;
+  const price = reads0?.[4]?.result;
 
   const searchDropTokens = [];
 
@@ -166,7 +172,7 @@ const Megadrop = () => {
     },
   };
 
-  console.log(claimAmts);
+  console.log(price);
 
   const bbbIsEnough = false;
 
@@ -478,8 +484,7 @@ const Megadrop = () => {
               <input
                 type="text"
                 className="grow"
-                placeholder="0.00"
-                value={257000}
+                placeholder={(price || 0n) / BigInt(1e18)}
                 disabled
               />
               <div className="font-black">BBB</div>
