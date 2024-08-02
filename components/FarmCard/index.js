@@ -77,7 +77,6 @@ const FarmCard = (props) => {
 
   const allowance = reads0?.[0]?.result;
 
-  console.log(burnToken, address, farmer?.address);
   const burnTokenBalance = reads0?.[1]?.result;
   const pendingPoint = reads0?.[2]?.result;
   const stake = reads0?.[3]?.result;

@@ -172,7 +172,6 @@ const Megadrop = () => {
     },
   };
 
-  console.log(price);
 
   const bbbIsEnough = false;
 
