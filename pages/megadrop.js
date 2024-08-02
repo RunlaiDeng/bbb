@@ -146,7 +146,7 @@ const Megadrop = () => {
     data: {
       ...mbbb,
       functionName: "withdrawTo",
-      args: [address, BigInt(data?.mValue || 0) * BigInt(1e18)],
+      args: [address, BigInt((data?.mValue || 0) * 1e18)],
     },
     callback: () => {
       refetch();
