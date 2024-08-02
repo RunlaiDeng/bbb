@@ -57,8 +57,6 @@ const WriteButton = (props) => {
     }
   }, [txSuccess]);
 
-  console.log(props?.data)
-
   return (
     mounted &&
     (isConnected ? (
