@@ -45,6 +45,10 @@ export const contracts = {
       address: "0xd659E7D0390F19Db21c3e16f17fBD7F138f3b969",
       abi: BBBFarmerABI,
     },
+    mbbb: {
+      address: "0x37c00AE5C4b49Ab0F5fD2FFB1033588e9bC33B08",
+      abi: mBBBABI,
+    },
     multicallAddress: { address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF" },
   },
 };

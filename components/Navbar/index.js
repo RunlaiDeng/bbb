@@ -62,6 +62,9 @@ const Navbar = () => {
                     <Link href={"/referralProgram"}>Referral Program</Link>
                   </li>
                   <li>
+                    <Link href={"/megadrop"}>Megadrop</Link>
+                  </li>
+                  <li>
                     <Link href={linktree} target="_blank">
                       Contact
                     </Link>
@@ -91,6 +94,12 @@ const Navbar = () => {
             href={"/farm"}
           >
             Farm
+          </Link>
+          <Link
+            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
+            href={"/megadrop"}
+          >
+            Megadrop
           </Link>
           <Link
             className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
