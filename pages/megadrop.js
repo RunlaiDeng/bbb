@@ -133,7 +133,7 @@ const Megadrop = () => {
     data: {
       ...mbbb,
       functionName: "depositFor",
-      args: [address, BigInt(data?.value || 0) * BigInt(1e18)],
+      args: [address, BigInt((data?.value || 0) * 1e18)],
     },
     callback: () => {
       refetch();
