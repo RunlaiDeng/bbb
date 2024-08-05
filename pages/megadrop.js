@@ -172,7 +172,6 @@ const Megadrop = () => {
     },
   };
 
-
   const bbbIsEnough = false;
 
   let showApprove = true;
@@ -283,6 +282,8 @@ const Megadrop = () => {
                         refetch();
                       },
                     };
+
+            
                     return (
                       <tr key={index} className="text-center">
                         <th>{index}</th>
@@ -301,8 +302,9 @@ const Megadrop = () => {
                         </td>
                         <td>{claimAmts?.[index]?.toString() / 1e18}</td>
                         <td>
-                          {claimed?.[index] ? (
-                            <>Claimed</>
+                          {claimed?.[index] ||
+                          claimAmts?.[index]?.toString() == 0 ? (
+                            <>Unavailable</>
                           ) : (
                             <WriteButton
                               {...claim}
