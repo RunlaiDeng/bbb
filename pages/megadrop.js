@@ -133,7 +133,7 @@ const Megadrop = () => {
     data: {
       ...mbbb,
       functionName: "depositFor",
-      args: [address, BigInt((data?.value || 0) * 1e18)],
+      args: [address, data?.value],
     },
     callback: () => {
       refetch();
@@ -146,7 +146,7 @@ const Megadrop = () => {
     data: {
       ...mbbb,
       functionName: "withdrawTo",
-      args: [address, BigInt((data?.mValue || 0) * 1e18)],
+      args: [address, data?.mValue],
     },
     callback: () => {
       refetch();
@@ -175,7 +175,7 @@ const Megadrop = () => {
   const bbbIsEnough = false;
 
   let showApprove = true;
-  if (allowance && allowance > (data?.value || 0) * 1e18) {
+  if (allowance && allowance > (data?.value || 0)) {
     showApprove = false;
   }
 
@@ -283,7 +283,6 @@ const Megadrop = () => {
                       },
                     };
 
-            
                     return (
                       <tr key={index} className="text-center">
                         <th>{index}</th>
@@ -335,11 +334,14 @@ const Megadrop = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={data?.value}
+                value={data?.value?.toString() / 1e18}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
-                    setData({ ...data, value: newValue });
+                    setData({
+                      ...data,
+                      value: BigInt(newValue) * BigInt(1e18),
+                    });
                   }
                 }}
               />
@@ -349,7 +351,7 @@ const Megadrop = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    value: (bbbBalance?.toString() || 0) / 1e18,
+                    value: bbbBalance,
                   });
                 }}
               >
@@ -387,11 +389,14 @@ const Megadrop = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={data?.mValue}
+                value={data?.mValue?.toString() / 1e18}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (/^\d*$/.test(newValue)) {
-                    setData({ ...data, mValue: newValue });
+                    setData({
+                      ...data,
+                      mValue: BigInt(newValue) * BigInt(1e18),
+                    });
                   }
                 }}
               />
@@ -401,7 +406,7 @@ const Megadrop = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    mValue: (mbbbBalance?.toString() || 0) / 1e18,
+                    mValue: mbbbBalance,
                   });
                 }}
               >
