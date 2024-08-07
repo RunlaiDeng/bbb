@@ -188,7 +188,8 @@ const Megadrop = () => {
           <button className="btn">?</button>
         </Link>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-10 ">
+
+      <div className="card m-auto md:w-3/4 w-96 border-b">
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-5xl">
@@ -215,20 +216,20 @@ const Megadrop = () => {
           </div>
         </div>
       </div>
-      <div className="card m-auto md:w-3/4 w-96 mt-5">
+      <div className="text-center mt-5">
+        <div
+          className="btn btn-success w-max"
+          onClick={() => {
+            document.getElementById("dropModal").showModal();
+          }}
+        >
+          Start a new token
+        </div>
+      </div>
+      <div className="card m-auto md:w-3/4 w-96">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
-            <div className="text-right">
-              <div
-                className="btn btn-success w-max"
-                onClick={() => {
-                  document.getElementById("dropModal").showModal();
-                }}
-              >
-                Start a new token
-              </div>
-            </div>
           </div>
           <div className="border-b rounded-none">
             <div className="flex gap-2">
@@ -453,38 +454,57 @@ const Megadrop = () => {
                 }}
               />
             </label>
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Total Supply
+
+            <div className="collapse">
               <input
-                type="text"
-                className="grow"
-                placeholder="0.00"
-                value={data?.dTotalSupply}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (/^\d*$/.test(newValue)) {
-                    setData({ ...data, dTotalSupply: newValue });
-                  }
+                type="checkbox"
+                value={data?.showOptions}
+                onClick={(e) => {
+                  setData({
+                    ...data,
+                    showOptions: e.target.checked,
+                  });
                 }}
               />
-              <div className="font-black">{data?.dSymbol || "MEMES"}</div>
-            </label>
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Drop Percent
-              <input
-                type="text"
-                className="grow"
-                placeholder="0.00"
-                value={data?.dDropPercent}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (/^\d*$/.test(newValue) && newValue <= 100) {
-                    setData({ ...data, dDropPercent: newValue });
-                  }
-                }}
-              />
-              <div className="font-black">%</div>
-            </label>
+              <div className="collapse-title text-left pl-0 text-blue-500">
+                Show more options {data?.showOptions ? "↑" : "↓"}
+              </div>
+              <div className="collapse-content pl-0">
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  Total Supply
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={data?.dTotalSupply}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (/^\d*$/.test(newValue)) {
+                        setData({ ...data, dTotalSupply: newValue });
+                      }
+                    }}
+                  />
+                  <div className="font-black">{data?.dSymbol || "MEMES"}</div>
+                </label>
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  Drop Percent
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={data?.dDropPercent}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (/^\d*$/.test(newValue) && newValue <= 100) {
+                        setData({ ...data, dDropPercent: newValue });
+                      }
+                    }}
+                  />
+                  <div className="font-black">%</div>
+                </label>
+              </div>
+            </div>
+
             <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
               Cost
               <input
