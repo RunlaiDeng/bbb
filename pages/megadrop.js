@@ -226,7 +226,7 @@ const Megadrop = () => {
                   document.getElementById("dropModal").showModal();
                 }}
               >
-                Wanna Drop Memes?
+                Start a new token
               </div>
             </div>
           </div>
