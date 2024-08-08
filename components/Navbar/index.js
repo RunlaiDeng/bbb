@@ -25,57 +25,9 @@ const Navbar = () => {
             router.push("/");
           }}
         />
-        <div className="xl:hidden flex-none">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <details>
-                <summary>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="inline-block w-5 h-5 stroke-current"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                    ></path>
-                  </svg>
-                </summary>
-                <ul className="p-2 bg-base-100 rounded-t-none z-50">
-                  <li>
-                    <Link href={"/buy"} target="_blank">
-                      Buy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/chart"} target="_blank">
-                      Chart
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/farm"}>Farm</Link>
-                  </li>
-                  <li>
-                    <Link href={"/referralProgram"}>Referral Program</Link>
-                  </li>
-                  <li>
-                    <Link href={"/megadrop"}>Megadrop</Link>
-                  </li>
-                  <li>
-                    <Link href={linktree} target="_blank">
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </div>
-        <div className="hidden xl:block">
-          <Link
+
+        <div className="">
+          {/* <Link
             className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
             href={"/buy"}
             target="_blank"
@@ -106,7 +58,7 @@ const Navbar = () => {
             href={"/referralProgram"}
           >
             Referral Program
-          </Link>
+          </Link> */}
           <Link
             className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
             href={linktree}
@@ -114,6 +66,39 @@ const Navbar = () => {
           >
             Contact
           </Link>
+          <div className="dropdown dropdown-hover">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn m-1 btn-ghost hover:text-green-500 hover:bg-inherit"
+            >
+              Financials ↓
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            >
+              <li>
+                <Link href={"/buy"} target="_blank">
+                  Buy $BBB
+                </Link>
+              </li>
+              <li>
+                <Link href={"/chart"} target="_blank">
+                  Chart
+                </Link>
+              </li>
+              <li>
+                <Link href={"/farm"}>Farm</Link>
+              </li>
+              <li>
+                <Link href={"/referralProgram"}>Referral Program</Link>
+              </li>
+              <li>
+                <Link href={"/megadrop"}>Megadrop</Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div className="navbar-center flex hidden xl:block"></div>

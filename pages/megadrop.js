@@ -216,7 +216,7 @@ const Megadrop = () => {
           </div>
         </div>
       </div>
-      <div className="text-center mt-5">
+      {/* <div className="text-center mt-5">
         <div
           className="btn btn-success w-max"
           onClick={() => {
@@ -225,7 +225,7 @@ const Megadrop = () => {
         >
           Start a new token
         </div>
-      </div>
+      </div> */}
       <div className="card m-auto md:w-3/4 w-96">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
