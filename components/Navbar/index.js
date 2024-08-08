@@ -59,6 +59,7 @@ const Navbar = () => {
           >
             Referral Program
           </Link> */}
+          
           <Link
             className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
             href={linktree}
@@ -79,7 +80,7 @@ const Navbar = () => {
               className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
             >
               <li>
-                <Link href={"/buy"} target="_blank">
+                <Link href={"/buy"} target="_blank" className="text-green-500">
                   Buy $BBB
                 </Link>
               </li>
