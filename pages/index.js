@@ -199,7 +199,7 @@ const Home = () => {
                     <Image
                       height={200}
                       width={200}
-                      src="/roadmapleft.png"
+                      src="/endgame.png"
                       alt="Movie"
                     />
                   </figure>
