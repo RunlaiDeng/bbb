@@ -7,6 +7,27 @@ import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
 import { useRouter } from "next/router";
+
+function generateBase64Image(text) {
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#000000";
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  const x = canvas.width / 2;
+  const y = canvas.height / 2;
+  ctx.fillText(text, x, y);
+
+  const base64Image = canvas.toDataURL("image/png");
+  return base64Image;
+}
+
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -61,7 +82,6 @@ const Home = () => {
   const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
 
-  console.log(bbbBalance);
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
 
@@ -132,13 +152,6 @@ const Home = () => {
     },
   };
 
-  console.log(
-    data?.dName,
-    data?.dSymbol,
-    BigInt(data?.dTotalSupply) * BigInt(1e18),
-    data?.dDropPercent
-  );
-
   const drop = {
     buttonName: "Confirm",
     data: {
@@ -176,7 +189,8 @@ const Home = () => {
           Start a new token
         </div>
       </div>
-
+      {/* for generate img */}
+      <canvas id="canvas" width="500" height="200" className="hidden"></canvas>
       <div className="card m-auto md:w-3/4 w-96">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
@@ -199,8 +213,8 @@ const Home = () => {
                     <Image
                       height={200}
                       width={200}
-                      src="/endgame.png"
-                      alt="Movie"
+                      src={generateBase64Image(item?.name)}
+                      alt={item?.name}
                     />
                   </figure>
                   <div className="card-body">
@@ -221,7 +235,9 @@ const Home = () => {
             <form method="dialog">
               <button className="btn">X</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Start a new token</h3>
+            <h3 className="font-bold text-lg text-center mt-2">
+              Start a new token
+            </h3>
           </div>
           <div className="text-center mt-5">
             <label className="input input-bordered flex items-center gap-2 w-full m-auto">
