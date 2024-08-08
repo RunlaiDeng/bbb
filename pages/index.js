@@ -8,7 +8,7 @@ import copy from "copy-to-clipboard";
 import Image from "next/image";
 
 function generateBase64Image(text) {
-  const canvas = document.getElementById("canvas");
+  const canvas = document.createElement("canvas");
   const ctx = canvas?.getContext("2d");
 
   ctx.fillStyle = "#FFFFFF";
@@ -162,8 +162,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* for generate img */}
-      <canvas id="canvas" width="500" height="200" className="hidden"></canvas>
       <div className="w-96 m-auto mt-5 grid grid-cols-5 gap-2">
         <label className="input input-bordered flex items-center gap-2 col-span-4">
           <svg
@@ -180,17 +178,19 @@ const Home = () => {
           </svg>
           <input
             type="text"
+            id="search"
             className="grow"
             placeholder="search for token"
-            onChange={(e) => {
-              setData({ ...data, search: e.target.value });
-            }}
           />
         </label>
         <div
           className="btn btn-success w-max m-auto col-span-1"
           onClick={() => {
-            setData({ ...data, searchBtn: !data?.searchBtn });
+            document.getElementById("search").value;
+            setData({
+              ...data,
+              search: document.getElementById("search").value,
+            });
           }}
         >
           Search
