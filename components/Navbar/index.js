@@ -22,38 +22,6 @@ const Navbar = () => {
         />
 
         <div className="">
-          {/* <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/buy"}
-            target="_blank"
-          >
-            Buy $BBB
-          </Link>
-          <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/chart"}
-            target="_blank"
-          >
-            Chart
-          </Link>
-          <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/farm"}
-          >
-            Farm
-          </Link>
-          <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/megadrop"}
-          >
-            Megadrop
-          </Link>
-          <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={"/referralProgram"}
-          >
-            Referral Program
-          </Link> */}
           <Link
             className="btn btn-ghost mx-1 text-green-500 hover:bg-inherit"
             href={"/buy"}
