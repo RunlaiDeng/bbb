@@ -186,7 +186,7 @@ const Home = () => {
             {dropTokens?.map((item, index) => {
               return (
                 <div
-                  className="card card-side shadow-xl cursor-pointer hover:border-4 border-violet-500"
+                  className="card card-side shadow-xl cursor-pointer hover:border-4 border-green-500"
                   key={index}
                   onClick={() => {
                     window.open(
