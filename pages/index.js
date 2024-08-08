@@ -1,16 +1,15 @@
 import { useReadContracts, useChainId, useAccount } from "wagmi";
 import { contracts } from "@/config";
 import WriteButton from "@/components/WriteButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 function generateBase64Image(text) {
   const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas?.getContext("2d");
 
   ctx.fillStyle = "#FFFFFF";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -79,7 +78,6 @@ const Home = () => {
   });
 
   const allowance = reads0?.[0]?.result;
-  const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
 
   const dropTokenLength = reads0?.[3]?.result;
@@ -100,41 +98,13 @@ const Home = () => {
     multicallAddress: mutilCall?.address,
   });
 
-  const dropTokens = reads1?.map((item) => item?.result);
+  let dropTokens = reads1?.map((item) => item?.result);
 
-  const searchClaimAmt = [];
-
-  for (let i = 0; i < dropTokenLength; i++) {
-    searchClaimAmt.push({
-      ...mbbb,
-      functionName: "getClaimAmt",
-      args: [i, address],
+  if (data?.search) {
+    dropTokens = dropTokens.filter((item) => {
+      return item?.token === data?.search;
     });
   }
-
-  const { data: reads2 } = useReadContracts({
-    contracts: searchClaimAmt,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const claimAmts = reads2?.map((item) => item?.result);
-
-  const searchClaimed = [];
-
-  for (let i = 0; i < dropTokenLength; i++) {
-    searchClaimed.push({
-      ...mbbb,
-      functionName: "claimed",
-      args: [address, i],
-    });
-  }
-
-  const { data: reads3 } = useReadContracts({
-    contracts: searchClaimed,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const claimed = reads3?.map((item) => item?.result);
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -177,11 +147,13 @@ const Home = () => {
     showApprove = false;
   }
 
+  useEffect(() => {}, [data?.searchBtn]);
+
   return (
     <>
       <div className="text-center mt-5">
         <div
-          className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit"
+          className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
           onClick={() => {
             document.getElementById("dropModal").showModal();
           }}
@@ -206,9 +178,23 @@ const Home = () => {
               clipRule="evenodd"
             />
           </svg>
-          <input type="text" className="grow" placeholder="search for token" />
+          <input
+            type="text"
+            className="grow"
+            placeholder="search for token"
+            onChange={(e) => {
+              setData({ ...data, search: e.target.value });
+            }}
+          />
         </label>
-        <div className="btn btn-success w-max m-auto col-span-1">Search</div>
+        <div
+          className="btn btn-success w-max m-auto col-span-1"
+          onClick={() => {
+            setData({ ...data, searchBtn: !data?.searchBtn });
+          }}
+        >
+          Search
+        </div>
       </div>
 
       <div className="card m-auto md:w-full w-96">
@@ -238,9 +224,9 @@ const Home = () => {
                       alt={item?.name}
                     />
                   </figure>
-                  <div className="card-body">
-                    <div>Cap 0 usd</div>
-                    <div className="text-xs">
+                  <div className="card-body text-xs">
+                    <div>Market Cap: 0</div>
+                    <div>
                       {item?.name} ({item?.symbol})
                     </div>
                   </div>
