@@ -260,7 +260,7 @@ const Home = () => {
                   });
                 }}
               />
-              <div className="collapse-title text-left pl-0 text-blue-500">
+              <div className="collapse-title text-left pl-0  hover:underline text-green-500">
                 Show more options {data?.showOptions ? "↑" : "↓"}
               </div>
               <div className="collapse-content pl-0">
