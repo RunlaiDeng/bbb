@@ -221,7 +221,7 @@ const Home = () => {
             <form method="dialog">
               <button className="btn">X</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Drop Memes</h3>
+            <h3 className="font-bold text-lg text-center mt-2">Start a new token</h3>
           </div>
           <div className="text-center mt-5">
             <label className="input input-bordered flex items-center gap-2 w-full m-auto">
