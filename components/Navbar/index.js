@@ -6,11 +6,6 @@ import Image from "next/image";
 import { dexLink } from "@/config";
 const Navbar = () => {
   const router = useRouter();
-  const pathname = router.pathname;
-
-  const linktree = "https://linktr.ee/benybadboy";
-
-  const afterIDO = true;
 
   return (
     <div className="navbar items-center">
@@ -59,36 +54,26 @@ const Navbar = () => {
           >
             Referral Program
           </Link> */}
-          
           <Link
-            className="btn btn-ghost mx-1 hover:text-green-500 hover:bg-inherit"
-            href={linktree}
+            className="btn btn-ghost mx-1 text-green-500 hover:bg-inherit"
+            href={"/buy"}
             target="_blank"
           >
-            Contact
+            Buy $BBB
           </Link>
+
           <div className="dropdown dropdown-hover">
             <div
               tabIndex={0}
               role="button"
               className="btn m-1 btn-ghost hover:text-green-500 hover:bg-inherit"
             >
-              Financials ↓
+              Financials(Earn) ↓
             </div>
             <ul
               tabIndex={0}
               className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
             >
-              <li>
-                <Link href={"/buy"} target="_blank" className="text-green-500">
-                  Buy $BBB
-                </Link>
-              </li>
-              <li>
-                <Link href={"/chart"} target="_blank">
-                  Chart
-                </Link>
-              </li>
               <li>
                 <Link href={"/farm"}>Farm</Link>
               </li>

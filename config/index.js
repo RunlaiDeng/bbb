@@ -9,6 +9,8 @@ export const dexLink =
 export const chartLink =
   "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
 
+export const linktree = "https://linktr.ee/benybadboy";
+
 export const contracts = {
   551: {
     bbb: {
