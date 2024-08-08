@@ -181,22 +181,43 @@ const Home = () => {
     <>
       <div className="text-center mt-5">
         <div
-          className="btn btn-success w-max"
+          className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit"
           onClick={() => {
             document.getElementById("dropModal").showModal();
           }}
         >
-          Start a new token
+          [Start a new token]
         </div>
       </div>
+
       {/* for generate img */}
       <canvas id="canvas" width="500" height="200" className="hidden"></canvas>
-      <div className="card m-auto md:w-3/4 w-96">
+      <div className="w-96 m-auto mt-5 grid grid-cols-5 gap-2">
+        <label className="input input-bordered flex items-center gap-2 col-span-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="h-4 w-4 opacity-70"
+          >
+            <path
+              fillRule="evenodd"
+              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <input type="text" className="grow" placeholder="search for token" />
+        </label>
+        <div className="btn btn-success w-max m-auto col-span-1">Search</div>
+      </div>
+
+      <div className="card m-auto md:w-full w-96">
         <div className="card-body font-black">
           <div className="grid grid-cols-2">
             <div className="">Terminal</div>
           </div>
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3">
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
               return (
                 <div
@@ -218,6 +239,7 @@ const Home = () => {
                     />
                   </figure>
                   <div className="card-body">
+                    <div>Cap 0 usd</div>
                     <div className="text-xs">
                       {item?.name} ({item?.symbol})
                     </div>
