@@ -149,6 +149,10 @@ const Home = () => {
 
   useEffect(() => {}, [data?.searchBtn]);
 
+  const logos = {
+    "0xF05bCACAf95EAA7f4361ff85Ce1F45533ec10295": true,
+  };
+
   return (
     <>
       <div className="text-center mt-5">
@@ -205,6 +209,8 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
+              console.log(item);
+              const logo = logos[item?.token];
               return (
                 <div
                   className="card card-side shadow-xl cursor-pointer hover:border-4 border-green-500"
@@ -220,7 +226,11 @@ const Home = () => {
                     <Image
                       height={200}
                       width={200}
-                      src={generateBase64Image(item?.name)}
+                      src={
+                        logo
+                          ? "/" + item?.token + ".png"
+                          : generateBase64Image(item?.name)
+                      }
                       alt={item?.name}
                     />
                   </figure>
