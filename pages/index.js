@@ -209,7 +209,7 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
-              console.log(item);
+
               const logo = logos[item?.token];
               return (
                 <div
