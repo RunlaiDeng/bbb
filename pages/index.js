@@ -102,7 +102,11 @@ const Home = () => {
 
   if (data?.search) {
     dropTokens = dropTokens.filter((item) => {
-      return item?.token === data?.search;
+      return (
+        item?.token?.toLowerCase() == data?.search?.toLowerCase() ||
+        item?.name?.toLowerCase() == data?.search?.toLowerCase() ||
+        item?.symbol?.toLowerCase() == data?.search?.toLowerCase()
+      );
     });
   }
 
@@ -146,8 +150,6 @@ const Home = () => {
   if (allowance && allowance > (data?.value || 0)) {
     showApprove = false;
   }
-
-  useEffect(() => {}, [data?.searchBtn]);
 
   const logos = {
     "0xF05bCACAf95EAA7f4361ff85Ce1F45533ec10295": true,
@@ -209,7 +211,6 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
-
               const logo = logos[item?.token];
               return (
                 <div
