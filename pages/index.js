@@ -153,6 +153,7 @@ const Home = () => {
 
   const logos = {
     "0xF05bCACAf95EAA7f4361ff85Ce1F45533ec10295": true,
+    "0x20F179bA842d349ff789D86792B941af17509e44": true,
   };
 
   return (
@@ -228,9 +229,7 @@ const Home = () => {
                       height={100}
                       width={100}
                       src={
-                        logo
-                          ? "/" + item?.token + ".png"
-                          : "/didntupload.png"
+                        logo ? "/" + item?.token + ".png" : "/didntupload.png"
                       }
                       alt={item?.name}
                     />
