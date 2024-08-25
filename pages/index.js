@@ -230,7 +230,7 @@ const Home = () => {
                       src={
                         logo
                           ? "/" + item?.token + ".png"
-                          : generateBase64Image(item?.name)
+                          : "/didntupload.png"
                       }
                       alt={item?.name}
                     />
