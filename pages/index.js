@@ -154,6 +154,9 @@ const Home = () => {
   const logos = {
     "0xF05bCACAf95EAA7f4361ff85Ce1F45533ec10295": true,
     "0x20F179bA842d349ff789D86792B941af17509e44": true,
+    "0x34b9d4a27b93E0a128e0945ab0e2D1C49385Ec90": true,
+    "0xc430dCB2680B7E4c715d208E41Cc8Fa2fAc3F513": true,
+    "0x59A3fCCA7dA1855e4b5d82Fa2571c4726AF10218": true,
   };
 
   return (
@@ -232,6 +235,12 @@ const Home = () => {
                         logo ? "/" + item?.token + ".png" : "/didntupload.png"
                       }
                       alt={item?.name}
+                      className="rounded-lg"
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "100%",
+                      }}
                     />
                   </figure>
                   <div className="card-body text-xs">
