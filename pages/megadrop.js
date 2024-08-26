@@ -300,7 +300,7 @@ const Megadrop = () => {
                             {item?.symbol}
                           </div>
                         </td>
-                        <td>{claimAmts?.[index]?.toString() / 1e18}</td>
+                        <td>{claimAmts?.[index]?.toString() / 1e18 || 0}</td>
                         <td>
                           {claimed?.[index] ||
                           claimAmts?.[index]?.toString() == 0 ? (
