@@ -21,9 +21,9 @@ const Navbar = () => {
           }}
         />
 
-        <div className="">
+        <div className="ml-2">
           <Link
-            className="btn btn-ghost mx-1 text-green-500 hover:bg-inherit"
+            className="btn mx-1 btn-ghost hover:bg-inherit animate-shake border-2 animate-shake-border"
             href={"/buy"}
             target="_blank"
           >
