@@ -43,13 +43,28 @@ const Navbar = () => {
               className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
             >
               <li>
-                <Link href={"/farm"}>Farm</Link>
+                <Link
+                  href={"/farm"}
+                  className="hover:text-green-500 hover:bg-inherit"
+                >
+                  Farm
+                </Link>
               </li>
               <li>
-                <Link href={"/referralProgram"}>Referral Program</Link>
+                <Link
+                  href={"/referralProgram"}
+                  className="hover:text-green-500 hover:bg-inherit"
+                >
+                  Referral Program
+                </Link>
               </li>
               <li>
-                <Link href={"/megadrop"}>Megadrop</Link>
+                <Link
+                  href={"/megadrop"}
+                  className="hover:text-green-500 hover:bg-inherit"
+                >
+                  Megadrop
+                </Link>
               </li>
             </ul>
           </div>
