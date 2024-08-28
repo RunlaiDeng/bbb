@@ -4,41 +4,11 @@ import WriteButton from "@/components/WriteButton";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { dexLink } from "@/config";
-import copy from "copy-to-clipboard";
 import Image from "next/image";
-
-function generateBase64Image(text) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas?.getContext("2d");
-
-  ctx.fillStyle = "#FFFFFF";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#000000";
-  ctx.font = "30px Arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  const x = canvas.width / 2;
-  const y = canvas.height / 2;
-  ctx.fillText(text, x, y);
-
-  const base64Image = canvas.toDataURL("image/png");
-  return base64Image;
-}
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
-
-  const handleCopyClick = (msg) => {
-    copy(msg);
-    setTooltipText("Address copied!");
-    setTimeout(() => {
-      setTooltipText("Click copy contract address");
-    }, 1000);
-  };
-
-  const isCopied = tooltipText === "Address copied!";
 
   const chainId = useChainId();
   const { address } = useAccount();
@@ -160,13 +130,19 @@ const Home = () => {
     "0x6819AdAdeFa242427520A09d3CE13f8759d2f9b8": true,
   };
 
+  const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
   return (
     <>
       <div className="text-center mt-5">
         <div
           className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
           onClick={() => {
-            document.getElementById("dropModal").showModal();
+            if (!isConnected) {
+              openConnectModal();
+            } else {
+              document.getElementById("dropModal").showModal();
+            }
           }}
         >
           [Start a new token]
