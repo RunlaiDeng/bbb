@@ -212,7 +212,7 @@ const Home = () => {
                         logo ? "/" + item?.token + ".png" : "/didntupload.png"
                       }
                       alt={item?.name}
-                      className="ml-10 rounded-full"
+                      className="ml-10 "
                       style={{
                         objectFit: "contain",
                         width: "75px",
