@@ -195,7 +195,7 @@ const Home = () => {
               const logo = logos[item?.token];
               return (
                 <div
-                  className="card card-side shadow-xl cursor-pointer hover:border-4 border-green-500"
+                  className="card card-side bg-slate-100 cursor-pointer"
                   key={index}
                   onClick={() => {
                     window.open(
@@ -212,7 +212,7 @@ const Home = () => {
                         logo ? "/" + item?.token + ".png" : "/didntupload.png"
                       }
                       alt={item?.name}
-                      className="rounded-lg pl-1"
+                      className="p-1 "
                       style={{
                         objectFit: "contain",
                         width: "100px",
