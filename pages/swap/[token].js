@@ -45,22 +45,14 @@ const Swap = () => {
   const index = dropToken?.index;
 
   useEffect(() => {
-    async function getHolders() {
-      const res = await rpc.getHolders(token);
+    async function getData() {
+      const trade = await rpc.getTrade(index?.toString());
+      const holders = await rpc.getHolders(token);
 
-      setData({ ...data, holders: res });
+      setData({ ...data, trade, holders });
     }
-    getHolders();
-  }, [token]);
-
-  useEffect(() => {
-    async function getTrade() {
-      const res = await rpc.getTrade(index?.toString());
-
-      setData({ ...data, trade: res });
-    }
-    getTrade();
-  }, [index]);
+    getData();
+  }, [index, token]);
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: [
