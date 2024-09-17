@@ -133,20 +133,51 @@ const Swap = () => {
 
           <div className="card bg-slate-100 text-xs mt-2">
             <div className="card-body">
-              <div className="chat chat-start">
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">2 hours ago</time>
+              <div className="overflow-auto h-96">
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
                 </div>
-                <div className="chat-bubble">You were the Chosen One!</div>
-              </div>
-              <div className="chat chat-start">
-                <div className="chat-header">
-                  Obi-Wan Kenobi{" "}
-                  <time className="text-xs opacity-50">2 hour ago</time>
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
                 </div>
-                <div className="chat-bubble">I loved you.</div>
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
+                </div>
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
+                </div>
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
+                </div>
+                <div className="chat chat-start ">
+                  <div className="chat-header">
+                    Obi-Wan Kenobi{" "}
+                    <time className="text-xs opacity-50">12:45</time>
+                  </div>
+                  <div className="chat-bubble">You were the Chosen One!</div>
+                </div>
               </div>
+
               <label className="input input-bordered flex items-center gap-2">
                 <input type="text" className="grow" placeholder="Type here" />
                 <kbd className="kbd kbd-sm">↑</kbd>
@@ -392,9 +423,9 @@ const Swap = () => {
               </div>
             </div>
           </div>
-          <div className="card bg-slate-100 mt-2">
+          <div className="card bg-slate-100 mt-2 ">
             <div className="card-body">
-              <div className="overflow-x-auto">
+              <div className="overflow-auto h-96">
                 <table className="table table-xs">
                   <thead>
                     <tr>
