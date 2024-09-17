@@ -45,15 +45,20 @@ const Swap = () => {
   const index = dropToken?.index;
 
   async function getData() {
-    const trade = await rpc.getTrade(index?.toString());
-    const holders = await rpc.getHolders(token);
+    if (index) {
+      const trade = await rpc.getTrade(index?.toString());
+      const holders = await rpc.getHolders(token);
+      const msg = await rpc.getMsg(index?.toString());
 
-    setData({ ...data, trade, holders });
+      setData({ ...data, trade, holders, msg, sendMsgContent: "" });
+    }
   }
 
   useEffect(() => {
     getData();
-  }, [index, token]);
+  }, [index]);
+
+  console.log(data?.msg);
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: [
@@ -78,7 +83,6 @@ const Swap = () => {
   const refetch = () => {
     refetch0();
     refetch1();
-    getData();
   };
   const price = reads1?.[0]?.result;
   const buyTokenAmount = reads1?.[1]?.result;
@@ -110,6 +114,7 @@ const Swap = () => {
   };
 
   const holders = data?.holders;
+  const msg = data?.msg;
 
   return (
     <>
@@ -134,53 +139,52 @@ const Swap = () => {
           <div className="card bg-slate-100 text-xs mt-2">
             <div className="card-body">
               <div className="overflow-auto h-96">
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
-                <div className="chat chat-start ">
-                  <div className="chat-header">
-                    Obi-Wan Kenobi{" "}
-                    <time className="text-xs opacity-50">12:45</time>
-                  </div>
-                  <div className="chat-bubble">You were the Chosen One!</div>
-                </div>
+                {msg?.map((item) => {
+                  return (
+                    <>
+                      <div className="chat chat-start ">
+                        <div className="chat-header">
+                          {item?.ip}{" "}
+                          <time className="text-xs opacity-50">
+                            {item?.time}
+                          </time>
+                        </div>
+                        <div className="chat-bubble">{item?.msg}</div>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
 
               <label className="input input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Type here" />
-                <kbd className="kbd kbd-sm">↑</kbd>
+                <input
+                  type="text"
+                  className="grow"
+                  value={data?.sendMsgContent}
+                  placeholder="Type Here"
+                  onChange={(e) => {
+                    setData({ ...data, sendMsgContent: e.target.value });
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setData({ ...data, sendMsgContent: "" });
+                      rpc.sendMsg(index?.toString(), data?.sendMsgContent);
+
+                      getData();
+                    }
+                  }}
+                />
+                <kbd
+                  className="kbd kbd-sm cursor-pointer"
+                  onClick={() => {
+                    setData({ ...data, sendMsgContent: "" });
+                    rpc.sendMsg(index?.toString(), data?.sendMsgContent);
+
+                    getData();
+                  }}
+                >
+                  ↑
+                </kbd>
               </label>
             </div>
           </div>

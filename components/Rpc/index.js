@@ -7,6 +7,15 @@ const getHolders = async (token) => {
   return send("getHolders", [token]);
 };
 
+const getMsg = async (index) => {
+  return send("getMsg", [index]);
+};
+
+const sendMsg = async (index, msg) => {
+  console.log(index, msg);
+  return send("sendMsg", [index, msg]);
+};
+
 const send = async (method, params) => {
   let res;
   try {
@@ -37,4 +46,6 @@ const send = async (method, params) => {
 module.exports = {
   getTrade,
   getHolders,
+  getMsg,
+  sendMsg,
 };
