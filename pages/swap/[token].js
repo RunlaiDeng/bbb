@@ -284,7 +284,7 @@ const Swap = () => {
                     <input
                       type="number"
                       className="grow"
-                      value={data?.sellAmount?.toString() / 1e18 / 1e18}
+                      value={data?.sellAmount?.toString() / 1e18}
                       placeholder="0"
                       onChange={(e) => {
                         const newValue = e.target.value;
@@ -361,7 +361,7 @@ const Swap = () => {
                     <input
                       type="number"
                       className="grow"
-                      value={sellXDCAmount?.toString() || 0}
+                      value={sellXDCAmount?.toString() / 1e18 || 0}
                       disabled
                     />
                     XDC
