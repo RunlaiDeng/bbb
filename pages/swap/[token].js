@@ -22,12 +22,6 @@ const Swap = () => {
 
   const { data: balance } = useBalance({ address: address });
 
-  useEffect(() => {
-    if (chainId != 551) {
-      router.push("/v1");
-    }
-  }, [chainId]);
-
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       {

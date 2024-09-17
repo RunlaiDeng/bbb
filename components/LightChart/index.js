@@ -51,7 +51,7 @@ const CandleStickChart = (props) => {
       resizeObserverRef.current.disconnect();
       chart.remove();
     };
-  }, [trade]);
+  }, [{ ...trade }]);
 
   return (
     <div ref={chartContainerRef} style={{ width: "100%", height: "400px" }} />

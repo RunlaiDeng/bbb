@@ -9,10 +9,16 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 
 const Home = () => {
-  
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
   const chainId = useChainId();
+  console.log(chainId)
+  useEffect(() => {
+    if (chainId && chainId != 551) {
+      router.push("/v1");
+    }
+  }, [chainId]);
+
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
   const [data, setData] = useState({
@@ -56,15 +62,13 @@ const Home = () => {
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
 
-  console.log(allowance, bbbBalance, dropTokenLength, price);
-
   const searchDropTokens = [];
 
   for (let i = 0; i < dropTokenLength; i++) {
     searchDropTokens.push({
       ...mbbb,
       functionName: "getDropToken",
-      args: [i+1],
+      args: [i + 1],
     });
   }
 
@@ -188,7 +192,7 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
-              console.log(item)
+              console.log(item);
               const logo = logos[item?.token];
 
               return (
