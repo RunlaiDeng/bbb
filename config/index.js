@@ -2,9 +2,10 @@ import ERC20ABI from "../abi/ERC20ABI.json";
 import BBBFarmerABI from "../abi/BBBFarmerABI.json";
 import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 import mBBBABI from "../abi/mBBBABI.json";
+import mBBBV2ABI from "../abi/mBBBV2ABI";
 
 export const dexLink =
-  "https://app.xspswap.finance/swap#/tokens/xinfin/0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1";
+  "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 
 export const chartLink =
   "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
@@ -13,6 +14,10 @@ export const linktree = "https://linktr.ee/benybadboy";
 
 export const submitTokenInfo =
   "https://docs.google.com/forms/d/e/1FAIpQLScq9zJS_tOqwH4hEaIIq09GkeXa3PT3wqXY8m8vGXftonzrtg/viewform";
+
+export const buyXDCLink = "https://www.bybitglobal.com/invite?ref=GLALDRY";
+
+export const rpcUrl = "https://test-api.benybadboy.xyz";
 
 export const contracts = {
   551: {
@@ -35,6 +40,10 @@ export const contracts = {
     car: {
       address: "0x5A739D602057F217d8AEb2f26E6e57F9f05cEf78",
       abi: ERC20ABI,
+    },
+    mbbbv2: {
+      address: "0xDD988b2A3C06f91135ea8D38ef9DaA4b7267Dc25",
+      abi: mBBBV2ABI,
     },
   },
   50: {

@@ -30,7 +30,7 @@ const queryClient = new QueryClient();
 const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
-  chains: [xdc],
+  chains: [xdc,xdcParentNet],
   transports: {
     [xdc.id]: http("https://rpc.xdcrpc.com"),
     [xdcParentNet.id]: http("https://devnetstats.apothem.network/devnet"),
