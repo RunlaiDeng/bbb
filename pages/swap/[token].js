@@ -23,7 +23,7 @@ const Swap = () => {
   const { data: balance } = useBalance({ address: address });
 
   useEffect(() => {
-    if (chainId == 50) {
+    if (chainId != 551) {
       router.push("/v1");
     }
   }, [chainId]);
