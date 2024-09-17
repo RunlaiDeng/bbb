@@ -67,6 +67,16 @@ const Swap = () => {
         functionName: "price",
         args: [index],
       },
+      {
+        ...mbbb,
+        functionName: "getBuyAmount",
+        args: [index, data?.buyAmount],
+      },
+      {
+        ...mbbb,
+        functionName: "getSellAmount",
+        args: [index, data?.sellAmount],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -75,6 +85,8 @@ const Swap = () => {
     refetch1();
   };
   const price = reads1?.[0]?.result;
+  const buyTokenAmount = reads1?.[1]?.result;
+  const sellXDCAmount = reads1?.[2]?.result;
 
   const buy = {
     buttonName: "Place Trade",
@@ -100,8 +112,6 @@ const Swap = () => {
       refetch();
     },
   };
-
-  console.log(data?.holders);
 
   const holders = data?.holders;
 
@@ -256,6 +266,15 @@ const Swap = () => {
                       100%
                     </a>
                   </div>
+                  <label className="input input-bordered flex items-center gap-2">
+                    <input
+                      type="number"
+                      className="grow"
+                      value={buyTokenAmount?.toString() / 1e18 || 0}
+                      disabled
+                    />
+                    {symbol}
+                  </label>
                   <WriteButton {...buy} className="btn btn-success" />
                 </>
               )}
@@ -265,7 +284,7 @@ const Swap = () => {
                     <input
                       type="number"
                       className="grow"
-                      value={data?.sellAmount?.toString() / 1e18}
+                      value={data?.sellAmount?.toString() / 1e18 / 1e18}
                       placeholder="0"
                       onChange={(e) => {
                         const newValue = e.target.value;
@@ -338,6 +357,16 @@ const Swap = () => {
                       100%
                     </a>
                   </div>
+                  <label className="input input-bordered flex items-center gap-2">
+                    <input
+                      type="number"
+                      className="grow"
+                      value={sellXDCAmount?.toString() || 0}
+                      disabled
+                    />
+                    XDC
+                    <Image height={30} width={30} src="/xdc.png" alt="" />
+                  </label>
                   <WriteButton {...sell} className="btn btn-success" />
                 </>
               )}
