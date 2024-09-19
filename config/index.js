@@ -42,7 +42,7 @@ export const contracts = {
       abi: ERC20ABI,
     },
     mbbbv2: {
-      address: "0xBAE1F718cE7f58aca8455e495b7257fF56E33c77",
+      address: "0x144c7Bd6DE117546FbAAEcCabF2914658c491E7E",
       abi: mBBBV2ABI,
     },
   },

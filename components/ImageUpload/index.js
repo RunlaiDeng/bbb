@@ -15,7 +15,7 @@ export default function ImageUpload() {
   };
 
   return (
-    <div className="max-w-sm mx-auto w-72">
+    <div className="max-w-sm mx-auto w-full">
       <label
         htmlFor="file-upload"
         className="flex flex-col items-center justify-center w-full h-48  rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500"

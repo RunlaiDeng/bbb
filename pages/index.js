@@ -182,8 +182,14 @@ const Home = () => {
             {dropTokens?.map((item, index) => {
               console.log(item);
               const logo = logos[item?.token];
+              const xdcAmount = item?.xdcAmount;
               const percent =
-                (100 * item?.xdcAmount?.toString()) / item?.maxXdc?.toString();
+                (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
+              const removed = item?.removed;
+
+              const cap = removed
+                ? (xdcAmount?.toString() * 1.2) / 1e18
+                : xdcAmount?.toString() / 1e18;
               return (
                 <div
                   className="card card-side bg-slate-100 cursor-pointer"
@@ -209,13 +215,18 @@ const Home = () => {
                     />
                   </figure>
                   <div className="card-body text-xs">
-                    <div>Created by {"..." + item?.deployer?.substr(36)}</div>
+                    <div>
+                      Created by{" "}
+                      <span className="underline text-green-500">
+                        {"..." + item?.deployer?.substr(36)}
+                      </span>
+                    </div>
                     <div className="text-xl">
                       {item?.name} (${item?.symbol})
                     </div>
                     <div>
                       <span className="opacity-50"> Market Cap: </span>
-                      <span>{item?.xdcAmount?.toString() / 1e18} XDC </span>
+                      <span>{cap} XDC </span>
                       <span className="opacity-50"> ({percent}%)</span>
                     </div>
                     <progress

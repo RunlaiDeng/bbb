@@ -34,15 +34,22 @@ const Swap = () => {
         functionName: "balanceOf",
         args: [address],
       },
+      {
+        ...tokenContract,
+        functionName: "totalSupply",
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
 
   const dropToken = reads0?.[0]?.result;
   const tokenBalance = reads0?.[1]?.result || 0n;
+  const totalSupply = reads0?.[2]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
   const symbol = dropToken?.symbol;
   const index = dropToken?.index;
+  const xdcAmount = dropToken?.xdcAmount;
+  const removed = dropToken?.removed;
 
   async function getData() {
     if (index) {
@@ -88,6 +95,8 @@ const Swap = () => {
   const buyTokenAmount = reads1?.[1]?.result;
   const sellXDCAmount = reads1?.[2]?.result;
 
+  console.log(price);
+
   const buy = {
     buttonName: "Place Trade",
     data: {
@@ -129,7 +138,7 @@ const Swap = () => {
         </div>
       </div>
       <div className="m-auto mt-5 grid md:grid-cols-5 gap-2 mx-4">
-        <div className="md:col-span-3 font-black text-2xl text-center text-green-500">
+        <div className="md:col-span-3 font-black text-2xl text-center">
           <div className="card bg-slate-100">
             <div className="card-body">
               <LightChart {...data} />
@@ -191,7 +200,7 @@ const Swap = () => {
         </div>
         <div className="md:col-span-2 text-center">
           <div className="card bg-slate-100">
-            <div className="card-body">
+            <div className="card-body font-black">
               <div className="grid grid-cols-2 gap-2">
                 <div
                   className={
@@ -406,23 +415,36 @@ const Swap = () => {
           <div className="card bg-slate-100 mt-2">
             <div className="card-body">
               <div className="font-black mt-4 text-left">
+                <div className="text-xl">
+                  {dropToken?.name} (${dropToken?.symbol})
+                </div>
                 <div>
-                  Price :{" "}
-                  <span className="text-green-500">
+                  <span className="opacity-50">Price : </span>
+
+                  <span className="">
                     {price?.toString() / 1e18 + " XDC"}
                   </span>
                 </div>
                 <div>
-                  Name :{" "}
-                  <span className="text-green-500">{dropToken?.name}</span>
+                  <span className="opacity-50"> Cap : </span>
+
+                  <span className="">
+                    {(removed
+                      ? (xdcAmount?.toString() * 1.2) / 1e18
+                      : xdcAmount?.toString() / 1e18) + " XDC"}
+                  </span>
                 </div>
                 <div>
-                  Symbol :{" "}
-                  <span className="text-green-500">{dropToken?.symbol}</span>
+                  <span className="opacity-50"> Total Supply : </span>
+
+                  <span className="">
+                    {totalSupply?.toString() / 1e18 + " " + dropToken?.symbol}
+                  </span>
                 </div>
                 <div>
-                  Contract Address :{" "}
-                  <span className="text-green-500">{dropToken?.token}</span>
+                  <span className="opacity-50"> Contract Address : </span>
+
+                  <span className="">{dropToken?.token}</span>
                 </div>
               </div>
             </div>
