@@ -19,25 +19,6 @@ const CandleStickChart = (props) => {
 
     const candleSeries = chart.addCandlestickSeries();
 
-    console.log(trade);
-
-    // const data = [
-    //   {
-    //     time: 172656539,
-    //     open: 0,
-    //     close: 0.7071067811865475244,
-    //     high: 0.7071067811865475244,
-    //     low: 0,
-    //   },
-    //   {
-    //     time: 172656540,
-    //     open: 0.7071067811865475244,
-    //     close: 0.7071067811865475244,
-    //     high: 0.7071067811865475244,
-    //     low: 0.7071067811865475244,
-    //   },
-    // ];
-
     candleSeries.setData(trade || []);
 
     resizeObserverRef.current = new ResizeObserver((entries) => {

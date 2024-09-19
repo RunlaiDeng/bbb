@@ -253,7 +253,18 @@ const Megadrop = () => {
                   setData({ ...data, drop: 1 });
                 }}
               >
-                Community
+                Community V1
+              </div>
+              <div
+                className={
+                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
+                  (data?.drop == 2 ? " text-green-500 bg-inherit" : "")
+                }
+                onClick={() => {
+                  setData({ ...data, drop: 2 });
+                }}
+              >
+                Community V2
               </div>
             </div>
           </div>

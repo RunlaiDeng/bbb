@@ -7,12 +7,13 @@ import { buyXDCLink } from "@/config";
 import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
+import ImageUpload from "@/components/ImageUpload";
 
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
   const chainId = useChainId();
-  console.log(chainId)
+  console.log(chainId);
   useEffect(() => {
     if (chainId && chainId != 551) {
       router.push("/v1");
@@ -22,11 +23,8 @@ const Home = () => {
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
   const [data, setData] = useState({
-    dName: "Memes",
-    dSymbol: "MEMES",
-    dTotalSupply: 1000000000,
-    dDropPercent: 10,
-    drop: 0,
+    dName: "",
+    dSymbol: "",
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -62,6 +60,8 @@ const Home = () => {
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
 
+  console.log(price);
+
   const searchDropTokens = [];
 
   for (let i = 0; i < dropTokenLength; i++) {
@@ -94,18 +94,6 @@ const Home = () => {
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
-
-  const approve = {
-    buttonName: "Approve",
-    data: {
-      ...bbb,
-      functionName: "approve",
-      args: [mbbb?.address, MAX_UINT256],
-    },
-    callback: () => {
-      refetch();
-    },
-  };
 
   const drop = {
     buttonName: "Confirm",
@@ -194,7 +182,8 @@ const Home = () => {
             {dropTokens?.map((item, index) => {
               console.log(item);
               const logo = logos[item?.token];
-
+              const percent =
+                (100 * item?.xdcAmount?.toString()) / item?.maxXdc?.toString();
               return (
                 <div
                   className="card card-side bg-slate-100 cursor-pointer"
@@ -220,10 +209,20 @@ const Home = () => {
                     />
                   </figure>
                   <div className="card-body text-xs">
-                    <div>Market Cap: 0</div>
-                    <div>
-                      {item?.name} ({item?.symbol})
+                    <div>Created by {"..." + item?.deployer?.substr(36)}</div>
+                    <div className="text-xl">
+                      {item?.name} (${item?.symbol})
                     </div>
+                    <div>
+                      <span className="opacity-50"> Market Cap: </span>
+                      <span>{item?.xdcAmount?.toString() / 1e18} XDC </span>
+                      <span className="opacity-50"> ({percent}%)</span>
+                    </div>
+                    <progress
+                      className="progress progress-success w-56"
+                      value={percent}
+                      max="100"
+                    ></progress>
                   </div>
                 </div>
               );
@@ -243,24 +242,38 @@ const Home = () => {
             </h3>
           </div>
           <div className="text-center mt-5">
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto">
-              Name
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">
+                  Image <span className="text-green-500">*</span>
+                </span>
+              </div>
+              <ImageUpload />
+            </label>
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">
+                  Name <span className="text-green-500">*</span>
+                </span>
+              </div>
               <input
                 type="text"
-                className="grow"
-                placeholder="Memes"
+                className="input input-bordered w-full "
                 value={data?.dName}
                 onChange={(e) => {
                   setData({ ...data, dName: e.target.value });
                 }}
               />
             </label>
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Symbol
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">
+                  Symbol <span className="text-green-500">*</span>
+                </span>
+              </div>
               <input
                 type="text"
-                className="grow"
-                placeholder="MEMES"
+                className="input input-bordered w-full"
                 value={data?.dSymbol}
                 onChange={(e) => {
                   setData({ ...data, dSymbol: e.target.value });
@@ -268,6 +281,66 @@ const Home = () => {
               />
             </label>
 
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text">
+                  Token Decription <span className="text-green-500">*</span>
+                </span>
+              </div>
+              <textarea
+                className="textarea textarea-bordered h-24"
+                value={data?.dDesciption}
+                onChange={(e) => {
+                  setData({ ...data, dDesciption: e.target.value });
+                }}
+              ></textarea>
+            </label>
+
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text">Website</span>
+              </div>
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Optional"
+                value={data?.dDesciption}
+                onChange={(e) => {
+                  setData({ ...data, dDesciption: e.target.value });
+                }}
+              ></input>
+            </label>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text">Telegram</span>
+              </div>
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Optional"
+                value={data?.dDesciption}
+                onChange={(e) => {
+                  setData({ ...data, dDesciption: e.target.value });
+                }}
+              ></input>
+            </label>
+            <label className="form-control">
+              <div className="label">
+                <span className="label-text">twitter</span>
+              </div>
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Optional"
+                value={data?.dDesciption}
+                onChange={(e) => {
+                  setData({ ...data, dDesciption: e.target.value });
+                }}
+              ></input>
+            </label>
             <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
               Cost
               <input
