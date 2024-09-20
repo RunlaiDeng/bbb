@@ -73,8 +73,6 @@ const Swap = () => {
     getData();
   }, [index]);
 
-  console.log(data?.msg);
-
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: [
       {
@@ -102,8 +100,6 @@ const Swap = () => {
   const price = reads1?.[0]?.result;
   const buyTokenAmount = reads1?.[1]?.result;
   const sellXDCAmount = reads1?.[2]?.result;
-
-  console.log(price);
 
   const buy = {
     buttonName: "Place Trade",

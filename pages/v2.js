@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
-
+import rpc from "@/components/Rpc";
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -54,8 +54,6 @@ const Home = () => {
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
 
-  console.log(price);
-
   const searchDropTokens = [];
 
   for (let i = 0; i < dropTokenLength; i++) {
@@ -89,6 +87,17 @@ const Home = () => {
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
 
+  async function uploadtoServer(txHash) {
+    await rpc.addToken(
+      txHash,
+      data?.dFile,
+      data?.dDesciption,
+      data?.dWebiste,
+      data?.dTwitter,
+      data?.dTelegram
+    );
+  }
+
   const drop = {
     buttonName: "Confirm",
     data: {
@@ -97,8 +106,9 @@ const Home = () => {
       args: [data?.dName, data?.dSymbol],
       value: price,
     },
-    callback: () => {
+    callback: (confirm, txHash) => {
       refetch();
+      uploadtoServer(txHash);
       document.getElementById("dropModal").close();
     },
   };
@@ -114,6 +124,12 @@ const Home = () => {
 
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+
+  const imageUpload = {
+    callback: (file) => {
+      setData({ ...data, dFile: file });
+    },
+  };
   return (
     <>
       <div className="text-center mt-5">
@@ -174,7 +190,6 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
-              console.log(item);
               const logo = logos[item?.token];
               const xdcAmount = item?.xdcAmount;
               const percent =
@@ -251,7 +266,7 @@ const Home = () => {
                   Image <span className="text-green-500">*</span>
                 </span>
               </div>
-              <ImageUpload />
+              <ImageUpload {...imageUpload} />
             </label>
             <label className="form-control w-full">
               <div className="label">
@@ -308,9 +323,9 @@ const Home = () => {
                 type="text"
                 className="input input-bordered w-full"
                 placeholder="Optional"
-                value={data?.dDesciption}
+                value={data?.dWebiste}
                 onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
+                  setData({ ...data, dWebiste: e.target.value });
                 }}
               ></input>
             </label>
@@ -323,9 +338,9 @@ const Home = () => {
                 type="text"
                 className="input input-bordered w-full"
                 placeholder="Optional"
-                value={data?.dDesciption}
+                value={data?.dTelegram}
                 onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
+                  setData({ ...data, dTelegram: e.target.value });
                 }}
               ></input>
             </label>
@@ -338,9 +353,9 @@ const Home = () => {
                 type="text"
                 className="input input-bordered w-full"
                 placeholder="Optional"
-                value={data?.dDesciption}
+                value={data?.dTwitter}
                 onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
+                  setData({ ...data, dTwitter: e.target.value });
                 }}
               ></input>
             </label>

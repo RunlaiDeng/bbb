@@ -52,7 +52,7 @@ const WriteButton = (props) => {
 
   useEffect(() => {
     if (txSuccess) {
-      props?.callback?.(txSuccess);
+      props?.callback?.(txSuccess, hash);
       Notify.success("Transaction successful!");
     }
   }, [txSuccess]);

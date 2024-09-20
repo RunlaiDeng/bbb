@@ -1,13 +1,15 @@
 import { useState } from "react";
-
-export default function ImageUpload() {
+import rpc from "@/components/Rpc";
+export default function ImageUpload(props) {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
+        // const res = await rpc.uploadImage(file);
+        props?.callback("");
         setImage(reader.result);
       };
       reader.readAsDataURL(file);

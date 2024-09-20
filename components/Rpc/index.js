@@ -12,8 +12,46 @@ const getMsg = async (index) => {
 };
 
 const sendMsg = async (index, msg) => {
-  console.log(index, msg);
   return send("sendMsg", [index, msg]);
+};
+
+const addToken = async (
+  txHash,
+  image,
+  description,
+  website,
+  twitter,
+  telegram
+) => {
+  return send("addToken", [
+    txHash,
+    image,
+    description,
+    website,
+    twitter,
+    telegram,
+  ]);
+};
+
+const uploadImage = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const response = await fetch(rpcUrl + "/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("success:", result);
+      return rpcUrl + "/uploads/" + result?.fileName;
+    } else {
+      console.error("failure:", response.statusText);
+    }
+  } catch (error) {
+    console.error("error:", error);
+  }
 };
 
 const send = async (method, params) => {
@@ -48,4 +86,6 @@ module.exports = {
   getHolders,
   getMsg,
   sendMsg,
+  uploadImage,
+  addToken,
 };
