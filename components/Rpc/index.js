@@ -32,7 +32,7 @@ const send = async (method, params) => {
       }),
     });
   } catch (e) {
-    return { error: e.message };
+    return undefined;
   }
 
   const json = await res?.json();

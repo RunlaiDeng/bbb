@@ -18,7 +18,7 @@ const CandleStickChart = (props) => {
     chartRef.current = chart;
 
     const candleSeries = chart.addCandlestickSeries();
-
+    console.log(trade);
     candleSeries.setData(trade || []);
 
     resizeObserverRef.current = new ResizeObserver((entries) => {
