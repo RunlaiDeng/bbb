@@ -449,7 +449,15 @@ const Swap = () => {
                   <div className="grid grid-cols-2">
                     <div className="text-red-500">Liquidity Moved</div>
 
-                    <Link className="btn btn-success" href={""}>
+                    <Link
+                      className="btn btn-success"
+                      href={
+                        "https://icecreamswap.com/swap?chain=xdc&outputCurrency=" +
+                        token +
+                        "&inputCurrency=XDC"
+                      }
+                      target={"_blank"}
+                    >
                       Go swap
                     </Link>
                   </div>

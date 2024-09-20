@@ -13,12 +13,6 @@ const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
   const chainId = useChainId();
-  console.log(chainId);
-  useEffect(() => {
-    if (chainId && chainId != 551) {
-      router.push("/v1");
-    }
-  }, [chainId]);
 
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
