@@ -17,7 +17,7 @@ export const submitTokenInfo =
 
 export const buyXDCLink = "https://www.bybitglobal.com/invite?ref=GLALDRY";
 
-export const rpcUrl = "http://127.0.0.1:10033";
+export const rpcUrl = "https://test-api.benybadboy.xyz";
 
 export const contracts = {
   551: {
