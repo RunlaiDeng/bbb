@@ -30,7 +30,7 @@ const Navbar = () => {
             Buy $BBB
           </Link>
 
-          <div className="dropdown dropdown-hover">
+          <div className="dropdown dropdown-hover font-black">
             <div
               tabIndex={0}
               role="button"

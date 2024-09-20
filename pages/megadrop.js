@@ -30,9 +30,10 @@ const Megadrop = () => {
 
   const bbb = contracts[chainId]?.bbb;
   const mbbb = contracts[chainId]?.mbbb;
+  const mbbbv2 = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
-  const { data: reads0, refetch } = useReadContracts({
+  const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       { ...bbb, functionName: "allowance", args: [address, mbbb?.address] },
       {
@@ -51,6 +52,11 @@ const Megadrop = () => {
         functionName: "price",
         args: [],
       },
+      {
+        ...mbbbv2,
+        functionName: "getDropTokenLength",
+        args: [],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -60,6 +66,7 @@ const Megadrop = () => {
   const bbbBalance = reads0?.[2]?.result;
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
+  const dropTokenLengthV2 = reads0?.[5]?.result;
 
   const searchDropTokens = [];
 
@@ -111,6 +118,64 @@ const Megadrop = () => {
   });
 
   const claimed = reads3?.map((item) => item?.result);
+
+  const searchDropTokensV2 = [];
+
+  for (let i = 0; i < dropTokenLengthV2; i++) {
+    searchDropTokensV2.push({
+      ...mbbbv2,
+      functionName: "getDropToken",
+      args: [i + 1],
+    });
+  }
+
+  const { data: reads4, refetch: refetch1 } = useReadContracts({
+    contracts: searchDropTokensV2,
+    multicallAddress: mutilCall?.address,
+  });
+
+  const dropTokensV2 = reads4?.map((item) => item?.result);
+
+  const searchClaimAmtV2 = [];
+
+  for (let i = 0; i < dropTokenLengthV2; i++) {
+    searchClaimAmtV2.push({
+      ...mbbbv2,
+      functionName: "getClaimAmt",
+      args: [i + 1, address],
+    });
+  }
+
+  const { data: reads5 } = useReadContracts({
+    contracts: searchClaimAmtV2,
+    multicallAddress: mutilCall?.address,
+  });
+
+  const claimAmtsV2 = reads5?.map((item) => item?.result);
+
+  const searchClaimedV2 = [];
+
+  for (let i = 0; i < dropTokenLengthV2; i++) {
+    searchClaimedV2.push({
+      ...mbbbv2,
+      functionName: "claimed",
+      args: [address, i + 1],
+    });
+  }
+
+  const { data: reads6 } = useReadContracts({
+    contracts: searchClaimedV2,
+    multicallAddress: mutilCall?.address,
+  });
+
+  const refetch = () => {
+    refetch0();
+    refetch1();
+  };
+
+  const claimedV2 = reads6?.map((item) => item?.result);
+
+  console.log(claimedV2)
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -315,6 +380,51 @@ const Megadrop = () => {
                         <td>
                           {claimed?.[index] ||
                           claimAmts?.[index]?.toString() == 0 ? (
+                            <>Unavailable</>
+                          ) : (
+                            <WriteButton
+                              {...claim}
+                              className="btn btn-success"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                {data?.drop == 2 &&
+                  dropTokensV2?.map((item, index) => {
+                    const claim = {
+                      buttonName: "Claim",
+                      data: {
+                        ...mbbbv2,
+                        functionName: "claim",
+                        args: [index + 1, address],
+                      },
+                      callback: () => {
+                        refetch();
+                      },
+                    };
+
+                    return (
+                      <tr key={index} className="text-center">
+                        <th>{index + 1}</th>
+                        <td>
+                          <div
+                            className={`cursor-pointer tooltip ${
+                              isCopied ? "tooltip-success" : ""
+                            }`}
+                            data-tip={tooltipText}
+                            onClick={() => {
+                              handleCopyClick(item?.token);
+                            }}
+                          >
+                            {item?.symbol}
+                          </div>
+                        </td>
+                        <td>{claimAmtsV2?.[index]?.toString() / 1e18 || 0}</td>
+                        <td>
+                          {claimedV2?.[index] ||
+                          claimAmtsV2?.[index]?.toString() == 0 ? (
                             <>Unavailable</>
                           ) : (
                             <WriteButton

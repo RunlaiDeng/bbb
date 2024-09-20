@@ -81,6 +81,12 @@
         "internalType": "uint256",
         "name": "maxXdc",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "createTime",
+        "type": "uint256"
       }
     ],
     "name": "Drop",
@@ -342,6 +348,11 @@
         "internalType": "uint256",
         "name": "xdcAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "createTime",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -469,6 +480,11 @@
             "internalType": "uint256",
             "name": "xdcAmount",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createTime",
+            "type": "uint256"
           }
         ],
         "internalType": "struct BBBPumpFun.DropToken",
@@ -539,6 +555,11 @@
           {
             "internalType": "uint256",
             "name": "xdcAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createTime",
             "type": "uint256"
           }
         ],

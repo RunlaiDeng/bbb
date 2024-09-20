@@ -7,6 +7,7 @@ import LightChart from "@/components/LightChart";
 import WriteButton from "@/components/WriteButton";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import rpc from "@/components/Rpc";
+import Link from "next/link";
 
 const Swap = () => {
   const router = useRouter();
@@ -50,6 +51,7 @@ const Swap = () => {
   const index = dropToken?.index;
   const xdcAmount = dropToken?.xdcAmount;
   const removed = dropToken?.removed;
+  const maxXdc = dropToken?.maxXdc;
 
   async function getData() {
     if (index) {
@@ -99,6 +101,7 @@ const Swap = () => {
 
   const buy = {
     buttonName: "Place Trade",
+    disabled: removed,
     data: {
       ...mbbb,
       functionName: "buy",
@@ -112,6 +115,7 @@ const Swap = () => {
 
   const sell = {
     buttonName: "Place Trade",
+    disabled: removed,
     data: {
       ...mbbb,
       functionName: "sell",
@@ -137,7 +141,33 @@ const Swap = () => {
           [Go back]
         </div>
       </div>
-      <div className="m-auto mt-5 grid md:grid-cols-5 gap-2 mx-4">
+      <div className="card m-auto font-black mx-4 grid text-xs">
+        <div className="card-body">
+          <div className="text-xl">
+            {dropToken?.name} (${dropToken?.symbol})
+          </div>
+
+          <div>
+            <span className="opacity-50">Price : </span>
+
+            <span className="">{price?.toString() / 1e18 + " XDC"}</span>
+          </div>
+
+          <div>
+            <span className="opacity-50"> Total Supply : </span>
+
+            <span className="">
+              {totalSupply?.toString() / 1e18 + " " + dropToken?.symbol}
+            </span>
+          </div>
+          <div>
+            <span className="opacity-50"> Contract Address : </span>
+
+            <span className="">{dropToken?.token}</span>
+          </div>
+        </div>
+      </div>
+      <div className="m-auto grid md:grid-cols-5 gap-2 mx-4">
         <div className="md:col-span-3 font-black text-2xl text-center">
           <div className="card bg-slate-100">
             <div className="card-body">
@@ -415,37 +445,44 @@ const Swap = () => {
           <div className="card bg-slate-100 mt-2">
             <div className="card-body">
               <div className="font-black mt-4 text-left">
-                <div className="text-xl">
-                  {dropToken?.name} (${dropToken?.symbol})
-                </div>
-                <div>
-                  <span className="opacity-50">Price : </span>
+                {removed && (
+                  <div className="grid grid-cols-2">
+                    <div className="text-red-500">Liquidity Moved</div>
 
-                  <span className="">
-                    {price?.toString() / 1e18 + " XDC"}
-                  </span>
-                </div>
-                <div>
-                  <span className="opacity-50"> Cap : </span>
+                    <Link className="btn btn-success" href={""}>
+                      Go swap
+                    </Link>
+                  </div>
+                )}
+                {!removed && (
+                  <>
+                    <div>
+                      <span className="opacity-50"> Cap : </span>
 
-                  <span className="">
-                    {(removed
-                      ? (xdcAmount?.toString() * 1.2) / 1e18
-                      : xdcAmount?.toString() / 1e18) + " XDC"}
-                  </span>
-                </div>
-                <div>
-                  <span className="opacity-50"> Total Supply : </span>
-
-                  <span className="">
-                    {totalSupply?.toString() / 1e18 + " " + dropToken?.symbol}
-                  </span>
-                </div>
-                <div>
-                  <span className="opacity-50"> Contract Address : </span>
-
-                  <span className="">{dropToken?.token}</span>
-                </div>
+                      <span className="">
+                        {xdcAmount?.toString() / 1e18 + " XDC "}
+                      </span>
+                      <span className="opacity-50">
+                        ({(xdcAmount?.toString() * 100) / maxXdc?.toString()}%)
+                      </span>
+                    </div>
+                    <progress
+                      className="progress progress-success w-full"
+                      value={xdcAmount?.toString()}
+                      max={maxXdc?.toString()}
+                    ></progress>
+                    <div className="opacity-50 text-xs">
+                      There are{" "}
+                      {(maxXdc?.toString() - xdcAmount?.toString()) / 1e18}{" "}
+                      {symbol} still available for sale in the rld curve and
+                      there are {xdcAmount?.toString() / 1e18} XDC in the rld
+                      curve. When the market cap reaches{" "}
+                      {maxXdc?.toString() / 1e18 + " XDC"} all the liquidity
+                      from the rld curve will be deposited into XSwap and
+                      burned. Progression increases as the price goes up.
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

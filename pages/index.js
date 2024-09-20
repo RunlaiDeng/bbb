@@ -1,34 +1,27 @@
-import { useReadContracts, useChainId, useAccount, useBalance } from "wagmi";
+import { useReadContracts, useChainId, useAccount } from "wagmi";
 import { contracts } from "@/config";
 import WriteButton from "@/components/WriteButton";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { buyXDCLink } from "@/config";
+import { dexLink } from "@/config";
 import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
-import ImageUpload from "@/components/ImageUpload";
 
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
   const chainId = useChainId();
-  console.log(chainId);
-  useEffect(() => {
-    if (chainId && chainId != 551) {
-      router.push("/v1");
-    }
-  }, [chainId]);
-
   const { address } = useAccount();
-  const { data: balance } = useBalance({ address: address });
   const [data, setData] = useState({
-    dName: "",
-    dSymbol: "",
+    dName: "Memes",
+    dSymbol: "MEMES",
+    dTotalSupply: 1000000000,
+    dDropPercent: 10,
+    drop: 0,
   });
 
   const bbb = contracts[chainId]?.bbb;
-  const mbbb = contracts[chainId]?.mbbbv2;
+  const mbbb = contracts[chainId]?.mbbb;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
   const { data: reads0, refetch } = useReadContracts({
@@ -47,7 +40,7 @@ const Home = () => {
       },
       {
         ...mbbb,
-        functionName: "deployFee",
+        functionName: "price",
         args: [],
       },
     ],
@@ -60,15 +53,13 @@ const Home = () => {
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
 
-  console.log(price);
-
   const searchDropTokens = [];
 
   for (let i = 0; i < dropTokenLength; i++) {
     searchDropTokens.push({
       ...mbbb,
       functionName: "getDropToken",
-      args: [i + 1],
+      args: [i],
     });
   }
 
@@ -89,19 +80,33 @@ const Home = () => {
     });
   }
 
-  const router = useRouter();
-
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
+
+  const approve = {
+    buttonName: "Approve",
+    data: {
+      ...bbb,
+      functionName: "approve",
+      args: [mbbb?.address, MAX_UINT256],
+    },
+    callback: () => {
+      refetch();
+    },
+  };
 
   const drop = {
     buttonName: "Confirm",
     data: {
       ...mbbb,
       functionName: "drop",
-      args: [data?.dName, data?.dSymbol],
-      value: price,
+      args: [
+        data?.dName,
+        data?.dSymbol,
+        BigInt(data?.dTotalSupply) * BigInt(1e18),
+        data?.dDropPercent,
+      ],
     },
     callback: () => {
       refetch();
@@ -116,7 +121,14 @@ const Home = () => {
     showApprove = false;
   }
 
-  const logos = {};
+  const logos = {
+    "0xF05bCACAf95EAA7f4361ff85Ce1F45533ec10295": true,
+    "0x20F179bA842d349ff789D86792B941af17509e44": true,
+    "0x34b9d4a27b93E0a128e0945ab0e2D1C49385Ec90": true,
+    "0xc430dCB2680B7E4c715d208E41Cc8Fa2fAc3F513": true,
+    "0x59A3fCCA7dA1855e4b5d82Fa2571c4726AF10218": true,
+    "0x6819AdAdeFa242427520A09d3CE13f8759d2f9b8": true,
+  };
 
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -180,22 +192,16 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {dropTokens?.map((item, index) => {
-              console.log(item);
               const logo = logos[item?.token];
-              const xdcAmount = item?.xdcAmount;
-              const percent =
-                (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
-              const removed = item?.removed;
-
-              const cap = removed
-                ? (xdcAmount?.toString() * 1.2) / 1e18
-                : xdcAmount?.toString() / 1e18;
               return (
                 <div
                   className="card card-side bg-slate-100 cursor-pointer"
                   key={index}
                   onClick={() => {
-                    router.push("/swap/" + item?.token);
+                    window.open(
+                      "https://app.xspswap.finance/swap#/tokens/xinfin/" +
+                        item?.token
+                    );
                   }}
                 >
                   <figure>
@@ -215,25 +221,10 @@ const Home = () => {
                     />
                   </figure>
                   <div className="card-body text-xs">
+                    <div>Market Cap: 0</div>
                     <div>
-                      Created by{" "}
-                      <span className="underline text-green-500">
-                        {"..." + item?.deployer?.substr(36)}
-                      </span>
+                      {item?.name} ({item?.symbol})
                     </div>
-                    <div className="text-xl">
-                      {item?.name} (${item?.symbol})
-                    </div>
-                    <div>
-                      <span className="opacity-50"> Market Cap: </span>
-                      <span>{cap} XDC </span>
-                      <span className="opacity-50"> ({percent}%)</span>
-                    </div>
-                    <progress
-                      className="progress progress-success w-56"
-                      value={percent}
-                      max="100"
-                    ></progress>
                   </div>
                 </div>
               );
@@ -253,38 +244,24 @@ const Home = () => {
             </h3>
           </div>
           <div className="text-center mt-5">
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Image <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <ImageUpload />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Name <span className="text-green-500">*</span>
-                </span>
-              </div>
+            <label className="input input-bordered flex items-center gap-2 w-full m-auto">
+              Name
               <input
                 type="text"
-                className="input input-bordered w-full "
+                className="grow"
+                placeholder="Memes"
                 value={data?.dName}
                 onChange={(e) => {
                   setData({ ...data, dName: e.target.value });
                 }}
               />
             </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Symbol <span className="text-green-500">*</span>
-                </span>
-              </div>
+            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+              Symbol
               <input
                 type="text"
-                className="input input-bordered w-full"
+                className="grow"
+                placeholder="MEMES"
                 value={data?.dSymbol}
                 onChange={(e) => {
                   setData({ ...data, dSymbol: e.target.value });
@@ -292,66 +269,56 @@ const Home = () => {
               />
             </label>
 
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">
-                  Token Decription <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <textarea
-                className="textarea textarea-bordered h-24"
-                value={data?.dDesciption}
-                onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
-                }}
-              ></textarea>
-            </label>
-
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Website</span>
-              </div>
-
+            <div className="collapse">
               <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dDesciption}
-                onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
+                type="checkbox"
+                value={data?.showOptions}
+                onClick={(e) => {
+                  setData({
+                    ...data,
+                    showOptions: e.target.checked,
+                  });
                 }}
-              ></input>
-            </label>
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Telegram</span>
+              />
+              <div className="collapse-title text-left pl-0  hover:underline text-green-500">
+                Show more options {data?.showOptions ? "↑" : "↓"}
               </div>
-
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dDesciption}
-                onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
-                }}
-              ></input>
-            </label>
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">twitter</span>
+              <div className="collapse-content pl-0">
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  Total Supply
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={data?.dTotalSupply}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (/^\d*$/.test(newValue)) {
+                        setData({ ...data, dTotalSupply: newValue });
+                      }
+                    }}
+                  />
+                  <div className="font-black">{data?.dSymbol || "MEMES"}</div>
+                </label>
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  Drop Percent
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={data?.dDropPercent}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (/^\d*$/.test(newValue) && newValue <= 100) {
+                        setData({ ...data, dDropPercent: newValue });
+                      }
+                    }}
+                  />
+                  <div className="font-black">%</div>
+                </label>
               </div>
+            </div>
 
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dDesciption}
-                onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
-                }}
-              ></input>
-            </label>
             <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
               Cost
               <input
@@ -360,20 +327,23 @@ const Home = () => {
                 placeholder={(price || 0n) / BigInt(1e18)}
                 disabled
               />
-              <div className="font-black">XDC</div>
+              <div className="font-black">BBB</div>
             </label>
           </div>
-          <div className="mt-1 text-xs">Available {balance?.formatted} XDC</div>
+          <div className="mt-1 text-xs">
+            Available {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
+          </div>
           {!bbbIsEnough && (
-            <Link
-              className="underline text-xs"
-              href={buyXDCLink}
-              target="_blank"
-            >
-              XDC is not enough ?
+            <Link className="underline text-xs" href={dexLink} target="_blank">
+              BBB is not enough ?
             </Link>
           )}
-          <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
+          {showApprove && (
+            <WriteButton {...approve} className="btn mt-5 w-full btn-success" />
+          )}
+          {!showApprove && (
+            <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
+          )}
         </div>
       </dialog>
     </>
