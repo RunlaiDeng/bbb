@@ -544,7 +544,7 @@ const Swap = () => {
                         there are {xdcAmount?.toString() / 1e18} XDC in the rld
                         curve. When the market cap reaches{" "}
                         {maxXdc?.toString() / 1e18 + " XDC"} all the liquidity
-                        from the rld curve will be deposited into XSwap and
+                        from the rld curve will be deposited into icecreamswap and
                         burned. Progression increases as the price goes up.
                       </div>
                     </>

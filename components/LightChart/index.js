@@ -11,11 +11,14 @@ const CandleStickChart = (props) => {
 
   const { trade, volume } = props; // 接收交易数据和交易量
 
+  console.log(trade);
+
   useEffect(() => {
     // 创建价格图表
     const priceChart = createChart(priceChartContainerRef.current, {
       width: priceChartContainerRef.current.clientWidth,
       height: 300,
+
       handleScroll: {
         mouseWheel: false, // 禁用鼠标滚轮
         pressedMouseMove: false, // 禁用按住鼠标移动
@@ -23,7 +26,11 @@ const CandleStickChart = (props) => {
     });
     priceChartRef.current = priceChart;
 
-    const candleSeries = priceChart.addCandlestickSeries();
+    const candleSeries = priceChart.addCandlestickSeries({
+      priceFormat: {
+        minMove: 0.000001,
+      },
+    });
     candleSeries.setData(trade || []);
 
     // 创建交易量图表
