@@ -3,39 +3,79 @@ import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 
 const CandleStickChart = (props) => {
-  const chartContainerRef = useRef();
-  const chartRef = useRef();
+  const priceChartContainerRef = useRef();
+  const volumeChartContainerRef = useRef();
+  const priceChartRef = useRef();
+  const volumeChartRef = useRef();
   const resizeObserverRef = useRef();
 
-  const trade = props?.trade;
+  const { trade, volume } = props; // 接收交易数据和交易量
 
   useEffect(() => {
-    // 创建图表
-    const chart = createChart(chartContainerRef.current, {
-      width: chartContainerRef.current.clientWidth,
-      height: 400,
+    // 创建价格图表
+    const priceChart = createChart(priceChartContainerRef.current, {
+      width: priceChartContainerRef.current.clientWidth,
+      height: 300,
+      handleScroll: {
+        mouseWheel: false, // 禁用鼠标滚轮
+        pressedMouseMove: false, // 禁用按住鼠标移动
+      },
     });
-    chartRef.current = chart;
+    priceChartRef.current = priceChart;
 
-    const candleSeries = chart.addCandlestickSeries();
-    console.log(trade);
+    const candleSeries = priceChart.addCandlestickSeries();
     candleSeries.setData(trade || []);
 
+    // 创建交易量图表
+    const volumeChart = createChart(volumeChartContainerRef.current, {
+      width: volumeChartContainerRef.current.clientWidth,
+      height: 100,
+      layout: {
+        backgroundColor: "#ffffff",
+        textColor: "#000000",
+      },
+      handleScroll: {
+        mouseWheel: false, // 禁用鼠标滚轮
+        pressedMouseMove: false, // 禁用按住鼠标移动
+      },
+    });
+    volumeChartRef.current = volumeChart;
+
+    // 添加交易量柱状图系列
+    const volumeSeries = volumeChart.addHistogramSeries({
+      upColor: "green",
+      downColor: "red",
+      borderVisible: false,
+    });
+    volumeSeries.setData(volume || []);
+
+    // 监听窗口大小变化
     resizeObserverRef.current = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      chart.applyOptions({ width, height });
+      const { width } = entries[0].contentRect;
+      priceChart.applyOptions({ width });
+      volumeChart.applyOptions({ width });
     });
 
-    resizeObserverRef.current.observe(chartContainerRef.current);
+    resizeObserverRef.current.observe(priceChartContainerRef.current);
 
     return () => {
       resizeObserverRef.current.disconnect();
-      chart.remove();
+      priceChart.remove();
+      volumeChart.remove();
     };
-  }, [{ ...trade }]);
+  }, [trade, volume]); // 依赖数组中添加 trade 和 volume
 
   return (
-    <div ref={chartContainerRef} style={{ width: "100%", height: "400px" }} />
+    <div>
+      <div
+        ref={priceChartContainerRef}
+        style={{ width: "100%", height: "300px" }}
+      />
+      <div
+        ref={volumeChartContainerRef}
+        style={{ width: "100%", height: "100px" }}
+      />
+    </div>
   );
 };
 

@@ -128,7 +128,7 @@ const Swap = () => {
     const time = Number(kline?.[0]);
     const open = Number(kline?.[1]) / 1e18;
     const close = Number(kline?.[2]) / 1e18;
-    const volume = Number(kline?.[3]) / 1e18;
+    const value = Number(kline?.[3]) / 1e18;
 
     if (open > close) {
       low = open;
@@ -141,7 +141,7 @@ const Swap = () => {
       time,
       open,
       close,
-      volume,
+      value,
       high,
       low,
     };
@@ -149,6 +149,7 @@ const Swap = () => {
 
   const trade = {
     trade: klineMap,
+    volume: klineMap,
   };
 
   const buy = {
