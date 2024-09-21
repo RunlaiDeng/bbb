@@ -15,6 +15,10 @@ const sendMsg = async (index, msg) => {
   return send("sendMsg", [index, msg]);
 };
 
+const findTokens = async () => {
+  return send("findTokens", []);
+};
+
 const addToken = async (
   txHash,
   image,
@@ -88,4 +92,5 @@ module.exports = {
   sendMsg,
   uploadImage,
   addToken,
+  findTokens,
 };

@@ -25,7 +25,23 @@ const Home = () => {
   const mbbb = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
-  const { data: reads0, refetch } = useReadContracts({
+  const [mount, setMount] = useState(false);
+
+  async function fetchData() {
+    const tokens = await rpc.findTokens();
+    const tokensMap = tokens.reduce((map, token) => {
+      map[token.index] = token;
+      return map;
+    }, {});
+    setData({ ...data, tokensMap });
+    setMount(true);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [mount]);
+
+  const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       { ...bbb, functionName: "allowance", args: [address, mbbb?.address] },
       {
@@ -47,6 +63,11 @@ const Home = () => {
     ],
     multicallAddress: mutilCall?.address,
   });
+
+  const refetch = () => {
+    fetchData();
+    refetch0();
+  };
 
   const allowance = reads0?.[0]?.result;
   const bbbBalance = reads0?.[2]?.result;
@@ -106,10 +127,10 @@ const Home = () => {
       args: [data?.dName, data?.dSymbol],
       value: price,
     },
-    callback: (confirm, txHash) => {
-      refetch();
-      uploadtoServer(txHash);
+    callback: async (confirm, txHash) => {
+      await uploadtoServer(txHash);
       document.getElementById("dropModal").close();
+      refetch();
     },
   };
 
@@ -130,260 +151,344 @@ const Home = () => {
       setData({ ...data, dFile: file });
     },
   };
+
+  const tokensMap = data?.tokensMap;
   return (
-    <>
-      <div className="text-center mt-5">
-        <div
-          className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
-          onClick={() => {
-            if (!isConnected) {
-              openConnectModal();
-            } else {
-              document.getElementById("dropModal").showModal();
-            }
-          }}
-        >
-          [Start a new token]
-        </div>
-      </div>
-
-      <div className="w-96 m-auto mt-5 grid grid-cols-5 gap-2">
-        <label className="input input-bordered flex items-center gap-2 col-span-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="h-4 w-4 opacity-70"
+    mount && (
+      <>
+        <div className="text-center mt-5">
+          <div
+            className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
+            onClick={() => {
+              if (!isConnected) {
+                openConnectModal();
+              } else {
+                document.getElementById("dropModal").showModal();
+              }
+            }}
           >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
-          <input
-            type="text"
-            id="search"
-            className="grow"
-            placeholder="search for token"
-          />
-        </label>
-        <div
-          className="btn btn-success w-max m-auto col-span-1"
-          onClick={() => {
-            document.getElementById("search").value;
-            setData({
-              ...data,
-              search: document.getElementById("search").value,
-            });
-          }}
-        >
-          Search
-        </div>
-      </div>
-
-      <div className="card m-auto md:w-full w-96">
-        <div className="card-body font-black">
-          <div className="grid grid-cols-2">
-            <div className="">Terminal</div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {dropTokens?.map((item, index) => {
-              const logo = logos[item?.token];
-              const xdcAmount = item?.xdcAmount;
-              const percent =
-                (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
-              const removed = item?.removed;
-
-              const cap = xdcAmount?.toString() / 1e18;
-              return (
-                <div
-                  className="card card-side bg-slate-100 cursor-pointer"
-                  key={index}
-                  onClick={() => {
-                    router.push("/swap/" + item?.token);
-                  }}
-                >
-                  <figure>
-                    <Image
-                      height={100}
-                      width={100}
-                      src={
-                        logo ? "/" + item?.token + ".png" : "/didntupload.png"
-                      }
-                      alt={item?.name}
-                      className="ml-10 "
-                      style={{
-                        objectFit: "contain",
-                        width: "75px",
-                        height: "75px",
-                      }}
-                    />
-                  </figure>
-                  <div className="card-body text-xs">
-                    <div>
-                      Created by{" "}
-                      <span className="underline text-green-500">
-                        {"..." + item?.deployer?.substr(36)}
-                      </span>
-                    </div>
-                    <div className="text-xl">
-                      {item?.name} (${item?.symbol})
-                    </div>
-                    <div>
-                      <span className="opacity-50"> Market Cap: </span>
-                      <span>{cap} XDC </span>
-                      <span className="opacity-50"> ({percent}%)</span>
-                    </div>
-                    <progress
-                      className="progress progress-success w-56"
-                      value={percent}
-                      max="100"
-                    ></progress>
-                  </div>
-                </div>
-              );
-            })}
+            [Start a new token]
           </div>
         </div>
-      </div>
 
-      <dialog id="dropModal" className="modal font-black">
-        <div className="modal-box">
-          <div className="grid grid-cols-3">
-            <form method="dialog">
-              <button className="btn">X</button>
-            </form>
-            <h3 className="font-bold text-lg text-center mt-2">
-              Start a new token
-            </h3>
-          </div>
-          <div className="text-center mt-5">
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Image <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <ImageUpload {...imageUpload} />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Name <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <input
-                type="text"
-                className="input input-bordered w-full "
-                value={data?.dName}
-                onChange={(e) => {
-                  setData({ ...data, dName: e.target.value });
-                }}
-              />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Symbol <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                value={data?.dSymbol}
-                onChange={(e) => {
-                  setData({ ...data, dSymbol: e.target.value });
-                }}
-              />
-            </label>
-
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">
-                  Token Decription <span className="text-green-500">*</span>
-                </span>
-              </div>
-              <textarea
-                className="textarea textarea-bordered h-24"
-                value={data?.dDesciption}
-                onChange={(e) => {
-                  setData({ ...data, dDesciption: e.target.value });
-                }}
-              ></textarea>
-            </label>
-
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Website</span>
-              </div>
-
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dWebiste}
-                onChange={(e) => {
-                  setData({ ...data, dWebiste: e.target.value });
-                }}
-              ></input>
-            </label>
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">Telegram</span>
-              </div>
-
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dTelegram}
-                onChange={(e) => {
-                  setData({ ...data, dTelegram: e.target.value });
-                }}
-              ></input>
-            </label>
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">twitter</span>
-              </div>
-
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                placeholder="Optional"
-                value={data?.dTwitter}
-                onChange={(e) => {
-                  setData({ ...data, dTwitter: e.target.value });
-                }}
-              ></input>
-            </label>
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Cost
-              <input
-                type="text"
-                className="grow"
-                placeholder={(price || 0n) / BigInt(1e18)}
-                disabled
-              />
-              <div className="font-black">XDC</div>
-            </label>
-          </div>
-          <div className="mt-1 text-xs">Available {balance?.formatted} XDC</div>
-          {!bbbIsEnough && (
-            <Link
-              className="underline text-xs"
-              href={buyXDCLink}
-              target="_blank"
+        <div className="w-96 m-auto mt-5 grid grid-cols-5 gap-2">
+          <label className="input input-bordered flex items-center gap-2 col-span-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              className="h-4 w-4 opacity-70"
             >
-              XDC is not enough ?
-            </Link>
-          )}
-          <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
+              <path
+                fillRule="evenodd"
+                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <input
+              type="text"
+              id="search"
+              className="grow"
+              placeholder="search for token"
+            />
+          </label>
+          <div
+            className="btn btn-success w-max m-auto col-span-1"
+            onClick={() => {
+              document.getElementById("search").value;
+              setData({
+                ...data,
+                search: document.getElementById("search").value,
+              });
+            }}
+          >
+            Search
+          </div>
         </div>
-      </dialog>
-    </>
+
+        <div className="card m-auto w-full">
+          <div className="card-body font-black">
+            <div className="grid grid-cols-2">
+              <div className="">Terminal</div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3  overflow-auto">
+              {dropTokens?.map((item, index) => {
+                const tokenServiceInfo = tokensMap[item?.index];
+                const logo = logos[item?.token];
+                const xdcAmount = item?.xdcAmount;
+                const percent =
+                  (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
+                const removed = item?.removed;
+
+                const cap = xdcAmount?.toString() / 1e18;
+                return (
+                  <div
+                    className="card card-side bg-slate-100 cursor-pointer hover:border-2 border-green-500"
+                    key={index}
+                    onClick={() => {
+                      router.push("/swap/" + item?.token);
+                    }}
+                  >
+                    <figure>
+                      <Image
+                        height={100}
+                        width={100}
+                        src={
+                          tokenServiceInfo?.imageUrl
+                            ? tokenServiceInfo?.imageUrl
+                            : "/didntupload.png"
+                        }
+                        alt={item?.name}
+                        className="ml-10"
+                        style={{
+                          objectFit: "contain",
+                          width: "150px",
+                          height: "150px",
+                        }}
+                      />
+                    </figure>
+                    <div className="card-body text-xs">
+                      <div className="flex gap-1">
+                        Created{" "}
+                        <span className="underline text-green-500">
+                          {"..." + item?.deployer?.substr(36)}
+                        </span>
+                        <span
+                          className="ml-2 hover:bg-green-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(tokenServiceInfo?.twitter);
+                          }}
+                        >
+                          <svg
+                            t="1726931684805"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="4003"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              d="M512 1024C794.769792 1024 1024 794.769792 1024 512 1024 229.230208 794.769792 0 512 0 229.230208 0 0 229.230208 0 512 0 794.769792 229.230208 1024 512 1024ZM343.754675 307.2 515.024998 478.534374 686.953114 307.2 723.325005 344.796877 551.521869 515.595315 722.44375 686.596864 686.118758 722.957824 515.09376 551.690624 343.754675 722.678118 307.2 686.335949 479.029683 515.275008 307.510938 344.379699 343.754675 307.2Z"
+                              fill="#272636"
+                              p-id="4004"
+                            ></path>
+                          </svg>
+                        </span>
+                        <span
+                          className="hover:bg-green-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(tokenServiceInfo?.telegram);
+                          }}
+                        >
+                          <svg
+                            t="1726931652089"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="2770"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              d="M679.424 746.861714l84.004571-395.995428c7.424-34.852571-12.580571-48.566857-35.437714-40.009143l-493.714286 190.281143c-33.718857 13.129143-33.133714 32-5.705142 40.557714l126.281142 39.424 293.156572-184.576c13.714286-9.142857 26.294857-3.986286 16.018286 5.156571l-237.129143 214.272-9.142857 130.304c13.129143 0 18.870857-5.705143 25.709714-12.580571l61.696-59.428571 128 94.281142c23.442286 13.129143 40.009143 6.290286 46.299428-21.723428zM1024 512c0 282.843429-229.156571 512-512 512S0 794.843429 0 512 229.156571 0 512 0s512 229.156571 512 512z"
+                              fill=""
+                              p-id="2771"
+                            ></path>
+                          </svg>
+                        </span>
+                        <span
+                          className="hover:bg-green-500"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(tokenServiceInfo?.website);
+                          }}
+                        >
+                          <svg
+                            t="1726931789924"
+                            class="icon"
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="7374"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              d="M694.852267 313.821867C664.917333 129.4336 594.261333 0 512.1024 0s-152.814933 129.4336-182.749867 313.821867h365.499734zM313.856 512c0 45.841067 2.491733 89.8048 6.826667 132.130133h382.634666c4.334933-42.325333 6.826667-86.289067 6.826667-132.130133s-2.491733-89.8048-6.826667-132.130133H320.682667c-4.334933 42.325333-6.826667 86.289067-6.826667 132.130133z m670.481067-198.178133A513.160533 513.160533 0 0 0 658.090667 21.469867c50.3808 69.768533 85.060267 174.865067 103.253333 292.352h223.0272zM365.909333 21.469867a512.8192 512.8192 0 0 0-326.0416 292.352H262.826667c17.954133-117.486933 52.667733-222.549333 103.048533-292.352z m640.546134 358.4h-236.885334c4.369067 43.349333 6.826667 87.722667 6.826667 132.130133 0 44.373333-2.4576 88.746667-6.826667 132.130133h236.680534c11.332267-42.325333 17.749333-86.289067 17.749333-132.130133s-6.417067-89.8048-17.544533-132.130133zM247.808 512c0-44.373333 2.4576-88.746667 6.826667-132.130133H17.749333A516.437333 516.437333 0 0 0 0 512c0 45.841067 6.621867 89.8048 17.749333 132.130133h236.6464A1397.623467 1397.623467 0 0 1 247.808 512z m81.578667 198.178133C359.253333 894.600533 429.8752 1024 512.068267 1024s152.814933-129.4336 182.749866-313.821867H329.352533z m328.9088 292.352a513.6384 513.6384 0 0 0 326.2464-292.317866h-222.993067c-18.158933 117.4528-52.872533 222.549333-103.253333 292.317866zM39.867733 710.212267a513.160533 513.160533 0 0 0 326.2464 292.317866c-50.3808-69.768533-85.060267-174.865067-103.253333-292.317866H39.867733z"
+                              fill="#373537"
+                              p-id="7375"
+                            ></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <div className="text-xl">
+                        {item?.name} (${item?.symbol})
+                      </div>
+                      <div className="opacity-50">
+                        {tokenServiceInfo?.description}
+                      </div>
+                      <div>
+                        <span className="opacity-50"> Market Cap: </span>
+                        <span>{cap} XDC </span>
+                        <span className="opacity-50"> ({percent}%)</span>
+                      </div>
+                      <progress
+                        className="progress progress-success w-full"
+                        value={percent}
+                        max="100"
+                      ></progress>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <dialog id="dropModal" className="modal font-black">
+          <div className="modal-box">
+            <div className="grid grid-cols-3">
+              <form method="dialog">
+                <button className="btn">X</button>
+              </form>
+              <h3 className="font-bold text-lg text-center mt-2">
+                Start a new token
+              </h3>
+            </div>
+            <div className="text-center mt-5">
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Image <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <ImageUpload {...imageUpload} />
+              </label>
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Name <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="input input-bordered w-full "
+                  value={data?.dName}
+                  onChange={(e) => {
+                    setData({ ...data, dName: e.target.value });
+                  }}
+                />
+              </label>
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Symbol <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  value={data?.dSymbol}
+                  onChange={(e) => {
+                    setData({ ...data, dSymbol: e.target.value });
+                  }}
+                />
+              </label>
+
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">
+                    Token Decription <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <textarea
+                  className="textarea textarea-bordered h-24"
+                  value={data?.dDesciption}
+                  onChange={(e) => {
+                    setData({ ...data, dDesciption: e.target.value });
+                  }}
+                ></textarea>
+              </label>
+
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Website</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dWebiste}
+                  onChange={(e) => {
+                    setData({ ...data, dWebiste: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Telegram</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dTelegram}
+                  onChange={(e) => {
+                    setData({ ...data, dTelegram: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">twitter</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dTwitter}
+                  onChange={(e) => {
+                    setData({ ...data, dTwitter: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                Cost
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder={(price || 0n) / BigInt(1e18)}
+                  disabled
+                />
+                <div className="font-black">XDC</div>
+              </label>
+            </div>
+            <div className="mt-1 text-xs">
+              Available {balance?.formatted} XDC
+            </div>
+            {!bbbIsEnough && (
+              <Link
+                className="underline text-xs"
+                href={buyXDCLink}
+                target="_blank"
+              >
+                XDC is not enough ?
+              </Link>
+            )}
+            <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
+          </div>
+        </dialog>
+      </>
+    )
   );
 };
 
