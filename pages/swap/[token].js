@@ -242,7 +242,7 @@ const Swap = () => {
                 <div className="text-xl flex gap-2">
                   {name} (${symbol})
                   <span
-                    className="ml-2 hover:bg-green-500 pt-1"
+                    className="ml-2 hover:bg-green-500 pt-1 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open(twitter);
@@ -266,7 +266,7 @@ const Swap = () => {
                     </svg>
                   </span>
                   <span
-                    className="hover:bg-green-500 pt-1"
+                    className="hover:bg-green-500 pt-1 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open(telegram);
@@ -290,7 +290,7 @@ const Swap = () => {
                     </svg>
                   </span>
                   <span
-                    className="hover:bg-green-500 pt-1"
+                    className="hover:bg-green-500 pt-1 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open(website);
