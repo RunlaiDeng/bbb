@@ -1,5 +1,34 @@
 import { useState } from "react";
-import rpc from "@/components/Rpc";
+import { nanoid } from "nanoid";
+
+const uploadFile = async (file) => {
+  const fileName = nanoid() + ".png";
+  const url = "https://sg.storage.bunnycdn.com/benybadboy/" + fileName; // Replace 'REGION', 'STORAGE_ZONE_NAME' & 'FILENAME.EXTENSION'
+  const accessKey = "47c0be8a-71dd-4860-8c4f26304061-dc39-44f1";
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        AccessKey: accessKey,
+        "Content-Type": "application/octet-stream",
+        accept: "application/json",
+      },
+      body: file,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Upload successful:", result);
+      return "https://benybadboy.b-cdn.net/" + fileName;
+    } else {
+      console.error("Upload failed:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 export default function ImageUpload(props) {
   const [image, setImage] = useState(null);
 
@@ -8,8 +37,9 @@ export default function ImageUpload(props) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = async () => {
-        // const res = await rpc.uploadImage(file);
-        props?.callback("");
+        const imageUrl = await uploadFile(file);
+
+        props?.callback(imageUrl);
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
