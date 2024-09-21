@@ -188,7 +188,7 @@ const Swap = () => {
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
             onClick={() => {
-              router.push("/");
+              router.push("/v2");
             }}
           >
             [Go back]
