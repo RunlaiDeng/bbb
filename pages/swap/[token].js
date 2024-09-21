@@ -10,6 +10,27 @@ import rpc from "@/components/Rpc";
 import Link from "next/link";
 import { parseEther, formatEther } from "viem";
 
+const deleteSame = (list) => {
+  const result = [];
+
+  const timeMap = {};
+
+  list?.forEach((item) => {
+    const { time, close } = item;
+
+    if (timeMap[time]) {
+      timeMap[time].close = close;
+    } else {
+      timeMap[time] = item;
+    }
+  });
+
+  for (const key in timeMap) {
+    result.push(timeMap[key]);
+  }
+  return result;
+};
+
 const Swap = () => {
   const router = useRouter();
   const { token } = router.query;
@@ -124,7 +145,7 @@ const Swap = () => {
     contracts: searchKline,
     multicallAddress: mutilCall?.address,
   });
-  const klineMap = reads2?.map((item) => {
+  let klineMap = reads2?.map((item) => {
     const kline = item?.result;
     let high;
     let low;
@@ -152,7 +173,8 @@ const Swap = () => {
       color,
     };
   });
-
+  klineMap = deleteSame(klineMap);
+  console.log(klineMap);
   const trade = {
     trade: klineMap,
     volume: klineMap,
