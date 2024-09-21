@@ -9,6 +9,8 @@ import ERC20ABI from "@/abi/ERC20ABI.json";
 import rpc from "@/components/Rpc";
 import Link from "next/link";
 import { parseEther, formatEther } from "viem";
+import ImageUpload from "@/components/ImageUpload";
+import { buyXDCLink } from "@/config";
 
 const deleteSame = (list) => {
   const result = [];
@@ -75,6 +77,7 @@ const Swap = () => {
   const tokenBalance = reads0?.[1]?.result || 0n;
   const totalSupply = reads0?.[2]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
+  const name = dropToken?.name;
   const symbol = dropToken?.symbol;
   const index = dropToken?.index;
   const xdcAmount = dropToken?.xdcAmount;
@@ -82,6 +85,10 @@ const Swap = () => {
   const maxXdc = dropToken?.maxXdc;
   const imageUrl = dropToken?.imageUrl;
   const description = dropToken?.description;
+  const deployer = dropToken?.deployer;
+  const website = dropToken?.website;
+  const telegram = dropToken?.telegram;
+  const twitter = dropToken?.twitter;
 
   async function getData() {
     if (index) {
@@ -212,6 +219,8 @@ const Swap = () => {
 
   console.log(xdcAmount);
 
+  const update = {};
+
   return (
     mount && (
       <>
@@ -231,12 +240,12 @@ const Swap = () => {
               <Image height={100} width={100} src={imageUrl} alt={""} />
               <div>
                 <div className="text-xl flex gap-2">
-                  {dropToken?.name} (${dropToken?.symbol})
+                  {name} (${symbol})
                   <span
                     className="ml-2 hover:bg-green-500 pt-1"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(item?.twitter);
+                      window.open(twitter);
                     }}
                   >
                     <svg
@@ -260,7 +269,7 @@ const Swap = () => {
                     className="hover:bg-green-500 pt-1"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(item?.telegram);
+                      window.open(telegram);
                     }}
                   >
                     <svg
@@ -284,7 +293,7 @@ const Swap = () => {
                     className="hover:bg-green-500 pt-1"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.open(item?.website);
+                      window.open(website);
                     }}
                   >
                     <svg
@@ -304,6 +313,9 @@ const Swap = () => {
                       ></path>
                     </svg>
                   </span>
+                  {address == deployer && (
+                    <div className="btn btn-xs btn-success">update</div>
+                  )}
                 </div>
                 <div>
                   <span className="opacity-50"> Contract Address : </span>
@@ -668,6 +680,8 @@ const Swap = () => {
                         {formatEther(maxXdc || 0n) + " XDC"} all the liquidity
                         from the rld curve will be deposited into icecreamswap
                         and burned. Progression increases as the price goes up.
+                        After removing liquidity, the Megadrop Staker is
+                        snapshot and receives 2% of the token supply.
                       </div>
                     </>
                   )}
@@ -702,6 +716,137 @@ const Swap = () => {
             </div>
           </div>
         </div>
+
+        <dialog id="dropModal" className="modal font-black">
+          <div className="modal-box">
+            <div className="grid grid-cols-3">
+              <form method="dialog">
+                <button className="btn">X</button>
+              </form>
+              <h3 className="font-bold text-lg text-center mt-2">
+                Upadate token
+              </h3>
+            </div>
+            <div className="text-center mt-5">
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Image <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <ImageUpload />
+              </label>
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Name <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="input input-bordered w-full "
+                  value={name}
+                />
+              </label>
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">
+                    Symbol <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  value={symbol}
+                />
+              </label>
+
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">
+                    Token Decription <span className="text-green-500">*</span>
+                  </span>
+                </div>
+                <textarea
+                  className="textarea textarea-bordered h-24"
+                  value={data?.dDesciption}
+                  onChange={(e) => {
+                    setData({ ...data, dDesciption: e.target.value });
+                  }}
+                ></textarea>
+              </label>
+
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Website</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dWebiste}
+                  onChange={(e) => {
+                    setData({ ...data, dWebiste: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">Telegram</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dTelegram}
+                  onChange={(e) => {
+                    setData({ ...data, dTelegram: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="form-control">
+                <div className="label">
+                  <span className="label-text">twitter</span>
+                </div>
+
+                <input
+                  type="text"
+                  className="input input-bordered w-full"
+                  placeholder="Optional"
+                  value={data?.dTwitter}
+                  onChange={(e) => {
+                    setData({ ...data, dTwitter: e.target.value });
+                  }}
+                ></input>
+              </label>
+              <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                Cost
+                <input
+                  type="text"
+                  className="grow"
+                  placeholder={(price || 0n) / BigInt(1e18)}
+                  disabled
+                />
+                <div className="font-black">XDC</div>
+              </label>
+            </div>
+            <div className="mt-1 text-xs">
+              Available {balance?.formatted} XDC
+            </div>
+            {
+              <Link
+                className="underline text-xs"
+                href={buyXDCLink}
+                target="_blank"
+              >
+                XDC is not enough ?
+              </Link>
+            }
+            <WriteButton {...update} className="btn mt-5 w-full btn-success" />
+          </div>
+        </dialog>
       </>
     )
   );
