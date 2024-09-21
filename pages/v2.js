@@ -102,16 +102,6 @@ const Home = () => {
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
 
-  async function uploadtoServer(txHash) {
-    await rpc.addToken(
-      txHash,
-      data?.dFile,
-      data?.dDesciption,
-      data?.dWebiste,
-      data?.dTwitter,
-      data?.dTelegram
-    );
-  }
 
   const drop = {
     buttonName: "Confirm",
@@ -142,7 +132,6 @@ const Home = () => {
     showApprove = false;
   }
 
-  const logos = {};
 
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -153,7 +142,6 @@ const Home = () => {
     },
   };
 
-  const tokensMap = data?.tokensMap;
   return (
     mount && (
       <>

@@ -8,6 +8,7 @@ import WriteButton from "@/components/WriteButton";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import rpc from "@/components/Rpc";
 import Link from "next/link";
+import { parseEther, formatEther } from "viem";
 
 const Swap = () => {
   const router = useRouter();
@@ -58,6 +59,8 @@ const Swap = () => {
   const xdcAmount = dropToken?.xdcAmount;
   const removed = dropToken?.removed;
   const maxXdc = dropToken?.maxXdc;
+  const imageUrl = dropToken?.imageUrl;
+  const description = dropToken?.description;
 
   async function getData() {
     if (index) {
@@ -125,14 +128,16 @@ const Swap = () => {
     const kline = item?.result;
     let high;
     let low;
+    let color;
     const time = Number(kline?.[0]);
-    const open = Number(kline?.[1]) / 1e18;
-    const close = Number(kline?.[2]) / 1e18;
-    const value = Number(kline?.[3]) / 1e18;
+    const open = Number(formatEther(kline?.[1]));
+    const close = Number(formatEther(kline?.[2]));
+    const value = Number(formatEther(kline?.[3]));
 
     if (open > close) {
       low = open;
       high = close;
+      color = "red";
     } else {
       low = close;
       high = open;
@@ -144,6 +149,7 @@ const Swap = () => {
       value,
       high,
       low,
+      color,
     };
   });
 
@@ -182,6 +188,8 @@ const Swap = () => {
   const holders = data?.holders;
   const msg = data?.msg;
 
+  console.log(xdcAmount);
+
   return (
     mount && (
       <>
@@ -197,27 +205,102 @@ const Swap = () => {
         </div>
         <div className="card m-auto font-black mx-4 grid text-xs">
           <div className="card-body">
-            <div className="text-xl">
-              {dropToken?.name} (${dropToken?.symbol})
-            </div>
+            <div className="flex gap-4">
+              <Image height={100} width={100} src={imageUrl} alt={""} />
+              <div>
+                <div className="text-xl flex gap-2">
+                  {dropToken?.name} (${dropToken?.symbol})
+                  <span
+                    className="ml-2 hover:bg-green-500 pt-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(item?.twitter);
+                    }}
+                  >
+                    <svg
+                      t="1726931684805"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="4003"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M512 1024C794.769792 1024 1024 794.769792 1024 512 1024 229.230208 794.769792 0 512 0 229.230208 0 0 229.230208 0 512 0 794.769792 229.230208 1024 512 1024ZM343.754675 307.2 515.024998 478.534374 686.953114 307.2 723.325005 344.796877 551.521869 515.595315 722.44375 686.596864 686.118758 722.957824 515.09376 551.690624 343.754675 722.678118 307.2 686.335949 479.029683 515.275008 307.510938 344.379699 343.754675 307.2Z"
+                        fill="#272636"
+                        p-id="4004"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span
+                    className="hover:bg-green-500 pt-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(item?.telegram);
+                    }}
+                  >
+                    <svg
+                      t="1726931652089"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="2770"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M679.424 746.861714l84.004571-395.995428c7.424-34.852571-12.580571-48.566857-35.437714-40.009143l-493.714286 190.281143c-33.718857 13.129143-33.133714 32-5.705142 40.557714l126.281142 39.424 293.156572-184.576c13.714286-9.142857 26.294857-3.986286 16.018286 5.156571l-237.129143 214.272-9.142857 130.304c13.129143 0 18.870857-5.705143 25.709714-12.580571l61.696-59.428571 128 94.281142c23.442286 13.129143 40.009143 6.290286 46.299428-21.723428zM1024 512c0 282.843429-229.156571 512-512 512S0 794.843429 0 512 229.156571 0 512 0s512 229.156571 512 512z"
+                        fill=""
+                        p-id="2771"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span
+                    className="hover:bg-green-500 pt-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(item?.website);
+                    }}
+                  >
+                    <svg
+                      t="1726931789924"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="7374"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M694.852267 313.821867C664.917333 129.4336 594.261333 0 512.1024 0s-152.814933 129.4336-182.749867 313.821867h365.499734zM313.856 512c0 45.841067 2.491733 89.8048 6.826667 132.130133h382.634666c4.334933-42.325333 6.826667-86.289067 6.826667-132.130133s-2.491733-89.8048-6.826667-132.130133H320.682667c-4.334933 42.325333-6.826667 86.289067-6.826667 132.130133z m670.481067-198.178133A513.160533 513.160533 0 0 0 658.090667 21.469867c50.3808 69.768533 85.060267 174.865067 103.253333 292.352h223.0272zM365.909333 21.469867a512.8192 512.8192 0 0 0-326.0416 292.352H262.826667c17.954133-117.486933 52.667733-222.549333 103.048533-292.352z m640.546134 358.4h-236.885334c4.369067 43.349333 6.826667 87.722667 6.826667 132.130133 0 44.373333-2.4576 88.746667-6.826667 132.130133h236.680534c11.332267-42.325333 17.749333-86.289067 17.749333-132.130133s-6.417067-89.8048-17.544533-132.130133zM247.808 512c0-44.373333 2.4576-88.746667 6.826667-132.130133H17.749333A516.437333 516.437333 0 0 0 0 512c0 45.841067 6.621867 89.8048 17.749333 132.130133h236.6464A1397.623467 1397.623467 0 0 1 247.808 512z m81.578667 198.178133C359.253333 894.600533 429.8752 1024 512.068267 1024s152.814933-129.4336 182.749866-313.821867H329.352533z m328.9088 292.352a513.6384 513.6384 0 0 0 326.2464-292.317866h-222.993067c-18.158933 117.4528-52.872533 222.549333-103.253333 292.317866zM39.867733 710.212267a513.160533 513.160533 0 0 0 326.2464 292.317866c-50.3808-69.768533-85.060267-174.865067-103.253333-292.317866H39.867733z"
+                        fill="#373537"
+                        p-id="7375"
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+                <div>
+                  <span className="opacity-50"> Contract Address : </span>
 
-            <div>
-              <span className="opacity-50">Price : </span>
+                  <span className="">{dropToken?.token}</span>
+                </div>
+                <div className="opacity-50 mt-4">{description}</div>
+                <div className="flex gap-2">
+                  <span className="opacity-50">Price : </span>
 
-              <span className="">{price?.toString() / 1e18 + " XDC"}</span>
-            </div>
+                  <span className="">{formatEther(price || 0n) + " XDC"}</span>
 
-            <div>
-              <span className="opacity-50"> Total Supply : </span>
+                  <span className="opacity-50"> Total Supply : </span>
 
-              <span className="">
-                {totalSupply?.toString() / 1e18 + " " + dropToken?.symbol}
-              </span>
-            </div>
-            <div>
-              <span className="opacity-50"> Contract Address : </span>
-
-              <span className="">{dropToken?.token}</span>
+                  <span className="">
+                    {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -313,14 +396,22 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={data?.buyAmount?.toString() / 1e18}
+                        value={formatEther(data?.buyAmount || 0n)}
                         placeholder="0"
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (/^\d*\.?\d+$/.test(newValue)) {
+                          if (!newValue) {
                             setData({
                               ...data,
-                              buyAmount: BigInt(newValue * 1e18),
+                              buyAmount: BigInt(0),
+                            });
+                          }
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              buyAmount: parseEther(newValue),
                             });
                           }
                         }}
@@ -394,7 +485,7 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={buyTokenAmount?.toString() / 1e18 || 0}
+                        value={formatEther(buyTokenAmount || 0n)}
                         disabled
                       />
                       {symbol}
@@ -408,14 +499,22 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={data?.sellAmount?.toString() / 1e18}
+                        value={formatEther(data?.sellAmount || 0n)}
                         placeholder="0"
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (/^\d*\.?\d+$/.test(newValue)) {
+                          if (!newValue) {
                             setData({
                               ...data,
-                              sellAmount: BigInt(newValue * 1e18),
+                              sellAmount: BigInt(0),
+                            });
+                          }
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              sellAmount: parseEther(newValue),
                             });
                           }
                         }}
@@ -488,7 +587,7 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={sellXDCAmount?.toString() / 1e18 || 0}
+                        value={formatEther(sellXDCAmount || 0n)}
                         disabled
                       />
                       XDC
@@ -525,7 +624,7 @@ const Swap = () => {
                         <span className="opacity-50"> Cap : </span>
 
                         <span className="">
-                          {xdcAmount?.toString() / 1e18 + " XDC "}
+                          {formatEther(xdcAmount || 0n) + " XDC "}
                         </span>
                         <span className="opacity-50">
                           ({(xdcAmount?.toString() * 100) / maxXdc?.toString()}
@@ -539,13 +638,14 @@ const Swap = () => {
                       ></progress>
                       <div className="opacity-50 text-xs">
                         There are{" "}
-                        {(maxXdc?.toString() - xdcAmount?.toString()) / 1e18}{" "}
+                        {formatEther(maxXdc || 0n) -
+                          formatEther(xdcAmount || 0n)}{" "}
                         {symbol} still available for sale in the rld curve and
-                        there are {xdcAmount?.toString() / 1e18} XDC in the rld
+                        there are {formatEther(xdcAmount || 0n)} XDC in the rld
                         curve. When the market cap reaches{" "}
-                        {maxXdc?.toString() / 1e18 + " XDC"} all the liquidity
-                        from the rld curve will be deposited into icecreamswap and
-                        burned. Progression increases as the price goes up.
+                        {formatEther(maxXdc || 0n) + " XDC"} all the liquidity
+                        from the rld curve will be deposited into icecreamswap
+                        and burned. Progression increases as the price goes up.
                       </div>
                     </>
                   )}
