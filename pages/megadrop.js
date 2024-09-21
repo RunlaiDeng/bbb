@@ -33,6 +33,8 @@ const Megadrop = () => {
   const mbbbv2 = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
+  console.log(mbbb);
+
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       { ...bbb, functionName: "allowance", args: [address, mbbb?.address] },
@@ -52,11 +54,6 @@ const Megadrop = () => {
         functionName: "price",
         args: [],
       },
-      {
-        ...mbbbv2,
-        functionName: "getDropTokenLength",
-        args: [],
-      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -66,7 +63,6 @@ const Megadrop = () => {
   const bbbBalance = reads0?.[2]?.result;
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
-  const dropTokenLengthV2 = reads0?.[5]?.result;
 
   const searchDropTokens = [];
 
@@ -118,6 +114,19 @@ const Megadrop = () => {
   });
 
   const claimed = reads3?.map((item) => item?.result);
+
+  const { data: reads7 } = useReadContracts({
+    contracts: [
+      {
+        ...mbbbv2,
+        functionName: "getDropTokenLength",
+        args: [],
+      },
+    ],
+    multicallAddress: mutilCall?.address,
+  });
+
+  const dropTokenLengthV2 = reads7?.[0]?.result;
 
   const searchDropTokensV2 = [];
 
@@ -175,7 +184,7 @@ const Megadrop = () => {
 
   const claimedV2 = reads6?.map((item) => item?.result);
 
-  console.log(claimedV2)
+  console.log(claimedV2);
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
