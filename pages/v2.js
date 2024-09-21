@@ -145,7 +145,7 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="text-center mt-5">
+        <div className="text-center">
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
             onClick={() => {
