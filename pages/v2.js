@@ -28,12 +28,6 @@ const Home = () => {
   const [mount, setMount] = useState(false);
 
   async function fetchData() {
-    const tokens = await rpc.findTokens();
-    const tokensMap = tokens.reduce((map, token) => {
-      map[token.index] = token;
-      return map;
-    }, {});
-    setData({ ...data, tokensMap });
     setMount(true);
   }
 
@@ -124,13 +118,20 @@ const Home = () => {
     data: {
       ...mbbb,
       functionName: "drop",
-      args: [data?.dName, data?.dSymbol],
+      args: [
+        data?.dName,
+        data?.dSymbol,
+        data?.dFile,
+        data?.dDesciption,
+        data?.dWebiste,
+        data?.dTelegram,
+        data?.dTwitter,
+      ],
       value: price,
     },
     callback: async (confirm, txHash) => {
-      await uploadtoServer(txHash);
-      document.getElementById("dropModal").close();
       refetch();
+      document.getElementById("dropModal").close();
     },
   };
 
@@ -214,12 +215,9 @@ const Home = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3  overflow-auto">
               {dropTokens?.map((item, index) => {
-                const tokenServiceInfo = tokensMap[item?.index];
-                const logo = logos[item?.token];
                 const xdcAmount = item?.xdcAmount;
                 const percent =
                   (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
-                const removed = item?.removed;
 
                 const cap = xdcAmount?.toString() / 1e18;
                 return (
@@ -235,9 +233,7 @@ const Home = () => {
                         height={100}
                         width={100}
                         src={
-                          tokenServiceInfo?.imageUrl
-                            ? tokenServiceInfo?.imageUrl
-                            : "/didntupload.png"
+                          item?.imageUrl ? item?.imageUrl : "/didntupload.png"
                         }
                         alt={item?.name}
                         className="ml-10"
@@ -258,7 +254,7 @@ const Home = () => {
                           className="ml-2 hover:bg-green-500"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(tokenServiceInfo?.twitter);
+                            window.open(item?.twitter);
                           }}
                         >
                           <svg
@@ -282,7 +278,7 @@ const Home = () => {
                           className="hover:bg-green-500"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(tokenServiceInfo?.telegram);
+                            window.open(item?.telegram);
                           }}
                         >
                           <svg
@@ -306,7 +302,7 @@ const Home = () => {
                           className="hover:bg-green-500"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(tokenServiceInfo?.website);
+                            window.open(item?.website);
                           }}
                         >
                           <svg
@@ -331,7 +327,7 @@ const Home = () => {
                         {item?.name} (${item?.symbol})
                       </div>
                       <div className="opacity-50">
-                        {tokenServiceInfo?.description}
+                        {item?.description}
                       </div>
                       <div>
                         <span className="opacity-50"> Market Cap: </span>

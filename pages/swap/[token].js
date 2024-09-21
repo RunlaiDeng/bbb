@@ -90,6 +90,11 @@ const Swap = () => {
         functionName: "getSellAmount",
         args: [index, data?.sellAmount],
       },
+      {
+        ...mbbb,
+        functionName: "getKlineLength",
+        args: [index],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -100,6 +105,51 @@ const Swap = () => {
   const price = reads1?.[0]?.result;
   const buyTokenAmount = reads1?.[1]?.result;
   const sellXDCAmount = reads1?.[2]?.result;
+  const klineLength = reads1?.[3]?.result;
+
+  const searchKline = [];
+
+  for (let i = 0; i < klineLength; i++) {
+    searchKline.push({
+      ...mbbb,
+      functionName: "klineMap",
+      args: [index, i],
+    });
+  }
+
+  const { data: reads2, refetch: refetch2 } = useReadContracts({
+    contracts: searchKline,
+    multicallAddress: mutilCall?.address,
+  });
+  const klineMap = reads2?.map((item) => {
+    const kline = item?.result;
+    let high;
+    let low;
+    const time = Number(kline?.[0]);
+    const open = Number(kline?.[1]) / 1e18;
+    const close = Number(kline?.[2]) / 1e18;
+    const volume = Number(kline?.[3]) / 1e18;
+
+    if (open > close) {
+      low = open;
+      high = close;
+    } else {
+      low = close;
+      high = open;
+    }
+    return {
+      time,
+      open,
+      close,
+      volume,
+      high,
+      low,
+    };
+  });
+
+  const trade = {
+    trade: klineMap,
+  };
 
   const buy = {
     buttonName: "Place Trade",
@@ -174,7 +224,7 @@ const Swap = () => {
           <div className="md:col-span-3 font-black text-2xl text-center">
             <div className="card bg-slate-100">
               <div className="card-body">
-                <LightChart {...data} />
+                <LightChart {...trade} />
               </div>
             </div>
 
