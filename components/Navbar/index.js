@@ -119,7 +119,7 @@ const Navbar = () => {
             <ul className="menu bg-base-200 text-base-content min-h-full w-full p-4 font-full">
               {/* Sidebar content here */}
               <li>
-                <div>
+                <div className="flex justify-between items-center">
                   <Image
                     src={"/bbb.jpg"}
                     height={50}
@@ -130,7 +130,7 @@ const Navbar = () => {
                       router.push("/");
                     }}
                   />
-                  <span className="float-right">
+                  <div className="text-right">
                     <svg
                       t="1726993124102"
                       class="icon"
@@ -151,7 +151,7 @@ const Navbar = () => {
                         p-id="1659"
                       ></path>
                     </svg>
-                  </span>
+                  </div>
                 </div>
               </li>
               <li>

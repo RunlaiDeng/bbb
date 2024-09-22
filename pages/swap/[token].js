@@ -217,8 +217,6 @@ const Swap = () => {
   const holders = data?.holders;
   const msg = data?.msg;
 
-
-
   const update = {};
 
   return (
@@ -236,9 +234,17 @@ const Swap = () => {
         </div>
         <div className="card m-auto font-black mx-4 grid text-xs">
           <div className="card-body">
-            <div className="flex gap-4">
-              <Image height={100} width={100} src={imageUrl} alt={""} />
-              <div>
+            <div className="md:flex gap-4">
+              <figure className="h-72 w-72 md:h-36 md:w-36 overflow-hidden">
+                <Image
+                  height={400}
+                  width={400}
+                  src={imageUrl}
+                  alt={""}
+                  className="object-cover w-full h-full"
+                />
+              </figure>
+              <div className="mt-4 md:mt-0">
                 <div className="text-xl flex gap-2">
                   {name} (${symbol})
                   <span
@@ -317,18 +323,15 @@ const Swap = () => {
                     <div className="btn btn-xs btn-success">update</div>
                   )}
                 </div>
-                <div>
-                  <span className="opacity-50"> Contract Address : </span>
-
-                  <span className="">{dropToken?.token}</span>
-                </div>
-                <div className="opacity-50 mt-4">{description}</div>
+                <div className="break-all">{dropToken?.token}</div>
+                <div className="opacity-50 mt-4 break-all">{description}</div>
+          
                 <div className="flex gap-2">
-                  <span className="opacity-50">Price : </span>
+                  <span className="opacity-50">Price </span>
 
                   <span className="">{formatEther(price || 0n) + " XDC"}</span>
 
-                  <span className="opacity-50"> Total Supply : </span>
+                  <span className="opacity-50"> Total Supply </span>
 
                   <span className="">
                     {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}

@@ -319,7 +319,7 @@ const Home = () => {
                         <div className="text-xl">
                           {item?.name} (${item?.symbol})
                         </div>
-                        <div className="opacity-50 h-20 break-words overflow-y-auto">
+                        <div className="opacity-50 h-20 break-all overflow-y-auto">
                           {item?.description}
                         </div>
                         <div>
