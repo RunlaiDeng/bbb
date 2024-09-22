@@ -199,7 +199,7 @@ const Home = () => {
               <div className="">Terminal</div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3  overflow-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3  overflow-auto">
               {dropTokens?.map((item, index) => {
                 const xdcAmount = item?.xdcAmount;
                 const percent =
@@ -211,8 +211,8 @@ const Home = () => {
                     <div className="card bg-slate-100 cursor-pointer hover:border-2 border-green-500">
                       <figure>
                         <Image
-                          height={400}
-                          width={400}
+                          height={1000}
+                          width={1000}
                           src={
                             item?.imageUrl ? item?.imageUrl : "/didntupload.png"
                           }
@@ -301,7 +301,7 @@ const Home = () => {
                         <div className="text-xl">
                           {item?.name} (${item?.symbol})
                         </div>
-                        <div className="opacity-50 h-36 break-words">
+                        <div className="opacity-50 h-20 break-words overflow-y-auto">
                           {item?.description}
                         </div>
                         <div>
