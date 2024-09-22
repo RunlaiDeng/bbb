@@ -7,6 +7,8 @@ import { dexLink } from "@/config";
 const Navbar = () => {
   const router = useRouter();
 
+  const [data, setData] = useState({});
+
   return (
     <div className="navbar items-center">
       <div className="navbar-start">
@@ -83,7 +85,15 @@ const Navbar = () => {
           />
         </div>
         <div className="drawer drawer-end md:hidden">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <input
+            id="my-drawer"
+            type="checkbox"
+            className="drawer-toggle"
+            checked={data?.drawerOpen}
+            onChange={() => {
+              setData({ ...data, drawerOpen: true });
+            }}
+          />
           <div className="drawer-content">
             {/* Page content here */}
             <label
@@ -105,15 +115,45 @@ const Navbar = () => {
               </svg>
             </label>
           </div>
-          <div className="drawer-side z-50">
-            <label
-              htmlFor="my-drawer"
-              aria-label="close sidebar"
-              className="drawer-overlay"
-            ></label>
-            <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+          <div className="drawer-side z-50 font-black">
+            <ul className="menu bg-base-200 text-base-content min-h-full w-full p-4 font-full">
               {/* Sidebar content here */}
-
+              <li>
+                <div>
+                  <Image
+                    src={"/bbb.jpg"}
+                    height={50}
+                    width={50}
+                    alt=""
+                    className="rounded-full cursor-pointer"
+                    onClick={() => {
+                      router.push("/");
+                    }}
+                  />
+                  <span className="float-right">
+                    <svg
+                      t="1726993124102"
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="1658"
+                      width="20"
+                      height="20"
+                      className="float-right"
+                      onClick={(e) => {
+                        setData({ ...data, drawerOpen: false });
+                      }}
+                    >
+                      <path
+                        d="M918.4 489.6l-160-160c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l105.6 105.6L512 480c-19.2 0-32 12.8-32 32s12.8 32 32 32l307.2 0-105.6 105.6c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 12.8 9.6 22.4 9.6 9.6 0 16-3.2 22.4-9.6l160-163.2c0 0 0-3.2 3.2-3.2C931.2 518.4 931.2 499.2 918.4 489.6zM832 736c-19.2 0-32 12.8-32 32l0 64c0 19.2-12.8 32-32 32L224 864c-19.2 0-32-12.8-32-32L192 192c0-19.2 12.8-32 32-32l544 0c19.2 0 32 12.8 32 32l0 64c0 19.2 12.8 32 32 32s32-12.8 32-32L864 192c0-54.4-41.6-96-96-96L224 96C169.6 96 128 137.6 128 192l0 640c0 54.4 41.6 96 96 96l544 0c54.4 0 96-41.6 96-96l0-64C864 748.8 851.2 736 832 736z"
+                        fill="#272636"
+                        p-id="1659"
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+              </li>
               <li>
                 <Link
                   className="btn mx-1 btn-ghost hover:bg-inherit animate-shake border-2 animate-shake-border"
