@@ -252,7 +252,6 @@ const Home = () => {
                           >
                             <svg
                               t="1726931684805"
-                              
                               viewBox="0 0 1024 1024"
                               version="1.1"
                               xmlns="http://www.w3.org/2000/svg"
@@ -276,7 +275,6 @@ const Home = () => {
                           >
                             <svg
                               t="1726931652089"
-                              
                               viewBox="0 0 1024 1024"
                               version="1.1"
                               xmlns="http://www.w3.org/2000/svg"
@@ -300,7 +298,6 @@ const Home = () => {
                           >
                             <svg
                               t="1726931789924"
-                              
                               viewBox="0 0 1024 1024"
                               version="1.1"
                               xmlns="http://www.w3.org/2000/svg"
@@ -365,15 +362,18 @@ const Home = () => {
                   <span className="label-text">
                     Name <span className="text-green-500">*</span>
                   </span>
-                  <span className="text-right">{data?.dName?.length}/20</span>
+                  <span className="text-right">
+                    {data?.dName?.length || 0}/20
+                  </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full "
                   value={data?.dName}
                   onChange={(e) => {
-                    if (e.target.value?.length <= 20) {
-                      setData({ ...data, dName: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 20) {
+                      setData({ ...data, dName: newValue });
                     }
                   }}
                 />
@@ -383,15 +383,18 @@ const Home = () => {
                   <span className="label-text">
                     Symbol <span className="text-green-500">*</span>
                   </span>
-                  <span className="text-right">{data?.dSymbol?.length}/10</span>
+                  <span className="text-right">
+                    {data?.dSymbol?.length || 0}/10
+                  </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full"
                   value={data?.dSymbol}
                   onChange={(e) => {
-                    if (e.target.value?.length <= 10) {
-                      setData({ ...data, dSymbol: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 10) {
+                      setData({ ...data, dSymbol: newValue });
                     }
                   }}
                 />
@@ -403,15 +406,16 @@ const Home = () => {
                     Token Decription <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.dDesciption?.length}/256
+                    {data?.dDesciption?.length || 0}/256
                   </span>
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-24"
                   value={data?.dDesciption}
                   onChange={(e) => {
-                    if (e.target.value?.length <= 256) {
-                      setData({ ...data, dDesciption: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 256) {
+                      setData({ ...data, dDesciption: newValue });
                     }
                   }}
                 ></textarea>
@@ -420,6 +424,9 @@ const Home = () => {
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">Website</span>
+                  <span className="text-right">
+                    {data?.dWebiste?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
@@ -428,28 +435,40 @@ const Home = () => {
                   placeholder="Optional"
                   value={data?.dWebiste}
                   onChange={(e) => {
-                    setData({ ...data, dWebiste: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, dWebiste: newValue });
+                    }
                   }}
                 ></input>
               </label>
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">Telegram</span>
+                  <span className="text-right">
+                    {data?.dTelegram?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Optional"
-                  value={data?.dTelegram}
+                  value={data?.dTelegram || 0}
                   onChange={(e) => {
-                    setData({ ...data, dTelegram: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, dTelegram: newValue });
+                    }
                   }}
                 ></input>
               </label>
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">twitter</span>
+                  <span className="text-right">
+                    {data?.dTwitter?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
@@ -458,7 +477,10 @@ const Home = () => {
                   placeholder="Optional"
                   value={data?.dTwitter}
                   onChange={(e) => {
-                    setData({ ...data, dTwitter: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, dTwitter: newValue });
+                    }
                   }}
                 ></input>
               </label>

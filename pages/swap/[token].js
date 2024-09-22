@@ -851,6 +851,9 @@ const Swap = () => {
                   <span className="label-text">
                     Name <span className="text-green-500">*</span>
                   </span>
+                  <span className="text-right">
+                    {data?.name?.length || 0}/20
+                  </span>
                 </div>
                 <input
                   type="text"
@@ -863,6 +866,9 @@ const Swap = () => {
                 <div className="label">
                   <span className="label-text">
                     Symbol <span className="text-green-500">*</span>
+                  </span>
+                  <span className="text-right">
+                    {data?.symbol?.length || 0}/10
                   </span>
                 </div>
                 <input
@@ -878,12 +884,18 @@ const Swap = () => {
                   <span className="label-text">
                     Token Decription <span className="text-green-500">*</span>
                   </span>
+                  <span className="text-right">
+                    {data?.description?.length || 0}/256
+                  </span>
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-24"
                   value={data?.description}
                   onChange={(e) => {
-                    setData({ ...data, description: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, description: newValue });
+                    }
                   }}
                 ></textarea>
               </label>
@@ -891,6 +903,9 @@ const Swap = () => {
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">Website</span>
+                  <span className="text-right">
+                    {data?.website?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
@@ -899,13 +914,19 @@ const Swap = () => {
                   placeholder="Optional"
                   value={data?.website}
                   onChange={(e) => {
-                    setData({ ...data, webiste: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, website: newValue });
+                    }
                   }}
                 ></input>
               </label>
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">Telegram</span>
+                  <span className="text-right">
+                    {data?.telegram?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
@@ -914,13 +935,19 @@ const Swap = () => {
                   placeholder="Optional"
                   value={data?.telegram}
                   onChange={(e) => {
-                    setData({ ...data, telegram: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, telegram: newValue });
+                    }
                   }}
                 ></input>
               </label>
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">twitter</span>
+                  <span className="text-right">
+                    {data?.twitter?.length || 0}/64
+                  </span>
                 </div>
 
                 <input
@@ -929,7 +956,10 @@ const Swap = () => {
                   placeholder="Optional"
                   value={data?.twitter}
                   onChange={(e) => {
-                    setData({ ...data, twitter: e.target.value });
+                    const newValue = e.target.value;
+                    if (newValue?.length <= 64) {
+                      setData({ ...data, twitter: newValue });
+                    }
                   }}
                 ></input>
               </label>
