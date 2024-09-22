@@ -235,7 +235,7 @@ const Swap = () => {
         <div className="card m-auto font-black mx-4 grid text-xs break-all">
           <div className="card-body">
             <div className="md:flex gap-4">
-              <figure className="h-72 w-72 md:h-36 md:w-36 overflow-hidden">
+              <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
                 <Image
                   height={400}
                   width={400}
