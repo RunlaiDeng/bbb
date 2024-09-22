@@ -92,11 +92,11 @@ const Swap = () => {
 
   async function getData() {
     if (index) {
-      const trade = await rpc.getTrade(index?.toString());
+      // const trade = await rpc.getTrade(index?.toString());
       const holders = await rpc.getHolders(token);
       const msg = await rpc.getMsg(index?.toString());
 
-      setData({ ...data, trade, holders, msg, sendMsgContent: "" });
+      setData({ ...data, holders, msg, sendMsgContent: "" });
     }
   }
 
@@ -232,7 +232,7 @@ const Swap = () => {
             [Go back]
           </div>
         </div>
-        <div className="card m-auto font-black mx-4 grid text-xs">
+        <div className="card m-auto font-black mx-4 grid text-xs break-all">
           <div className="card-body">
             <div className="md:flex gap-4">
               <figure className="h-72 w-72 md:h-36 md:w-36 overflow-hidden">
@@ -323,17 +323,17 @@ const Swap = () => {
                     <div className="btn btn-xs btn-success">update</div>
                   )}
                 </div>
-                <div className="break-all">{dropToken?.token}</div>
-                <div className="opacity-50 mt-1 break-all h-20">{description}</div>
-          
-                <div className="flex gap-2">
+                <div>{dropToken?.token}</div>
+                <div className="opacity-50 mt-1 h-20">{description}</div>
+
+                <div className="flex gap-2 ">
                   <span className="opacity-50">Price </span>
 
-                  <span className="">{formatEther(price || 0n) + " XDC"}</span>
+                  <span>{formatEther(price || 0n) + " XDC"}</span>
 
                   <span className="opacity-50"> Total Supply </span>
 
-                  <span className="">
+                  <span>
                     {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}
                   </span>
                 </div>
@@ -691,7 +691,7 @@ const Swap = () => {
                 </div>
               </div>
             </div>
-            <div className="card bg-slate-100 mt-2 ">
+            <div className="card bg-slate-100 mt-2 break-all">
               <div className="card-body">
                 <div className="overflow-auto h-96">
                   <table className="table table-xs">
