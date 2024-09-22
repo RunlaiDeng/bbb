@@ -988,7 +988,7 @@
         "type": "string"
       }
     ],
-    "name": "uploadToken",
+    "name": "updateToken",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

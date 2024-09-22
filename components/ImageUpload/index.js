@@ -51,6 +51,10 @@ export default function ImageUpload(props) {
     setImage("");
   }, [props?.clean]);
 
+  useEffect(() => {
+    setImage(props?.image);
+  }, [props?.image]);
+
   return (
     <div className="max-w-sm mx-auto w-full">
       <label

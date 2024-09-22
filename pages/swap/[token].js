@@ -45,7 +45,6 @@ const Swap = () => {
 
   const chainId = useChainId();
   const { address } = useAccount();
-  const [data, setData] = useState({ state: "buy" });
 
   const mbbb = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
@@ -90,19 +89,35 @@ const Swap = () => {
   const telegram = dropToken?.telegram;
   const twitter = dropToken?.twitter;
 
+  const [data, setData] = useState({
+    state: "buy",
+  });
+
   async function getData() {
     if (index) {
       // const trade = await rpc.getTrade(index?.toString());
       const holders = await rpc.getHolders(token);
       const msg = await rpc.getMsg(index?.toString());
 
-      setData({ ...data, holders, msg, sendMsgContent: "" });
+      setData({
+        ...data,
+        holders,
+        msg,
+        sendMsgContent: "",
+        name,
+        symbol,
+        imageUrl,
+        description,
+        website,
+        telegram,
+        twitter,
+      });
     }
   }
 
   useEffect(() => {
     getData();
-  }, [index]);
+  }, [index, dropToken]);
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: [
@@ -217,7 +232,33 @@ const Swap = () => {
   const holders = data?.holders;
   const msg = data?.msg;
 
-  const update = {};
+  const update = {
+    buttonName: "Confirm",
+    data: {
+      ...mbbb,
+      functionName: "updateToken",
+      args: [
+        index,
+        data?.imageUrl,
+        data?.description,
+        data?.webiste,
+        data?.telegram,
+        data?.twitter,
+      ],
+    },
+    callback: () => {
+      refetch();
+      document.getElementById("updateModal").close();
+    },
+  };
+
+  const imageUpload = {
+    image: data?.imageUrl,
+    callback: (file) => {
+      setData({ ...data, imageUrl: file });
+    },
+    clean: data?.clean,
+  };
 
   return (
     mount && (
@@ -239,7 +280,7 @@ const Swap = () => {
                 <Image
                   height={400}
                   width={400}
-                  src={imageUrl}
+                  src={imageUrl || "/didntupload.png"}
                   alt={""}
                   className="object-cover w-full h-full"
                 />
@@ -256,7 +297,6 @@ const Swap = () => {
                   >
                     <svg
                       t="1726931684805"
-                      class="icon"
                       viewBox="0 0 1024 1024"
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +320,6 @@ const Swap = () => {
                   >
                     <svg
                       t="1726931652089"
-                      class="icon"
                       viewBox="0 0 1024 1024"
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -304,7 +343,6 @@ const Swap = () => {
                   >
                     <svg
                       t="1726931789924"
-                      class="icon"
                       viewBox="0 0 1024 1024"
                       version="1.1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -320,7 +358,14 @@ const Swap = () => {
                     </svg>
                   </span>
                   {address == deployer && (
-                    <div className="btn btn-xs btn-success">update</div>
+                    <div
+                      className="btn btn-xs btn-success"
+                      onClick={() => {
+                        document.getElementById("updateModal").showModal();
+                      }}
+                    >
+                      update
+                    </div>
                   )}
                 </div>
                 <div>{dropToken?.token}</div>
@@ -349,22 +394,20 @@ const Swap = () => {
               </div>
             </div>
 
-            <div className="card bg-slate-100 text-xs mt-2">
+            <div className="card bg-slate-100 text-xs mt-2 break-all">
               <div className="card-body">
                 <div className="overflow-auto h-96">
-                  {msg?.map((item) => {
+                  {msg?.map((item, index) => {
                     return (
-                      <>
-                        <div className="chat chat-start ">
-                          <div className="chat-header">
-                            {item?.ip}{" "}
-                            <time className="text-xs opacity-50">
-                              {item?.time}
-                            </time>
-                          </div>
-                          <div className="chat-bubble">{item?.msg}</div>
+                      <div className="chat chat-start" key={index}>
+                        <div className="chat-header">
+                          {item?.ip}{" "}
+                          <time className="text-xs opacity-50">
+                            {item?.time}
+                          </time>
                         </div>
-                      </>
+                        <div className="chat-bubble">{item?.msg}</div>
+                      </div>
                     );
                   })}
                 </div>
@@ -720,7 +763,7 @@ const Swap = () => {
           </div>
         </div>
 
-        <dialog id="dropModal" className="modal font-black">
+        <dialog id="updateModal" className="modal font-black">
           <div className="modal-box">
             <div className="grid grid-cols-3">
               <form method="dialog">
@@ -737,7 +780,7 @@ const Swap = () => {
                     Image <span className="text-green-500">*</span>
                   </span>
                 </div>
-                <ImageUpload />
+                <ImageUpload {...imageUpload} />
               </label>
               <label className="form-control w-full">
                 <div className="label">
@@ -748,7 +791,8 @@ const Swap = () => {
                 <input
                   type="text"
                   className="input input-bordered w-full "
-                  value={name}
+                  value={data?.name}
+                  disabled
                 />
               </label>
               <label className="form-control w-full">
@@ -760,7 +804,8 @@ const Swap = () => {
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  value={symbol}
+                  value={data?.symbol}
+                  disabled
                 />
               </label>
 
@@ -772,9 +817,9 @@ const Swap = () => {
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-24"
-                  value={data?.dDesciption}
+                  value={data?.description}
                   onChange={(e) => {
-                    setData({ ...data, dDesciption: e.target.value });
+                    setData({ ...data, description: e.target.value });
                   }}
                 ></textarea>
               </label>
@@ -788,9 +833,9 @@ const Swap = () => {
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Optional"
-                  value={data?.dWebiste}
+                  value={data?.website}
                   onChange={(e) => {
-                    setData({ ...data, dWebiste: e.target.value });
+                    setData({ ...data, webiste: e.target.value });
                   }}
                 ></input>
               </label>
@@ -803,9 +848,9 @@ const Swap = () => {
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Optional"
-                  value={data?.dTelegram}
+                  value={data?.telegram}
                   onChange={(e) => {
-                    setData({ ...data, dTelegram: e.target.value });
+                    setData({ ...data, telegram: e.target.value });
                   }}
                 ></input>
               </label>
@@ -818,9 +863,9 @@ const Swap = () => {
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Optional"
-                  value={data?.dTwitter}
+                  value={data?.twitter}
                   onChange={(e) => {
-                    setData({ ...data, dTwitter: e.target.value });
+                    setData({ ...data, twitter: e.target.value });
                   }}
                 ></input>
               </label>
