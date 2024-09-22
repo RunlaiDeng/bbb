@@ -149,7 +149,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="w-96 m-auto mt-5 grid grid-cols-5 gap-2">
+      <div className="w-72 md:w-96 m-auto mt-5 grid grid-cols-5 gap-2">
         <label className="input input-bordered flex items-center gap-2 col-span-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
