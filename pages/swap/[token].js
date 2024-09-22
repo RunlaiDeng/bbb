@@ -324,7 +324,7 @@ const Swap = () => {
                   )}
                 </div>
                 <div className="break-all">{dropToken?.token}</div>
-                <div className="opacity-50 mt-4 break-all">{description}</div>
+                <div className="opacity-50 mt-1 break-all h-20">{description}</div>
           
                 <div className="flex gap-2">
                   <span className="opacity-50">Price </span>
