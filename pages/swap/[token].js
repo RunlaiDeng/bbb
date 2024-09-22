@@ -273,7 +273,10 @@ const Swap = () => {
             [Go back]
           </div>
         </div>
-        <div className="card m-auto font-black mx-4 grid text-xs break-all">
+        <div
+          className="card m-auto font-black mx-4 grid text-xs break-all"
+          id="info"
+        >
           <div className="card-body">
             <div className="md:flex gap-4">
               <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
@@ -388,13 +391,13 @@ const Swap = () => {
         </div>
         <div className="m-auto grid md:grid-cols-5 gap-2 mx-4">
           <div className="md:col-span-3 font-black text-2xl text-center">
-            <div className="card bg-slate-100">
+            <div className="card bg-slate-100" id="chart">
               <div className="card-body">
                 <LightChart {...trade} />
               </div>
             </div>
 
-            <div className="card bg-slate-100 text-xs mt-2 break-all">
+            <div className="card bg-slate-100 text-xs mt-2 break-all" id="chat">
               <div className="card-body">
                 <div className="overflow-auto h-96">
                   {msg?.map((item, index) => {
@@ -446,7 +449,7 @@ const Swap = () => {
             </div>
           </div>
           <div className="md:col-span-2 text-center">
-            <div className="card bg-slate-100">
+            <div className="card bg-slate-100" id="swap">
               <div className="card-body font-black">
                 <div className="grid grid-cols-2 gap-2">
                   <div
@@ -734,7 +737,7 @@ const Swap = () => {
                 </div>
               </div>
             </div>
-            <div className="card bg-slate-100 mt-2 break-all">
+            <div className="card bg-slate-100 mt-2 break-all" id="holders">
               <div className="card-body">
                 <div className="overflow-auto h-96">
                   <table className="table table-xs">
@@ -762,7 +765,68 @@ const Swap = () => {
             </div>
           </div>
         </div>
-
+        <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black">
+          <li>
+            <a
+              onClick={() => {
+                const target = document.getElementById("info");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              Info
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                const target = document.getElementById("chart");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              Chart
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                const target = document.getElementById("swap");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              Swap
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                const target = document.getElementById("chat");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              Chat
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                const target = document.getElementById("holders");
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            >
+              Holders
+            </a>
+          </li>
+        </ul>
         <dialog id="updateModal" className="modal font-black">
           <div className="modal-box">
             <div className="grid grid-cols-3">
