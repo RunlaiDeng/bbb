@@ -59,6 +59,17 @@ const Home = () => {
   });
 
   const refetch = () => {
+    setData({
+      ...data,
+      dFile: "",
+      dName: "",
+      dSymbol: "",
+      dDesciption: "",
+      dWebiste: "",
+      dTelegram: "",
+      dTwitter: "",
+      clean: !data?.clean,
+    });
     fetchData();
     refetch0();
   };
@@ -138,6 +149,7 @@ const Home = () => {
     callback: (file) => {
       setData({ ...data, dFile: file });
     },
+    clean: data?.clean,
   };
 
   return (
@@ -208,19 +220,25 @@ const Home = () => {
                 const cap = xdcAmount?.toString() / 1e18;
                 return (
                   <>
-                    <div className="card bg-slate-100 cursor-pointer hover:border-2 border-green-500">
-                      <figure>
+                    <div
+                      className="card bg-slate-100 cursor-pointer hover:border-2 border-green-500"
+                      onClick={() => {
+                        router.push("/swap/" + item?.token);
+                      }}
+                    >
+                      <figure className="w-full h-64 overflow-hidden">
                         <Image
-                          height={1000}
-                          width={1000}
+                          height={400}
+                          width={400}
                           src={
                             item?.imageUrl ? item?.imageUrl : "/didntupload.png"
                           }
                           alt={item?.name}
+                          className="object-cover w-full h-full"
                         />
                       </figure>
                       <div className="card-body text-xs">
-                        <div className="flex gap-1">
+                        <div className="flex gap-2">
                           Created{" "}
                           <span className="underline text-green-500">
                             {"..." + item?.deployer?.substr(36)}
@@ -347,13 +365,16 @@ const Home = () => {
                   <span className="label-text">
                     Name <span className="text-green-500">*</span>
                   </span>
+                  <span className="text-right">{data?.dName?.length}/20</span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full "
                   value={data?.dName}
                   onChange={(e) => {
-                    setData({ ...data, dName: e.target.value });
+                    if (e.target.value?.length <= 20) {
+                      setData({ ...data, dName: e.target.value });
+                    }
                   }}
                 />
               </label>
@@ -362,13 +383,16 @@ const Home = () => {
                   <span className="label-text">
                     Symbol <span className="text-green-500">*</span>
                   </span>
+                  <span className="text-right">{data?.dSymbol?.length}/10</span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full"
                   value={data?.dSymbol}
                   onChange={(e) => {
-                    setData({ ...data, dSymbol: e.target.value });
+                    if (e.target.value?.length <= 10) {
+                      setData({ ...data, dSymbol: e.target.value });
+                    }
                   }}
                 />
               </label>
@@ -378,12 +402,17 @@ const Home = () => {
                   <span className="label-text">
                     Token Decription <span className="text-green-500">*</span>
                   </span>
+                  <span className="text-right">
+                    {data?.dDesciption?.length}/256
+                  </span>
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-24"
                   value={data?.dDesciption}
                   onChange={(e) => {
-                    setData({ ...data, dDesciption: e.target.value });
+                    if (e.target.value?.length <= 256) {
+                      setData({ ...data, dDesciption: e.target.value });
+                    }
                   }}
                 ></textarea>
               </label>

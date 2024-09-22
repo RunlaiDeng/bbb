@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
 const uploadFile = async (file) => {
   const fileName = nanoid() + ".png";
@@ -45,6 +46,10 @@ export default function ImageUpload(props) {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    setImage("");
+  }, [props?.clean]);
 
   return (
     <div className="max-w-sm mx-auto w-full">
