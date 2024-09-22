@@ -479,7 +479,11 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={formatEther(data?.buyAmount || 0n)}
+                        value={
+                          data?.buyAmount
+                            ? formatEther(data?.buyAmount)
+                            : undefined
+                        }
                         placeholder="0"
                         onChange={(e) => {
                           const newValue = e.target.value;
@@ -582,7 +586,11 @@ const Swap = () => {
                       <input
                         type="number"
                         className="grow"
-                        value={formatEther(data?.sellAmount || 0n)}
+                        value={
+                          data?.sellAmount
+                            ? formatEther(data?.sellAmount)
+                            : undefined
+                        }
                         placeholder="0"
                         onChange={(e) => {
                           const newValue = e.target.value;

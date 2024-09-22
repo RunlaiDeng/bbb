@@ -454,7 +454,7 @@ const Home = () => {
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Optional"
-                  value={data?.dTelegram || 0}
+                  value={data?.dTelegram}
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (newValue?.length <= 64) {
