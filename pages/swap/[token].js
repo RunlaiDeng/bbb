@@ -204,7 +204,7 @@ const Swap = () => {
 
   const buy = {
     buttonName: "Place Trade",
-    disabled: removed,
+    disabled: removed || !data?.buyAmount,
     data: {
       ...mbbb,
       functionName: "buy",
@@ -218,7 +218,7 @@ const Swap = () => {
 
   const sell = {
     buttonName: "Place Trade",
-    disabled: removed,
+    disabled: removed || !data?.sellAmount,
     data: {
       ...mbbb,
       functionName: "sell",
