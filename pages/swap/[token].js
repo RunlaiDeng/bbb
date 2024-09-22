@@ -181,7 +181,7 @@ const Swap = () => {
     };
   });
   klineMap = deleteSame(klineMap);
-  console.log(klineMap);
+
   const trade = {
     trade: klineMap,
     volume: klineMap,
@@ -217,7 +217,7 @@ const Swap = () => {
   const holders = data?.holders;
   const msg = data?.msg;
 
-  console.log(xdcAmount);
+
 
   const update = {};
 

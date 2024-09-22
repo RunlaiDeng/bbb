@@ -33,7 +33,7 @@ const Megadrop = () => {
   const mbbbv2 = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
-  console.log(mbbb);
+
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
@@ -184,7 +184,6 @@ const Megadrop = () => {
 
   const claimedV2 = reads6?.map((item) => item?.result);
 
-  console.log(claimedV2);
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"

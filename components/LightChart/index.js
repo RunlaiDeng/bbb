@@ -11,8 +11,6 @@ const CandleStickChart = (props) => {
 
   const { trade, volume } = props; // 接收交易数据和交易量
 
-  console.log(trade);
-
   useEffect(() => {
     // 创建价格图表
     const priceChart = createChart(priceChartContainerRef.current, {
