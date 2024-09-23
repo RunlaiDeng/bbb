@@ -9,6 +9,7 @@ import { WagmiProvider } from "wagmi";
 import { xdc } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { NotificationProvider } from "@/components/Context/notice";
 
 const xdcParentNet = {
   id: 551,
@@ -30,7 +31,7 @@ const queryClient = new QueryClient();
 const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
-  chains: [xdc,xdcParentNet],
+  chains: [xdc, xdcParentNet],
   transports: {
     [xdc.id]: http("https://rpc.xdcrpc.com"),
     [xdcParentNet.id]: http("https://devnetstats.apothem.network/devnet"),
@@ -41,15 +42,17 @@ const config = getDefaultConfig({
 const MyApp = ({ Component, pageProps }) => {
   const { locale } = useRouter();
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider locale={locale}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <NotificationProvider>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider locale={locale}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </NotificationProvider>
   );
 };
 

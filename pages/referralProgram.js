@@ -4,10 +4,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
 import copy from "copy-to-clipboard";
-import { Notify } from "notiflix/build/notiflix-notify-aio";
+
 import Link from "next/link";
+import { useNotification } from "@/components/Context/notice";
 
 const ReferralProgram = () => {
+  const { success } = useNotification();
   const [mounted, setMounted] = useState(false);
   const [data, setData] = useState({});
   const chainId = useChainId();
@@ -104,7 +106,7 @@ const ReferralProgram = () => {
                         "/?leaderAddress=" +
                         address
                     );
-                    Notify.success("Copy successful!");
+                    success("Copy successful!");
                   }}
                 >
                   <div className="text-xs">Referral Link</div>

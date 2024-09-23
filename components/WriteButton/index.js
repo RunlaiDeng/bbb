@@ -5,13 +5,15 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { useEffect, useState } from "react";
-import { Notify } from "notiflix/build/notiflix-notify-aio";
+
 import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 
 import lang from "../../lang/index";
+import { useNotification } from "../Context/notice";
 const WriteButton = (props) => {
+  const { success, failure } = useNotification();
   const { openConnectModal } = useConnectModal();
   const { locale, locales, defaultLocale, asPath } = useRouter();
   const addRecentTransaction = useAddRecentTransaction();
@@ -47,13 +49,13 @@ const WriteButton = (props) => {
 
   if (txError) {
     console.error(txError);
-    Notify.failure(txError.message);
+    failure(txError.message);
   }
 
   useEffect(() => {
     if (txSuccess) {
       props?.callback?.(txSuccess, hash);
-      Notify.success("Transaction successful!");
+      success("Transaction successful!");
     }
   }, [txSuccess]);
 

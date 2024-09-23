@@ -11,6 +11,8 @@ import Link from "next/link";
 import { parseEther, formatEther } from "viem";
 import ImageUpload from "@/components/ImageUpload";
 import { buyXDCLink } from "@/config";
+import copy from "copy-to-clipboard";
+import { useNotification } from "@/components/Context/notice";
 
 const deleteSame = (list) => {
   const result = [];
@@ -34,6 +36,7 @@ const deleteSame = (list) => {
 };
 
 const Swap = () => {
+  const { success, info } = useNotification();
   const router = useRouter();
   const { token } = router.query;
 
@@ -371,7 +374,52 @@ const Swap = () => {
                     </div>
                   )}
                 </div>
-                <div>{dropToken?.token}</div>
+
+                <div className="flex gap-1">
+                  {dropToken?.token}{" "}
+                  <div
+                    className={"cursor-pointer"}
+                    onClick={() => {
+                      copy(dropToken?.token);
+                      success("copy success!");
+                    }}
+                  >
+                    <svg
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="1641"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
+                        fill="#5E6570"
+                        p-id="1642"
+                      ></path>
+                      <path
+                        d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
+                        fill="#5E6570"
+                        p-id="1643"
+                      ></path>
+                      <path
+                        d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
+                        fill="#5E6570"
+                        p-id="1644"
+                      ></path>
+                      <path
+                        d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
+                        fill="#5E6570"
+                        p-id="1645"
+                      ></path>
+                      <path
+                        d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
+                        fill="#5E6570"
+                        p-id="1646"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
                 <div className="opacity-50 mt-1 h-20">{description}</div>
 
                 <div className="flex gap-2 ">
@@ -729,16 +777,25 @@ const Swap = () => {
                       ></progress>
                       <div className="opacity-50 text-xs">
                         There are{" "}
-                        {formatEther(maxXdc || 0n) -
-                          formatEther(xdcAmount || 0n)}{" "}
-                        {symbol} still available for sale in the rld curve and
-                        there are {formatEther(xdcAmount || 0n)} XDC in the rld
-                        curve. When the market cap reaches{" "}
-                        {formatEther(maxXdc || 0n) + " XDC"} all the liquidity
-                        from the rld curve will be deposited into icecreamswap
-                        and burned. Progression increases as the price goes up.
-                        After removing liquidity, the Megadrop Staker is
-                        snapshot and receives 2% of the token supply.
+                        <span className="text-green-500">
+                          {formatEther(maxXdc || 0n) -
+                            formatEther(xdcAmount || 0n)}{" "}
+                          {symbol}
+                        </span>{" "}
+                        still available for sale in the rld curve and there are{" "}
+                        <span className="text-green-500">
+                          {formatEther(xdcAmount || 0n)} XDC
+                        </span>{" "}
+                        in the rld curve. When the market cap reaches{" "}
+                        <span className="text-green-500">
+                          {formatEther(maxXdc || 0n)} XDC
+                        </span>{" "}
+                        all the liquidity from the rld curve will be deposited
+                        into icecreamswap and burned. Progression increases as
+                        the price goes up. After removing liquidity, the
+                        Megadrop Staker is snapshot and receives{" "}
+                        <span className="text-green-500">2%</span> of the token
+                        supply.
                       </div>
                     </>
                   )}
