@@ -831,7 +831,7 @@ const Swap = () => {
             </div>
           </div>
         </div>
-        <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black">
+        <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black flex justify-between">
           <li>
             <a
               onClick={() => {

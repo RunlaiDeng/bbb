@@ -13,7 +13,7 @@ export const NotificationProvider = ({ children }) => {
 
     setTimeout(() => {
       setNotifications((notifications) => notifications.slice(1));
-    }, 1000);
+    }, 2000);
   };
 
   const success = (message) => addNotification("success", message);
