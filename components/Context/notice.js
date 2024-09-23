@@ -26,7 +26,7 @@ export const NotificationProvider = ({ children }) => {
         {notifications.map((notification, index) => {
           const type = notification.type;
           return (
-            <div key={index} className={`bg-white alert alert-${type}`}>
+            <div key={index} className={`bg-white border-2 border-green-500 alert alert-${type}`}>
               {type == "success" && (
                 <svg
                   viewBox="0 0 1024 1024"
