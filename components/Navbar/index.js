@@ -52,14 +52,7 @@ const Navbar = () => {
                   Farm
                 </Link>
               </li>
-              <li>
-                <Link
-                  href={"/referralProgram"}
-                  className="hover:text-green-500 hover:bg-inherit"
-                >
-                  Referral Program
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href={"/megadrop"}
@@ -174,14 +167,7 @@ const Navbar = () => {
                       Farm
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      href={"/referralProgram"}
-                      className="hover:text-green-500 hover:bg-inherit"
-                    >
-                      Referral Program
-                    </Link>
-                  </li>
+
                   <li>
                     <Link
                       href={"/megadrop"}

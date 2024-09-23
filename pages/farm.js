@@ -30,9 +30,14 @@ const Farm = () => {
       <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
         <div></div>
         <div className="text-center font-black mt-2">Farm</div>
-        <Link className="text-right" href="/help">
-          <button className="btn">?</button>
-        </Link>
+        <div className="text-right">
+          <Link className="btn btn-xs" href="/referralProgram">
+            Referral
+          </Link>
+          <Link className="btn btn-xs ml-1" href="/help">
+            ?
+          </Link>
+        </div>
       </div>
       {farmerList?.map((farmer, index) => {
         return <FarmCard key={index} {...farmer} />;
