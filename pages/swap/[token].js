@@ -484,10 +484,11 @@ const Swap = () => {
                   <kbd
                     className="kbd kbd-sm cursor-pointer"
                     onClick={() => {
-                      setData({ ...data, sendMsgContent: "" });
-                      rpc.sendMsg(index?.toString(), data?.sendMsgContent);
-
-                      getData();
+                      if (data?.sendMsgContent) {
+                        rpc.sendMsg(index?.toString(), data?.sendMsgContent);
+                        setData({ ...data, sendMsgContent: "" });
+                        getData();
+                      }
                     }}
                   >
                     ↑
