@@ -7,12 +7,32 @@ const getHolders = async (token) => {
   return send("getHolders", [token]);
 };
 
-const getMsg = async (index) => {
-  return send("getMsg", [index]);
+const getMsg = async (chainid, index) => {
+  return send("getMsg", [chainid, index]);
 };
 
-const sendMsg = async (index, msg) => {
-  return send("sendMsg", [index, msg]);
+const sendMsg = async (chainid, index, msg) => {
+  return send("sendMsg", [chainid, index, msg]);
+};
+const uploadFile = async (file) => {
+  const formData = new FormData(); //
+  formData.append("file", file);
+  let res;
+  try {
+    res = await fetch(rpcUrl + "/uploadFile", {
+      method: "POST",
+      body: formData,
+    });
+  } catch (e) {
+    return undefined;
+  }
+
+  const json = await res?.json();
+
+  if (json?.error) {
+    return { error: json.error };
+  }
+  return json?.["result"];
 };
 
 const send = async (method, params) => {
@@ -47,4 +67,5 @@ module.exports = {
   getHolders,
   getMsg,
   sendMsg,
+  uploadFile,
 };

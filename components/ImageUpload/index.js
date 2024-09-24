@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
+import rpc from "@/components/Rpc";
 
 const uploadFile = async (file) => {
   const fileName = nanoid() + ".png";

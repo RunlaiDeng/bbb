@@ -100,7 +100,7 @@ const Swap = () => {
     if (index) {
       // const trade = await rpc.getTrade(index?.toString());
       const holders = await rpc.getHolders(token);
-      const msg = await rpc.getMsg(index?.toString());
+      const msg = await rpc.getMsg(chainId?.toString(), index?.toString());
 
       setData({
         ...data,
@@ -475,7 +475,11 @@ const Swap = () => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         setData({ ...data, sendMsgContent: "" });
-                        rpc.sendMsg(index?.toString(), data?.sendMsgContent);
+                        rpc.sendMsg(
+                          chainId?.toString(),
+                          index?.toString(),
+                          data?.sendMsgContent
+                        );
 
                         getData();
                       }
