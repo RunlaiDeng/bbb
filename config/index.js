@@ -17,7 +17,7 @@ export const submitTokenInfo =
 
 export const buyXDCLink = "https://www.bybitglobal.com/invite?ref=GLALDRY";
 
-export const rpcUrl = "https://test-api.benybadboy.xyz";
+export const rpcUrl = "https://api.benybadboy.xyz";
 
 // export const rpcUrl = "http://127.0.0.1:10033";
 
@@ -64,6 +64,10 @@ export const contracts = {
     mbbb: {
       address: "0x37c00AE5C4b49Ab0F5fD2FFB1033588e9bC33B08",
       abi: mBBBABI,
+    },
+    mbbbv2: {
+      address: "0x3ff5ed2b7352d57790cbfE312C80cC5f97Daf103",
+      abi: mBBBV2ABI,
     },
     multicallAddress: { address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF" },
   },

@@ -113,6 +113,8 @@ const Home = () => {
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
 
+  console.log(data)
+
   const drop = {
     buttonName: "Confirm",
     data: {
