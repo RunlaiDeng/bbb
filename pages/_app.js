@@ -24,6 +24,7 @@ const xdcParentNet = {
     public: { http: ["https://devnetstats.apothem.network/devnet"] },
     default: { http: ["https://devnetstats.apothem.network/devnet"] },
   },
+  iconUrl:"/bbb.jpg"
 };
 
 const queryClient = new QueryClient();

@@ -175,10 +175,10 @@ const Swap = () => {
     let high;
     let low;
     let color;
-    const time = Number(kline?.[0]);
-    const open = Number(formatEther(kline?.[1]));
-    const close = Number(formatEther(kline?.[2]));
-    const value = Number(formatEther(kline?.[3]));
+    const time = Number(kline?.[0] || 0);
+    const open = Number(formatEther(kline?.[1] || 0));
+    const close = Number(formatEther(kline?.[2] || 0));
+    const value = Number(formatEther(kline?.[3] || 0));
 
     if (open > close) {
       low = open;
