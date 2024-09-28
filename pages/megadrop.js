@@ -455,7 +455,7 @@ const Megadrop = () => {
             <form method="dialog">
               <button className="btn">X</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Deposit BBB</h3>
+            <h3 className="font-bold text-lg text-center mt-2">Stake BBB</h3>
           </div>
 
           <div className="text-center mt-5">

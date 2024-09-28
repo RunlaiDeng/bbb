@@ -42,11 +42,6 @@
   animation: shake 0.3s infinite, ranbow 5s linear infinite;
 }
 
-.background-svg {
-  width: 100%;
-  height: 100%;
-  background-image: url('/bg.svg');
-  background-size: auto; /* 保持图片原有大小 */
-  background-repeat: repeat; /* 使图片重复 */
-  background-position: top left; /* 确保从左上角开始重复 */
+.web3modal-modal-lightbox {
+  z-index: 50 !important;
 }
