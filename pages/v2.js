@@ -37,13 +37,6 @@ const Home = () => {
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
-      { ...bbb, functionName: "allowance", args: [address, mbbb?.address] },
-      {
-        ...mbbb,
-        functionName: "balanceOf",
-        args: [address],
-      },
-      { ...bbb, functionName: "balanceOf", args: [address] },
       {
         ...mbbb,
         functionName: "getDropTokenLength",
@@ -52,6 +45,11 @@ const Home = () => {
       {
         ...mbbb,
         functionName: "deployFee",
+        args: [],
+      },
+      {
+        ...mbbb,
+        functionName: "getValues",
         args: [],
       },
     ],
@@ -72,25 +70,25 @@ const Home = () => {
     });
     fetchData();
     refetch0();
+    refetch1();
   };
 
-  const allowance = reads0?.[0]?.result;
-  const bbbBalance = reads0?.[2]?.result;
+  const dropTokenLength = reads0?.[0]?.result;
 
-  const dropTokenLength = reads0?.[3]?.result;
-  const price = reads0?.[4]?.result;
+  const price = reads0?.[1]?.result;
+  const values = reads0?.[2].result;
 
-  const searchDropTokens = [];
+  let searchDropTokens = [];
 
-  for (let i = 0; i < dropTokenLength; i++) {
+  for (let i = dropTokenLength?.toString() - 1; i >= 0; i--) {
     searchDropTokens.push({
       ...mbbb,
       functionName: "getDropToken",
-      args: [i + 1],
+      args: [values?.[i]],
     });
   }
 
-  const { data: reads1 } = useReadContracts({
+  const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: searchDropTokens,
     multicallAddress: mutilCall?.address,
   });
@@ -112,8 +110,6 @@ const Home = () => {
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
-
-  console.log(data)
 
   const drop = {
     buttonName: "Confirm",
@@ -139,11 +135,6 @@ const Home = () => {
 
   const bbbIsEnough = false;
 
-  let showApprove = true;
-  if (allowance && allowance > (data?.value || 0)) {
-    showApprove = false;
-  }
-
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
 
@@ -153,6 +144,15 @@ const Home = () => {
     },
     clean: data?.clean,
   };
+
+  // useEffect(() => {
+  //   if (dropTokens.length > 0) {
+  //     setHighlightFirst(true);
+
+  //     const timeout = setTimeout(() => setHighlightFirst(false), 5000);
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [dropTokens]);
 
   return (
     mount && (
@@ -213,7 +213,7 @@ const Home = () => {
               <div className="">Terminal</div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3  overflow-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3 overflow-auto px-4">
               {dropTokens?.map((item, index) => {
                 const xdcAmount = item?.xdcAmount;
                 const percent =
@@ -223,10 +223,14 @@ const Home = () => {
                 return (
                   <>
                     <div
-                      className="card bg-slate-100 cursor-pointer hover:border-2 border-green-500"
+                      className={
+                        "card cursor-pointer hover:border-2 border-green-500 bg-slate-100 " +
+                        (index == 0 && "animate-shake-border border-4")
+                      }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
                       }}
+                      key={item?.index}
                     >
                       <figure className="w-full h-64 overflow-hidden">
                         <Image
