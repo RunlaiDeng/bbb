@@ -163,6 +163,9 @@ const Navbar = () => {
                     <Link
                       href={"/farm"}
                       className="hover:text-green-500 hover:bg-inherit"
+                      onClick={(e) => {
+                        setData({ ...data, drawerOpen: false });
+                      }}
                     >
                       Farm
                     </Link>
@@ -172,6 +175,9 @@ const Navbar = () => {
                     <Link
                       href={"/megadrop"}
                       className="hover:text-green-500 hover:bg-inherit"
+                      onClick={(e) => {
+                        setData({ ...data, drawerOpen: false });
+                      }}
                     >
                       Megadrop
                     </Link>
