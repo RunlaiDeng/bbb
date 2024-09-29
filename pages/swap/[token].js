@@ -752,7 +752,7 @@ const Swap = () => {
                       <Link
                         className="btn btn-success"
                         href={
-                          "https://icecreamswap.com/swap?chain=xdc&outputCurrency=" +
+                          "https://app.xspswap.finance/#/swap??chain=xdc&outputCurrency=" +
                           token +
                           "&inputCurrency=XDC"
                         }
@@ -796,7 +796,7 @@ const Swap = () => {
                           {formatEther(maxXdc || 0n)} XDC
                         </span>{" "}
                         all the liquidity from the rld curve will be deposited
-                        into icecreamswap and burned. Progression increases as
+                        into xswap and burned. Progression increases as
                         the price goes up. After removing liquidity, the
                         Megadrop Staker is snapshot and receives{" "}
                         <span className="text-green-500">2%</span> of the token
