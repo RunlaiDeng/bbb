@@ -41,7 +41,3 @@
 .animate-shake-border {
   animation: shake 0.3s infinite, ranbow 5s linear infinite;
 }
-
-.web3modal-modal-lightbox {
-  z-index: 50 !important;
-}

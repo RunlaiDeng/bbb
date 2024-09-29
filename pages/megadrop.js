@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 const Megadrop = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -32,8 +33,6 @@ const Megadrop = () => {
   const mbbb = contracts[chainId]?.mbbb;
   const mbbbv2 = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
-
-
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
@@ -184,7 +183,6 @@ const Megadrop = () => {
 
   const claimedV2 = reads6?.map((item) => item?.result);
 
-
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
@@ -252,6 +250,10 @@ const Megadrop = () => {
     showApprove = false;
   }
 
+  const { isConnected } = useAccount();
+
+  const { openConnectModal } = useConnectModal();
+
   return (
     <>
       <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
@@ -272,17 +274,25 @@ const Megadrop = () => {
           <div className="grid grid-cols-2 gap-2">
             <label
               className="btn font-black btn-lg mt-5 w-full btn-success m-auto"
-              onClick={() =>
-                document.getElementById("depositModal").showModal()
-              }
+              onClick={() => {
+                if (!isConnected) {
+                  openConnectModal();
+                } else {
+                  document.getElementById("depositModal").showModal();
+                }
+              }}
             >
-              Deposit
+              Stake
             </label>
             <label
               className="btn font-black btn-lg mt-5 w-full m-auto"
-              onClick={() =>
-                document.getElementById("withdrawModal").showModal()
-              }
+              onClick={() => {
+                if (!isConnected) {
+                  openConnectModal();
+                } else {
+                  document.getElementById("withdrawModal").showModal();
+                }
+              }}
             >
               Withdraw
             </label>
