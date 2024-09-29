@@ -224,7 +224,7 @@ const Home = () => {
                   <>
                     <div
                       className={
-                        "card cursor-pointer hover:border-2 border-green-500 bg-slate-100 " +
+                        "card cursor-pointer hover:border-4 border-green-500 bg-slate-100 " +
                         (index == 0 && "animate-shake-border border-4")
                       }
                       onClick={() => {

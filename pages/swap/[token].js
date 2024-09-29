@@ -533,7 +533,7 @@ const Swap = () => {
                         type="number"
                         className="grow"
                         value={
-                          data?.buyAmount
+                          data?.buyAmount >= 0
                             ? formatEther(data?.buyAmount)
                             : undefined
                         }
@@ -566,7 +566,7 @@ const Swap = () => {
                         onClick={() => {
                           setData({
                             ...data,
-                            buyAmount: 0,
+                            buyAmount: 0n,
                           });
                         }}
                       >
@@ -640,7 +640,7 @@ const Swap = () => {
                         type="number"
                         className="grow"
                         value={
-                          data?.sellAmount
+                          data?.sellAmount >= 0
                             ? formatEther(data?.sellAmount)
                             : undefined
                         }
@@ -670,7 +670,7 @@ const Swap = () => {
                         role="tab"
                         className="tab btn btn-xs"
                         onClick={() => {
-                          setData({ ...data, sellAmount: 0 });
+                          setData({ ...data, sellAmount: 0n });
                         }}
                       >
                         0%
@@ -796,9 +796,9 @@ const Swap = () => {
                           {formatEther(maxXdc || 0n)} XDC
                         </span>{" "}
                         all the liquidity from the rld curve will be deposited
-                        into xswap and burned. Progression increases as
-                        the price goes up. After removing liquidity, the
-                        Megadrop Staker is snapshot and receives{" "}
+                        into xswap and burned. Progression increases as the
+                        price goes up. After removing liquidity, the Megadrop
+                        Staker is snapshot and receives{" "}
                         <span className="text-green-500">2%</span> of the token
                         supply.
                       </div>
