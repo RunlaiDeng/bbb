@@ -302,7 +302,7 @@ const Megadrop = () => {
                 }
               }}
             >
-              Withdraw
+              Unstake
             </label>
           </div>
         </div>
