@@ -53,6 +53,11 @@ const Megadrop = () => {
         functionName: "price",
         args: [],
       },
+      {
+        ...mbbb,
+        functionName: "totalSupply",
+        args: [],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -62,6 +67,7 @@ const Megadrop = () => {
   const bbbBalance = reads0?.[2]?.result;
   const dropTokenLength = reads0?.[3]?.result;
   const price = reads0?.[4]?.result;
+  const mbbbTotalSupply = reads0?.[5]?.result;
 
   const searchDropTokens = [];
 
@@ -160,6 +166,8 @@ const Megadrop = () => {
   });
 
   const claimAmtsV2 = reads5?.map((item) => item?.result);
+
+  console.log(claimAmtsV2);
 
   const searchClaimedV2 = [];
 
@@ -352,20 +360,20 @@ const Megadrop = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto border-b rounded-none">
-            <table className="table">
-              {/* head */}
-              <thead className="text-center">
-                <tr>
-                  <th></th>
-                  <th>Memes Symbol</th>
-                  <th>Drop Amount</th>
-                  <th>Operation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.drop == 1 &&
-                  dropTokens?.map((item, index) => {
+          {data?.drop == 1 && (
+            <div className="overflow-x-auto border-b rounded-none">
+              <table className="table">
+                {/* head */}
+                <thead className="text-center">
+                  <tr>
+                    <th></th>
+                    <th>Memes Symbol</th>
+                    <th>My Airdrop Amount</th>
+                    <th>Operation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dropTokens?.map((item, index) => {
                     const claim = {
                       buttonName: "Claim",
                       data: {
@@ -409,8 +417,28 @@ const Megadrop = () => {
                       </tr>
                     );
                   })}
-                {data?.drop == 2 &&
-                  dropTokensV2?.map((item, index) => {
+                </tbody>
+              </table>
+            </div>
+          )}
+          {data?.drop == 2 && (
+            <div className="overflow-x-auto border-b rounded-none">
+              <table className="table">
+                {/* head */}
+                <thead className="text-center">
+                  <tr>
+                    <th></th>
+                    <th>Memes Symbol</th>
+                    <th>Total Airdrop Amount</th>
+                    <th>My Staked BBB Amount</th>
+                    <th>Total Staked BBB</th>
+                    <th>My Staked BBB Percentage</th>
+                    <th>My Airdrop Amount</th>
+                    <th>Operation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dropTokensV2?.map((item, index) => {
                     const claim = {
                       buttonName: "Claim",
                       data: {
@@ -422,6 +450,16 @@ const Megadrop = () => {
                         refetch();
                       },
                     };
+
+                    const amtsv2 = claimAmtsV2[index];
+
+                    const airdropAmount = amtsv2?.[0];
+                    const totalAirdropAmount = amtsv2?.[1];
+                    const stakeMbbbAmount = amtsv2?.[2];
+                    const totalStakeMbbbAmount = amtsv2?.[3];
+                    const stakePercent =
+                      (100 * stakeMbbbAmount?.toString()) /
+                      totalStakeMbbbAmount?.toString();
 
                     return (
                       <tr key={index} className="text-center">
@@ -439,10 +477,13 @@ const Megadrop = () => {
                             {item?.symbol}
                           </div>
                         </td>
-                        <td>{claimAmtsV2?.[index]?.toString() / 1e18 || 0}</td>
+                        <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
+                        <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                        <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                        <td>{stakePercent?.toString() || 0} %</td>
+                        <td>{airdropAmount?.toString() / 1e18 || 0}</td>
                         <td>
-                          {claimedV2?.[index] ||
-                          claimAmtsV2?.[index]?.toString() == 0 ? (
+                          {!amtsv2 || airdropAmount?.toString() == 0 ? (
                             <>Unavailable</>
                           ) : (
                             <WriteButton
@@ -454,9 +495,10 @@ const Megadrop = () => {
                       </tr>
                     );
                   })}
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
       <dialog id="depositModal" className="modal font-black">
