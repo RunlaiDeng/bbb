@@ -54,6 +54,9 @@ const Home = () => {
       },
     ],
     multicallAddress: mutilCall?.address,
+    query: {
+      refetchInterval: 2000,
+    },
   });
 
   const refetch = () => {

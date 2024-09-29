@@ -451,7 +451,7 @@ const Megadrop = () => {
                       },
                     };
 
-                    const amtsv2 = claimAmtsV2[index];
+                    const amtsv2 = claimAmtsV2?.[index];
 
                     const airdropAmount = amtsv2?.[0];
                     const totalAirdropAmount = amtsv2?.[1];
