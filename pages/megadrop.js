@@ -26,7 +26,7 @@ const Megadrop = () => {
     dSymbol: "MEMES",
     dTotalSupply: 1000000000,
     dDropPercent: 100,
-    drop: 0,
+    drop: 2,
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -148,7 +148,7 @@ const Megadrop = () => {
     multicallAddress: mutilCall?.address,
   });
 
-  const dropTokensV2 = reads4?.map((item) => item?.result);
+  const dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
 
   const searchClaimAmtV2 = [];
 
@@ -166,8 +166,6 @@ const Megadrop = () => {
   });
 
   const claimAmtsV2 = reads5?.map((item) => item?.result);
-
-  console.log(claimAmtsV2);
 
   const searchClaimedV2 = [];
 
@@ -458,8 +456,10 @@ const Megadrop = () => {
                     const stakeMbbbAmount = amtsv2?.[2];
                     const totalStakeMbbbAmount = amtsv2?.[3];
                     const stakePercent =
-                      (100 * stakeMbbbAmount?.toString()) /
-                      totalStakeMbbbAmount?.toString();
+                      (100 * stakeMbbbAmount?.toString() || 0) /
+                        totalStakeMbbbAmount?.toString() || 0;
+
+                    console.log(amtsv2);
 
                     return (
                       <tr key={index} className="text-center">
