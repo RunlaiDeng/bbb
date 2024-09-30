@@ -150,7 +150,7 @@ const Megadrop = () => {
 
   let dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
 
-  dropTokensV2 = dropTokensV2.map((item) => item?.result);
+  dropTokensV2 = dropTokensV2?.map((item) => item?.result);
 
   const searchClaimAmtV2 = [];
 
@@ -461,10 +461,8 @@ const Megadrop = () => {
                       (100 * stakeMbbbAmount?.toString() || 0) /
                         totalStakeMbbbAmount?.toString() || 0;
 
-                    console.log(item);
-
                     return (
-                      <tr key={index} className="text-center">
+                      <tr key={item?.index} className="text-center">
                         <th>{index + 1}</th>
                         <td>
                           <div
