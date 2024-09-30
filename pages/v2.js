@@ -493,15 +493,21 @@ const Home = () => {
                   }}
                 ></input>
               </label>
+
+              {/* <div className="text-left text-xs text-slate-500">
+                Cost <span className="text-xl text-black">FREE</span>{" "}
+                <span className="line-through text-slate-500">100</span>{" "}
+                <span className="text-green-500">100% OFF</span>{" XDC"}
+              </div> */}
               <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                 Cost
                 <input
                   type="text"
-                  className="grow"
-                  placeholder={(price || 0n) / BigInt(1e18)}
+                  className="grow line-through text-red-500"
+                  placeholder={"100 XDC"}
                   disabled
                 />
-                <div className="font-black">XDC</div>
+                <div className="text-green-500">Free</div>
               </label>
             </div>
             <div className="mt-1 text-xs">
