@@ -148,7 +148,9 @@ const Megadrop = () => {
     multicallAddress: mutilCall?.address,
   });
 
-  const dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
+  let dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
+
+  dropTokensV2 = dropTokensV2.map((item) => item?.result);
 
   const searchClaimAmtV2 = [];
 
@@ -320,7 +322,7 @@ const Megadrop = () => {
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
           </div>
-          <div className="border-b rounded-none">
+          <div className="border-b rounded-none hidden">
             <div className="flex gap-2">
               <div
                 className={
@@ -459,7 +461,7 @@ const Megadrop = () => {
                       (100 * stakeMbbbAmount?.toString() || 0) /
                         totalStakeMbbbAmount?.toString() || 0;
 
-                    console.log(amtsv2);
+                    console.log(item);
 
                     return (
                       <tr key={index} className="text-center">
