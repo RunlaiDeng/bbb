@@ -5,7 +5,7 @@ import mBBBABI from "../abi/mBBBABI.json";
 import mBBBV2ABI from "../abi/mBBBV2ABI";
 
 export const dexLink =
-  "https://app.xspswap.finance/#/swap?outputCurrency=0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1&inputCurrency=XDC";
+  "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 
 export const chartLink =
   "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
@@ -66,7 +66,7 @@ export const contracts = {
       abi: mBBBABI,
     },
     mbbbv2: {
-      address: "0x3ff5ed2b7352d57790cbfE312C80cC5f97Daf103",
+      address: "0x5F3FdF68f68d10b5B83670A061cd34d9EdfE75CD",
       abi: mBBBV2ABI,
     },
     multicallAddress: { address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF" },
