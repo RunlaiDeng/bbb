@@ -214,7 +214,7 @@ const Home = () => {
                 <span className="hover:underline cursor-pointer">
                   {latestDrop?.deployer?.substr(36)}
                 </span>{" "}
-                Created {latestDrop?.symbol}{" "}
+                created {latestDrop?.symbol}{" "}
                 <Image height={16} width={16} src={latestDrop?.imageUrl} />
                 on {getDate(latestDrop?.createTime?.toString())}
               </span>
