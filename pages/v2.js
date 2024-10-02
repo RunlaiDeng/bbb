@@ -188,15 +188,18 @@ const Home = () => {
           {latestTrade?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-max m-auto p-1"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto p-2"
             >
               <span className="flex gap-2">
                 <Image height={10} width={16} src="/bbb.jpg" />
-                {latestTrade?.account?.substr(36)}{" "}
+                <span className="hover:underline cursor-pointer">
+                  {latestTrade?.account?.substr(36)}
+                </span>{" "}
                 {latestTrade?.tradeType == "buy" && "bought"}
                 {latestTrade?.tradeType == "sell" && "sold"}{" "}
                 {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
-                {latestTradePro?.[1]}{""}
+                {latestTradePro?.[1]}
+                {""}
                 <Image height={10} width={16} src={latestTradePro?.[3]} />
               </span>
             </div>
@@ -204,11 +207,14 @@ const Home = () => {
           {latestDrop?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-max m-auto mt-2 p-1"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto mt-2 p-2"
             >
               <span className="flex gap-2">
                 <Image height={10} width={16} src="/bbb.jpg" />
-                {latestDrop?.deployer?.substr(36)} Created {latestDrop?.symbol}{" "}
+                <span className="hover:underline cursor-pointer">
+                  {latestDrop?.deployer?.substr(36)}
+                </span>{" "}
+                Created {latestDrop?.symbol}{" "}
                 <Image height={10} width={16} src={latestDrop?.imageUrl} />
                 on {getDate(latestDrop?.createTime?.toString())}
               </span>
