@@ -1,4 +1,10 @@
-import { useReadContracts, useChainId, useAccount, useBalance } from "wagmi";
+import {
+  useReadContracts,
+  useChainId,
+  useAccount,
+  useBalance,
+  useWatchContractEvent,
+} from "wagmi";
 import { contracts } from "@/config";
 import WriteButton from "@/components/WriteButton";
 import { useState, useEffect } from "react";
@@ -9,6 +15,19 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import rpc from "@/components/Rpc";
+import { parseEther } from "viem";
+
+const getDate = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+};
 const Home = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -52,6 +71,16 @@ const Home = () => {
         functionName: "getValues",
         args: [],
       },
+      {
+        ...mbbb,
+        functionName: "getLatestTrade",
+        args: [],
+      },
+      {
+        ...mbbb,
+        functionName: "getLatestDropToken",
+        args: [],
+      },
     ],
     multicallAddress: mutilCall?.address,
     query: {
@@ -79,7 +108,11 @@ const Home = () => {
   const dropTokenLength = reads0?.[0]?.result;
 
   const price = reads0?.[1]?.result;
-  const values = reads0?.[2].result;
+  const values = reads0?.[2]?.result;
+  const latestTradePro = reads0?.[3]?.result;
+  const latestDrop = reads0?.[4]?.result;
+
+  const latestTrade = latestTradePro?.[0];
 
   let searchDropTokens = [];
 
@@ -148,18 +181,40 @@ const Home = () => {
     clean: data?.clean,
   };
 
-  // useEffect(() => {
-  //   if (dropTokens.length > 0) {
-  //     setHighlightFirst(true);
-
-  //     const timeout = setTimeout(() => setHighlightFirst(false), 5000);
-  //     return () => clearTimeout(timeout);
-  //   }
-  // }, [dropTokens]);
-
   return (
     mount && (
       <>
+        <div className="m-auto font-black text-xs gap-2">
+          {latestTrade?.index > 0 && (
+            <div
+              role="alert"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto"
+            >
+              <span className="flex gap-2">
+                <Image height={10} width={16} src="/bbb.jpg" />
+                {latestTrade?.account?.substr(36)}{" "}
+                {latestTrade?.tradeType == "buy" && "bought"}
+                {latestTrade?.tradeType == "sell" && "sold"}{" "}
+                {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
+                {latestTradePro?.[1]}{""}
+                <Image height={10} width={16} src={latestTradePro?.[3]} />
+              </span>
+            </div>
+          )}
+          {latestDrop?.index > 0 && (
+            <div
+              role="alert"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto mt-2"
+            >
+              <span className="flex gap-2">
+                <Image height={10} width={16} src="/bbb.jpg" />
+                {latestDrop?.deployer?.substr(36)} Created {latestDrop?.symbol}{" "}
+                <Image height={10} width={16} src={latestDrop?.imageUrl} />
+                on {getDate(latestDrop?.createTime?.toString())}
+              </span>
+            </div>
+          )}
+        </div>
         <div className="text-center">
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
@@ -248,10 +303,6 @@ const Home = () => {
                       </figure>
                       <div className="card-body text-xs">
                         <div className="flex gap-2">
-                          Created{" "}
-                          <span className="underline text-green-500">
-                            {"..." + item?.deployer?.substr(36)}
-                          </span>
                           <span
                             className="ml-2 hover:bg-green-500"
                             onClick={(e) => {
@@ -321,6 +372,13 @@ const Home = () => {
                               ></path>
                             </svg>
                           </span>
+                        </div>
+                        <div className="flex gap-2">
+                          Created{" "}
+                          <span className="hover:underline">
+                            {item?.deployer?.substr(36)}
+                          </span>
+                          <span>{getDate(item?.createTime?.toString())}</span>
                         </div>
                         <div className="text-xl">
                           {item?.name} (${item?.symbol})
