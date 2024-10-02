@@ -264,7 +264,7 @@ const Navbar = () => {
           <div className="modal-action flex justify-center items-center">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">I'm ready to pump</button>
+              <button className="btn">{"I'm ready to pump"}</button>
             </form>
           </div>
         </div>
