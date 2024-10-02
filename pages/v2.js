@@ -184,14 +184,14 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch">
+        <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
           {latestTrade?.index > 0 && (
             <div
               role="alert"
               className="alert animate-shake-border bg-white border-2 w-full p-2 flex items-center"
             >
               <span className="flex gap-2 items-center">
-                <Image height={10} width={16} src="/bbb.jpg" />
+                <Image height={16} width={16} src="/bbb.jpg" />
                 <span className="hover:underline cursor-pointer">
                   {latestTrade?.account?.substr(36)}
                 </span>{" "}
@@ -200,7 +200,7 @@ const Home = () => {
                 {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
                 {latestTradePro?.[1]}
                 {""}
-                <Image height={10} width={16} src={latestTradePro?.[3]} />
+                <Image height={16} width={16} src={latestTradePro?.[3]} />
               </span>
             </div>
           )}
@@ -210,12 +210,12 @@ const Home = () => {
               className="alert animate-shake-border bg-white border-2 w-full p-2 flex items-center"
             >
               <span className="flex gap-2 items-center">
-                <Image height={10} width={16} src="/bbb.jpg" />
+                <Image height={16} width={16} src="/bbb.jpg" />
                 <span className="hover:underline cursor-pointer">
                   {latestDrop?.deployer?.substr(36)}
                 </span>{" "}
                 Created {latestDrop?.symbol}{" "}
-                <Image height={10} width={16} src={latestDrop?.imageUrl} />
+                <Image height={16} width={16} src={latestDrop?.imageUrl} />
                 on {getDate(latestDrop?.createTime?.toString())}
               </span>
             </div>
