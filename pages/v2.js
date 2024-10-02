@@ -188,7 +188,7 @@ const Home = () => {
           {latestTrade?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-max m-auto"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto p-1"
             >
               <span className="flex gap-2">
                 <Image height={10} width={16} src="/bbb.jpg" />
@@ -204,7 +204,7 @@ const Home = () => {
           {latestDrop?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-max m-auto mt-2"
+              className="alert animate-shake-border bg-white border-2 w-max m-auto mt-2 p-1"
             >
               <span className="flex gap-2">
                 <Image height={10} width={16} src="/bbb.jpg" />
