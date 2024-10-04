@@ -14,6 +14,18 @@ import { buyXDCLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
 
+const getDate = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+};
+
 const deleteSame = (list) => {
   const result = [];
 
@@ -144,6 +156,11 @@ const Swap = () => {
         functionName: "getKlineLength",
         args: [index],
       },
+      {
+        ...mbbb,
+        functionName: "getTradeVolume",
+        args: [index],
+      },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -155,6 +172,9 @@ const Swap = () => {
   const buyTokenAmount = reads1?.[1]?.result;
   const sellXDCAmount = reads1?.[2]?.result;
   const klineLength = reads1?.[3]?.result;
+  const tradeVolume = reads1?.[4]?.result;
+
+  const tradeVolume24h = tradeVolume?.[1];
 
   const searchKline = [];
 
@@ -422,16 +442,30 @@ const Swap = () => {
                 </div>
                 <div className="opacity-50 mt-1 h-20">{description}</div>
 
-                <div className="flex gap-2 ">
-                  <span className="opacity-50">Price </span>
+                <div className="md:flex gap-2 ">
+                  <div>
+                    <span className="opacity-50">Price </span>
 
-                  <span>{formatEther(price || 0n) + " XDC"}</span>
+                    <span>{formatEther(price || 0n) + " XDC"}</span>
+                  </div>
 
-                  <span className="opacity-50"> Total Supply </span>
+                  <div>
+                    <span className="opacity-50">Total Supply </span>
 
-                  <span>
-                    {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}
-                  </span>
+                    <span>
+                      {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="opacity-50">24H Volume </span>
+
+                    <span>{formatEther(tradeVolume24h || 0n) + " XDC"}</span>
+                  </div>
+                  <div>
+                    <span className="opacity-50">Token Created </span>
+
+                    <span>{getDate(dropToken?.createTime?.toString())}</span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -29,8 +29,6 @@ const getDate = (timestamp) => {
   return formattedDate;
 };
 const Home = () => {
-  const [tooltipText, setTooltipText] = useState("Click copy contract address");
-
   const chainId = useChainId();
 
   const { address } = useAccount();
@@ -81,6 +79,11 @@ const Home = () => {
         functionName: "getLatestDropToken",
         args: [],
       },
+      {
+        ...mbbb,
+        functionName: "getLatestKing",
+        args: [],
+      },
     ],
     multicallAddress: mutilCall?.address,
     query: {
@@ -111,6 +114,9 @@ const Home = () => {
   const values = reads0?.[2]?.result;
   const latestTradePro = reads0?.[3]?.result;
   const latestDrop = reads0?.[4]?.result;
+  const latestKing = reads0?.[5]?.result;
+
+  console.log(latestKing);
 
   const latestTrade = latestTradePro?.[0];
 
@@ -160,6 +166,7 @@ const Home = () => {
         data?.dWebiste,
         data?.dTelegram,
         data?.dTwitter,
+        parseEther("1"),
       ],
       value: price,
     },
@@ -181,6 +188,8 @@ const Home = () => {
     clean: data?.clean,
   };
 
+  const latestKingPercent =
+    (100 * latestKing?.xdcAmount?.toString()) / latestKing?.maxXdc?.toString();
   return (
     mount && (
       <>
@@ -188,10 +197,10 @@ const Home = () => {
           {latestTrade?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-full p-2 flex items-center"
+              className="alert shake-rainbow-text bg-white border-2 w-full p-2 flex items-center"
             >
               <span className="flex gap-2 items-center">
-                <Image height={16} width={16} src="/bbb.jpg" />
+                <Image height={16} width={16} src="/bbb.jpg" alt={""} />
                 <span className="hover:underline cursor-pointer">
                   {latestTrade?.account?.substr(36)}
                 </span>{" "}
@@ -200,42 +209,184 @@ const Home = () => {
                 {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
                 {latestTradePro?.[1]}
                 {""}
-                <Image height={16} width={16} src={latestTradePro?.[3]} />
+                <Image
+                  height={16}
+                  width={16}
+                  src={latestTradePro?.[3]}
+                  alt={""}
+                />
               </span>
             </div>
           )}
           {latestDrop?.index > 0 && (
             <div
               role="alert"
-              className="alert animate-shake-border bg-white border-2 w-full p-2 flex items-center"
+              className="alert shake-rainbow-text bg-white border-2 w-full p-2 flex items-center"
             >
               <span className="flex gap-2 items-center">
-                <Image height={16} width={16} src="/bbb.jpg" />
+                <Image height={16} width={16} src="/bbb.jpg" alt={""} />
                 <span className="hover:underline cursor-pointer">
                   {latestDrop?.deployer?.substr(36)}
                 </span>{" "}
                 created {latestDrop?.symbol}{" "}
-                <Image height={16} width={16} src={latestDrop?.imageUrl} />
+                <Image
+                  height={16}
+                  width={16}
+                  src={latestDrop?.imageUrl}
+                  alt={""}
+                />
                 on {getDate(latestDrop?.createTime?.toString())}
               </span>
             </div>
           )}
         </div>
-        <div className="text-center">
-          <div
-            className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
-            onClick={() => {
-              if (!isConnected) {
-                openConnectModal();
-              } else {
-                document.getElementById("dropModal").showModal();
-              }
-            }}
-          >
-            [Start a new token]
+
+        <div>
+          <div className="text-center mt-4">
+            <div className="rainbow-text text-5xl font-black">BBBPump</div>
+            <div
+              className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
+              onClick={() => {
+                if (!isConnected) {
+                  openConnectModal();
+                } else {
+                  document.getElementById("dropModal").showModal();
+                }
+              }}
+            >
+              [Start a new token]
+            </div>
           </div>
         </div>
+        {latestKing?.index > 0 && (
+          <div>
+            <div className="rainbow-text font-black w-max m-auto">
+              👑 BBB KING 👑
+            </div>
+            <div
+              className={
+                "card cursor-pointer hover:border-4 border-green-500 bg-slate-100 md:card-side m-auto md:h-60 w-72 md:w-[450px]"
+              }
+              onClick={() => {
+                router.push("/swap/" + latestKing?.token);
+              }}
+            >
+              <figure className="w-full overflow-hidden">
+                <Image
+                  height={400}
+                  width={400}
+                  src={
+                    latestKing?.imageUrl
+                      ? latestKing?.imageUrl
+                      : "/didntupload.png"
+                  }
+                  alt={latestKing?.name}
+                  className="object-cover w-full h-full"
+                />
+              </figure>
 
+              <div className="card-body text-xs">
+                <div className="flex gap-2">
+                  <span
+                    className="ml-2 hover:bg-green-500"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(latestKing?.twitter);
+                    }}
+                  >
+                    <svg
+                      t="1726931684805"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="4003"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M512 1024C794.769792 1024 1024 794.769792 1024 512 1024 229.230208 794.769792 0 512 0 229.230208 0 0 229.230208 0 512 0 794.769792 229.230208 1024 512 1024ZM343.754675 307.2 515.024998 478.534374 686.953114 307.2 723.325005 344.796877 551.521869 515.595315 722.44375 686.596864 686.118758 722.957824 515.09376 551.690624 343.754675 722.678118 307.2 686.335949 479.029683 515.275008 307.510938 344.379699 343.754675 307.2Z"
+                        fill="#272636"
+                        p-id="4004"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span
+                    className="hover:bg-green-500"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(latestKing?.telegram);
+                    }}
+                  >
+                    <svg
+                      t="1726931652089"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="2770"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M679.424 746.861714l84.004571-395.995428c7.424-34.852571-12.580571-48.566857-35.437714-40.009143l-493.714286 190.281143c-33.718857 13.129143-33.133714 32-5.705142 40.557714l126.281142 39.424 293.156572-184.576c13.714286-9.142857 26.294857-3.986286 16.018286 5.156571l-237.129143 214.272-9.142857 130.304c13.129143 0 18.870857-5.705143 25.709714-12.580571l61.696-59.428571 128 94.281142c23.442286 13.129143 40.009143 6.290286 46.299428-21.723428zM1024 512c0 282.843429-229.156571 512-512 512S0 794.843429 0 512 229.156571 0 512 0s512 229.156571 512 512z"
+                        fill=""
+                        p-id="2771"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span
+                    className="hover:bg-green-500"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(latestKing?.website);
+                    }}
+                  >
+                    <svg
+                      t="1726931789924"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="7374"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M694.852267 313.821867C664.917333 129.4336 594.261333 0 512.1024 0s-152.814933 129.4336-182.749867 313.821867h365.499734zM313.856 512c0 45.841067 2.491733 89.8048 6.826667 132.130133h382.634666c4.334933-42.325333 6.826667-86.289067 6.826667-132.130133s-2.491733-89.8048-6.826667-132.130133H320.682667c-4.334933 42.325333-6.826667 86.289067-6.826667 132.130133z m670.481067-198.178133A513.160533 513.160533 0 0 0 658.090667 21.469867c50.3808 69.768533 85.060267 174.865067 103.253333 292.352h223.0272zM365.909333 21.469867a512.8192 512.8192 0 0 0-326.0416 292.352H262.826667c17.954133-117.486933 52.667733-222.549333 103.048533-292.352z m640.546134 358.4h-236.885334c4.369067 43.349333 6.826667 87.722667 6.826667 132.130133 0 44.373333-2.4576 88.746667-6.826667 132.130133h236.680534c11.332267-42.325333 17.749333-86.289067 17.749333-132.130133s-6.417067-89.8048-17.544533-132.130133zM247.808 512c0-44.373333 2.4576-88.746667 6.826667-132.130133H17.749333A516.437333 516.437333 0 0 0 0 512c0 45.841067 6.621867 89.8048 17.749333 132.130133h236.6464A1397.623467 1397.623467 0 0 1 247.808 512z m81.578667 198.178133C359.253333 894.600533 429.8752 1024 512.068267 1024s152.814933-129.4336 182.749866-313.821867H329.352533z m328.9088 292.352a513.6384 513.6384 0 0 0 326.2464-292.317866h-222.993067c-18.158933 117.4528-52.872533 222.549333-103.253333 292.317866zM39.867733 710.212267a513.160533 513.160533 0 0 0 326.2464 292.317866c-50.3808-69.768533-85.060267-174.865067-103.253333-292.317866H39.867733z"
+                        fill="#373537"
+                        p-id="7375"
+                      ></path>
+                    </svg>
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  Created{" "}
+                  <span className="hover:underline">
+                    {latestKing?.deployer?.substr(36)}
+                  </span>
+                  <span>{getDate(latestKing?.createTime?.toString())}</span>
+                </div>
+                <div className="text-xl">
+                  {latestKing?.name} (${latestKing?.symbol})
+                </div>
+                <div className="opacity-50 h-20 break-all overflow-y-auto">
+                  {latestKing?.description}
+                </div>
+                <div>
+                  <span className="opacity-50"> Market Cap: </span>
+                  <span>{latestKing?.xdcAmount} XDC </span>
+                  <span className="opacity-50">
+                    {" "}
+                    ({latestKingPercent?.toString()}%)
+                  </span>
+                </div>
+                <progress
+                  className="progress progress-success w-full"
+                  value={latestKingPercent?.toString()}
+                  max="100"
+                ></progress>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="m-auto mt-5 grid grid-cols-5 gap-2 w-72 md:w-96">
           <label className="input input-bordered flex items-center gap-2 col-span-4">
             <svg
@@ -289,7 +440,7 @@ const Home = () => {
                     <div
                       className={
                         "card cursor-pointer hover:border-4 border-green-500 bg-slate-100 " +
-                        (index == 0 && "animate-shake-border border-4")
+                        (index == 0 && "shake-rainbow-text border-4")
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);

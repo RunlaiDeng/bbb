@@ -333,6 +333,11 @@
         "internalType": "string",
         "name": "twitter",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deployMax",
+        "type": "uint256"
       }
     ],
     "name": "drop",
@@ -437,6 +442,106 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "emptyDropToken",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deployFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "deployer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "snapshotId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxXdc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "removed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "xdcAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "dropAmt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "telegram",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "twitter",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BBBPumpFun.DropToken",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -861,6 +966,106 @@
   },
   {
     "inputs": [],
+    "name": "getLatestKing",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deployFee",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "deployer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "snapshotId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxXdc",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "removed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "xdcAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "dropAmt",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "imageUrl",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "telegram",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "twitter",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BBBPumpFun.DropToken",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getLatestTrade",
     "outputs": [
       {
@@ -951,6 +1156,30 @@
         "type": "uint256"
       }
     ],
+    "name": "getTradeVolume",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
     "name": "getValueAt",
     "outputs": [
       {
@@ -1021,6 +1250,24 @@
       {
         "internalType": "uint256",
         "name": "tradeAmt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "xdcAmt",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "latestKingIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],

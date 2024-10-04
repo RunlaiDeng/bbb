@@ -38,6 +38,10 @@
   }
 }
 
-.animate-shake-border {
+.shake-rainbow-text {
   animation: shake 0.3s infinite, ranbow 5s linear infinite;
+}
+
+.rainbow-text {
+  animation: ranbow 5s linear infinite;
 }
