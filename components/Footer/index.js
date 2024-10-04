@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="footer footer-center p-4">
       <aside>
-        <div className="grid grid-cols-2">
+        <div className="grid">
           <Link
             href={linktree}
             target="_blank"
@@ -12,13 +12,7 @@ const Footer = () => {
           >
             Contact Us
           </Link>
-          <Link
-            href={submitTokenInfo}
-            target="_blank"
-            className="hover:text-green-500 hover:underline"
-          >
-            Submit Token Info
-          </Link>
+   
         </div>
 
         <p>Copyright © 2024 - All right reserved by BBB</p>

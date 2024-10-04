@@ -300,7 +300,7 @@ const Swap = () => {
           className="card m-auto font-black mx-4 grid text-xs break-all"
           id="info"
         >
-          <div className="card-body">
+          <div className="card-body p-2">
             <div className="md:flex gap-4">
               <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
                 <Image
@@ -480,7 +480,7 @@ const Swap = () => {
             </div>
 
             <div className="card bg-slate-100 text-xs mt-2 break-all" id="chat">
-              <div className="card-body">
+              <div className="card-body p-2">
                 <div className="overflow-auto h-96">
                   {msg?.map((item, index) => {
                     return (
@@ -537,7 +537,7 @@ const Swap = () => {
           </div>
           <div className="md:col-span-2 text-center">
             <div className="card bg-slate-100" id="swap">
-              <div className="card-body font-black">
+              <div className="card-body font-black  p-2">
                 <div className="grid grid-cols-2 gap-2">
                   <div
                     className={
@@ -777,7 +777,7 @@ const Swap = () => {
               </div>
             </div>
             <div className="card bg-slate-100 mt-2">
-              <div className="card-body">
+              <div className="card-body  p-2">
                 <div className="font-black mt-4 text-left">
                   {removed && (
                     <div className="grid grid-cols-2">
@@ -842,7 +842,7 @@ const Swap = () => {
               </div>
             </div>
             <div className="card bg-slate-100 mt-2 break-all" id="holders">
-              <div className="card-body">
+              <div className="card-body  p-2">
                 <div className="overflow-auto h-96">
                   <table className="table table-xs">
                     <thead>
