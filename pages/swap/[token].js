@@ -997,7 +997,7 @@ const Swap = () => {
                   value={data?.description}
                   onChange={(e) => {
                     const newValue = e.target.value;
-                    if (newValue?.length <= 64) {
+                    if (newValue?.length <= 256) {
                       setData({ ...data, description: newValue });
                     }
                   }}
