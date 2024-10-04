@@ -258,7 +258,7 @@ const Home = () => {
         </div>
         {latestKing?.index > 0 && (
           <div className="">
-            <div className="rainbow-text w-max m-auto">👑 BBB KING 👑</div>
+            <div className="rainbow-text w-max m-auto mb-2">👑 BBB KING 👑</div>
             <div
               className={
                 "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-72 h-24"
