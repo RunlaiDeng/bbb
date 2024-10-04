@@ -440,7 +440,7 @@ const Swap = () => {
                     </svg>
                   </div>
                 </div>
-                <div className="opacity-50 mt-1 h-20">{description}</div>
+                <div className="opacity-50 mt-1 h-20 overflow-auto">{description}</div>
 
                 <div className="md:flex gap-2 ">
                   <div>
@@ -474,7 +474,7 @@ const Swap = () => {
         <div className="m-auto grid md:grid-cols-5 gap-2 mx-4">
           <div className="md:col-span-3 font-black text-2xl text-center">
             <div className="card bg-slate-100" id="chart">
-              <div className="card-body">
+              <div className="card-body p-2">
                 <LightChart {...trade} />
               </div>
             </div>

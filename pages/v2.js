@@ -455,7 +455,7 @@ const Home = () => {
                         />
                       </figure>
                       <div className="card-body text-xs p-2">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 h-4">
                           <span
                             className="ml-2 hover:bg-green-500"
                             onClick={(e) => {

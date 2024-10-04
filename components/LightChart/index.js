@@ -45,10 +45,7 @@ const CandleStickChart = (props) => {
 
   return (
     <div>
-      <div
-        ref={priceChartContainerRef}
-        style={{ width: "100%", height: "300px" }}
-      />
+      <div ref={priceChartContainerRef} clasName="w-full" />
     </div>
   );
 };
