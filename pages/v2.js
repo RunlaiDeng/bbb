@@ -422,7 +422,7 @@ const Home = () => {
               <div className="font-black">Terminal</div>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 overflow-auto p-4">
+            <div className="flex flex-wrap justify-start gap-3 overflow-auto p-4">
               {dropTokens?.map((item, index) => {
                 const xdcAmount = item?.xdcAmount;
                 const percent =
@@ -433,7 +433,7 @@ const Home = () => {
                   <>
                     <div
                       className={
-                        "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 " +
+                        "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-52 m-auto sm:m-0 " +
                         (index == 0 && "shake-rainbow-text border-4")
                       }
                       onClick={() => {
