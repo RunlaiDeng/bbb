@@ -433,7 +433,7 @@ const Home = () => {
                   <>
                     <div
                       className={
-                        "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-52 m-auto sm:m-0 " +
+                        "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-72 sm:w-52 m-auto sm:m-0 " +
                         (index == 0 && "shake-rainbow-text border-4")
                       }
                       onClick={() => {
@@ -441,7 +441,7 @@ const Home = () => {
                       }}
                       key={item?.index}
                     >
-                      <figure className="w-full overflow-hidden h-40">
+                      <figure className="w-full overflow-hidden h-72 sm:h-52">
                         <Image
                           height={400}
                           width={400}
