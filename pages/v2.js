@@ -259,7 +259,7 @@ const Home = () => {
           </div>
         </div>
         {latestKing?.index > 0 && (
-          <div>
+          <div className="font-black">
             <div className="rainbow-text font-black w-max m-auto">
               👑 BBB KING 👑
             </div>
