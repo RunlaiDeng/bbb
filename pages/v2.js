@@ -267,7 +267,7 @@ const Home = () => {
                 router.push("/swap/" + latestKing?.token);
               }}
             >
-              <figure className="w-full overflow-hidden">
+              <figure className="w-24 overflow-hidden">
                 <Image
                   height={400}
                   width={400}
