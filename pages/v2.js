@@ -186,8 +186,6 @@ const Home = () => {
     clean: data?.clean,
   };
 
-  const latestKingPercent =
-    (100 * latestKing?.xdcAmount?.toString()) / latestKing?.maxXdc?.toString();
   return (
     mount && (
       <>
@@ -427,14 +425,13 @@ const Home = () => {
                 const xdcAmount = item?.xdcAmount;
                 const percent =
                   (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
-
                 const cap = xdcAmount?.toString() / 1e18;
                 return (
                   <>
                     <div
                       className={
                         "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-72 sm:w-52 m-auto sm:m-0 " +
-                        (index == 0 && "shake-rainbow-text border-4")
+                        (index == 0 && "shake-rainbow-text ")
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
@@ -548,8 +545,9 @@ const Home = () => {
                         <div>
                           <span className=""> Market Cap: </span>
                           <span>{cap} XDC </span>
-                          <span className="opacity-50"> ({percent}%)</span>
+                        
                         </div>
+                        <span className="opacity-50"> ({percent}%)</span>
                         <progress
                           className="progress progress-success w-full"
                           value={percent}

@@ -19,22 +19,27 @@
   0% {
     color: #ff0000;
     border-color: #ff0000;
+    outline-color: #ff0000;
   }
   25% {
     color: #c800ff;
     border-color: #c800ff;
+    outline-color: #c800ff;
   }
   50% {
     color: #40d8e0;
     border-color: #40d8e0;
+    outline-color: #40d8e0;
   }
   75% {
     color: #8cff00;
     border-color: #8cff00;
+    outline-color: #8cff00;
   }
   100% {
     color: #ff0000;
     border-color: #ff0000;
+    outline-color: #ff0000;
   }
 }
 
