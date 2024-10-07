@@ -243,7 +243,7 @@ const Home = () => {
             <div className="text-center mt-4">
               <div className="text-green-500 text-4xl font-black">BBBPump</div>
               <div
-                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96"
+                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96 hover:bg-white hover:text-green-500 outline outline-2"
                 onClick={() => {
                   if (!isConnected) {
                     openConnectModal();
@@ -420,7 +420,7 @@ const Home = () => {
                 />
               </label>
               <div
-                className="btn btn-success w-max m-auto col-span-1 text-white"
+                className="btn btn-success w-max m-auto col-span-1 text-white hover:bg-white hover:text-green-500 outline outline-2"
                 onClick={() => {
                   document.getElementById("search").value;
                   setData({
