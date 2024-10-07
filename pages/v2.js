@@ -190,98 +190,101 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
-          {latestTrade?.index > 0 && (
-            <div
-              role="alert"
-              className="alert shake-rainbow-text bg-white border-2 w-full p-2 flex items-center"
-            >
-              <span className="flex gap-2 items-center">
-                <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                <span className="hover:underline cursor-pointer">
-                  {latestTrade?.account?.substr(36)}
-                </span>{" "}
-                {latestTrade?.tradeType === "buy" && "bought"}
-                {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
-                {latestTradePro?.[1]}
-                {""}
-                <Image
-                  height={16}
-                  width={16}
-                  src={latestTradePro?.[3]}
-                  alt={""}
-                />
-              </span>
-            </div>
-          )}
-          {latestDrop?.index > 0 && (
-            <div
-              role="alert"
-              className="alert shake-rainbow-text bg-white border-2 w-full p-2 flex items-center"
-            >
-              <span className="flex gap-2 items-center">
-                <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                <span className="hover:underline cursor-pointer">
-                  {latestDrop?.deployer?.substr(36)}
-                </span>{" "}
-                created {latestDrop?.symbol}{" "}
-                <Image
-                  height={16}
-                  width={16}
-                  src={latestDrop?.imageUrl}
-                  alt={""}
-                />
-                on {getDate(latestDrop?.createTime?.toString())}
-              </span>
-            </div>
-          )}
-        </div>
+        <div className="bg-[url('/bg.png')] bg-cover bg-center w-full">
+          <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
+            {latestTrade?.index > 0 && (
+              <div
+                role="alert"
+                className="alert shake-rainbow-text bg-transparent border-2 w-full p-2 flex items-center"
+              >
+                <span className="flex gap-2 items-center">
+                  <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                  <span className="hover:underline cursor-pointer">
+                    {latestTrade?.account?.substr(36)}
+                  </span>{" "}
+                  {latestTrade?.tradeType === "buy" && "bought"}
+                  {latestTrade?.tradeType === "sell" && "sold"}{" "}
+                  {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
+                  {latestTradePro?.[1]}
+                  {""}
+                  <Image
+                    height={16}
+                    width={16}
+                    src={latestTradePro?.[3]}
+                    alt={""}
+                  />
+                </span>
+              </div>
+            )}
+            {latestDrop?.index > 0 && (
+              <div
+                role="alert"
+                className="alert shake-rainbow-text bg-transparent border-2 w-full p-2 flex items-center"
+              >
+                <span className="flex gap-2 items-center">
+                  <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                  <span className="hover:underline cursor-pointer">
+                    {latestDrop?.deployer?.substr(36)}
+                  </span>{" "}
+                  created {latestDrop?.symbol}{" "}
+                  <Image
+                    height={16}
+                    width={16}
+                    src={latestDrop?.imageUrl}
+                    alt={""}
+                  />
+                  on {getDate(latestDrop?.createTime?.toString())}
+                </span>
+              </div>
+            )}
+          </div>
 
-        <div>
-          <div className="text-center mt-4">
-            <div className="rainbow-text text-5xl font-black">BBBPump</div>
-            <div
-              className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
-              onClick={() => {
-                if (!isConnected) {
-                  openConnectModal();
-                } else {
-                  document.getElementById("dropModal").showModal();
-                }
-              }}
-            >
-              [Start a new token]
+          <div>
+            <div className="text-center mt-4">
+              <div className="text-green-500 text-4xl font-black">BBBPump</div>
+              <div
+                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96"
+                onClick={() => {
+                  if (!isConnected) {
+                    openConnectModal();
+                  } else {
+                    document.getElementById("dropModal").showModal();
+                  }
+                }}
+              >
+                Launch Token {">"}
+              </div>
             </div>
           </div>
-        </div>
-        {latestKing?.index > 0 && (
-          <div className="">
-            <div className="rainbow-text w-max m-auto mb-2">👑 BBB KING 👑</div>
-            <div
-              className={
-                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-72 h-24"
-              }
-              onClick={() => {
-                router.push("/swap/" + latestKing?.token);
-              }}
-            >
-              <figure className="w-24 overflow-hidden">
-                <Image
-                  height={400}
-                  width={400}
-                  src={
-                    latestKing?.imageUrl
-                      ? latestKing?.imageUrl
-                      : "/didntupload.png"
-                  }
-                  alt={latestKing?.name}
-                  className="object-cover w-full h-full"
-                />
-              </figure>
+          {latestKing?.index > 0 && (
+            <div className="">
+              <div className="rainbow-text w-max m-auto mb-2">
+                👑 BBB KING 👑
+              </div>
+              <div
+                className={
+                  "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-72 h-24"
+                }
+                onClick={() => {
+                  router.push("/swap/" + latestKing?.token);
+                }}
+              >
+                <figure className="w-24 overflow-hidden">
+                  <Image
+                    height={400}
+                    width={400}
+                    src={
+                      latestKing?.imageUrl
+                        ? latestKing?.imageUrl
+                        : "/didntupload.png"
+                    }
+                    alt={latestKing?.name}
+                    className="object-cover w-full h-full"
+                  />
+                </figure>
 
-              <div className="card-body text-xs p-2">
-                {/* <div className="flex gap-2">
+                <div className="card-body text-xs p-2">
+                  {/* <div className="flex gap-2">
                   <span
                     className="ml-2 hover:bg-green-500"
                     onClick={(e) => {
@@ -352,73 +355,82 @@ const Home = () => {
                     </svg>
                   </span>
                 </div> */}
-                <div className="flex gap-2">
-                  Created{" "}
-                  <span className="hover:underline">
-                    {latestKing?.deployer?.substr(36)}
-                  </span>
-                  <span>{getDate(latestKing?.createTime?.toString())}</span>
-                </div>
+                  <div className="flex gap-2">
+                    Created{" "}
+                    <span className="hover:underline">
+                      {latestKing?.deployer?.substr(36)}
+                    </span>
+                    <span>{getDate(latestKing?.createTime?.toString())}</span>
+                  </div>
 
-                <div>
-                  <span> Market Cap: </span>
-                  <span>{latestKing?.xdcAmount?.toString() / 1e18} XDC </span>
-                  {/* <span className="opacity-50">
+                  <div>
+                    <span> Market Cap: </span>
+                    <span>{latestKing?.xdcAmount?.toString() / 1e18} XDC </span>
+                    {/* <span className="opacity-50">
                     {" "}
                     ({latestKingPercent?.toString()}%)
                   </span> */}
-                </div>
-                {/* <progress
+                  </div>
+                  {/* <progress
                   className="progress progress-success w-full"
                   value={latestKingPercent?.toString()}
                   max="100"
                 ></progress> */}
-                <div className="break-all overflow-auto w-40 h-10 font-black">
-                  {latestKing?.name} (symbol:{latestKing?.symbol})
+                  <div className="break-all overflow-auto w-40 h-10 font-black">
+                    {latestKing?.name} (symbol:{latestKing?.symbol})
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-        <div className="m-auto mt-5 grid grid-cols-5 gap-2 w-72 md:w-96">
-          <label className="input input-bordered flex items-center gap-2 col-span-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input
-              type="text"
-              id="search"
-              className="grow"
-              placeholder="search for token"
-            />
-          </label>
-          <div
-            className="btn btn-success w-max m-auto col-span-1"
-            onClick={() => {
-              document.getElementById("search").value;
-              setData({
-                ...data,
-                search: document.getElementById("search").value,
-              });
-            }}
-          >
-            Search
-          </div>
+          )}
+
+          <Image
+            src="/banner.png"
+            height="10"
+            width="10000"
+            className="w-full h-20"
+            alt=""
+          />
         </div>
 
         <div className="card m-auto w-full">
           <div className="card-body ">
             <div className="grid grid-cols-2">
               <div className="font-black">Terminal</div>
+            </div>
+            <div className="m-auto mt-5 grid grid-cols-5 gap-2 w-72 md:w-96">
+              <label className="input input-bordered flex items-center gap-2 col-span-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="h-4 w-4 opacity-70"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  id="search"
+                  className="grow"
+                  placeholder="search for token"
+                />
+              </label>
+              <div
+                className="btn btn-success w-max m-auto col-span-1 text-white"
+                onClick={() => {
+                  document.getElementById("search").value;
+                  setData({
+                    ...data,
+                    search: document.getElementById("search").value,
+                  });
+                }}
+              >
+                Search
+              </div>
             </div>
 
             <div className="flex flex-wrap justify-start gap-3 overflow-auto p-4">

@@ -1,7 +1,7 @@
 const Help = () => {
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
+      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96  pb-1">
         <div></div>
         <div className="text-center font-black mt-2">
           Frequently Asked Questions

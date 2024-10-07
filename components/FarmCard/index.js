@@ -135,7 +135,7 @@ const FarmCard = (props) => {
 
   return (
     <>
-      <div className="card m-auto md:w-3/4 w-96 mt-10 border-b rounded-none">
+      <div className="card m-auto md:w-3/4 w-96 mt-10 rounded-none">
         <div className="card-body font-black">
           <div className="grid lg:grid-cols-3 gap-2">
             <div className="grid grid-cols-2 gap-2">

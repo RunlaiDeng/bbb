@@ -83,14 +83,14 @@ const ReferralProgram = () => {
   return (
     mounted && (
       <>
-        <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
+        <div className="grid grid-cols-3 m-auto md:w-3/4 w-96  pb-1">
           <div></div>
           <div className="text-center font-black mt-2">Referral Program</div>
           <Link className="text-right" href="/help">
             <button className="btn">?</button>
           </Link>
         </div>
-        <div className="border-b pb-1 m-auto md:w-3/4 w-96">
+        <div className=" pb-1 m-auto md:w-3/4 w-96">
           {isConnected && (
             <div className="card w-96 m-auto mt-5">
               <div className="card-body">

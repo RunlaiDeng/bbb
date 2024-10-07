@@ -264,7 +264,7 @@ const Megadrop = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 border-b pb-1">
+      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 pb-1">
         <div></div>
         <div className="text-center font-black mt-2">MEGADROP</div>
         <Link className="text-right" href="/help">
@@ -272,7 +272,7 @@ const Megadrop = () => {
         </Link>
       </div>
 
-      <div className="card m-auto md:w-3/4 w-96 border-b">
+      <div className="card m-auto md:w-3/4 w-96 ">
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-xl">
@@ -322,7 +322,7 @@ const Megadrop = () => {
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
           </div>
-          <div className="border-b rounded-none hidden">
+          <div className=" rounded-none hidden">
             <div className="flex gap-2">
               <div
                 className={
@@ -361,7 +361,7 @@ const Megadrop = () => {
           </div>
 
           {data?.drop == 1 && (
-            <div className="overflow-x-auto border-b rounded-none">
+            <div className="overflow-x-auto  rounded-none">
               <table className="table">
                 {/* head */}
                 <thead className="text-center">
@@ -422,7 +422,7 @@ const Megadrop = () => {
             </div>
           )}
           {data?.drop == 2 && (
-            <div className="overflow-x-auto border-b rounded-none">
+            <div className="overflow-x-auto  rounded-none">
               <table className="table">
                 {/* head */}
                 <thead className="text-center">
