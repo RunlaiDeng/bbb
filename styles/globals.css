@@ -47,6 +47,10 @@
   animation: shake 0.3s infinite, ranbow 5s linear infinite;
 }
 
+.shake {
+  animation: shake 0.3s infinite;
+}
+
 .rainbow-text {
   animation: ranbow 5s linear infinite;
 }

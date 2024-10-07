@@ -195,7 +195,7 @@ const Home = () => {
             {latestTrade?.index > 0 && (
               <div
                 role="alert"
-                className="alert shake-rainbow-text bg-transparent border-2 w-full p-2 flex items-center"
+                className="alert shake bg-transparent border-2 w-full p-2 flex items-center"
               >
                 <span className="flex gap-2 items-center">
                   <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -219,7 +219,7 @@ const Home = () => {
             {latestDrop?.index > 0 && (
               <div
                 role="alert"
-                className="alert shake-rainbow-text bg-transparent border-2 w-full p-2 flex items-center"
+                className="alert shake border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
               >
                 <span className="flex gap-2 items-center">
                   <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -444,7 +444,7 @@ const Home = () => {
                     <div
                       className={
                         "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-72 sm:w-52 m-auto sm:m-0 " +
-                        (index == 0 && "shake-rainbow-text ")
+                        (index == 0 && "shake")
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
