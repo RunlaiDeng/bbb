@@ -15,7 +15,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import rpc from "@/components/Rpc";
-import { parseEther } from "viem";
+import { parseEther, formatEther } from "viem";
 
 const getDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
@@ -36,6 +36,7 @@ const Home = () => {
   const [data, setData] = useState({
     dName: "",
     dSymbol: "",
+    dMaxXdcCap: parseEther("1000000"),
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -164,7 +165,7 @@ const Home = () => {
         data?.dWebiste,
         data?.dTelegram,
         data?.dTwitter,
-        parseEther("1"),
+        data?.dMaxXdcCap,
       ],
       value: price,
     },
@@ -545,7 +546,6 @@ const Home = () => {
                         <div>
                           <span className=""> Market Cap: </span>
                           <span>{cap} XDC </span>
-                        
                         </div>
                         <span className="opacity-50"> ({percent}%)</span>
                         <progress
@@ -694,7 +694,7 @@ const Home = () => {
               </label>
               <label className="form-control">
                 <div className="label">
-                  <span className="label-text">twitter</span>
+                  <span className="label-text">Twitter</span>
                   <span className="text-right">
                     {data?.dTwitter?.length || 0}/64
                   </span>
@@ -716,6 +716,48 @@ const Home = () => {
                   />
                 </label>
               </label>
+
+              <div className="collapse">
+                <input
+                  type="checkbox"
+                  value={data?.showOptions}
+                  onClick={(e) => {
+                    setData({
+                      ...data,
+                      showOptions: e.target.checked,
+                    });
+                  }}
+                />
+                <div className="collapse-title text-left pl-0 text-green-500">
+                  Show more options {data?.showOptions ? "↑" : "↓"}
+                </div>
+                <div className="collapse-content pl-0">
+                  <div className="text-left"> Max XDC Cap</div>
+
+                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="0.00"
+                      value={
+                        data?.dMaxXdcCap >= 0
+                          ? formatEther(data?.dMaxXdcCap)
+                          : undefined
+                      }
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                          setData({
+                            ...data,
+                            dMaxXdcCap: parseEther(newValue),
+                          });
+                        }
+                      }}
+                    />
+                    <div className="font-black">XDC</div>
+                  </label>
+                </div>
+              </div>
 
               {/* <div className="text-left text-xs text-slate-500">
                 Cost <span className="text-xl text-black">FREE</span>{" "}

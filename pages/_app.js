@@ -30,7 +30,7 @@ const xdcParentNet = {
 const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
-  appName: "My RainbowKit App",
+  appName: "Benybadboy",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
   chains: [xdc, xdcParentNet],
   transports: {
