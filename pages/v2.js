@@ -125,7 +125,7 @@ const Home = () => {
     searchDropTokens.push({
       ...mbbb,
       functionName: "getDropToken",
-      args: [values?.[i]],
+      args: [values?.[i]?.toString()],
     });
   }
 
