@@ -195,7 +195,7 @@ const Home = () => {
             {latestTrade?.index > 0 && (
               <div
                 role="alert"
-                className="alert shake bg-transparent border-2 w-full p-2 flex items-center"
+                className="alert shake border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
               >
                 <span className="flex gap-2 items-center">
                   <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -657,7 +657,24 @@ const Home = () => {
                 ></textarea>
               </label>
 
-              <label className="form-control">
+
+
+              <div className="collapse">
+                <input
+                  type="checkbox"
+                  value={data?.showOptions}
+                  onClick={(e) => {
+                    setData({
+                      ...data,
+                      showOptions: e.target.checked,
+                    });
+                  }}
+                />
+                <div className="collapse-title text-left pl-0 text-green-500">
+                  Show more options {data?.showOptions ? "↑" : "↓"}
+                </div>
+                <div className="collapse-content pl-0">
+                <label className="form-control">
                 <div className="label">
                   <span className="label-text">Website</span>
                   <span className="text-right">
@@ -728,23 +745,7 @@ const Home = () => {
                   />
                 </label>
               </label>
-
-              <div className="collapse">
-                <input
-                  type="checkbox"
-                  value={data?.showOptions}
-                  onClick={(e) => {
-                    setData({
-                      ...data,
-                      showOptions: e.target.checked,
-                    });
-                  }}
-                />
-                <div className="collapse-title text-left pl-0 text-green-500">
-                  Show more options {data?.showOptions ? "↑" : "↓"}
-                </div>
-                <div className="collapse-content pl-0">
-                  <div className="text-left"> Max XDC Cap</div>
+                  <div className="text-left"> Max Curve</div>
 
                   <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                     <input

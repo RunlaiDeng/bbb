@@ -93,7 +93,7 @@ const Swap = () => {
   const xdcBalance = balance?.value || 0n;
   const name = dropToken?.name;
   const symbol = dropToken?.symbol;
-  const index = dropToken?.index;
+  const index = dropToken?.index?.toString();
   const xdcAmount = dropToken?.xdcAmount;
   const removed = dropToken?.removed;
   const maxXdc = dropToken?.maxXdc;
@@ -144,12 +144,12 @@ const Swap = () => {
       {
         ...mbbb,
         functionName: "getBuyAmount",
-        args: [index, data?.buyAmount],
+        args: [index, data?.buyAmount?.toString()],
       },
       {
         ...mbbb,
         functionName: "getSellAmount",
-        args: [index, data?.sellAmount],
+        args: [index, data?.sellAmount?.toString()],
       },
       {
         ...mbbb,
