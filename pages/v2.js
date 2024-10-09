@@ -243,7 +243,16 @@ const Home = () => {
 
           <div>
             <div className="text-center mt-4">
-              <div className="text-green-500 text-4xl font-black">BBBPump</div>
+              <div className=" text-4xl font-black">
+
+                <Image
+                  src="/title.png"
+                  height={100}
+                  width={300}
+                  alt=""
+                  className="m-auto"
+                />
+              </div>
               {/* {latestKing?.index > 0 && (
                 <div className="">
                   <div className="text-green-500 w-max m-auto mb-2">
@@ -321,7 +330,7 @@ const Home = () => {
         </div>
         {latestKing?.index > 0 && (
           <div className="">
-            <div className="text-green-500 w-max m-auto mb-2">
+            <div className="rainbow-text font-black w-max m-auto mb-2">
               👑 BBB KING 👑
             </div>
             <div
@@ -407,7 +416,7 @@ const Home = () => {
               <div className="font-black">Terminal</div>
             </div>
 
-            <div className="flex flex-wrap justify-start gap-3 overflow-auto p-4">
+            <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
               {dropTokens?.map((item, index) => {
                 const xdcAmount = item?.xdcAmount;
                 const percent =
