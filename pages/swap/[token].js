@@ -671,7 +671,18 @@ const Swap = () => {
                         disabled
                       />
                       {symbol}
+                      <Image
+                        height={30}
+                        width={30}
+                        src={imageUrl || "/didntupload.png"}
+                        alt=""
+                      />
                     </label>
+                    <div className="text-right text-xs">
+                      Available :{" "}
+                      {xdcBalance >= 0 ? formatEther(xdcBalance) : undefined}{" "}
+                      {"XDC"}
+                    </div>
                     <WriteButton {...buy} className="btn btn-success" />
                   </>
                 )}
@@ -706,6 +717,12 @@ const Swap = () => {
                         }}
                       />
                       {symbol}
+                      <Image
+                        height={30}
+                        width={30}
+                        src={imageUrl || "/didntupload.png"}
+                        alt=""
+                      />
                     </label>
                     <div role="tablist" className="tabs">
                       <a
@@ -779,7 +796,14 @@ const Swap = () => {
                       XDC
                       <Image height={30} width={30} src="/xdc.png" alt="" />
                     </label>
-                    <WriteButton {...sell} className="btn btn-success" />
+                    <div className="text-right text-xs">
+                      Available :{" "}
+                      {tokenBalance >= 0
+                        ? formatEther(tokenBalance)
+                        : undefined}{" "}
+                      {symbol}
+                    </div>
+                    <WriteButton {...sell} className="btn btn-error" />
                   </>
                 )}
               </div>
