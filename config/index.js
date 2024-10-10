@@ -4,11 +4,11 @@ import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 import mBBBABI from "../abi/mBBBABI.json";
 import mBBBV2ABI from "../abi/mBBBV2ABI";
 
-// export const dexLink =
-//   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
-
 export const dexLink =
-  "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
+  "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
+
+// export const dexLink =
+//   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =
   "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
 
@@ -17,7 +17,8 @@ export const linktree = "https://linktr.ee/benybadboy";
 export const submitTokenInfo =
   "https://docs.google.com/forms/d/e/1FAIpQLScq9zJS_tOqwH4hEaIIq09GkeXa3PT3wqXY8m8vGXftonzrtg/viewform";
 
-export const buyXDCLink = "https://docs.benybadboy.xyz/how-to-play/how-to-buy-xdc";
+export const buyXDCLink =
+  "https://docs.benybadboy.xyz/how-to-play/how-to-buy-xdc";
 
 export const rpcUrl = "https://api.benybadboy.xyz";
 
