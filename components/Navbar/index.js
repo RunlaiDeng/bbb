@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[url('/bg.png')] bg-cover bg-center w-full">
+      <div className="bg-[url('/bg.png')] bg-center w-full">
         <div className="navbar items-center font-black">
           <div className="navbar-start">
             <Image

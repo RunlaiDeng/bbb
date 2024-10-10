@@ -197,7 +197,7 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="bg-[url('/bg.png')] bg-cover bg-center w-full">
+        <div className="bg-[url('/bg.png')]  bg-center w-full">
           <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
             {latestTrade?.index > 0 && (
               <div
