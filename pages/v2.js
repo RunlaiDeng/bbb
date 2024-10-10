@@ -214,12 +214,15 @@ const Home = () => {
                   {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
                   {latestTradePro?.[1]}
                   {""}
-                  <Image
-                    height={16}
-                    width={16}
-                    src={latestTradePro?.[3]}
-                    alt={""}
-                  />
+                  <div className="h-4 w-4 overflow-hidden">
+                    <Image
+                      height={400}
+                      width={400}
+                      src={latestTradePro?.[3]}
+                      alt={""}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
                 </span>
               </div>
             )}
@@ -234,12 +237,16 @@ const Home = () => {
                     {latestDrop?.deployer?.substr(36)}
                   </span>{" "}
                   created {latestDrop?.symbol}{" "}
-                  <Image
-                    height={16}
-                    width={16}
-                    src={latestDrop?.imageUrl}
-                    alt={""}
-                  />
+                  <div className="h-4 w-4 overflow-hidden">
+                    <Image
+                      height={400}
+                      width={400}
+                      src={latestDrop?.imageUrl}
+                      alt={""}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+               
                   on {getDate(latestDrop?.createTime?.toString())}
                 </span>
               </div>
