@@ -653,7 +653,7 @@ const Home = () => {
                 <div className="collapse-title text-left pl-0 text-green-500">
                   Show more options {data?.showOptions ? "↑" : "↓"}
                 </div>
-                <div className="collapse-content pl-0">
+                <div className="collapse-content p-0 w-72 sm:w-full">
                   <label className="form-control">
                     <div className="label">
                       <span className="label-text">Website</span>
@@ -661,8 +661,7 @@ const Home = () => {
                         {data?.dWebiste?.length || 0}/64
                       </span>
                     </div>
-
-                    <label className="input input-bordered flex items-center gap-2">
+                    <label className="input input-bordered flex items-center gap-2 ">
                       https://
                       <input
                         type="text"
