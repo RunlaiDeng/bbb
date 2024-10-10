@@ -559,7 +559,7 @@ const Swap = () => {
                   </div>
                   <div
                     className={
-                      "btn w-full " + (data?.state == "sell" && "btn-success")
+                      "btn w-full " + (data?.state == "sell" && "btn-error")
                     }
                     onClick={() => {
                       setData({ ...data, state: "sell" });
