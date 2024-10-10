@@ -63,7 +63,7 @@ export default function ImageUpload(props) {
     <div className="max-w-sm mx-auto w-full">
       <label
         htmlFor="file-upload"
-        className="flex flex-col items-center justify-center w-full h-48 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500"
+        className="flex flex-col items-center justify-center w-full h-28 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500"
       >
         {loading && ( // Show loading indicator
           <div className="flex flex-col items-center">

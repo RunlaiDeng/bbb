@@ -244,7 +244,6 @@ const Home = () => {
           <div>
             <div className="text-center mt-4">
               <div className=" text-4xl font-black">
-
                 <Image
                   src="/title.png"
                   height={100}
@@ -557,14 +556,14 @@ const Home = () => {
           </div>
         </div>
 
-        <dialog id="dropModal" className="modal font-black">
+        <dialog id="dropModal" className="modal font-black text-xs">
           <div className="modal-box">
             <div className="grid grid-cols-3">
               <form method="dialog">
                 <button className="btn">X</button>
               </form>
-              <h3 className="font-bold text-lg text-center mt-2">
-                Start a new token
+              <h3 className="font-bold label-text text-center mt-2">
+                Launch token
               </h3>
             </div>
             <div className="text-center mt-5">
@@ -629,7 +628,7 @@ const Home = () => {
                   </span>
                 </div>
                 <textarea
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-20"
                   value={data?.dDesciption}
                   onChange={(e) => {
                     const newValue = e.target.value;
@@ -781,6 +780,7 @@ const Home = () => {
                 XDC is not enough ?
               </Link>
             )}
+
             <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
           </div>
         </dialog>
