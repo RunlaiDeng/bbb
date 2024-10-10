@@ -599,7 +599,15 @@ const Swap = () => {
                         }}
                       />
                       XDC
-                      <Image height={30} width={30} src="/xdc.png" alt="" />
+                      <div className="h-6 w-6 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src="/xdc.png"
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </label>
                     <div role="tablist" className="tabs">
                       <a
@@ -671,12 +679,16 @@ const Swap = () => {
                         disabled
                       />
                       {symbol}
-                      <Image
-                        height={30}
-                        width={30}
-                        src={imageUrl || "/didntupload.png"}
-                        alt=""
-                      />
+
+                      <div className="h-6 w-6 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src={imageUrl || "/didntupload.png"}
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </label>
                     <div className="text-right text-xs">
                       Available :{" "}
@@ -717,12 +729,15 @@ const Swap = () => {
                         }}
                       />
                       {symbol}
-                      <Image
-                        height={30}
-                        width={30}
-                        src={imageUrl || "/didntupload.png"}
-                        alt=""
-                      />
+                      <div className="h-6 w-6 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src={imageUrl || "/didntupload.png"}
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </label>
                     <div role="tablist" className="tabs">
                       <a
@@ -794,7 +809,15 @@ const Swap = () => {
                         disabled
                       />
                       XDC
-                      <Image height={30} width={30} src="/xdc.png" alt="" />
+                      <div className="h-6 w-6 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src="/xdc.png"
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </label>
                     <div className="text-right text-xs">
                       Available :{" "}
