@@ -264,7 +264,7 @@ const Megadrop = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 pb-1">
+      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 py-1">
         <div></div>
         <div className="text-center font-black mt-2">MEGADROP</div>
         <Link className="text-right" href="/help">
@@ -276,7 +276,7 @@ const Megadrop = () => {
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-xl">
-            {(mbbbBalance?.toString() || 0) / 1e18} BBB
+            {(mbbbBalance?.toString() || 0) / 1e18} mBBB
           </div>
 
           <div className="grid grid-cols-2 gap-2">

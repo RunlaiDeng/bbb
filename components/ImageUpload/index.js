@@ -2,6 +2,7 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
 import rpc from "@/components/Rpc";
+import { useNotification } from "../Context/notice";
 
 const uploadFile = async (file) => {
   const fileName = nanoid() + ".png";
@@ -34,10 +35,17 @@ const uploadFile = async (file) => {
 export default function ImageUpload(props) {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false); // New loading state
+  const { success, failure } = useNotification();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
+      // Check if the file size exceeds 4MB (4 * 1024 * 1024 bytes)
+      if (file.size > 4 * 1024 * 1024) {
+        failure("File size exceeds 4MB. Please upload a smaller image.");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = async () => {
         setLoading(true); // Set loading to true when upload starts
