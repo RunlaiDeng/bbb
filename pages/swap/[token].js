@@ -108,14 +108,16 @@ const Swap = () => {
     state: "buy",
   });
 
+  const [tokenInfo, setTokenInfo] = useState({});
+
   async function getData() {
     if (index) {
       // const trade = await rpc.getTrade(index?.toString());
       const holders = await rpc.getHolders(token);
       const msg = await rpc.getMsg(chainId?.toString(), index?.toString());
 
-      setData({
-        ...data,
+      setTokenInfo({
+        ...tokenInfo,
         holders,
         msg,
         sendMsgContent: "",
@@ -252,8 +254,8 @@ const Swap = () => {
     },
   };
 
-  const holders = data?.holders;
-  const msg = data?.msg;
+  const holders = tokenInfo?.holders;
+  const msg = tokenInfo?.msg;
 
   const update = {
     buttonName: "Confirm",
@@ -262,11 +264,11 @@ const Swap = () => {
       functionName: "updateToken",
       args: [
         index,
-        data?.imageUrl,
-        data?.description,
-        data?.website,
-        data?.telegram,
-        data?.twitter,
+        tokenInfo?.imageUrl,
+        tokenInfo?.description,
+        tokenInfo?.website,
+        tokenInfo?.telegram,
+        tokenInfo?.twitter,
       ],
     },
     callback: () => {
@@ -276,11 +278,10 @@ const Swap = () => {
   };
 
   const imageUpload = {
-    image: data?.imageUrl,
+    image: tokenInfo?.imageUrl,
     callback: (file) => {
-      setData({ ...data, imageUrl: file });
+      setTokenInfo({ ...tokenInfo, imageUrl: file });
     },
-    clean: data?.clean,
   };
 
   return (
@@ -509,18 +510,21 @@ const Swap = () => {
                   <input
                     type="text"
                     className="grow"
-                    value={data?.sendMsgContent}
+                    value={tokenInfo?.sendMsgContent}
                     placeholder="Type Here"
                     onChange={(e) => {
-                      setData({ ...data, sendMsgContent: e.target.value });
+                      setTokenInfo({
+                        ...tokenInfo,
+                        sendMsgContent: e.target.value,
+                      });
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        setData({ ...data, sendMsgContent: "" });
+                        setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
                         rpc.sendMsg(
                           chainId?.toString(),
                           index?.toString(),
-                          data?.sendMsgContent
+                          tokenInfo?.sendMsgContent
                         );
 
                         getData();
@@ -530,9 +534,12 @@ const Swap = () => {
                   <kbd
                     className="kbd kbd-sm cursor-pointer"
                     onClick={() => {
-                      if (data?.sendMsgContent) {
-                        rpc.sendMsg(index?.toString(), data?.sendMsgContent);
-                        setData({ ...data, sendMsgContent: "" });
+                      if (tokenInfo?.sendMsgContent) {
+                        rpc.sendMsg(
+                          index?.toString(),
+                          tokenInfo?.sendMsgContent
+                        );
+                        setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
                         getData();
                       }
                     }}
@@ -1011,13 +1018,13 @@ const Swap = () => {
                     Name <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.name?.length || 0}/20
+                    {tokenInfo?.name?.length || 0}/20
                   </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full "
-                  value={data?.name}
+                  value={tokenInfo?.name}
                   disabled
                 />
               </label>
@@ -1027,13 +1034,13 @@ const Swap = () => {
                     Symbol <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.symbol?.length || 0}/10
+                    {tokenInfo?.symbol?.length || 0}/10
                   </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  value={data?.symbol}
+                  value={tokenInfo?.symbol}
                   disabled
                 />
               </label>
@@ -1044,16 +1051,16 @@ const Swap = () => {
                     Token Decription <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.description?.length || 0}/256
+                    {tokenInfo?.description?.length || 0}/256
                   </span>
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-24"
-                  value={data?.description}
+                  value={tokenInfo?.description}
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (newValue?.length <= 256) {
-                      setData({ ...data, description: newValue });
+                      setTokenInfo({ ...tokenInfo, description: newValue });
                     }
                   }}
                 ></textarea>
@@ -1076,7 +1083,7 @@ const Swap = () => {
                     onChange={(e) => {
                       const newValue = e.target.value;
                       if (newValue?.length <= 64) {
-                        setData({ ...data, website: newValue });
+                        setTokenInfo({ ...tokenInfo, website: newValue });
                       }
                     }}
                   />
@@ -1100,7 +1107,7 @@ const Swap = () => {
                     onChange={(e) => {
                       const newValue = e.target.value;
                       if (newValue?.length <= 64) {
-                        setData({ ...data, telegram: newValue });
+                        setTokenInfo({ ...tokenInfo, telegram: newValue });
                       }
                     }}
                   />
@@ -1124,7 +1131,7 @@ const Swap = () => {
                     onChange={(e) => {
                       const newValue = e.target.value;
                       if (newValue?.length <= 64) {
-                        setData({ ...data, twitter: newValue });
+                        setTokenInfo({ ...tokenInfo, twitter: newValue });
                       }
                     }}
                   />
