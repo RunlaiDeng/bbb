@@ -246,7 +246,6 @@ const Home = () => {
                       className="object-cover w-full h-full"
                     />
                   </div>
-               
                   on {getDate(latestDrop?.createTime?.toString())}
                 </span>
               </div>
@@ -721,11 +720,11 @@ const Home = () => {
                 Cost
                 <input
                   type="text"
-                  className="grow line-through text-red-500"
-                  placeholder={"100 XDC"}
+                  className="grow"
+                  placeholder={formatEther(price || 0) + " XDC"}
                   disabled
                 />
-                <div className="text-green-500">Free</div>
+                {/* <div className="text-green-500">Free</div> */}
               </label>
             </div>
             <div className="mt-1 text-xs">

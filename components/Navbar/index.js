@@ -262,7 +262,7 @@ const Navbar = () => {
               market cap of 1m xdc
             </div>
             <div className="my-4">
-              step 5: 1m xdc of liquidity is then deposited in xswap and burned
+              step 5: 1m xdc of liquidity is then deposited in icecreaswap and burned
             </div>
           </div>
 
