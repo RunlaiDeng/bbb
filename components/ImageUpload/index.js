@@ -63,7 +63,7 @@ export default function ImageUpload(props) {
     <div className="max-w-sm mx-auto w-full">
       <label
         htmlFor="file-upload"
-        className="flex flex-col items-center justify-center w-full h-28 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500"
+        className="flex flex-col items-center justify-center w-28 h-28 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500 m-auto"
       >
         {loading && ( // Show loading indicator
           <div className="flex flex-col items-center">
@@ -86,7 +86,7 @@ export default function ImageUpload(props) {
                 d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12z"
               />
             </svg>
-            <p className="text-sm text-gray-400">Uploading...</p>
+            <p className="text-xs text-gray-400">Uploading...</p>
           </div>
         )}
         {!loading &&
@@ -106,8 +106,8 @@ export default function ImageUpload(props) {
                   d="M12 4v16m8-8H4"
                 ></path>
               </svg>
-              <p className="text-sm text-gray-400">JPEG/PNG/WEBP/GIF</p>
-              <p className="text-sm text-gray-400">Less than 4MB</p>
+              <p className="text-[8px] text-gray-400">JPEG/PNG/WEBP/GIF</p>
+              <p className="text-[8px]  text-gray-400">Less than 4MB</p>
             </div>
           )}
         {image &&

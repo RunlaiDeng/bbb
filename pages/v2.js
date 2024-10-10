@@ -154,15 +154,20 @@ const Home = () => {
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
 
+  const [image, setImage] = useState("");
+
+  const canDrop = data?.dName && data?.dSymbol && image && data?.dDesciption;
+
   const drop = {
     buttonName: "Confirm",
+    disabled: !canDrop,
     data: {
       ...mbbb,
       functionName: "drop",
       args: [
         data?.dName,
         data?.dSymbol,
-        data?.dFile,
+        image,
         data?.dDesciption,
         data?.dWebiste,
         data?.dTelegram,
@@ -184,7 +189,7 @@ const Home = () => {
 
   const imageUpload = {
     callback: (file) => {
-      setData({ ...data, dFile: file });
+      setImage(file);
     },
     clean: data?.clean,
   };
@@ -252,58 +257,7 @@ const Home = () => {
                   className="m-auto"
                 />
               </div>
-              {/* {latestKing?.index > 0 && (
-                <div className="">
-                  <div className="text-green-500 w-max m-auto mb-2">
-                    👑 BBB KING 👑
-                  </div>
-                  <div
-                    className={
-                      "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-72 h-24"
-                    }
-                    onClick={() => {
-                      router.push("/swap/" + latestKing?.token);
-                    }}
-                  >
-                    <figure className="w-24 overflow-hidden">
-                      <Image
-                        height={400}
-                        width={400}
-                        src={
-                          latestKing?.imageUrl
-                            ? latestKing?.imageUrl
-                            : "/didntupload.png"
-                        }
-                        alt={latestKing?.name}
-                        className="object-cover w-full h-full"
-                      />
-                    </figure>
 
-                    <div className="card-body text-xs p-2">
-                      <div className="flex gap-2">
-                        Created{" "}
-                        <span className="hover:underline">
-                          {latestKing?.deployer?.substr(36)}
-                        </span>
-                        <span>
-                          {getDate(latestKing?.createTime?.toString())}
-                        </span>
-                      </div>
-
-                      <div>
-                        <span> Market Cap: </span>
-                        <span>
-                          {latestKing?.xdcAmount?.toString() / 1e18} XDC{" "}
-                        </span>
-                      </div>
-
-                      <div className="break-all overflow-auto w-40 h-10 font-black">
-                        {latestKing?.name} (symbol:{latestKing?.symbol})
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )} */}
               <div
                 className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96 hover:bg-white hover:text-green-500 outline outline-2"
                 onClick={() => {
@@ -779,8 +733,13 @@ const Home = () => {
                 XDC is not enough ?
               </Link>
             )}
+            {!canDrop && (
+              <div className="text-red-500">
+                image, name, symbol, token description are required
+              </div>
+            )}
 
-            <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
+            <WriteButton {...drop} className="btn w-full btn-success" />
           </div>
         </dialog>
       </>
