@@ -158,6 +158,8 @@ const Home = () => {
 
   const canDrop = data?.dName && data?.dSymbol && image && data?.dDesciption;
 
+  const totalCost = (price || 0n) + (data?.dBuy || 0n);
+
   const drop = {
     buttonName: "Confirm",
     disabled: !canDrop,
@@ -174,7 +176,7 @@ const Home = () => {
         data?.dTwitter,
         data?.dMaxXdcCap,
       ],
-      value: price,
+      value: totalCost,
     },
     callback: async (confirm, txHash) => {
       refetch();
@@ -197,7 +199,10 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="bg-[url('/bg.png')]  bg-center w-full"  style={{ backgroundPosition: 'center calc(50% - 4rem)' }}>
+        <div
+          className="bg-[url('/bg.png')]  bg-center w-full"
+          style={{ backgroundPosition: "center calc(50% - 4rem)" }}
+        >
           <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
             {latestTrade?.index > 0 && (
               <div
@@ -698,10 +703,45 @@ const Home = () => {
                       }
                       onChange={(e) => {
                         const newValue = e.target.value;
+                        if (!newValue) {
+                          setData({
+                            ...data,
+                            dBuy: undefined,
+                          });
+                        }
                         if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
                           setData({
                             ...data,
                             dMaxXdcCap: parseEther(newValue),
+                          });
+                        }
+                      }}
+                    />
+                    <div className="font-black">XDC</div>
+                  </label>
+
+                  <div className="text-left">How many you want buy</div>
+
+                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="0.00"
+                      value={
+                        data?.dBuy >= 0 ? formatEther(data?.dBuy) : undefined
+                      }
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        if (!newValue) {
+                          setData({
+                            ...data,
+                            dBuy: undefined,
+                          });
+                        }
+                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                          setData({
+                            ...data,
+                            dBuy: parseEther(newValue),
                           });
                         }
                       }}
@@ -721,7 +761,7 @@ const Home = () => {
                 <input
                   type="text"
                   className="grow"
-                  placeholder={formatEther(price || 0) + " XDC"}
+                  placeholder={formatEther(totalCost || 0) + " XDC"}
                   disabled
                 />
                 {/* <div className="text-green-500">Free</div> */}

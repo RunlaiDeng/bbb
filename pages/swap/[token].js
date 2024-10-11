@@ -592,9 +592,10 @@ const Swap = () => {
                           if (!newValue) {
                             setData({
                               ...data,
-                              buyAmount: BigInt(0),
+                              buyAmount: undefined,
                             });
                           }
+
                           if (
                             /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
                           ) {
@@ -719,10 +720,11 @@ const Swap = () => {
                         placeholder="0"
                         onChange={(e) => {
                           const newValue = e.target.value;
+
                           if (!newValue) {
                             setData({
                               ...data,
-                              sellAmount: BigInt(0),
+                              sellAmount: undefined,
                             });
                           }
                           if (
@@ -892,9 +894,9 @@ const Swap = () => {
                           {formatEther(maxXdc || 0n)} XDC
                         </span>{" "}
                         all the liquidity from the rld curve will be deposited
-                        into icecreaswap and burned. Progression increases as the
-                        price goes up. After removing liquidity, the Megadrop
-                        Staker is snapshot and receives{" "}
+                        into icecreaswap and burned. Progression increases as
+                        the price goes up. After removing liquidity, the
+                        Megadrop Staker is snapshot and receives{" "}
                         <span className="text-green-500">2%</span> of the token
                         supply.
                       </div>
