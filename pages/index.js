@@ -398,7 +398,7 @@ const Home = () => {
                       }}
                       key={item?.index}
                     >
-                      <figure className="w-full overflow-hidden h-72 ">
+                      <figure className="w-72 overflow-hidden h-72 ">
                         <Image
                           height={400}
                           width={400}
