@@ -256,7 +256,7 @@ const Swap = () => {
     },
   };
 
-  const holders = tokenInfo?.holders;
+  const holders = Array.isArray(tokenInfo?.holders) ? tokenInfo?.holders : [];
   const msg = tokenInfo?.msg;
 
   const update = {
