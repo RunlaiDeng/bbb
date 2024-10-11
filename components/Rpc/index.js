@@ -11,8 +11,8 @@ const getMsg = async (chainid, index) => {
   return send("getMsg", [chainid, index]);
 };
 
-const sendMsg = async (chainid, index, msg) => {
-  return send("sendMsg", [chainid, index, msg]);
+const sendMsg = async (chainid, index, msg, address) => {
+  return send("sendMsg", [chainid, index, msg, address]);
 };
 const uploadFile = async (file) => {
   const formData = new FormData(); //

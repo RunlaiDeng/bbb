@@ -488,29 +488,73 @@ const Swap = () => {
               </div>
             </div>
 
-            <div className="card bg-slate-100 text-xs mt-2 break-all" id="chat">
+            <div className="card bg-slate-100 text-xs mt-2 break-all font-normal" id="chat">
               <div className="card-body p-2">
                 <div className="overflow-auto h-96">
                   {msg?.map((item, index) => {
                     return (
-                      <div className="chat chat-start" key={index}>
-                        <div className="chat-header flex gap-2">
-                          <div className="h-4 w-4 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src={"/bbb.jpg"}
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
+                      <>
+                        <div className="card my-2" key={index}>
+                          <div className="card-body p-0">
+                            <div className="flex gap-2 ">
+                              <div className="h-4 w-4 overflow-hidden">
+                                <Image
+                                  height={400}
+                                  width={400}
+                                  src={"/bbb.jpg"}
+                                  alt={""}
+                                  className="object-cover w-full h-full"
+                                />
+                              </div>
+                              <div className="hover:underline cursor-pointer font-black">
+                                {item?.address?.substr(36)}
+                              </div>{" "}
+                              <time className="text-xs opacity-50">
+                                {item?.time}
+                              </time>
+                            </div>
+                            <div className="text-left ">{item?.msg}</div>
+                            <div className="flex gap-2">
+                              <div className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1">
+                                <svg
+                                  viewBox="0 0 1024 1024"
+                                  version="1.1"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  p-id="4261"
+                                  width="16"
+                                  height="16"
+                                >
+                                  <path
+                                    d="M797.184 518.496l-284.384 294.016-284.16-292A162.752 162.752 0 0 1 192 417.6C192 328.512 263.808 256 352 256a159.36 159.36 0 0 1 133.28 72.16L512 368.64l26.72-40.48A159.488 159.488 0 0 1 672 256c88.224 0 160 72.512 160 161.6 0 37.536-12.992 74.08-34.816 100.896M672 192a222.72 222.72 0 0 0-160 67.712A222.624 222.624 0 0 0 352 192c-123.52 0-224 101.216-224 225.6 0 52.288 18.176 103.232 52.96 145.536l285.952 293.984a62.4 62.4 0 0 0 45.088 19.168c17.12 0 33.12-6.816 45.12-19.136l287.744-296.064A226.816 226.816 0 0 0 896 417.6C896 293.216 795.52 192 672 192"
+                                    fill="#3E3A39"
+                                    p-id="4262"
+                                  ></path>
+                                </svg>
+                                0
+                              </div>
+                              <div className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1">
+                                <svg
+                                  t="1728632576992"
+                                  class="icon"
+                                  viewBox="0 0 1024 1024"
+                                  version="1.1"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  p-id="5350"
+                                  width="16"
+                                  height="16"
+                                >
+                                  <path
+                                    d="M401.807 730.808l68.464-70.68A30 30 0 0 1 491.819 651H742c16.569 0 30-13.431 30-30V297c0-16.569-13.431-30-30-30H282c-16.569 0-30 13.431-30 30v324c0 16.569 13.431 30 30 30h72.1a30 30 0 0 1 28.535 20.739l19.172 59.07zM332.297 711H282c-49.706 0-90-40.294-90-90V297c0-49.706 40.294-90 90-90h460c49.706 0 90 40.294 90 90v324c0 49.706-40.294 90-90 90H504.527l-94.313 97.368c-15.734 16.244-43.102 9.899-50.083-11.611L332.297 711z"
+                                    fill="#2c2c2c"
+                                    p-id="5351"
+                                  ></path>
+                                </svg>
+                                Reply
+                              </div>
+                            </div>
                           </div>
-                          {item?.ip}{" "}
-                          <time className="text-xs opacity-50">
-                            {item?.time}
-                          </time>
                         </div>
-                        <div className="chat-bubble">{item?.msg}</div>
-                      </div>
+                      </>
                     );
                   })}
                 </div>
@@ -533,7 +577,8 @@ const Swap = () => {
                         rpc.sendMsg(
                           chainId?.toString(),
                           index?.toString(),
-                          tokenInfo?.sendMsgContent
+                          tokenInfo?.sendMsgContent,
+                          address
                         );
 
                         getData();
@@ -545,8 +590,10 @@ const Swap = () => {
                     onClick={() => {
                       if (tokenInfo?.sendMsgContent) {
                         rpc.sendMsg(
+                          chainId?.toString(),
                           index?.toString(),
-                          tokenInfo?.sendMsgContent
+                          tokenInfo?.sendMsgContent,
+                          address
                         );
                         setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
                         getData();
