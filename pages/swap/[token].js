@@ -132,6 +132,8 @@ const Swap = () => {
     }
   }
 
+  const { info: notice } = useNotification();
+
   useEffect(() => {
     getData();
   }, [index, dropToken]);
@@ -488,7 +490,10 @@ const Swap = () => {
               </div>
             </div>
 
-            <div className="card bg-slate-100 text-xs mt-2 break-all font-normal" id="chat">
+            <div
+              className="card bg-slate-100 text-xs mt-2 break-all font-normal"
+              id="chat"
+            >
               <div className="card-body p-2">
                 <div className="overflow-auto h-96">
                   {msg?.map((item, index) => {
@@ -515,7 +520,12 @@ const Swap = () => {
                             </div>
                             <div className="text-left ">{item?.msg}</div>
                             <div className="flex gap-2">
-                              <div className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1">
+                              <div
+                                className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1"
+                                onClick={() => {
+                                  notice("Coming soon");
+                                }}
+                              >
                                 <svg
                                   viewBox="0 0 1024 1024"
                                   version="1.1"
@@ -532,7 +542,12 @@ const Swap = () => {
                                 </svg>
                                 0
                               </div>
-                              <div className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1">
+                              <div
+                                className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1"
+                                onClick={() => {
+                                  notice("Coming soon");
+                                }}
+                              >
                                 <svg
                                   t="1728632576992"
                                   class="icon"
