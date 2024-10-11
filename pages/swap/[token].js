@@ -291,7 +291,7 @@ const Swap = () => {
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
             onClick={() => {
-              router.push("/v2");
+              router.push("/");
             }}
           >
             [Go back]
@@ -494,7 +494,16 @@ const Swap = () => {
                   {msg?.map((item, index) => {
                     return (
                       <div className="chat chat-start" key={index}>
-                        <div className="chat-header">
+                        <div className="chat-header flex gap-2">
+                          <div className="h-4 w-4 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src={"/bbb.jpg"}
+                              alt={""}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
                           {item?.ip}{" "}
                           <time className="text-xs opacity-50">
                             {item?.time}
