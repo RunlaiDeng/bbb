@@ -10,7 +10,7 @@ export const dexLink =
 // export const dexLink =
 //   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =
-  "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
+  "https://www.geckoterminal.com/xdc/pools/0x95ab47ff0056cdc81a42b35d96551d9c5534947d";
 
 export const linktree = "https://linktr.ee/benybadboy";
 
