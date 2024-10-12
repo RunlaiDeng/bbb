@@ -14,9 +14,6 @@ export const chartLink =
 
 export const linktree = "https://linktr.ee/benybadboy";
 
-export const submitTokenInfo =
-  "https://docs.google.com/forms/d/e/1FAIpQLScq9zJS_tOqwH4hEaIIq09GkeXa3PT3wqXY8m8vGXftonzrtg/viewform";
-
 export const buyXDCLink =
   "https://docs.benybadboy.xyz/how-to-play/how-to-buy-xdc";
 
