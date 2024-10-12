@@ -995,6 +995,7 @@ const Swap = () => {
                             <th>{index + 1}</th>
                             <td>{item?.address}</td>
                             <td>{item?.balance}</td>
+                            <td>{item?.percent}%</td>
                           </tr>
                         );
                       })}
