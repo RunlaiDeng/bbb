@@ -300,7 +300,7 @@ const Swap = () => {
           </div>
         </div>
         <div
-          className="card m-auto font-black mx-4 grid text-xs break-all"
+          className="card m-auto font-black grid text-xs break-all"
           id="info"
         >
           <div className="card-body p-2">
@@ -482,7 +482,7 @@ const Swap = () => {
             </div>
           </div>
         </div>
-        <div className="m-auto grid md:grid-cols-5 gap-2 mx-4">
+        <div className="m-auto grid md:grid-cols-5 gap-2">
           <div className="md:col-span-3 font-black text-2xl text-center">
             <div className="card bg-slate-100" id="chart">
               <div className="card-body p-2">
