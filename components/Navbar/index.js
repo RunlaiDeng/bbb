@@ -191,7 +191,18 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <div className=" hover:text-green-500 hover:bg-inherit">
+                    <Link
+                      className="hover:text-green-500 hover:bg-inherit"
+                      href={"/"}
+                      onClick={(e) => {
+                        setData({ ...data, drawerOpen: false });
+                      }}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <div className="hover:text-green-500 hover:bg-inherit">
                       Earn
                     </div>
                     <ul>
@@ -237,7 +248,6 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-
       </div>
       <dialog id="howisworks" className="modal text-center">
         <div className="modal-box">
@@ -262,7 +272,8 @@ const Navbar = () => {
               market cap of 1m xdc
             </div>
             <div className="my-4">
-              step 5: 1m xdc of liquidity is then deposited in icecreaswap and burned
+              step 5: 1m xdc of liquidity is then deposited in icecreaswap and
+              burned
             </div>
           </div>
 

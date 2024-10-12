@@ -977,14 +977,15 @@ const Swap = () => {
               </div>
             </div>
             <div className="card bg-slate-100 mt-2 break-all" id="holders">
-              <div className="card-body  p-2">
-                <div className="overflow-auto h-96">
+              <div className="card-body p-2">
+                <div className="overflow-auto h-96 w-full">
                   <table className="table table-xs">
                     <thead>
                       <tr>
                         <th></th>
                         <th>Address</th>
                         <th>Quantity</th>
+                        <th>Percent</th>
                       </tr>
                     </thead>
                     <tbody>
