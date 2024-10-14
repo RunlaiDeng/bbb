@@ -504,9 +504,9 @@ const Home = () => {
 
                         <div>
                           <span className=""> Market Cap: </span>
-                          <span>{cap} XDC </span>
+                          <span>{cap?.toFixed(2)} XDC </span>
                         </div>
-                        <span className="opacity-50"> ({percent}%)</span>
+                        <span className="opacity-50"> ({percent?.toFixed(2)}%)</span>
                         <progress
                           className="progress progress-success w-full"
                           value={percent}
