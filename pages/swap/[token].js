@@ -457,20 +457,25 @@ const Swap = () => {
                   <div>
                     <span className="opacity-50">Price </span>
 
-                    <span>{formatEther(price || 0n) + " XDC"}</span>
+                    <span>{Number(formatEther(price || 0n))?.toFixed(6) + " XDC"}</span>
                   </div>
 
                   <div>
                     <span className="opacity-50">Total Supply </span>
 
                     <span>
-                      {formatEther(totalSupply || 0n) + " " + dropToken?.symbol}
+                      {Number(formatEther(totalSupply || 0n))?.toFixed() +
+                        " " +
+                        dropToken?.symbol}
                     </span>
                   </div>
                   <div>
                     <span className="opacity-50">24H Volume </span>
 
-                    <span>{formatEther(tradeVolume24h || 0n) + " XDC"}</span>
+                    <span>
+                      {Number(formatEther(tradeVolume24h || 0n))?.toFixed(2) +
+                        " XDC"}
+                    </span>
                   </div>
                   <div>
                     <span className="opacity-50">Token Created </span>
@@ -482,7 +487,7 @@ const Swap = () => {
             </div>
           </div>
         </div>
-        <div className="m-auto grid md:grid-cols-5 gap-2">
+        <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
           <div className="md:col-span-3 font-black text-2xl text-center">
             <div className="card bg-slate-100" id="chart">
               <div className="card-body p-2">
@@ -771,7 +776,7 @@ const Swap = () => {
                     </label>
                     <div className="text-right text-xs">
                       Available :{" "}
-                      {xdcBalance >= 0 ? formatEther(xdcBalance) : undefined}{" "}
+                      {xdcBalance >= 0 ? Number(formatEther(xdcBalance))?.toFixed(2) : undefined}{" "}
                       {"XDC"}
                     </div>
                     <WriteButton {...buy} className="btn btn-success" />
@@ -902,7 +907,7 @@ const Swap = () => {
                     <div className="text-right text-xs">
                       Available :{" "}
                       {tokenBalance >= 0
-                        ? formatEther(tokenBalance)
+                        ? Number(formatEther(tokenBalance))?.toFixed()
                         : undefined}{" "}
                       {symbol}
                     </div>
@@ -937,10 +942,15 @@ const Swap = () => {
                         <span className="opacity-50"> Cap : </span>
 
                         <span className="">
-                          {formatEther(xdcAmount || 0n) + " XDC "}
+                          {Number(formatEther(xdcAmount || 0n))?.toFixed(2) +
+                            " XDC "}
                         </span>
                         <span className="opacity-50">
-                          ({(xdcAmount?.toString() * 100) / maxXdc?.toString()}
+                          (
+                          {(
+                            (xdcAmount?.toString() * 100) /
+                            maxXdc?.toString()
+                          )?.toFixed(2)}
                           %)
                         </span>
                       </div>
@@ -952,13 +962,15 @@ const Swap = () => {
                       <div className="opacity-50 text-xs">
                         There are{" "}
                         <span className="text-green-500">
-                          {formatEther(maxXdc || 0n) -
-                            formatEther(xdcAmount || 0n)}{" "}
+                          {(
+                            formatEther(maxXdc || 0n) -
+                            formatEther(xdcAmount || 0n)
+                          )?.toFixed()}{" "}
                           {symbol}
                         </span>{" "}
                         still available for sale in the rld curve and there are{" "}
                         <span className="text-green-500">
-                          {formatEther(xdcAmount || 0n)} XDC
+                          {Number(formatEther(xdcAmount || 0n))?.toFixed(2)} XDC
                         </span>{" "}
                         in the rld curve. When the market cap reaches{" "}
                         <span className="text-green-500">
@@ -978,13 +990,15 @@ const Swap = () => {
             </div>
             <div className="card bg-slate-100 mt-2 break-all" id="holders">
               <div className="card-body p-2">
+                <div className="font-black text-left ml-4">
+                  Holder distribution
+                </div>
                 <div className="overflow-auto h-96 w-full">
                   <table className="table table-xs">
                     <thead>
                       <tr>
-                        <th></th>
-                        <th>Address</th>
-                        <th>Quantity</th>
+                        <th>#</th>
+                        <th>Account</th>
                         <th>Percent</th>
                       </tr>
                     </thead>
@@ -992,10 +1006,12 @@ const Swap = () => {
                       {holders?.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <th>{index + 1}</th>
-                            <td>{item?.address}</td>
-                            <td>{item?.balance}</td>
-                            <td>{item?.percent}%</td>
+                            <td>{index + 1}</td>
+                            <td className="hover:underline cursor-pointer font-black">
+                              {item?.address?.substr(36)}
+                            </td>
+
+                            <td>{item?.percent?.toFixed(2)}%</td>
                           </tr>
                         );
                       })}
