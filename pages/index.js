@@ -495,7 +495,7 @@ const Home = () => {
                           </span>
                           <span>{getDate(item?.createTime?.toString())}</span>
                         </div>
-                        <div className="break-all overflow-auto w-full h-20">
+                        <div className="overflow-auto w-full h-20">
                           <span className="font-black">
                             {item?.name} (symbol:{item?.symbol})
                           </span>
