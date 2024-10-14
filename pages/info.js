@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 const Info = () => {
-  const pixels = Array(10000).fill(null);
+  const pixels = Array(100).fill(null);
 
   const handleClick = (index) => {
     console.log(`You clicked pixel ${index}`);
   };
 
   return (
-    <div className="grid grid-cols-100 w-[1000px] h-[1000px] overflow-auto m-auto">
+    <div className="grid grid-cols-10 w-72 h-72 sm:w-[1000px] sm:h-[1000px] overflow-auto m-auto ring-[0.2px] my-4">
       {pixels.map((_, index) => (
         <div
           key={index}

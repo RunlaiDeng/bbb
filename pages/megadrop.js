@@ -6,6 +6,7 @@ import Link from "next/link";
 import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { formatEther, parseEther } from "viem";
 const Megadrop = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -250,6 +251,7 @@ const Megadrop = () => {
       document.getElementById("dropModal").close();
     },
   };
+  
 
   const bbbIsEnough = false;
 
@@ -516,13 +518,20 @@ const Megadrop = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={data?.value?.toString() / 1e18}
+                value={data?.value >= 0 ? formatEther(data?.value) : undefined}
                 onChange={(e) => {
                   const newValue = e.target.value;
-                  if (/^\d*$/.test(newValue)) {
+                  if (!newValue) {
                     setData({
                       ...data,
-                      value: BigInt(newValue) * BigInt(1e18),
+                      value: undefined,
+                    });
+                  }
+
+                  if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                    setData({
+                      ...data,
+                      value: parseEther(newValue),
                     });
                   }
                 }}
@@ -563,7 +572,7 @@ const Megadrop = () => {
             <form method="dialog">
               <button className="btn">X</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Withdraw BBB</h3>
+            <h3 className="font-bold text-lg text-center mt-2">Unstake BBB</h3>
           </div>
           <div className="text-center mt-5">
             <label className="input input-bordered flex items-center gap-2 w-full m-auto">
@@ -571,13 +580,22 @@ const Megadrop = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={data?.mValue?.toString() / 1e18}
+                value={
+                  data?.mValue >= 0 ? formatEther(data?.mValue) : undefined
+                }
                 onChange={(e) => {
                   const newValue = e.target.value;
-                  if (/^\d*$/.test(newValue)) {
+                  if (!newValue) {
                     setData({
                       ...data,
-                      mValue: BigInt(newValue) * BigInt(1e18),
+                      mValue: undefined,
+                    });
+                  }
+
+                  if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                    setData({
+                      ...data,
+                      mValue: parseEther(newValue),
                     });
                   }
                 }}
