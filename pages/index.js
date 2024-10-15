@@ -364,7 +364,6 @@ const Home = () => {
           <div
             className="btn btn-success w-max m-auto col-span-1 text-white hover:bg-white hover:text-green-500 outline outline-2"
             onClick={() => {
-              document.getElementById("search").value;
               setData({
                 ...data,
                 search: document.getElementById("search").value,
@@ -506,7 +505,10 @@ const Home = () => {
                           <span className=""> Market Cap: </span>
                           <span>{cap?.toFixed(2)} XDC </span>
                         </div>
-                        <span className="opacity-50"> ({percent?.toFixed(2)}%)</span>
+                        <span className="opacity-50">
+                          {" "}
+                          ({percent?.toFixed(2)}%)
+                        </span>
                         <progress
                           className="progress progress-success w-full"
                           value={percent}
