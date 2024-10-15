@@ -8,11 +8,11 @@ const Info = () => {
   };
 
   return (
-    <div className="grid grid-cols-10 w-72 h-72 sm:w-[1000px] sm:h-[1000px] overflow-auto m-auto ring-[0.2px] my-4">
+    <div className="grid grid-cols-10 w-72 h-72 sm:w-[1000px] sm:h-[1000px] overflow-auto m-auto ring my-4">
       {pixels.map((_, index) => (
         <div
           key={index}
-          className="w-full h-full ring-[0.1px] ring-slate-500 bg-white hover:bg-gray-200"
+          className="w-full h-full bg-white hover:bg-gray-200"
           onClick={() => handleClick(index)}
         />
       ))}
