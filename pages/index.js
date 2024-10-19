@@ -188,8 +188,13 @@ const Home = () => {
     clean: data?.clean,
   };
 
-  const [type, setType] = useState(2);
+  const [type, setType] = useState(() =>
+    typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
+  );
 
+  useEffect(() => {
+    localStorage.setItem("type", type);
+  }, [type]);
   return (
     mount && (
       <>
