@@ -168,8 +168,8 @@ const Swap = () => {
     let low;
     let color;
     const time = Number(kline?.[0] || 0);
-    const open = Number(formatEther(kline?.[1] || 0));
-    const close = Number(formatEther(kline?.[2] || 0));
+    const open = Number(formatEther(kline?.[1] || 0)) * 2;
+    const close = Number(formatEther(kline?.[2] || 0)) * 2;
     const value = Number(formatEther(kline?.[3] || 0));
 
     if (open > close) {
@@ -426,7 +426,8 @@ const Swap = () => {
                     <span className="opacity-50">Price </span>
 
                     <span>
-                      {formatNumber(Number(formatEther(price || 0n))) + " XDC"}
+                      {Number(formatEther(price || 0n))?.toFixed(6) * 2 +
+                        " XDC"}
                     </span>
                   </div>
 
@@ -911,7 +912,7 @@ const Swap = () => {
                   {!removed && (
                     <>
                       <div>
-                        <span className="opacity-50">rld curve progress: </span>
+                        <span className="opacity-50">RLD Curve Progress: </span>
 
                         <span className="">
                           {formatNumber(Number(formatEther(xdcAmount || 0n))) +
@@ -933,7 +934,7 @@ const Swap = () => {
                       ></progress>
 
                       <div className="opacity-50 text-xs">
-                      When the market cap reaches{" "}
+                        When the market cap reaches{" "}
                         <span className="text-green-500">
                           {formatNumber(formatEther(maxXdc || 0n))} XDC
                         </span>{" "}
@@ -951,9 +952,10 @@ const Swap = () => {
                             formatEther(maxXdc || 0n) -
                               formatEther(xdcAmount || 0n)
                           )}{" "}
-                          XDC 
+                          XDC
                         </span>{" "}
-                        for tokens still available for sale in the rld curve and there are{" "}
+                        for tokens still available for sale in the rld curve and
+                        there are{" "}
                         <span className="text-green-500">
                           {formatNumber(Number(formatEther(xdcAmount || 0n)))}{" "}
                           XDC

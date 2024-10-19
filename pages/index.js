@@ -15,7 +15,8 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import { parseEther, formatEther } from "viem";
-import { formatNumber, getDate } from "@/components/Utils";
+import { formatNumber, getDate, calculatePrice } from "@/components/Utils";
+import { useNotification } from "@/components/Context/notice";
 
 const Home = () => {
   const chainId = useChainId();
@@ -33,6 +34,8 @@ const Home = () => {
   const mutilCall = contracts[chainId]?.multicallAddress;
 
   const [mount, setMount] = useState(false);
+
+  const { info } = useNotification();
 
   async function fetchData() {
     setMount(true);
@@ -331,6 +334,7 @@ const Home = () => {
             </div>
           </div>
         )}
+
         <div className="m-auto mt-5 grid grid-cols-5 gap-2 w-72 md:w-96">
           <label className="input input-bordered flex items-center gap-2 col-span-4">
             <svg
@@ -364,10 +368,88 @@ const Home = () => {
             Search
           </div>
         </div>
+
         <div className="card m-auto w-full">
           <div className="card-body p-2">
-            <div className="grid grid-cols-2">
-              <div className="font-black">Terminal</div>
+            <div className="flex gap-2 text-slate-500 ml-4">
+              <ul className="menu menu-horizontal bg-base-200 rounded-box">
+                <li
+                  onClick={() => {
+                    info("Comming soon");
+                  }}
+                >
+                  <a>Following</a>
+                </li>
+                <li>
+                  <a className="focus">Terminal</a>
+                </li>
+              </ul>
+              <div className="ml-auto mr-8">
+                <ul className="menu menu-horizontal bg-base-200 rounded-box">
+                  <li
+                    onClick={() => {
+                      info("Comming soon");
+                    }}
+                  >
+                    <a>
+                      <svg
+                        t="1729317230835"
+                        class="icon"
+                        viewBox="0 0 1024 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="1685"
+                        width="16"
+                        height="16"
+                      >
+                        <path
+                          d="M107.2 212.8m-67.2 0a4.2 4.2 0 1 0 134.4 0 4.2 4.2 0 1 0-134.4 0Z"
+                          p-id="1686"
+                        ></path>
+                        <path
+                          d="M980.8 145.6 297.6 145.6c-9.6 0-16 8-16 16l0 102.4c0 9.6 8 16 16 16l683.2 0c9.6 0 16-8 16-16l0-102.4C996.8 152 988.8 145.6 980.8 145.6z"
+                          p-id="1687"
+                        ></path>
+                        <path
+                          d="M96 497.6m-67.2 0a4.2 4.2 0 1 0 134.4 0 4.2 4.2 0 1 0-134.4 0Z"
+                          p-id="1688"
+                        ></path>
+                        <path
+                          d="M968 430.4 284.8 430.4c-9.6 0-16 8-16 16l0 102.4c0 9.6 8 16 16 16l683.2 0c9.6 0 16-8 16-16l0-102.4C984 438.4 977.6 430.4 968 430.4z"
+                          p-id="1689"
+                        ></path>
+                        <path
+                          d="M96 795.2m-67.2 0a4.2 4.2 0 1 0 134.4 0 4.2 4.2 0 1 0-134.4 0Z"
+                          p-id="1690"
+                        ></path>
+                        <path
+                          d="M968 728 284.8 728c-9.6 0-16 8-16 16l0 102.4c0 9.6 8 16 16 16l683.2 0c9.6 0 16-8 16-16l0-102.4C984 736 977.6 728 968 728z"
+                          p-id="1691"
+                        ></path>
+                      </svg>
+                    </a>
+                  </li>
+                  <li>
+                    <a className="focus">
+                      <svg
+                        t="1729317279715"
+                        class="icon"
+                        viewBox="0 0 1024 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="3949"
+                        width="16"
+                        height="16"
+                      >
+                        <path
+                          d="M426.666667 170.666667 426.666667 341.333333 597.333333 341.333333 597.333333 170.666667 426.666667 170.666667M682.666667 170.666667 682.666667 341.333333 853.333333 341.333333 853.333333 170.666667 682.666667 170.666667M682.666667 426.666667 682.666667 597.333333 853.333333 597.333333 853.333333 426.666667 682.666667 426.666667M682.666667 682.666667 682.666667 853.333333 853.333333 853.333333 853.333333 682.666667 682.666667 682.666667M597.333333 853.333333 597.333333 682.666667 426.666667 682.666667 426.666667 853.333333 597.333333 853.333333M341.333333 853.333333 341.333333 682.666667 170.666667 682.666667 170.666667 853.333333 341.333333 853.333333M341.333333 597.333333 341.333333 426.666667 170.666667 426.666667 170.666667 597.333333 341.333333 597.333333M341.333333 341.333333 341.333333 170.666667 170.666667 170.666667 170.666667 341.333333 341.333333 341.333333M426.666667 597.333333 597.333333 597.333333 597.333333 426.666667 426.666667 426.666667 426.666667 597.333333M170.666667 85.333333 853.333333 85.333333C900.266667 85.333333 938.666667 123.733333 938.666667 170.666667L938.666667 853.333333C938.666667 900.266667 900.266667 938.666667 853.333333 938.666667L170.666667 938.666667C124.586667 938.666667 85.333333 900.266667 85.333333 853.333333L85.333333 170.666667C85.333333 123.733333 123.733333 85.333333 170.666667 85.333333Z"
+                          p-id="3950"
+                        ></path>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
@@ -492,14 +574,17 @@ const Home = () => {
                           : {item?.description}
                         </div>
 
+                        <div>Price: {calculatePrice(cap)} XDC</div>
+
                         <div>
-                          <span className=""> Market Cap: </span>
+                          <span className="">RLD Curve Progress: </span>
                           <span>{formatNumber(cap)} XDC </span>
+                          <span className="opacity-50">
+                            {" "}
+                            ({percent?.toFixed(2)}%)
+                          </span>
                         </div>
-                        <span className="opacity-50">
-                          {" "}
-                          ({percent?.toFixed(2)}%)
-                        </span>
+
                         <progress
                           className="progress progress-success w-full"
                           value={percent}
@@ -516,7 +601,6 @@ const Home = () => {
             </div> */}
           </div>
         </div>
-
         <dialog id="dropModal" className="modal font-black text-xs">
           <div className="modal-box">
             <div className="grid grid-cols-3">

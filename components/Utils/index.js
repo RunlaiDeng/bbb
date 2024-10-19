@@ -13,6 +13,10 @@ function formatNumber(num) {
   }
 }
 
+const calculatePrice = (xdcAmount) => {
+  return (Math.sqrt(xdcAmount / 2e7) * 2).toFixed(6);
+};
+
 const getDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
 
@@ -50,4 +54,5 @@ module.exports = {
   getDate,
   formatNumber,
   deleteSame,
+  calculatePrice,
 };
