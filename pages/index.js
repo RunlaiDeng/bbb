@@ -485,7 +485,7 @@ const Home = () => {
                         <div className="flex gap-2 h-4">
                           {item?.twitter && (
                             <span
-                              className="ml-2 hover:bg-green-500"
+                              className="hover:bg-green-500"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 window.open("https://x.com/" + item?.twitter);
