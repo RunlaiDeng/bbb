@@ -265,6 +265,7 @@ const Home = () => {
                   width={300}
                   alt=""
                   className="m-auto"
+                  style={{ width: "auto", height: "auto" }}
                 />
               </div>
 
@@ -398,10 +399,9 @@ const Home = () => {
                       setType(1);
                     }}
                   >
-                    <a className={type == 1 && "focus"}>
+                    <a className={type == 1 ? "focus" : ""}>
                       <svg
                         t="1729317230835"
-                        class="icon"
                         viewBox="0 0 1024 1024"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
@@ -441,10 +441,9 @@ const Home = () => {
                       setType(2);
                     }}
                   >
-                    <a className={type == 2 && "focus"}>
+                    <a className={type == 2 ? "focus" : ""}>
                       <svg
                         t="1729317279715"
-                        class="icon"
                         viewBox="0 0 1024 1024"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
