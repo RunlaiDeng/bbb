@@ -14,8 +14,8 @@ function formatNumber(num) {
 }
 
 const calculatePrice = (xdcAmount) => {
-  return (Math.sqrt(xdcAmount / 2e7) * 2).toFixed(6);
-};
+    return (Math.sqrt(xdcAmount / 2e7) / 1e9).toFixed(6) * 2;
+  };
 
 const getDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
