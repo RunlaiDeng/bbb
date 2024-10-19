@@ -14,20 +14,9 @@ import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
-import rpc from "@/components/Rpc";
 import { parseEther, formatEther } from "viem";
+import { formatNumber, getDate } from "@/components/Utils";
 
-const getDate = (timestamp) => {
-  const date = new Date(timestamp * 1000);
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear()).slice(-2);
-
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
-};
 const Home = () => {
   const chainId = useChainId();
 
@@ -330,7 +319,9 @@ const Home = () => {
 
                 <div>
                   <span> Market Cap: </span>
-                  <span>{latestKing?.xdcAmount?.toString() / 1e18} XDC </span>
+                  <span>
+                    {formatNumber(latestKing?.xdcAmount?.toString() / 1e18)} XDC{" "}
+                  </span>
                 </div>
 
                 <div className="break-all overflow-auto w-40 h-10 font-black">
@@ -397,7 +388,7 @@ const Home = () => {
                       }}
                       key={item?.index}
                     >
-                      <figure className="w-72 overflow-hidden h-72 ">
+                      <figure className="w-72 overflow-hidden h-72">
                         <Image
                           height={400}
                           width={400}
@@ -503,7 +494,7 @@ const Home = () => {
 
                         <div>
                           <span className=""> Market Cap: </span>
-                          <span>{cap?.toFixed(2)} XDC </span>
+                          <span>{formatNumber(cap)} XDC </span>
                         </div>
                         <span className="opacity-50">
                           {" "}
@@ -520,6 +511,9 @@ const Home = () => {
                 );
               })}
             </div>
+            {/* <div className="btn btn-success w-max m-auto text-white hover:bg-white hover:text-green-500 outline outline-2">
+              Load More
+            </div> */}
           </div>
         </div>
 

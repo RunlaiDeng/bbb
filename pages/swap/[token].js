@@ -13,39 +13,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { buyXDCLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
-
-const getDate = (timestamp) => {
-  const date = new Date(timestamp * 1000);
-
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = String(date.getFullYear()).slice(-2);
-
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
-};
-
-const deleteSame = (list) => {
-  const result = [];
-
-  const timeMap = {};
-
-  list?.forEach((item) => {
-    const { time, close } = item;
-
-    if (timeMap[time]) {
-      timeMap[time].close = close;
-    } else {
-      timeMap[time] = item;
-    }
-  });
-
-  for (const key in timeMap) {
-    result.push(timeMap[key]);
-  }
-  return result;
-};
+import { formatNumber, getDate, deleteSame } from "@/components/Utils";
 
 const Swap = () => {
   const { success, info } = useNotification();
@@ -457,14 +425,16 @@ const Swap = () => {
                   <div>
                     <span className="opacity-50">Price </span>
 
-                    <span>{Number(formatEther(price || 0n))?.toFixed(6) + " XDC"}</span>
+                    <span>
+                      {formatNumber(Number(formatEther(price || 0n))) + " XDC"}
+                    </span>
                   </div>
 
                   <div>
                     <span className="opacity-50">Total Supply </span>
 
                     <span>
-                      {Number(formatEther(totalSupply || 0n))?.toFixed() +
+                      {formatNumber(Number(formatEther(totalSupply || 0n))) +
                         " " +
                         dropToken?.symbol}
                     </span>
@@ -473,7 +443,7 @@ const Swap = () => {
                     <span className="opacity-50">24H Volume </span>
 
                     <span>
-                      {Number(formatEther(tradeVolume24h || 0n))?.toFixed(2) +
+                      {formatNumber(Number(formatEther(tradeVolume24h || 0n))) +
                         " XDC"}
                     </span>
                   </div>
@@ -776,7 +746,9 @@ const Swap = () => {
                     </label>
                     <div className="text-right text-xs">
                       Available :{" "}
-                      {xdcBalance >= 0 ? Number(formatEther(xdcBalance))?.toFixed(2) : undefined}{" "}
+                      {xdcBalance >= 0
+                        ? Number(formatEther(xdcBalance))?.toFixed(2)
+                        : undefined}{" "}
                       {"XDC"}
                     </div>
                     <WriteButton {...buy} className="btn btn-success" />
@@ -939,10 +911,10 @@ const Swap = () => {
                   {!removed && (
                     <>
                       <div>
-                        <span className="opacity-50"> Cap : </span>
+                        <span className="opacity-50">rld curve progress: </span>
 
                         <span className="">
-                          {Number(formatEther(xdcAmount || 0n))?.toFixed(2) +
+                          {formatNumber(Number(formatEther(xdcAmount || 0n))) +
                             " XDC "}
                         </span>
                         <span className="opacity-50">
@@ -959,22 +931,11 @@ const Swap = () => {
                         value={xdcAmount?.toString()}
                         max={maxXdc?.toString()}
                       ></progress>
+
                       <div className="opacity-50 text-xs">
-                        There are{" "}
+                      When the market cap reaches{" "}
                         <span className="text-green-500">
-                          {(
-                            formatEther(maxXdc || 0n) -
-                            formatEther(xdcAmount || 0n)
-                          )?.toFixed()}{" "}
-                          {symbol}
-                        </span>{" "}
-                        still available for sale in the rld curve and there are{" "}
-                        <span className="text-green-500">
-                          {Number(formatEther(xdcAmount || 0n))?.toFixed(2)} XDC
-                        </span>{" "}
-                        in the rld curve. When the market cap reaches{" "}
-                        <span className="text-green-500">
-                          {formatEther(maxXdc || 0n)} XDC
+                          {formatNumber(formatEther(maxXdc || 0n))} XDC
                         </span>{" "}
                         all the liquidity from the rld curve will be deposited
                         into icecreaswap and burned. Progression increases as
@@ -982,6 +943,22 @@ const Swap = () => {
                         Megadrop Staker is snapshot and receives{" "}
                         <span className="text-green-500">2%</span> of the token
                         supply.
+                      </div>
+                      <div className="opacity-50 text-xs mt-4">
+                        There are{" "}
+                        <span className="text-green-500">
+                          {formatNumber(
+                            formatEther(maxXdc || 0n) -
+                              formatEther(xdcAmount || 0n)
+                          )}{" "}
+                          XDC 
+                        </span>{" "}
+                        for tokens still available for sale in the rld curve and there are{" "}
+                        <span className="text-green-500">
+                          {formatNumber(Number(formatEther(xdcAmount || 0n)))}{" "}
+                          XDC
+                        </span>{" "}
+                        in the rld curve.
                       </div>
                     </>
                   )}
