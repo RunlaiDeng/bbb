@@ -537,7 +537,7 @@ const Home = () => {
 
                             <div className="sm:flex gap-2 items-center">
                               <div className="">{item?.symbol}</div>
-                              <div className="opacity-50">{item?.name}</div>
+                              <div className="opacity-50 text-xs">{item?.name}</div>
                             </div>
                           </td>
                           <td>{calculatePrice(cap)} XDC</td>
