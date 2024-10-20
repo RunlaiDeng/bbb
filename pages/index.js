@@ -30,7 +30,7 @@ const Home = () => {
   const { data: balance } = useBalance({ address: address });
   const [show, setShow] = useState(2);
   const following = getFollowing();
-  const followList = Object.keys(following);
+  const followList = Object.keys(following).filter(key => following[key]);;
 
   const [data, setData] = useState({
     dName: "",
