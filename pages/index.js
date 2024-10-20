@@ -568,7 +568,7 @@ const Home = () => {
                     <>
                       <div
                         className={
-                          "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-72 m-auto sm:m-0 " +
+                          "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 w-full sm:w-72 m-auto sm:m-0 " +
                           (index == 0 && "shake")
                         }
                         onClick={() => {
@@ -576,7 +576,7 @@ const Home = () => {
                         }}
                         key={item?.index}
                       >
-                        <figure className="w-72 overflow-hidden h-72">
+                        <figure className="overflow-hidden h-80 sm:h-72">
                           <Image
                             height={400}
                             width={400}
