@@ -261,7 +261,7 @@ const Swap = () => {
   };
 
   const following = getFollowing();
-  const isFollowed = following[index];
+  const isFollowed = following[index] || false;
 
   return (
     mount && (
@@ -379,8 +379,7 @@ const Swap = () => {
                       update
                     </div>
                   )}
-                  {isFollowed !== undefined}
-                  {
+                  {isFollowed !== undefined && (
                     <label className="swap ">
                       {/* this hidden checkbox controls the state */}
                       <input
@@ -428,7 +427,7 @@ const Swap = () => {
                         </svg>
                       </div>
                     </label>
-                  }
+                  )}
                 </div>
 
                 <div className="flex gap-1">
