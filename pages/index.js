@@ -28,9 +28,23 @@ const Home = () => {
 
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
-  const [show, setShow] = useState(2);
+  const [show, setShow] = useState(() =>
+    typeof window !== "undefined" ? localStorage.getItem("show") || "2" : "2"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("show", show);
+  }, [show]);
+
+  const [type, setType] = useState(() =>
+    typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("type", type);
+  }, [type]);
   const following = getFollowing();
-  const followList = Object.keys(following).filter(key => following[key]);;
+  const followList = Object.keys(following).filter((key) => following[key]);
 
   const [data, setData] = useState({
     dName: "",
@@ -209,13 +223,6 @@ const Home = () => {
     clean: data?.clean,
   };
 
-  const [type, setType] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("type", type);
-  }, [type]);
   return (
     mount && (
       <>
