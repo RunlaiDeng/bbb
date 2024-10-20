@@ -14,8 +14,8 @@ function formatNumber(num) {
 }
 
 const calculatePrice = (xdcAmount) => {
-    return (Math.sqrt(xdcAmount / 2e7) / 1e9).toFixed(6) * 2;
-  };
+  return (Math.sqrt(xdcAmount / 2e7) / 1e9).toFixed(6) * 2;
+};
 
 const getDate = (timestamp) => {
   const date = new Date(timestamp * 1000);
@@ -50,9 +50,32 @@ const deleteSame = (list) => {
   return result;
 };
 
+async function setFollowing(index, isChecked) {
+  if (typeof window !== "undefined" && index) {
+    let following = localStorage.getItem("following");
+    if (!following) {
+      following = {};
+    } else {
+      following = JSON.parse(following);
+    }
+
+    following[index] = isChecked;
+    localStorage.setItem("following", JSON.stringify(following));
+  }
+}
+
+function getFollowing() {
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem("following")) || {};
+  }
+  return {};
+}
+
 module.exports = {
   getDate,
   formatNumber,
   deleteSame,
   calculatePrice,
+  setFollowing,
+  getFollowing,
 };

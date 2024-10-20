@@ -15,7 +15,12 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import { parseEther, formatEther } from "viem";
-import { formatNumber, getDate, calculatePrice } from "@/components/Utils";
+import {
+  formatNumber,
+  getDate,
+  calculatePrice,
+  getFollowing,
+} from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
 const Home = () => {
@@ -23,6 +28,10 @@ const Home = () => {
 
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
+  const [show, setShow] = useState(2);
+  const following = getFollowing();
+  const followList = Object.keys(following);
+
   const [data, setData] = useState({
     dName: "",
     dSymbol: "",
@@ -115,12 +124,24 @@ const Home = () => {
 
   let searchDropTokens = [];
 
-  for (let i = dropTokenLength?.toString() - 1; i >= 0; i--) {
-    searchDropTokens.push({
-      ...mbbb,
-      functionName: "getDropToken",
-      args: [values?.[i]?.toString()],
-    });
+  if (show == 1) {
+    for (let i = followList.length?.toString() - 1; i >= 0; i--) {
+      searchDropTokens.push({
+        ...mbbb,
+        functionName: "getDropToken",
+        args: [followList?.[i]?.toString()],
+      });
+    }
+  }
+
+  if (show == 2) {
+    for (let i = dropTokenLength?.toString() - 1; i >= 0; i--) {
+      searchDropTokens.push({
+        ...mbbb,
+        functionName: "getDropToken",
+        args: [values?.[i]?.toString()],
+      });
+    }
   }
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
@@ -383,13 +404,17 @@ const Home = () => {
               <ul className="menu menu-horizontal bg-base-200 rounded-box">
                 <li
                   onClick={() => {
-                    info("Comming soon");
+                    setShow(1);
                   }}
                 >
-                  <a>Following</a>
+                  <a className={show == 1 ? "focus" : ""}>Following</a>
                 </li>
-                <li>
-                  <a className="focus">Terminal</a>
+                <li
+                  onClick={() => {
+                    setShow(2);
+                  }}
+                >
+                  <a className={show == 2 ? "focus" : ""}>Terminal</a>
                 </li>
               </ul>
               <div className="ml-auto mr-8">
@@ -481,7 +506,8 @@ const Home = () => {
                         <tr
                           key={index}
                           className={
-                            "cursor-pointer hover " + (index == 0 && "shake")
+                            "cursor-pointer hover " +
+                            (index == 0 && show == 2 && "shake")
                           }
                           onClick={() => {
                             router.push("/swap/" + item?.token);
