@@ -379,7 +379,7 @@ const Swap = () => {
                       update
                     </div>
                   )}
-                  {isFollowed !== undefined && (
+                  {typeof window !== "undefined" && (
                     <label className="swap ">
                       {/* this hidden checkbox controls the state */}
                       <input
