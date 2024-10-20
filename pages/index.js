@@ -43,7 +43,7 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem("type", type);
   }, [type]);
-  const following = getFollowing();
+  const following = getFollowing() || {};
   const followList = Object.keys(following).filter((key) => following[key]);
 
   const [data, setData] = useState({

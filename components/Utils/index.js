@@ -68,7 +68,6 @@ function getFollowing() {
   if (typeof window !== "undefined") {
     return JSON.parse(localStorage.getItem("following")) || {};
   }
-  return {};
 }
 
 module.exports = {

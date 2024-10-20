@@ -261,7 +261,7 @@ const Swap = () => {
   };
 
   const following = getFollowing();
-  const isFollowed = following[index] || false;
+  const isFollowed = following?.[index];
 
   return (
     mount && (
