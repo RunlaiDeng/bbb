@@ -149,11 +149,11 @@ const Home = () => {
   }
 
   if (show == 2) {
-    for (let i = dropTokenLength?.toString() - 1; i >= 0; i--) {
+    for (let i = dropTokenLength?.toString(); i > 0; i--) {
       searchDropTokens.push({
         ...mbbb,
         functionName: "getDropToken",
-        args: [values?.[i]?.toString()],
+        args: [i?.toString()],
       });
     }
   }
@@ -222,6 +222,8 @@ const Home = () => {
     },
     clean: data?.clean,
   };
+
+  console.log(dropTokens);
 
   return (
     mount && (
@@ -537,7 +539,9 @@ const Home = () => {
 
                             <div className="sm:flex gap-2 items-center ">
                               <div className="">{item?.symbol}</div>
-                              <div className="opacity-50 text-xs whitespace-nowrap">{item?.name}</div>
+                              <div className="opacity-50 text-xs whitespace-nowrap">
+                                {item?.name}
+                              </div>
                             </div>
                           </td>
                           <td>{calculatePrice(cap)} XDC</td>
