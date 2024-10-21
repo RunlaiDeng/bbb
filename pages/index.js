@@ -82,11 +82,6 @@ const Home = () => {
       },
       {
         ...mbbb,
-        functionName: "getValues",
-        args: [],
-      },
-      {
-        ...mbbb,
         functionName: "getLatestTrade",
         args: [],
       },
@@ -100,7 +95,6 @@ const Home = () => {
         functionName: "getLatestKing",
         args: [],
       },
-      { ...mbbb, functionName: "defaultMinXdcCap", args: [] },
     ],
     multicallAddress: mutilCall?.address,
     query: {
@@ -128,11 +122,9 @@ const Home = () => {
   const dropTokenLength = reads0?.[0]?.result;
 
   const price = reads0?.[1]?.result;
-  const values = reads0?.[2]?.result;
-  const latestTradePro = reads0?.[3]?.result;
-  const latestDrop = reads0?.[4]?.result;
-  const latestKing = reads0?.[5]?.result;
-  const defaultMinXdcCap = reads0?.[6]?.result;
+  const latestTradePro = reads0?.[2]?.result;
+  const latestDrop = reads0?.[3]?.result;
+  const latestKing = reads0?.[4]?.result;
 
   const latestTrade = latestTradePro?.[0];
 
