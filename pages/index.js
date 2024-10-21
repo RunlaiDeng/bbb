@@ -63,6 +63,7 @@ const Home = () => {
   const { info } = useNotification();
 
   async function fetchData() {
+    
     const tokensResult = await rpc.getTokens();
     setTokens(tokensResult);
 

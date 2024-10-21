@@ -89,11 +89,15 @@ const Swap = () => {
   async function getData() {
     async function getHolders() {
       const holdersResult = await rpc.getHolders(token);
-      setHolders(holdersResult);
+      if (Array.isArray(holdersResult)) {
+        setHolders(holdersResult);
+      }
     }
     async function getMsg(chainId, index) {
       const msgResult = await rpc.getMsg(chainId, index);
-      setMsg(msgResult);
+      if (Array.isArray(msgResult)) {
+        setHolders(msgResult);
+      }
     }
     if (index) {
       getHolders();
