@@ -1,7 +1,5 @@
 import { createPublicClient, http } from "viem";
 import { xdc } from "viem/chains";
-import { getContract } from "viem";
-import { erc20Abi } from "viem";
 import mBBBV2ABI from "../../abi/mBBBV2ABI";
 
 const publicClient = createPublicClient({
