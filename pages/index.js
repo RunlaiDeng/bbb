@@ -15,6 +15,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import { parseEther, formatEther } from "viem";
+import rpc from "@/components/Rpc";
 import {
   formatNumber,
   getDate,
@@ -57,24 +58,29 @@ const Home = () => {
   const mutilCall = contracts[chainId]?.multicallAddress;
 
   const [mount, setMount] = useState(false);
+  const [tokens, setTokens] = useState([]);
 
   const { info } = useNotification();
 
   async function fetchData() {
+    const tokensResult = await rpc.getTokens();
+    setTokens(tokensResult);
+
     setMount(true);
   }
 
   useEffect(() => {
     fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000);
+    setMount(true);
+    return () => clearInterval(interval);
   }, [mount]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
-      {
-        ...mbbb,
-        functionName: "getDropTokenLength",
-        args: [],
-      },
       {
         ...mbbb,
         functionName: "deployFee",
@@ -97,9 +103,9 @@ const Home = () => {
       },
     ],
     multicallAddress: mutilCall?.address,
-    query: {
-      refetchInterval: 2000,
-    },
+    // query: {
+    //   refetchInterval: 2000,
+    // },
   });
 
   const refetch = () => {
@@ -119,12 +125,10 @@ const Home = () => {
     refetch1();
   };
 
-  const dropTokenLength = reads0?.[0]?.result;
-
-  const price = reads0?.[1]?.result;
-  const latestTradePro = reads0?.[2]?.result;
-  const latestDrop = reads0?.[3]?.result;
-  const latestKing = reads0?.[4]?.result;
+  const price = reads0?.[0]?.result;
+  const latestTradePro = reads0?.[1]?.result;
+  const latestDrop = reads0?.[2]?.result;
+  const latestKing = reads0?.[3]?.result;
 
   const latestTrade = latestTradePro?.[0];
 
@@ -141,13 +145,20 @@ const Home = () => {
   }
 
   if (show == 2) {
-    for (let i = dropTokenLength?.toString(); i > 0; i--) {
+    for (let i = 0; i < tokens?.length; i++) {
       searchDropTokens.push({
         ...mbbb,
         functionName: "getDropToken",
-        args: [i?.toString()],
+        args: [tokens?.[i]?.toString()],
       });
     }
+    // for (let i = dropTokenLength?.toString(); i > 0; i--) {
+    //   searchDropTokens.push({
+    //     ...mbbb,
+    //     functionName: "getDropToken",
+    //     args: [i?.toString()],
+    //   });
+    // }
   }
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
@@ -214,8 +225,6 @@ const Home = () => {
     },
     clean: data?.clean,
   };
-
-  console.log(dropTokens);
 
   return (
     mount && (

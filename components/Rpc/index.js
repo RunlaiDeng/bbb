@@ -14,6 +14,10 @@ const getMsg = async (chainid, index) => {
 const sendMsg = async (chainid, index, msg, address) => {
   return send("sendMsg", [chainid, index, msg, address]);
 };
+
+const getTokens = async (sort) => {
+  return send("getTokens", [sort]);
+};
 const uploadFile = async (file) => {
   const formData = new FormData(); //
   formData.append("file", file);
@@ -68,4 +72,5 @@ module.exports = {
   getMsg,
   sendMsg,
   uploadFile,
+  getTokens,
 };
