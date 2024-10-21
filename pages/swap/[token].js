@@ -83,26 +83,21 @@ const Swap = () => {
   });
 
   const [tokenInfo, setTokenInfo] = useState({});
+  const [holders, setHolders] = useState([]);
+  const [msg, setMsg] = useState([]);
 
   async function getData() {
+    async function getHolders() {
+      const holdersResult = await rpc.getHolders(token);
+      setHolders(holdersResult);
+    }
+    async function getMsg(chainId, index) {
+      const msgResult = await rpc.getMsg(chainId, index);
+      setMsg(msgResult);
+    }
     if (index) {
-      // const trade = await rpc.getTrade(index?.toString());
-      const holders = [];
-      const msg = await rpc.getMsg(chainId?.toString(), index?.toString());
-
-      setTokenInfo({
-        ...tokenInfo,
-        holders,
-        msg,
-        sendMsgContent: "",
-        name,
-        symbol,
-        imageUrl,
-        description,
-        website,
-        telegram,
-        twitter,
-      });
+      getHolders();
+      getMsg(chainId?.toString(), index?.toString());
     }
   }
 
@@ -229,9 +224,6 @@ const Swap = () => {
       refetch();
     },
   };
-
-  const holders = Array.isArray(tokenInfo?.holders) ? tokenInfo?.holders : [];
-  const msg = tokenInfo?.msg;
 
   const update = {
     buttonName: "Confirm",
