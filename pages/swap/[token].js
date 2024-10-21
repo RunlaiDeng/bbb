@@ -87,7 +87,7 @@ const Swap = () => {
   async function getData() {
     if (index) {
       // const trade = await rpc.getTrade(index?.toString());
-      const holders = await rpc.getHolders(token);
+      const holders = [];
       const msg = await rpc.getMsg(chainId?.toString(), index?.toString());
 
       setTokenInfo({
