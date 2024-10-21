@@ -246,7 +246,7 @@ const Home = () => {
                   </span>{" "}
                   {latestTrade?.tradeType === "buy" && "bought"}
                   {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                  {latestTrade?.xdcAmount?.toString() / 1e18} XDC of{" "}
+                  {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)} XDC of{" "}
                   {latestTradePro?.[1]}
                   {""}
                   <div className="h-4 w-4 overflow-hidden">
