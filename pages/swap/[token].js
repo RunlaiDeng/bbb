@@ -95,8 +95,9 @@ const Swap = () => {
     }
     async function getMsg(chainId, index) {
       const msgResult = await rpc.getMsg(chainId, index);
+
       if (Array.isArray(msgResult)) {
-        setHolders(msgResult);
+        setMsg(msgResult);
       }
     }
     if (index) {
