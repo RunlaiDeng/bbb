@@ -2,6 +2,7 @@ import { createPublicClient, http } from "viem";
 import { xdc } from "viem/chains";
 import { getContract } from "viem";
 import { erc20Abi } from "viem";
+import mBBBV2ABI from "../../abi/mBBBV2ABI";
 
 const publicClient = createPublicClient({
   chain: xdc,
@@ -9,11 +10,14 @@ const publicClient = createPublicClient({
 });
 
 export default async function handler(req, res) {
+  const { token, deployer } = req.query;
+
   const result = await publicClient.readContract({
-    address: "0xfa4ddcfa8e3d0475f544d0de469277cf6e0a6fd1",
-    abi: erc20Abi,
-    functionName: "totalSupply",
+    address: "0x2E24BFdE1EEDa0F1EA3E57Ba7Ff10ac6516ab5Ec",
+    abi: mBBBV2ABI,
+    functionName: "getDropTokenByAddress",
+    args: [token],
   });
 
-  res.status(200).send((result / BigInt(1e18))?.toString());
+  res.status(200).send(deployer == result?.deployer);
 }
