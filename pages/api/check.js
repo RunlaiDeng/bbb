@@ -1,6 +1,7 @@
 import { createPublicClient, http } from "viem";
 import { xdc } from "viem/chains";
 import mBBBV2ABI from "../../abi/mBBBV2ABI";
+import { getAddress } from "viem";
 
 const publicClient = createPublicClient({
   chain: xdc,
@@ -17,5 +18,5 @@ export default async function handler(req, res) {
     args: [token],
   });
 
-  res.status(200).send(deployer == result?.deployer);
+  res.status(200).send(getAddress(deployer) == result?.deployer);
 }
