@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import { contracts } from "@/config";
 import WriteButton from "@/components/WriteButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { buyXDCLink } from "@/config";
 import Image from "next/image";
@@ -65,8 +65,6 @@ const Home = () => {
   async function fetchData() {
     const tokensResult = await rpc.getTokens();
     setTokens(tokensResult);
-
-    setMount(true);
   }
 
   useEffect(() => {
@@ -161,8 +159,13 @@ const Home = () => {
     // }
   }
 
+  const previousTokensRef = useRef();
   useEffect(() => {
-    refetch1();
+    if (JSON.stringify(previousTokensRef.current) != JSON.stringify(tokens)) {
+      refetch1();
+    }
+
+    previousTokensRef.current = tokens;
   }, [tokens]);
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
