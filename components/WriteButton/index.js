@@ -63,6 +63,19 @@ const WriteButton = (props) => {
 
   const client = usePublicClient();
 
+  useEffect(() => {
+    if (hash) {
+      try {
+        addRecentTransaction({
+          hash: hash,
+          description: "",
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [hash]);
+
   return (
     mounted &&
     (isConnected ? (
@@ -88,14 +101,6 @@ const WriteButton = (props) => {
           } catch (e) {}
 
           write?.(writeData);
-          if (txData) {
-            try {
-              addRecentTransaction({
-                hash: hash,
-                description: props?.buttonName,
-              });
-            } catch (e) {}
-          }
         }}
       >
         {isLoading && "Waiting for approval"}
