@@ -398,8 +398,6 @@ const Swap = () => {
                       {/* sun icon */}
                       <div className="swap-off swap-rotate">
                         <svg
-                          t="1729412612970"
-                          class="icon"
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"

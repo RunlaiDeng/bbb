@@ -32,9 +32,6 @@ const WriteButton = (props) => {
     error: error,
   } = useWriteContract();
 
-  if (error) {
-    console.error(error);
-  }
   const {
     data: txData,
     isSuccess: txSuccess,
@@ -46,10 +43,16 @@ const WriteButton = (props) => {
     },
   });
 
-  if (txError) {
-    console.error(txError);
-    failure(txError.message);
-  }
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+      failure(error.shortMessage);
+    }
+    if (txError) {
+      console.error(txError);
+      failure(txError.shortMessage);
+    }
+  }, [error, txError]);
 
   useEffect(() => {
     if (txSuccess) {
@@ -66,13 +69,10 @@ const WriteButton = (props) => {
       <div
         className={
           props.className +
-          (props?.disabled || !write || isError || isLoading
-            ? " btn-disabled"
-            : "")
+          (props?.disabled || !write || isLoading ? " btn-disabled" : "")
         }
         disabled={
-          (props?.disabled || !write || isError || isLoading || isStarted) &&
-          !txSuccess
+          (props?.disabled || !write || isLoading || isStarted) && !txSuccess
         }
         style={{ minWidth: 112 }}
         onClick={async () => {
@@ -80,9 +80,13 @@ const WriteButton = (props) => {
             alert("please connect wallet");
             return;
           }
-          const gas = await client.estimateContractGas({ ...props?.data });
           const writeData = { ...props?.data };
-          writeData.gas = (gas * 12n) / 10n;
+
+          try {
+            const gas = await client.estimateContractGas({ ...props?.data });
+            writeData.gas = (gas * 12n) / 10n;
+          } catch (e) {}
+
           write?.(writeData);
           if (txData) {
             try {
