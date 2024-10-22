@@ -74,7 +74,7 @@ const Home = () => {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 2000);
+    }, 5000);
     setMount(true);
     return () => clearInterval(interval);
   }, [mount]);
