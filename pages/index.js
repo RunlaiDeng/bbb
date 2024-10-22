@@ -72,7 +72,7 @@ const Home = () => {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 5000);
+    }, 3000);
     setMount(true);
     return () => clearInterval(interval);
   }, [mount]);
@@ -101,9 +101,9 @@ const Home = () => {
       },
     ],
     multicallAddress: mutilCall?.address,
-    // query: {
-    //   refetchInterval: 2000,
-    // },
+    query: {
+      retry: true,
+    },
   });
 
   const refetch = () => {
@@ -159,18 +159,12 @@ const Home = () => {
     // }
   }
 
-  const previousTokensRef = useRef();
-  useEffect(() => {
-    if (JSON.stringify(previousTokensRef.current) != JSON.stringify(tokens)) {
-      refetch1();
-    }
-
-    previousTokensRef.current = tokens;
-  }, [tokens]);
-
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: searchDropTokens,
     multicallAddress: mutilCall?.address,
+    query: {
+      retry: true,
+    },
   });
 
   let dropTokens = reads1?.map((item) => item?.result);
