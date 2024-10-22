@@ -63,7 +63,6 @@ const Home = () => {
   const { info } = useNotification();
 
   async function fetchData() {
-    
     const tokensResult = await rpc.getTokens();
     setTokens(tokensResult);
 
@@ -247,8 +246,8 @@ const Home = () => {
                   </span>{" "}
                   {latestTrade?.tradeType === "buy" && "bought"}
                   {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                  {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)} XDC of{" "}
-                  {latestTradePro?.[1]}
+                  {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)} XDC
+                  of {latestTradePro?.[1]}
                   {""}
                   <div className="h-4 w-4 overflow-hidden">
                     <Image
@@ -712,9 +711,35 @@ const Home = () => {
               </div>
             )}
 
-            {/* <div className="btn btn-success w-max m-auto text-white hover:bg-white hover:text-green-500 outline outline-2">
-              Load More
-            </div> */}
+            <ul className="menu menu-horizontal rounded-box ml-auto">
+              <li className="disabled">
+                <a style={{ background: "transparent" }}>{"<"}</a>
+              </li>
+              <li>
+                <a className="focus font-bold">1</a>
+              </li>
+              {/* <li>
+                <a>2</a>
+              </li>
+              <li>
+                <a>3</a>
+              </li>
+              <li>
+                <a>4</a>
+              </li>
+              <li>
+                <a>5</a>
+              </li>
+              <li className="pointer-events-none">
+                <a>...</a>
+              </li>
+              <li>
+                <a>7</a>
+              </li> */}
+              <li className="disabled">
+                <a style={{ background: "transparent" }}>{">"}</a>
+              </li>
+            </ul>
           </div>
         </div>
         <dialog id="dropModal" className="modal font-black text-xs">
