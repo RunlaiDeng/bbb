@@ -3,6 +3,7 @@ import {
   useWaitForTransaction,
   useWriteContract,
   useWaitForTransactionReceipt,
+  usePublicClient,
 } from "wagmi";
 import { useEffect, useState } from "react";
 
@@ -10,12 +11,10 @@ import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 
-import lang from "../../lang/index";
 import { useNotification } from "../Context/notice";
 const WriteButton = (props) => {
   const { success, failure } = useNotification();
   const { openConnectModal } = useConnectModal();
-  const { locale, locales, defaultLocale, asPath } = useRouter();
   const addRecentTransaction = useAddRecentTransaction();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -59,6 +58,8 @@ const WriteButton = (props) => {
     }
   }, [txSuccess]);
 
+  const client = usePublicClient();
+
   return (
     mounted &&
     (isConnected ? (
@@ -74,12 +75,15 @@ const WriteButton = (props) => {
           !txSuccess
         }
         style={{ minWidth: 112 }}
-        onClick={() => {
+        onClick={async () => {
           if (!isConnected) {
             alert("please connect wallet");
             return;
           }
-          write?.({ ...props?.data });
+          const gas = await client.estimateContractGas({ ...props?.data });
+          const writeData = { ...props?.data };
+          writeData.gas = (gas * 12n) / 10n;
+          write?.(writeData);
           if (txData) {
             try {
               addRecentTransaction({
