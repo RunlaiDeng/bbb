@@ -61,7 +61,7 @@ const Navbar = () => {
 
             <div className="ml-2 hidden md:flex">
               <Link
-                className="btn mx-1 btn-ghost hover:bg-inherit animate-shake border-2 shake-rainbow-text"
+                className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
                 href={"/buy"}
                 target="_blank"
               >
@@ -183,7 +183,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link
-                      className="btn mx-1 btn-ghost hover:bg-inherit animate-shake border-2 shake-rainbow-text"
+                      className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
                       href={"/buy"}
                       target="_blank"
                     >
