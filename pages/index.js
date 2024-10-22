@@ -545,7 +545,7 @@ const Home = () => {
                               </div>
                             </div>
                           </td>
-                          <td>{calculatePrice(cap)} XDC</td>
+                          <td>{calculatePrice(cap)?.toFixed(6)} XDC</td>
                           <td>
                             <div className="sm:flex gap-2">
                               <div>{formatNumber(cap / 1e18)} XDC </div>
