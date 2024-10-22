@@ -161,6 +161,10 @@ const Home = () => {
     // }
   }
 
+  useEffect(() => {
+    refetch1();
+  }, [tokens]);
+
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: searchDropTokens,
     multicallAddress: mutilCall?.address,
