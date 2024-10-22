@@ -710,15 +710,15 @@ const Home = () => {
                 })}
               </div>
             )}
-
-            <ul className="menu menu-horizontal rounded-box ml-auto">
-              <li className="disabled">
-                <a style={{ background: "transparent" }}>{"<"}</a>
-              </li>
-              <li>
-                <a className="focus font-bold">1</a>
-              </li>
-              {/* <li>
+            {dropTokens?.length > 0 && (
+              <ul className="menu menu-horizontal rounded-box ml-auto">
+                <li className="disabled">
+                  <a style={{ background: "transparent" }}>{"<"}</a>
+                </li>
+                <li>
+                  <a className="focus font-bold">1</a>
+                </li>
+                {/* <li>
                 <a>2</a>
               </li>
               <li>
@@ -736,10 +736,11 @@ const Home = () => {
               <li>
                 <a>7</a>
               </li> */}
-              <li className="disabled">
-                <a style={{ background: "transparent" }}>{">"}</a>
-              </li>
-            </ul>
+                <li className="disabled">
+                  <a style={{ background: "transparent" }}>{">"}</a>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
         <dialog id="dropModal" className="modal font-black text-xs">
