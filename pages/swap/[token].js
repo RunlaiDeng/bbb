@@ -296,7 +296,7 @@ const Swap = () => {
                   className="object-cover w-full h-full"
                 />
               </figure>
-              <div className="mt-4 md:mt-0">
+              <div className="mt-4 sm:mt-0">
                 <div className="text-xl flex gap-2 items-center">
                   {name} (${symbol})
                   {twitter && (
