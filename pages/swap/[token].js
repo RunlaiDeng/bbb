@@ -103,6 +103,16 @@ const Swap = () => {
     if (index) {
       getHolders();
       getMsg(chainId?.toString(), index?.toString());
+      setTokenInfo({
+        ...tokenInfo,
+        name,
+        symbol,
+        imageUrl,
+        description,
+        website,
+        telegram,
+        twitter,
+      });
     }
   }
 
