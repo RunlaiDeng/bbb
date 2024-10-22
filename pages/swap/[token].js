@@ -112,6 +112,7 @@ const Swap = () => {
         website,
         telegram,
         twitter,
+        sendMsgContent: "",
       });
     }
   }
@@ -283,10 +284,7 @@ const Swap = () => {
             [Go back]
           </div>
         </div>
-        <div
-          className="card m-auto font-black grid text-xs break-all"
-          id="info"
-        >
+        <div className="card m-auto font-black grid text-xs" id="info">
           <div className="card-body p-2">
             <div className="md:flex gap-4">
               <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
@@ -527,12 +525,25 @@ const Swap = () => {
           <div className="md:col-span-3 font-black text-2xl text-center">
             <div className="card bg-slate-100" id="chart">
               <div className="card-body p-2">
+                <div className="text-xs text-left flex items-center gap-2">
+                  <div className="h-6 w-6 overflow-hidden">
+                    <Image
+                      height={400}
+                      width={400}
+                      src={imageUrl || "/didntupload.png"}
+                      alt={""}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  {symbol} / XDC
+                </div>
+
                 <LightChart {...trade} />
               </div>
             </div>
 
             <div
-              className="card bg-slate-100 text-xs mt-2 break-all font-normal"
+              className="card bg-slate-100 text-xs mt-2 font-normal"
               id="chat"
             >
               <div className="card-body p-2">
