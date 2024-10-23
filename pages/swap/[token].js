@@ -13,7 +13,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { buyXDCLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
-
+import { track } from "@vercel/analytics";
 import {
   formatNumber,
   getDate,
@@ -224,6 +224,7 @@ const Swap = () => {
       value: data?.buyAmount,
     },
     callback: () => {
+      track("buy")
       refetch();
     },
   };
@@ -237,6 +238,7 @@ const Swap = () => {
       args: [index, data?.sellAmount],
     },
     callback: () => {
+      track("sell")
       refetch();
     },
   };

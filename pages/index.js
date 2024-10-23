@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import { parseEther, formatEther } from "viem";
 import rpc from "@/components/Rpc";
+import { track } from "@vercel/analytics";
 import {
   formatNumber,
   getDate,
@@ -210,6 +211,7 @@ const Home = () => {
       value: totalCost,
     },
     callback: async (confirm, txHash) => {
+      track("laucnh");
       refetch();
       document.getElementById("dropModal").close();
     },
