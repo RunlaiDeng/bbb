@@ -70,6 +70,10 @@ function getFollowing() {
   }
 }
 
+function getBytesLength(str) {
+  return new TextEncoder().encode(str).length;
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -77,4 +81,5 @@ module.exports = {
   calculatePrice,
   setFollowing,
   getFollowing,
+  getBytesLength,
 };

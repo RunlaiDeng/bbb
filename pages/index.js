@@ -22,6 +22,7 @@ import {
   getDate,
   calculatePrice,
   getFollowing,
+  getBytesLength,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -773,7 +774,7 @@ const Home = () => {
                     Name <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.dName?.length || 0}/20
+                    {getBytesLength(data?.dName)}/20
                   </span>
                 </div>
                 <input
@@ -782,7 +783,7 @@ const Home = () => {
                   value={data?.dName}
                   onChange={(e) => {
                     const newValue = e.target.value;
-                    if (newValue?.length <= 20) {
+                    if (getBytesLength(newValue) <= 20) {
                       setData({ ...data, dName: newValue });
                     }
                   }}
@@ -794,7 +795,7 @@ const Home = () => {
                     Symbol <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.dSymbol?.length || 0}/10
+                    {getBytesLength(data?.dSymbol)}/10
                   </span>
                 </div>
                 <input
@@ -803,7 +804,7 @@ const Home = () => {
                   value={data?.dSymbol}
                   onChange={(e) => {
                     const newValue = e.target.value;
-                    if (newValue?.length <= 10) {
+                    if (getBytesLength(newValue) <= 10) {
                       setData({ ...data, dSymbol: newValue });
                     }
                   }}
@@ -816,7 +817,7 @@ const Home = () => {
                     Token Decription <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {data?.dDesciption?.length || 0}/256
+                    {getBytesLength(data?.dDesciption)}/256
                   </span>
                 </div>
                 <textarea
@@ -824,7 +825,7 @@ const Home = () => {
                   value={data?.dDesciption}
                   onChange={(e) => {
                     const newValue = e.target.value;
-                    if (newValue?.length <= 256) {
+                    if (getBytesLength(newValue) <= 256) {
                       setData({ ...data, dDesciption: newValue });
                     }
                   }}
@@ -850,7 +851,7 @@ const Home = () => {
                     <div className="label">
                       <span className="label-text">Website</span>
                       <span className="text-right">
-                        {data?.dWebiste?.length || 0}/64
+                        {getBytesLength(data?.dWebiste)}/64
                       </span>
                     </div>
                     <label className="input input-bordered flex items-center gap-2 ">
@@ -862,7 +863,7 @@ const Home = () => {
                         value={data?.dWebiste}
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (newValue?.length <= 64) {
+                          if (getBytesLength(newValue) <= 64) {
                             setData({ ...data, dWebiste: newValue });
                           }
                         }}
@@ -873,7 +874,7 @@ const Home = () => {
                     <div className="label">
                       <span className="label-text">Telegram</span>
                       <span className="text-right">
-                        {data?.dTelegram?.length || 0}/64
+                        {getBytesLength(data?.dTelegram)}/64
                       </span>
                     </div>
                     <label className="input input-bordered flex items-center gap-2">
@@ -885,7 +886,7 @@ const Home = () => {
                         value={data?.dTelegram}
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (newValue?.length <= 64) {
+                          if (getBytesLength(newValue) <= 64) {
                             setData({ ...data, dTelegram: newValue });
                           }
                         }}
@@ -896,7 +897,7 @@ const Home = () => {
                     <div className="label">
                       <span className="label-text">Twitter</span>
                       <span className="text-right">
-                        {data?.dTwitter?.length || 0}/64
+                        {getBytesLength(data?.dTwitter)}/64
                       </span>
                     </div>
 
@@ -909,7 +910,7 @@ const Home = () => {
                         value={data?.dTwitter}
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (newValue?.length <= 64) {
+                          if (getBytesLength(newValue) <= 64) {
                             setData({ ...data, dTwitter: newValue });
                           }
                         }}

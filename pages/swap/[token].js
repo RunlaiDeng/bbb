@@ -20,6 +20,7 @@ import {
   deleteSame,
   setFollowing,
   getFollowing,
+  getBytesLength,
 } from "@/components/Utils";
 const Swap = () => {
   const { success, info } = useNotification();
@@ -1165,7 +1166,7 @@ const Swap = () => {
                     Name <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {tokenInfo?.name?.length || 0}/20
+                    {getBytesLength(tokenInfo?.name)}/20
                   </span>
                 </div>
                 <input
@@ -1181,7 +1182,7 @@ const Swap = () => {
                     Symbol <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {tokenInfo?.symbol?.length || 0}/10
+                    {getBytesLength(tokenInfo?.symbol)}/10
                   </span>
                 </div>
                 <input
@@ -1198,7 +1199,7 @@ const Swap = () => {
                     Token Decription <span className="text-green-500">*</span>
                   </span>
                   <span className="text-right">
-                    {tokenInfo?.description?.length || 0}/256
+                    {getBytesLength(tokenInfo?.description)}/256
                   </span>
                 </div>
                 <textarea
@@ -1206,7 +1207,7 @@ const Swap = () => {
                   value={tokenInfo?.description}
                   onChange={(e) => {
                     const newValue = e.target.value;
-                    if (newValue?.length <= 256) {
+                    if (getBytesLength(newValue) <= 256) {
                       setTokenInfo({ ...tokenInfo, description: newValue });
                     }
                   }}
@@ -1217,7 +1218,7 @@ const Swap = () => {
                 <div className="label">
                   <span className="label-text">Website</span>
                   <span className="text-right">
-                    {data?.website?.length || 0}/64
+                    {getBytesLength(data?.website)}/64
                   </span>
                 </div>
                 <label className="input input-bordered flex items-center gap-2">
@@ -1229,7 +1230,7 @@ const Swap = () => {
                     value={data?.website}
                     onChange={(e) => {
                       const newValue = e.target.value;
-                      if (newValue?.length <= 64) {
+                      if (getBytesLength(newValue) <= 64) {
                         setTokenInfo({ ...tokenInfo, website: newValue });
                       }
                     }}
@@ -1240,7 +1241,7 @@ const Swap = () => {
                 <div className="label">
                   <span className="label-text">Telegram</span>
                   <span className="text-right">
-                    {data?.telegram?.length || 0}/64
+                    {getBytesLength(data?.telegram)}/64
                   </span>
                 </div>
 
@@ -1253,7 +1254,7 @@ const Swap = () => {
                     value={data?.telegram}
                     onChange={(e) => {
                       const newValue = e.target.value;
-                      if (newValue?.length <= 64) {
+                      if (getBytesLength(newValue) <= 64) {
                         setTokenInfo({ ...tokenInfo, telegram: newValue });
                       }
                     }}
@@ -1264,7 +1265,7 @@ const Swap = () => {
                 <div className="label">
                   <span className="label-text">twitter</span>
                   <span className="text-right">
-                    {data?.twitter?.length || 0}/64
+                    {getBytesLength(data?.twitter)}/64
                   </span>
                 </div>
 
@@ -1277,7 +1278,7 @@ const Swap = () => {
                     value={data?.twitter}
                     onChange={(e) => {
                       const newValue = e.target.value;
-                      if (newValue?.length <= 64) {
+                      if (getBytesLength(newValue) <= 64) {
                         setTokenInfo({ ...tokenInfo, twitter: newValue });
                       }
                     }}
