@@ -101,6 +101,7 @@ const Home = () => {
         functionName: "getLatestKing",
         args: [],
       },
+      { ...mbbb, functionName: "getDropTokenLength" },
     ],
     multicallAddress: mutilCall?.address,
     query: {
@@ -129,6 +130,7 @@ const Home = () => {
   const latestTradePro = reads0?.[1]?.result;
   const latestDrop = reads0?.[2]?.result;
   const latestKing = reads0?.[3]?.result;
+  const dropTokenLength = reads0?.[4].result;
 
   const latestTrade = latestTradePro?.[0];
 
@@ -145,20 +147,23 @@ const Home = () => {
   }
 
   if (show == 2) {
-    for (let i = 0; i < tokens?.length; i++) {
-      searchDropTokens.push({
-        ...mbbb,
-        functionName: "getDropToken",
-        args: [tokens?.[i]?.toString()],
-      });
+    if (tokens) {
+      for (let i = 0; i < tokens?.length; i++) {
+        searchDropTokens.push({
+          ...mbbb,
+          functionName: "getDropToken",
+          args: [tokens?.[i]?.toString()],
+        });
+      }
+    } else {
+      for (let i = dropTokenLength?.toString(); i > 0; i--) {
+        searchDropTokens.push({
+          ...mbbb,
+          functionName: "getDropToken",
+          args: [i?.toString()],
+        });
+      }
     }
-    // for (let i = dropTokenLength?.toString(); i > 0; i--) {
-    //   searchDropTokens.push({
-    //     ...mbbb,
-    //     functionName: "getDropToken",
-    //     args: [i?.toString()],
-    //   });
-    // }
   }
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
