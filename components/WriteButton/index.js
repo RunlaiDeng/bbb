@@ -60,6 +60,7 @@ const WriteButton = (props) => {
       success("Transaction successful!");
     }
   }, [txSuccess]);
+  
 
   const client = usePublicClient();
 
