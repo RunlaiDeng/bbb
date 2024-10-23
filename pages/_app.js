@@ -8,6 +8,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
+import { Analytics } from "@vercel/analytics/react";
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -61,17 +62,20 @@ const config = getDefaultConfig({
 const MyApp = ({ Component, pageProps }) => {
   const { locale } = useRouter();
   return (
-    <NotificationProvider>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider locale={locale} showRecentTransactions={true}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </NotificationProvider>
+    <>
+      <NotificationProvider>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider locale={locale} showRecentTransactions={true}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
+      </NotificationProvider>
+      <Analytics />
+    </>
   );
 };
 
