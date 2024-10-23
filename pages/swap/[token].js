@@ -640,10 +640,10 @@ const Swap = () => {
                         sendMsgContent: e.target.value,
                       });
                     }}
-                    onKeyDown={(e) => {
+                    onKeyDown={async (e) => {
                       if (e.key === "Enter") {
                         setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
-                        rpc.sendMsg(
+                        await rpc.sendMsg(
                           chainId?.toString(),
                           index?.toString(),
                           tokenInfo?.sendMsgContent,
@@ -656,15 +656,15 @@ const Swap = () => {
                   />
                   <kbd
                     className="kbd kbd-sm cursor-pointer"
-                    onClick={() => {
+                    onClick={async () => {
                       if (tokenInfo?.sendMsgContent) {
-                        rpc.sendMsg(
+                        setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
+                        await rpc.sendMsg(
                           chainId?.toString(),
                           index?.toString(),
                           tokenInfo?.sendMsgContent,
                           address
                         );
-                        setTokenInfo({ ...tokenInfo, sendMsgContent: "" });
                         getData();
                       }
                     }}
