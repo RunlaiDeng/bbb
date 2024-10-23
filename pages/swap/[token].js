@@ -223,8 +223,10 @@ const Swap = () => {
       args: [index],
       value: data?.buyAmount,
     },
+    before: () => {
+      track("buy");
+    },
     callback: () => {
-      track("buy")
       refetch();
     },
   };
@@ -237,8 +239,10 @@ const Swap = () => {
       functionName: "sell",
       args: [index, data?.sellAmount],
     },
+    before: () => {
+      track("sell");
+    },
     callback: () => {
-      track("sell")
       refetch();
     },
   };

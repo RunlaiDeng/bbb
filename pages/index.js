@@ -210,8 +210,10 @@ const Home = () => {
       ],
       value: totalCost,
     },
-    callback: async (confirm, txHash) => {
+    before: () => {
       track("laucnh");
+    },
+    callback: async (confirm, txHash) => {
       refetch();
       document.getElementById("dropModal").close();
     },

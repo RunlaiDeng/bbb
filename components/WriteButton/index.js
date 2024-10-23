@@ -60,7 +60,6 @@ const WriteButton = (props) => {
       success("Transaction successful!");
     }
   }, [txSuccess]);
-  
 
   const client = usePublicClient();
 
@@ -100,7 +99,7 @@ const WriteButton = (props) => {
             const gas = await client.estimateContractGas({ ...props?.data });
             writeData.gas = (gas * 12n) / 10n;
           } catch (e) {}
-
+          props?.before?.();
           write?.(writeData);
         }}
       >
