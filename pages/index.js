@@ -237,6 +237,8 @@ const Home = () => {
     clean: data?.clean,
   };
 
+  console.log(dropTokens)
+
   return (
     mount && (
       <>
@@ -576,6 +578,7 @@ const Home = () => {
             {type == 2 && (
               <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
                 {dropTokens?.map((item, index) => {
+             
                   const xdcAmount = item?.xdcAmount;
                   const percent =
                     (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();

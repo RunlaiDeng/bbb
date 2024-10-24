@@ -129,7 +129,7 @@ export default function ImageUpload(props) {
         <input
           id="file-upload"
           type="file"
-          accept="image/*"
+          accept=".jpeg,.jpg,.png,.webp,.gif"
           className="hidden"
           onChange={handleImageChange}
         />
