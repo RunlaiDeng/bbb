@@ -237,8 +237,6 @@ const Home = () => {
     clean: data?.clean,
   };
 
-  console.log(dropTokens)
-
   return (
     mount && (
       <>
@@ -541,11 +539,10 @@ const Home = () => {
                               <Image
                                 height={400}
                                 width={400}
-                                src={
-                                  item?.imageUrl
-                                    ? item?.imageUrl
-                                    : "/didntupload.png"
-                                }
+                                src={item?.imageUrl}
+                                onError={(e) => {
+                                  e.target.src = "/didntupload.png";
+                                }}
                                 alt={item?.name}
                                 className="object-cover w-full h-full"
                               />
@@ -578,7 +575,6 @@ const Home = () => {
             {type == 2 && (
               <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
                 {dropTokens?.map((item, index) => {
-             
                   const xdcAmount = item?.xdcAmount;
                   const percent =
                     (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
@@ -598,9 +594,10 @@ const Home = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={
-                            item?.imageUrl ? item?.imageUrl : "/didntupload.png"
-                          }
+                          src={item?.imageUrl}
+                          onError={(e) => {
+                            e.target.src = "/didntupload.png";
+                          }}
                           alt={item?.name}
                           className="object-cover w-full h-full"
                         />

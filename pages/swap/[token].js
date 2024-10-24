@@ -298,7 +298,10 @@ const Swap = () => {
                 <Image
                   height={400}
                   width={400}
-                  src={imageUrl || "/didntupload.png"}
+                  src={imageUrl}
+                  onError={(e) => {
+                    e.target.src = "/didntupload.png";
+                  }}
                   alt={""}
                   className="object-cover w-full h-full"
                 />
@@ -535,7 +538,10 @@ const Swap = () => {
                     <Image
                       height={400}
                       width={400}
-                      src={imageUrl || "/didntupload.png"}
+                      src={imageUrl}
+                      onError={(e) => {
+                        e.target.src = "/didntupload.png";
+                      }}
                       alt={""}
                       className="object-cover w-full h-full"
                     />
@@ -817,7 +823,10 @@ const Swap = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={imageUrl || "/didntupload.png"}
+                          src={imageUrl}
+                          onError={(e) => {
+                            e.target.src = "/didntupload.png";
+                          }}
                           alt={""}
                           className="object-cover w-full h-full"
                         />
@@ -869,7 +878,10 @@ const Swap = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={imageUrl || "/didntupload.png"}
+                          src={imageUrl}
+                          onError={(e) => {
+                            e.target.src = "/didntupload.png";
+                          }}
                           alt={""}
                           className="object-cover w-full h-full"
                         />
