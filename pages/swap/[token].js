@@ -21,7 +21,9 @@ import {
   setFollowing,
   getFollowing,
   getBytesLength,
+  handleSrc,
 } from "@/components/Utils";
+
 const Swap = () => {
   const { success, info } = useNotification();
   const router = useRouter();
@@ -158,6 +160,7 @@ const Swap = () => {
     refetch0();
     refetch1();
   };
+
   const price = reads1?.[0]?.result;
   const buyTokenAmount = reads1?.[1]?.result;
   const sellXDCAmount = reads1?.[2]?.result;
@@ -298,10 +301,7 @@ const Swap = () => {
                 <Image
                   height={400}
                   width={400}
-                  src={imageUrl}
-                  onError={(e) => {
-                    e.target.src = "/didntupload.png";
-                  }}
+                  src={handleSrc(imageUrl)}
                   alt={""}
                   className="object-cover w-full h-full"
                 />
@@ -538,10 +538,7 @@ const Swap = () => {
                     <Image
                       height={400}
                       width={400}
-                      src={imageUrl}
-                      onError={(e) => {
-                        e.target.src = "/didntupload.png";
-                      }}
+                      src={handleSrc(imageUrl)}
                       alt={""}
                       className="object-cover w-full h-full"
                     />
@@ -823,10 +820,7 @@ const Swap = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={imageUrl}
-                          onError={(e) => {
-                            e.target.src = "/didntupload.png";
-                          }}
+                          src={handleSrc(imageUrl)}
                           alt={""}
                           className="object-cover w-full h-full"
                         />
@@ -878,10 +872,7 @@ const Swap = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={imageUrl}
-                          onError={(e) => {
-                            e.target.src = "/didntupload.png";
-                          }}
+                          src={handleSrc(imageUrl)}
                           alt={""}
                           className="object-cover w-full h-full"
                         />

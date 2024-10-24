@@ -74,6 +74,11 @@ function getBytesLength(str) {
   return new TextEncoder().encode(str).length;
 }
 
+function handleSrc(src) {
+  const regex = /^https:\/\/benybadboy\.b-cdn\.net\/.*$/;
+  return regex.test(src) ? src : "/didntupload.png";
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -82,4 +87,5 @@ module.exports = {
   setFollowing,
   getFollowing,
   getBytesLength,
+  handleSrc,
 };

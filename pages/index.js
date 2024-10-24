@@ -23,6 +23,7 @@ import {
   calculatePrice,
   getFollowing,
   getBytesLength,
+  handleSrc,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -539,10 +540,7 @@ const Home = () => {
                               <Image
                                 height={400}
                                 width={400}
-                                src={item?.imageUrl}
-                                onError={(e) => {
-                                  e.target.src = "/didntupload.png";
-                                }}
+                                src={handleSrc(item?.imageUrl)}
                                 alt={item?.name}
                                 className="object-cover w-full h-full"
                               />
@@ -594,10 +592,7 @@ const Home = () => {
                         <Image
                           height={400}
                           width={400}
-                          src={item?.imageUrl}
-                          onError={(e) => {
-                            e.target.src = "/didntupload.png";
-                          }}
+                          src={handleSrc(item?.imageUrl)}
                           alt={item?.name}
                           className="object-cover w-full h-full"
                         />
