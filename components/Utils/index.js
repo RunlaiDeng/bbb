@@ -79,6 +79,13 @@ function handleSrc(src) {
   return regex.test(src) ? src : "/didntupload.png";
 }
 
+function customToFixed(num) {
+  let numStr = num.toLocaleString("fullwide", { useGrouping: false });
+  let [intPart] = numStr.split(".");
+
+  return intPart;
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -88,4 +95,5 @@ module.exports = {
   getFollowing,
   getBytesLength,
   handleSrc,
+  customToFixed,
 };

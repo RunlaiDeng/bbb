@@ -22,6 +22,7 @@ import {
   getFollowing,
   getBytesLength,
   handleSrc,
+  customToFixed,
 } from "@/components/Utils";
 
 const Swap = () => {
@@ -1030,13 +1031,15 @@ const Swap = () => {
                         There are{" "}
                         <span className="text-green-500">
                           {formatNumber(
-                            formatEther(maxXdc || 0n) -
-                              formatEther(xdcAmount || 0n)
+                            formatEther(
+                              customToFixed(
+                                Math.sqrt(maxXdc?.toString() * 2e25)
+                              )
+                            ) - formatEther(totalSupply || 0n)
                           )}{" "}
-                          XDC
+                          {symbol}
                         </span>{" "}
-                        for tokens still available for sale in the rld curve and
-                        there are{" "}
+                        still available for sale in the rld curve and there are{" "}
                         <span className="text-green-500">
                           {formatNumber(Number(formatEther(xdcAmount || 0n)))}{" "}
                           XDC
