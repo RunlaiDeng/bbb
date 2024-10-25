@@ -148,7 +148,8 @@ const Home = () => {
   }
 
   if (show == 2) {
-    if (tokens) {
+
+    if (false) {
       for (let i = 0; i < tokens?.length; i++) {
         searchDropTokens.push({
           ...mbbb,
