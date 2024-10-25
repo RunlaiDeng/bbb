@@ -67,7 +67,7 @@ const Home = () => {
 
   async function fetchData() {
     const tokensResult = await rpc.getTokens();
-    setTokens(tokensResult);
+    setTokens(tokensResult?.list);
   }
 
   useEffect(() => {
@@ -148,8 +148,7 @@ const Home = () => {
   }
 
   if (show == 2) {
-
-    if (false) {
+    if (tokens) {
       for (let i = 0; i < tokens?.length; i++) {
         searchDropTokens.push({
           ...mbbb,
