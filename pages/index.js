@@ -62,11 +62,12 @@ const Home = () => {
 
   const [mount, setMount] = useState(false);
   const [tokens, setTokens] = useState([]);
+  const [page, setPage] = useState({ number: 1, size: 100 });
 
   const { info } = useNotification();
 
   async function fetchData() {
-    const tokensResult = await rpc.getTokens(undefined, 1, 100);
+    const tokensResult = await rpc.getTokens(undefined, page.number, page.size);
     setTokens(tokensResult);
   }
 
