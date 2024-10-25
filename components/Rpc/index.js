@@ -15,8 +15,8 @@ const sendMsg = async (chainid, index, msg, address) => {
   return send("sendMsg", [chainid, index, msg, address]);
 };
 
-const getTokens = async (sort) => {
-  return send("getTokens", [sort]);
+const getTokens = async (sort, pageNumber, pageSize) => {
+  return send("getTokens", [sort, pageNumber, pageSize]);
 };
 const uploadFile = async (file) => {
   const formData = new FormData(); //

@@ -66,9 +66,11 @@ const Home = () => {
   const { info } = useNotification();
 
   async function fetchData() {
-    const tokensResult = await rpc.getTokens();
-    setTokens(tokensResult?.list);
+    const tokensResult = await rpc.getTokens(undefined, 1, 100);
+    setTokens(tokensResult);
   }
+
+  const tokenList = tokens?.list;
 
   useEffect(() => {
     fetchData();
@@ -148,12 +150,12 @@ const Home = () => {
   }
 
   if (show == 2) {
-    if (tokens) {
-      for (let i = 0; i < tokens?.length; i++) {
+    if (tokenList) {
+      for (let i = 0; i < tokenList?.length; i++) {
         searchDropTokens.push({
           ...mbbb,
           functionName: "getDropToken",
-          args: [tokens?.[i]?.toString()],
+          args: [tokenList?.[i]?.toString()],
         });
       }
     } else {
