@@ -61,27 +61,30 @@ const Home = () => {
   const mutilCall = contracts[chainId]?.multicallAddress;
 
   const [mount, setMount] = useState(false);
-  const [tokens, setTokens] = useState([]);
-  const [page, setPage] = useState({ number: 1, size: 100 });
+  const [tokens, setTokens] = useState({});
 
   const { info } = useNotification();
 
-  async function fetchData() {
-    const tokensResult = await rpc.getTokens(undefined, page.number, page.size);
+  async function fetchData(number) {
+    const tokensResult = await rpc.getTokens(
+      undefined,
+      number || tokens?.number,
+      tokens?.size
+    );
     setTokens(tokensResult);
   }
 
   const tokenList = tokens?.list;
 
   useEffect(() => {
-    fetchData();
+    fetchData(tokens?.pageNumber);
 
     const interval = setInterval(() => {
-      fetchData();
+      fetchData(tokens?.pageNumber);
     }, 3000);
     setMount(true);
     return () => clearInterval(interval);
-  }, [mount]);
+  }, [mount, tokens?.pageNumber]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
@@ -240,6 +243,11 @@ const Home = () => {
     },
     clean: data?.clean,
   };
+
+  const pages = [];
+  for (let i = 1; i <= tokens?.totalPage; i++) {
+    pages.push(i);
+  }
 
   return (
     mount && (
@@ -720,27 +728,25 @@ const Home = () => {
                 <li className="disabled">
                   <a style={{ background: "transparent" }}>{"<"}</a>
                 </li>
-                <li>
-                  <a className="focus font-bold">1</a>
-                </li>
-                {/* <li>
-                <a>2</a>
-              </li>
-              <li>
-                <a>3</a>
-              </li>
-              <li>
-                <a>4</a>
-              </li>
-              <li>
-                <a>5</a>
-              </li>
-              <li className="pointer-events-none">
-                <a>...</a>
-              </li>
-              <li>
-                <a>7</a>
-              </li> */}
+                {pages?.map((item, index) => {
+                  return (
+                    <li
+                      key={item}
+                      onClick={() => {
+                        setTokens({ ...tokens, pageNumber: item });
+                      }}
+                    >
+                      <a
+                        className={
+                          item == tokens?.pageNumber ? "focus font-bold" : ""
+                        }
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  );
+                })}
+
                 <li className="disabled">
                   <a style={{ background: "transparent" }}>{">"}</a>
                 </li>
