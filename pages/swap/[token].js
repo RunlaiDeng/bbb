@@ -282,6 +282,8 @@ const Swap = () => {
   const following = getFollowing();
   const isFollowed = following?.[index];
 
+  const [followed, setFollowed] = useState(isFollowed);
+
   return (
     mount && (
       <>
@@ -400,9 +402,10 @@ const Swap = () => {
                       {/* this hidden checkbox controls the state */}
                       <input
                         type="checkbox"
-                        defaultChecked={isFollowed}
+                        checked={isFollowed}
                         onChange={(e) => {
                           setFollowing(index, e.target.checked);
+                          setFollowed(e.target.checked);
                         }}
                       />
 
