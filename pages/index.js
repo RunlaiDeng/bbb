@@ -620,7 +620,7 @@ const Home = () => {
                           <td>{calculatePrice(cap)?.toFixed(6)} XDC</td>
                           <td>
                             <div className="sm:flex gap-2">
-                              <div>{formatNumber(cap / 1e18)} XDC </div>
+                              <div className="whitespace-nowrap">{formatNumber(cap / 1e18)} XDC </div>
                               <div className="opacity-50">
                                 {" "}
                                 ({percent?.toFixed(2)}%)
