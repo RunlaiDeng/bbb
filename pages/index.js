@@ -65,10 +65,10 @@ const Home = () => {
 
   const { info } = useNotification();
 
-  async function fetchData(number) {
+  async function fetchData() {
     const tokensResult = await rpc.getTokens(
-      undefined,
-      number || tokens?.number,
+      tokens?.sort,
+      tokens?.pageNumber,
       tokens?.size
     );
     setTokens(tokensResult);
@@ -77,14 +77,14 @@ const Home = () => {
   const tokenList = tokens?.list;
 
   useEffect(() => {
-    fetchData(tokens?.pageNumber);
+    fetchData();
 
     const interval = setInterval(() => {
-      fetchData(tokens?.pageNumber);
+      fetchData();
     }, 3000);
     setMount(true);
     return () => clearInterval(interval);
-  }, [mount, tokens?.pageNumber]);
+  }, [mount, tokens?.pageNumber, tokens?.sort]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
@@ -526,9 +526,58 @@ const Home = () => {
                   {/* head */}
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>RLD Curve Progress</th>
+                      <th className="w-1/2">Name</th>
+                      <th className="w-1/4">Price</th>
+                      <th
+                        className="cursor-pointer flex items-center w-1/4"
+                        onClick={() => {
+                          let setSort;
+                          if (!tokens?.sort) {
+                            setSort = 1;
+                          }
+                          if (tokens?.sort == 1) {
+                            setSort = 2;
+                          }
+
+                          if (tokens?.sort == 2) {
+                            setSort = undefined;
+                          }
+
+                          setTokens({ ...tokens, sort: setSort });
+                        }}
+                      >
+                        Progress{" "}
+                        <div>
+                          <svg
+                            viewBox="0 -450 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="9979"
+                            width="8"
+                            height="8"
+                          >
+                            <path
+                              d="M804.571429 402.285714q0 14.857143-10.857143 25.714286t-25.714286 10.857143H256q-14.857143 0-25.714286-10.857143t-10.857143-25.714286 10.857143-25.714285l256-256q10.857143-10.857143 25.714286-10.857143t25.714286 10.857143l256 256q10.857143 10.857143 10.857143 25.714285z"
+                              p-id="9980"
+                              fill={tokens?.sort == 2 ? "#0e932e" : ""}
+                            ></path>
+                          </svg>
+                          <svg
+                            viewBox="0 450 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="11004"
+                            width="8"
+                            height="8"
+                          >
+                            <path
+                              d="M804.571429 621.714286q0 14.857143-10.857143 25.714286l-256 256q-10.857143 10.857143-25.714286 10.857143t-25.714286-10.857143l-256-256q-10.857143-10.857143-10.857143-25.714286t10.857143-25.714286 25.714286-10.857143l512 0q14.857143 0 25.714286 10.857143t10.857143 25.714286z"
+                              p-id="11005"
+                              fill={tokens?.sort == 1 ? "#0e932e" : ""}
+                            ></path>
+                          </svg>
+                        </div>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
