@@ -515,6 +515,22 @@ const Swap = () => {
                         dropToken?.symbol}
                     </span>
                   </div>
+
+                  <div>
+                    <span className="opacity-50">Cap </span>
+
+                    <span>
+                      {formatNumber(
+                        Number(
+                          formatEther(totalSupply || 0n) *
+                            formatEther(price || 0n) *
+                            2
+                        )
+                      ) +
+                        " " +
+                        dropToken?.symbol}
+                    </span>
+                  </div>
                   <div>
                     <span className="opacity-50">24H Volume </span>
 
