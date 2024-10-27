@@ -526,9 +526,7 @@ const Swap = () => {
                             formatEther(price || 0n) *
                             2
                         )
-                      ) +
-                        " " +
-                        dropToken?.symbol}
+                      ) + " XDC"}
                     </span>
                   </div>
                   <div>

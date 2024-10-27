@@ -434,7 +434,7 @@ const Home = () => {
         <div className="card m-auto w-full">
           <div className="card-body p-2">
             <div className="flex gap-2 text-slate-500 ml-4">
-              <ul className="menu menu-horizontal bg-base-200 rounded-box">
+              <ul className="menu menu-horizontal bg-base-200 rounded-box text-[8px] sm:text-xs">
                 <li
                   onClick={() => {
                     setShow(1);
@@ -450,7 +450,7 @@ const Home = () => {
                   <a className={show == 2 ? "focus" : ""}>Terminal</a>
                 </li>
               </ul>
-              <div className="ml-auto mr-8">
+              <div className="ml-auto">
                 <ul className="menu menu-horizontal bg-base-200 rounded-box">
                   <li
                     onClick={() => {
@@ -620,7 +620,9 @@ const Home = () => {
                           <td>{calculatePrice(cap)?.toFixed(6)} XDC</td>
                           <td>
                             <div className="sm:flex gap-2">
-                              <div className="whitespace-nowrap">{formatNumber(cap / 1e18)} XDC </div>
+                              <div className="whitespace-nowrap">
+                                {formatNumber(cap / 1e18)} XDC{" "}
+                              </div>
                               <div className="opacity-50">
                                 {" "}
                                 ({percent?.toFixed(2)}%)
