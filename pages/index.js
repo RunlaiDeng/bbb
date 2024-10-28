@@ -24,6 +24,8 @@ import {
   getFollowing,
   getBytesLength,
   handleSrc,
+  calculateSupply,
+  calculateXdcAmount,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -54,6 +56,8 @@ const Home = () => {
     dName: "",
     dSymbol: "",
     dMaxXdcCap: parseEther("1000000"),
+    dMaxSymbolCap: parseEther(calculateSupply("1000000")),
+    maxSymbol: "XDC",
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -249,6 +253,10 @@ const Home = () => {
   for (let i = 1; i <= tokens?.totalPage; i++) {
     pages.push(i);
   }
+
+  const { failure } = useNotification();
+
+  console.log(data?.dSymbol, data?.maxSymbol);
 
   return (
     mount && (
@@ -866,7 +874,18 @@ const Home = () => {
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (getBytesLength(newValue) <= 10) {
-                      setData({ ...data, dSymbol: newValue });
+                      let change = { dSymbol: newValue };
+                      if (data?.maxSymbol != "XDC") {
+                        change = { ...change, maxSymbol: newValue };
+                      }
+                      if (data?.buySymbol != "XDC") {
+                        change = { ...change, buySymbol: newValue };
+                      }
+
+                      setData({
+                        ...data,
+                        ...change,
+                      });
                     }
                   }}
                 />
@@ -978,65 +997,180 @@ const Home = () => {
                       />
                     </label>
                   </label>
-                  <div className="text-left"> Max Curve</div>
-
-                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="0.00"
-                      value={
-                        data?.dMaxXdcCap >= 0
-                          ? formatEther(data?.dMaxXdcCap)
-                          : undefined
-                      }
-                      onChange={(e) => {
-                        const newValue = e.target.value;
-                        if (!newValue) {
-                          setData({
-                            ...data,
-                            dBuy: undefined,
-                          });
-                        }
-                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                          setData({
-                            ...data,
-                            dMaxXdcCap: parseEther(newValue),
-                          });
+                  <div className="flex items-center mt-2">
+                    Max Curve(minimum 1m xdc)
+                    <div
+                      className="btn btn-xs ml-auto"
+                      onClick={() => {
+                        if (data.maxSymbol == "XDC") {
+                          setData({ ...data, maxSymbol: data?.dSymbol });
+                        } else {
+                          setData({ ...data, maxSymbol: "XDC" });
                         }
                       }}
-                    />
-                    <div className="font-black">XDC</div>
-                  </label>
+                    >
+                      switch to{" "}
+                      {data?.maxSymbol == "XDC" ? data?.dSymbol : "XDC"}
+                    </div>
+                  </div>
 
-                  <div className="text-left">How many you want buy</div>
-
-                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="0.00"
-                      value={
-                        data?.dBuy >= 0 ? formatEther(data?.dBuy) : undefined
-                      }
-                      onChange={(e) => {
-                        const newValue = e.target.value;
-                        if (!newValue) {
-                          setData({
-                            ...data,
-                            dBuy: undefined,
-                          });
+                  {data?.maxSymbol == "XDC" && (
+                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          data?.dMaxXdcCap >= 0
+                            ? formatEther(data?.dMaxXdcCap)
+                            : undefined
                         }
-                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                          setData({
-                            ...data,
-                            dBuy: parseEther(newValue),
-                          });
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setData({
+                              ...data,
+                              dMaxXdcCap: undefined,
+                              dMaxSymbolCap: undefined,
+                            });
+                          }
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              dMaxXdcCap: parseEther(newValue),
+                              dMaxSymbolCap: parseEther(
+                                calculateSupply(newValue)
+                              ),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-black">XDC</div>
+                    </label>
+                  )}
+                  {data?.dSymbol == data?.maxSymbol && (
+                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          data?.dMaxSymbolCap >= 0
+                            ? formatEther(data?.dMaxSymbolCap)
+                            : undefined
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setData({
+                              ...data,
+                              dMaxXdcCap: undefined,
+                              dMaxSymbolCap: undefined,
+                            });
+                          }
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              dMaxXdcCap: parseEther(
+                                calculateXdcAmount(newValue)
+                              ),
+                              dMaxSymbolCap: parseEther(newValue),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-black">{data?.dSymbol}</div>
+                    </label>
+                  )}
+
+                  <div className="flex items-center mt-2">
+                    How many you want buy
+                    <div
+                      className="btn btn-xs ml-auto"
+                      onClick={() => {
+                        if (data.buySymbol == "XDC") {
+                          setData({ ...data, buySymbol: data?.dSymbol });
+                        } else {
+                          setData({ ...data, buySymbol: "XDC" });
                         }
                       }}
-                    />
-                    <div className="font-black">XDC</div>
-                  </label>
+                    >
+                      switch to{" "}
+                      {data?.buySymbol == "XDC" ? data?.dSymbol : "XDC"}
+                    </div>
+                  </div>
+                  {data?.buySymbol == "XDC" && (
+                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          data?.dBuy >= 0 ? formatEther(data?.dBuy) : undefined
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setData({
+                              ...data,
+                              dBuy: undefined,
+                              dBuySymbol: undefined,
+                            });
+                          }
+
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              dBuySymbol: parseEther(calculateSupply(newValue)),
+                              dBuy: parseEther(newValue),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-black">XDC</div>
+                    </label>
+                  )}
+                  {data?.buySymbol == data?.dSymbol && (
+                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          data?.dBuySymbol >= 0
+                            ? formatEther(data?.dBuySymbol)
+                            : undefined
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setData({
+                              ...data,
+                              dBuy: undefined,
+                              dBuySymbol: undefined,
+                            });
+                          }
+
+                          if (
+                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
+                          ) {
+                            setData({
+                              ...data,
+                              dBuySymbol: parseEther(newValue),
+                              dBuy: parseEther(calculateXdcAmount(newValue)),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-black">{data?.dSymbol}</div>
+                    </label>
+                  )}
                 </div>
               </div>
 
