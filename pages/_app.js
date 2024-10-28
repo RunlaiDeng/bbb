@@ -19,7 +19,7 @@ const xdc = /*#__PURE__*/ {
     symbol: "XDC",
   },
   rpcUrls: {
-    default: { http: ["https://rpc.xdcrpc.com"] },
+    default: { http: ["https://rpc1.xinfin.network"] },
   },
   blockExplorers: {
     default: {
