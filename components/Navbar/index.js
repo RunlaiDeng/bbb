@@ -15,11 +15,11 @@ const Navbar = () => {
         <div className="navbar items-center font-black">
           <div className="navbar-start">
             <Image
-              src={"/bbb.jpg"}
+              src={"/favicon.ico"}
               height={50}
               width={50}
               alt=""
-              className="rounded-full cursor-pointer"
+              className=" cursor-pointer"
               onClick={() => {
                 router.push("/");
               }}
@@ -150,11 +150,11 @@ const Navbar = () => {
                   <li>
                     <div className="flex justify-between items-center">
                       <Image
-                        src={"/bbb.jpg"}
+                        src={"/favicon.ico"}
                         height={50}
                         width={50}
                         alt=""
-                        className="rounded-full cursor-pointer"
+                        className=" cursor-pointer"
                         onClick={() => {
                           router.push("/");
                         }}
