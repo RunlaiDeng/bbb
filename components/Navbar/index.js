@@ -28,7 +28,7 @@ const Navbar = () => {
               <div
                 className="hover:text-green-500 cursor-pointer"
                 onClick={() => {
-                  window.open("https://x.com/benybadboybbb");
+                  window.open("https://x.com/bbbpumpdotfun");
                 }}
               >
                 [twitter]
@@ -44,7 +44,7 @@ const Navbar = () => {
               <div
                 className="hover:text-green-500 cursor-pointer"
                 onClick={() => {
-                  window.open("https://t.me/benybadboy");
+                  window.open("https://t.me/bbbpump");
                 }}
               >
                 [telegram]
