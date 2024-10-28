@@ -178,6 +178,7 @@ const Home = () => {
     multicallAddress: mutilCall?.address,
     query: {
       retry: true,
+      refetchInterval: 3000,
     },
   });
 
