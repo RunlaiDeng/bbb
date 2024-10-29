@@ -115,9 +115,6 @@ const Home = () => {
       { ...mbbb, functionName: "getDropTokenLength" },
     ],
     multicallAddress: mutilCall?.address,
-    query: {
-      retry: true,
-    },
   });
 
   const refetch = () => {
@@ -180,13 +177,16 @@ const Home = () => {
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: searchDropTokens,
     multicallAddress: mutilCall?.address,
-    query: {
-      retry: true,
-      refetchInterval: 3000,
-    },
   });
 
   let dropTokens = reads1?.map((item) => item?.result);
+
+  useEffect(() => {
+    if (dropTokens?.length > 0 && dropTokens?.[0] == undefined) {
+      refetch0();
+      refetch1();
+    }
+  }, [dropTokens]);
 
   if (data?.search) {
     dropTokens = dropTokens.filter((item) => {
