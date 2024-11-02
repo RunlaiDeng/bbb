@@ -74,7 +74,7 @@ const Navbar = () => {
                   role="button"
                   className="btn m-1 btn-ghost hover:text-green-500 hover:bg-inherit"
                 >
-                  Earn
+                  More
                 </div>
                 <ul
                   tabIndex={0}
@@ -210,7 +210,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <div className="hover:text-green-500 hover:bg-inherit">
-                      Earn
+                      More
                     </div>
                     <ul>
                       <li>
