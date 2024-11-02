@@ -21,10 +21,16 @@ const Referral = () => {
         functionName: "getReferrersList",
         args: [address],
       },
+      {
+        ...bbbpumpReferral,
+        functionName: "leaderMap",
+        args: [address],
+      },
     ],
   });
 
   const referralList = reads0?.[0]?.result;
+  const leaderMap = reads0?.[1]?.result;
 
   const { success } = useNotification();
 
@@ -41,10 +47,36 @@ const Referral = () => {
     }
   }, [address]);
 
+  console.log(leaderMap);
   return (
     <div className="">
       <div className="card m-auto w-full ">
         <div className="card-body font-black">
+          <div className="font-black">Rewards</div>
+          <div className="font-black text-green-700 flex items-center gap-2">
+            <div className="text-4xl"> {0} XDC</div>
+
+            <WriteButton
+              {...claimReferral}
+              className="btn btn-xs w-max btn-success"
+            />
+          </div>
+          <div className="text-xs opacity-50">
+            It will automatically update every two weeks.
+          </div>
+          <div>Commission Rate</div>
+          <div className="stats stats-horizontal shadow text-green-700 text-xs">
+            <div className="stat">
+              <div className="stat-title">Invited User</div>
+              <div className="stat-value">0%</div>
+            </div>
+
+            <div className="stat">
+              <div className="stat-title">You</div>
+              <div className="stat-value">20%</div>
+            </div>
+          </div>
+          <div>Invitation Method</div>
           <label
             className="input input-bordered flex items-center gap-2 cursor-pointer w-full"
             onClick={() => {
@@ -139,14 +171,6 @@ const Referral = () => {
               ></path>
             </svg>
           </label>
-          <div className="font-black">Rewards</div>
-          <div className="font-black text-xl text-green-700 flex items-center gap-2">
-            {0} XDC
-            <WriteButton
-              {...claimReferral}
-              className="btn btn-xs w-max btn-success"
-            />
-          </div>
         </div>
       </div>
       <div className="card">
