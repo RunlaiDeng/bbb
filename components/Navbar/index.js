@@ -82,19 +82,26 @@ const Navbar = () => {
                 >
                   <li>
                     <Link
-                      href={"/farm"}
+                      href={"/referral"}
                       className="hover:text-green-500 hover:bg-inherit"
                     >
-                      Farm
+                      Referral
                     </Link>
                   </li>
-
                   <li>
                     <Link
                       href={"/megadrop"}
                       className="hover:text-green-500 hover:bg-inherit"
                     >
                       Megadrop
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={"/farm"}
+                      className="hover:text-green-500 hover:bg-inherit"
+                    >
+                      Farm
                     </Link>
                   </li>
                 </ul>
@@ -208,16 +215,15 @@ const Navbar = () => {
                     <ul>
                       <li>
                         <Link
-                          href={"/farm"}
+                          href={"/referral"}
                           className="hover:text-green-500 hover:bg-inherit"
                           onClick={(e) => {
                             setData({ ...data, drawerOpen: false });
                           }}
                         >
-                          Farm
+                          Referral
                         </Link>
                       </li>
-
                       <li>
                         <Link
                           href={"/megadrop"}
@@ -227,6 +233,17 @@ const Navbar = () => {
                           }}
                         >
                           Megadrop
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/farm"}
+                          className="hover:text-green-500 hover:bg-inherit"
+                          onClick={(e) => {
+                            setData({ ...data, drawerOpen: false });
+                          }}
+                        >
+                          Farm
                         </Link>
                       </li>
                     </ul>
