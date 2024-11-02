@@ -70,16 +70,16 @@ const ReferralProgram = () => {
     setData({
       ...data,
       referralLink:
-        window.location.href.split("?")?.[0] + "/?leaderAddress=" + address,
+        window.location.href.split("?")?.[0] + "?leaderAddress=" + address,
     });
   }, [address]);
 
   const referralLink = data?.referralLink;
 
   const shareLink =
-    "https://twitter.com/intent/tweet?text=Discover the magic of benybadboy! 🌟 Unlock exclusive perks with my referral link! 🎉 &via=benybadboybbb &url=" +
+    "https://twitter.com/intent/tweet?text=Discover the magic of bbbpump! 🌟 Unlock exclusive perks with my referral link! 🎉 &via=bbbpumpdotfun &url=" +
     referralLink +
-    "&hashtags=benybadboy,bbb,xdc,defi";
+    "&hashtags=bbbpump,bbb,xdc,defi";
   return (
     mounted && (
       <>

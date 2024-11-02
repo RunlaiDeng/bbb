@@ -31,7 +31,7 @@ const Farm = () => {
         <div></div>
         <div className="text-center font-black mt-2">Farm</div>
         <div className="text-right">
-          <Link className="btn btn-xs" href="/referralProgram">
+          <Link className="btn btn-xs" href="/farm/referral">
             Referral
           </Link>
           <Link className="btn btn-xs ml-1" href="/help">

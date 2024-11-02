@@ -2,7 +2,8 @@ import ERC20ABI from "../abi/ERC20ABI.json";
 import BBBFarmerABI from "../abi/BBBFarmerABI.json";
 import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 import mBBBABI from "../abi/mBBBABI.json";
-import mBBBV2ABI from "../abi/mBBBV2ABI";
+import mBBBV2ABI from "../abi/mBBBV2ABI.json";
+import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
 
 export const dexLink =
   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -68,6 +69,10 @@ export const contracts = {
     mbbbv2: {
       address: "0x2E24BFdE1EEDa0F1EA3E57Ba7Ff10ac6516ab5Ec",
       abi: mBBBV2ABI,
+    },
+    bbbpumpReferral: {
+      address: "0x0F9696d7dce2825f1e946eFeAD81E041a7f965C4",
+      abi: BBBPumpReferralABI,
     },
   },
 };
