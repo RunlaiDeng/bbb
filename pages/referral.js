@@ -48,6 +48,8 @@ const Referral = () => {
   }, [address]);
 
   console.log(leaderMap);
+  const isKol = leaderMap?.[0];
+  const userShare = leaderMap?.[2];
   return (
     <div className="">
       <div className="card m-auto w-full ">
@@ -85,12 +87,14 @@ const Referral = () => {
           <div className="stats stats-horizontal shadow text-green-700 text-xs">
             <div className="stat">
               <div className="stat-title">Invited User</div>
-              <div className="stat-value">0%</div>
+              <div className="stat-value">{userShare?.toString() || 0}%</div>
             </div>
 
             <div className="stat">
               <div className="stat-title">You</div>
-              <div className="stat-value">20%</div>
+              <div className="stat-value">
+                {isKol ? 30 : 20 - (userShare?.toString() || 0)}%
+              </div>
             </div>
           </div>
           <div>Invitation Method</div>
