@@ -28,7 +28,11 @@ const Referral = () => {
 
   const { success } = useNotification();
 
-  const [currentUrl, setCurrentUrl] = useState("");
+  const claimReferral = {
+    buttonName: "claim",
+    disabled: true,
+    data: {},
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -136,7 +140,13 @@ const Referral = () => {
             </svg>
           </label>
           <div className="font-black">Rewards</div>
-          <div className="font-black text-xl  text-green-700">{0} XDC</div>
+          <div className="font-black text-xl text-green-700 flex items-center gap-2">
+            {0} XDC
+            <WriteButton
+              {...claimReferral}
+              className="btn btn-xs w-max btn-success"
+            />
+          </div>
         </div>
       </div>
       <div className="card">
