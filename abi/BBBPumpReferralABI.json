@@ -49,6 +49,42 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getLeader",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isKol",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "kolBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "userShare",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BBBPumpReferral.Leader",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "leader",
         "type": "address"
       }
