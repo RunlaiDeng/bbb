@@ -14,7 +14,7 @@ const Referral = () => {
   const [data, setData] = useState({});
   const { address } = useAccount();
 
-  const { data: reads0 } = useReadContracts({
+  const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       {
         ...bbbpumpReferral,
@@ -29,6 +29,10 @@ const Referral = () => {
       { ...bbbpumpReferral, functionName: "getLeader", args: [address] },
     ],
   });
+
+  const refetch = () => {
+    refetch0();
+  };
 
   const referralList = reads0?.[0]?.result;
   const leaderMap = reads0?.[1]?.result;
@@ -46,8 +50,16 @@ const Referral = () => {
 
   const changeCommission = {
     buttonName: "confirm",
-    disabled: true,
-    data: {},
+    disabled: !data?.userShare,
+    data: {
+      ...bbbpumpReferral,
+      functionName: "setShare",
+      args: [data?.userShare],
+    },
+    callback: () => {
+      document.getElementById("commissionRate").close();
+      refetch();
+    },
   };
 
   useEffect(() => {
