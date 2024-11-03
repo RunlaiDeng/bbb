@@ -30,7 +30,7 @@ const Register = () => {
   }, [leader]);
 
   const submit = {
-    buttonName: "Confirm",
+    buttonName: "Register",
     data: {
       ...bbbpumpReferral,
       functionName: "register",
