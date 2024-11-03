@@ -17,20 +17,13 @@ const Register = () => {
     contracts: [
       {
         ...bbbpumpReferral,
-        functionName: "referrersleader",
-        args: [address],
-      },
-      {
-        ...bbbpumpReferral,
         functionName: "leaderMap",
         args: [data?.leader],
       },
     ],
   });
 
-  const leaderFromConract = reads0?.[0]?.result;
-  const userShare = reads0?.[1]?.result?.[2];
-
+  const userShare = reads0?.[0]?.result?.[2];
 
   useEffect(() => {
     setData({ ...data, leader });

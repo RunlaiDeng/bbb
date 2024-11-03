@@ -56,26 +56,24 @@
     "name": "getLeader",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "isKol",
-            "type": "bool"
-          },
-          {
-            "internalType": "uint256",
-            "name": "kolBlock",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "userShare",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct BBBPumpReferral.Leader",
-        "name": "",
-        "type": "tuple"
+        "internalType": "address",
+        "name": "leader",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "userShare",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isKol",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "kolBlock",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -197,8 +195,13 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "leader",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "userShare",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

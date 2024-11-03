@@ -26,13 +26,17 @@ const Referral = () => {
         functionName: "leaderMap",
         args: [address],
       },
+      { ...bbbpumpReferral, functionName: "getLeader", args: [address] },
     ],
   });
 
   const referralList = reads0?.[0]?.result;
   const leaderMap = reads0?.[1]?.result;
+  const leaderConfig = reads0?.[2]?.result;
 
-  const { success,info } = useNotification();
+  console.log(leaderConfig);
+
+  const { success, info } = useNotification();
 
   const claimReferral = {
     buttonName: "claim",
@@ -64,9 +68,14 @@ const Referral = () => {
                 Join the BBB Pump KOL program now to enjoy exclusive events and
                 up to 50% referral commission!
               </div>
-              <div className="btn btn-success m-auto w-max" onClick={()=>{
-                info("coming soon")
-              }}>Join now</div>
+              <div
+                className="btn btn-success m-auto w-max"
+                onClick={() => {
+                  info("coming soon");
+                }}
+              >
+                Join now
+              </div>
             </div>
           </div>
           <div className="font-black">Rewards</div>
