@@ -234,8 +234,8 @@ const Referral = () => {
             <table className="table table-xs">
               <thead>
                 <tr>
-                  <th className="w-1/2">cashback ratio</th>
-                  <th className="w-1/4">fee</th>
+                  <th className="w-1/2">leader</th>
+                  <th className="w-1/4">cashback ratio</th>
                   <th className="w-1/4">Rewards</th>
                 </tr>
               </thead>
@@ -243,8 +243,9 @@ const Referral = () => {
                 {leaderConfig?.[0] !=
                   "0x0000000000000000000000000000000000000000" && (
                   <tr>
+                    <td>{leaderConfig?.[0]}</td>
                     <td>{leaderConfig?.[1]?.toString() || 0}%</td>
-                    <td>0 XDC</td>
+
                     <td>0 XDC</td>
                   </tr>
                 )}
