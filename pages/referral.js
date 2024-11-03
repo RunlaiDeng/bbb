@@ -230,21 +230,19 @@ const Referral = () => {
             <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm297.1 84L257.3 234.6 379.4 396H283.8L209 298.1 123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5L313.6 116h47.5zM323.3 367.6L153.4 142.9H125.1L296.9 367.6h26.3z" />
           </svg>
           <div className="font-black">Invitee cashback</div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto whitespace-nowrap">
             <table className="table table-xs">
               <thead>
                 <tr>
-                  <th>Leader</th>
-                  <th>cashback ratio</th>
-                  <th>fee</th>
-                  <th>Rewards</th>
+                  <th className="w-1/2">cashback ratio</th>
+                  <th className="w-1/4">fee</th>
+                  <th className="w-1/4">Rewards</th>
                 </tr>
               </thead>
               <tbody>
                 {leaderConfig?.[0] !=
                   "0x0000000000000000000000000000000000000000" && (
                   <tr>
-                    <td>{leaderConfig?.[0]}</td>
                     <td>{leaderConfig?.[1]?.toString() || 0}%</td>
                     <td>0 XDC</td>
                     <td>0 XDC</td>
@@ -254,13 +252,13 @@ const Referral = () => {
             </table>
           </div>
           <div className="font-black">Invited Users</div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto whitespace-nowrap">
             <table className="table table-xs">
               <thead>
                 <tr>
-                  <th>Referral</th>
-                  <th>Fee</th>
-                  <th>Rewards</th>
+                  <th className="w-1/2">Referral</th>
+                  <th className="w-1/4">Fee</th>
+                  <th className="w-1/4">Rewards</th>
                 </tr>
               </thead>
               <tbody>
