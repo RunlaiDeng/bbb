@@ -44,6 +44,10 @@ const Referral = () => {
     data: {},
   };
 
+  const changeCommission = {
+    buttonName: "confirm",
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const inviteLink = window.location.origin + "/register/" + address;
@@ -53,6 +57,8 @@ const Referral = () => {
 
   const isKol = leaderMap?.[0];
   const userShare = leaderMap?.[2];
+
+  const aa = {};
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
@@ -100,6 +106,9 @@ const Referral = () => {
               width="16"
               height="16"
               className="cursor-pointer"
+              onClick={() => {
+                document.getElementById("commissionRate").showModal();
+              }}
             >
               <path
                 d="M652.4 156.6125a112.5 112.5 0 1 1 155.925 161.15625L731.375 394.71875 572.3 235.5875l79.5375-79.5375 0.5625 0.5625zM333.63125 792.40625v0.1125H174.5v-159.1875l358.03125-357.975 159.075 159.13125-357.975 357.91875zM62 849.5h900v112.5H62v-112.5z"
@@ -277,6 +286,40 @@ const Referral = () => {
           </div>
         </div>
       </div>
+      {/* Open the modal using document.getElementById('ID').showModal() method */}
+      <dialog id="commissionRate" className="modal">
+        <div className="modal-box font-black">
+          <div className="grid grid-cols-3">
+            <form method="dialog">
+              <button className="btn">X</button>
+            </form>
+          </div>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">
+                Invited User (0-20)<span className="text-green-500">*</span>
+              </span>
+            </div>
+            <input type="number" className="input input-bordered w-full " />
+          </label>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">
+                You <span className="text-green-500">*</span>
+              </span>
+            </div>
+            <input
+              type="number"
+              className="input input-bordered w-full "
+              disabled
+            />
+          </label>
+          <WriteButton
+            {...changeCommission}
+            className="btn btn-success w-full mt-4"
+          />
+        </div>
+      </dialog>
     </div>
   );
 };
