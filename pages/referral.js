@@ -262,7 +262,7 @@ const Referral = () => {
                 </tr>
               </thead>
               <tbody>
-                {leaderConfig?.[0] !=
+                {leaderConfig&&leaderConfig?.[0] !=
                   "0x0000000000000000000000000000000000000000" && (
                   <tr>
                     <td className="flex items-center gap-1">
