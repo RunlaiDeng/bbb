@@ -32,7 +32,7 @@ const Referral = () => {
   const referralList = reads0?.[0]?.result;
   const leaderMap = reads0?.[1]?.result;
 
-  const { success } = useNotification();
+  const { success,info } = useNotification();
 
   const claimReferral = {
     buttonName: "claim",
@@ -52,11 +52,23 @@ const Referral = () => {
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
-    data?.inviteLink 
+    data?.inviteLink;
   return (
     <div className="">
       <div className="card m-auto w-full ">
         <div className="card-body font-black">
+          <div className="card w-full m-auto outline outline-green-700 text-center text-green-700">
+            <div className="card-body">
+              <div className=" text-xl"> Become KOL</div>
+              <div className="text-xs ">
+                Join the BBB Pump KOL program now to enjoy exclusive events and
+                up to 50% referral commission!
+              </div>
+              <div className="btn btn-success m-auto w-max" onClick={()=>{
+                info("coming soon")
+              }}>Join now</div>
+            </div>
+          </div>
           <div className="font-black">Rewards</div>
           <div className="font-black text-green-700 flex items-center gap-2">
             <div className="text-4xl"> {0} XDC</div>
