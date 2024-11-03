@@ -31,16 +31,6 @@ const Register = () => {
   const leaderFromConract = reads0?.[0]?.result;
   const userShare = reads0?.[1]?.result?.[2];
 
-  useEffect(() => {
-    if (
-      leaderFromConract != "0x0000000000000000000000000000000000000000" &&
-      address
-    ) {
-      router.push("/");
-    }
-  }, [leaderFromConract]);
-
-  console.log(leaderFromConract, userShare);
 
   useEffect(() => {
     setData({ ...data, leader });
