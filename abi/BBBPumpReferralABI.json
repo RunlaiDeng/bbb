@@ -195,13 +195,8 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "leader",
+        "name": "",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "userShare",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",

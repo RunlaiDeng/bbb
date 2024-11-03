@@ -5,6 +5,7 @@ import { contracts } from "@/config";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
 import { useNotification } from "@/components/Context/notice";
 import copy from "copy-to-clipboard";
+import Image from "next/image";
 
 const Referral = () => {
   const chainId = useChainId();
@@ -71,8 +72,6 @@ const Referral = () => {
 
   const isKol = leaderMap?.[0];
   const userShare = leaderMap?.[2];
-
-  const aa = {};
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
@@ -266,7 +265,10 @@ const Referral = () => {
                 {leaderConfig?.[0] !=
                   "0x0000000000000000000000000000000000000000" && (
                   <tr>
-                    <td>{leaderConfig?.[0]}</td>
+                    <td className="flex items-center gap-1">
+                      <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                      {leaderConfig?.[0]}
+                    </td>
                     <td>{leaderConfig?.[1]?.toString() || 0}%</td>
 
                     <td>0 XDC</td>
@@ -289,7 +291,10 @@ const Referral = () => {
                 {referralList?.map((item) => {
                   return (
                     <tr key={item}>
-                      <td>{item}</td>
+                      <td className="flex items-center gap-1">
+                        <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                        {item}
+                      </td>
                       <td>0 XDC</td>
                       <td>0 XDC</td>
                     </tr>

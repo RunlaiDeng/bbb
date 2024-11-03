@@ -71,7 +71,7 @@ export const contracts = {
       abi: mBBBV2ABI,
     },
     bbbpumpReferral: {
-      address: "0xC6Dd5c40e425CadEA8cf486BD422EA1b8F37B61E",
+      address: "0x448918c063B031D181b785210d526819854F3f27",
       abi: BBBPumpReferralABI,
     },
   },
