@@ -46,6 +46,8 @@ const Referral = () => {
 
   const changeCommission = {
     buttonName: "confirm",
+    disabled: true,
+    data: {},
   };
 
   useEffect(() => {
@@ -300,7 +302,20 @@ const Referral = () => {
                 Invited User (0-20)<span className="text-green-500">*</span>
               </span>
             </div>
-            <input type="number" className="input input-bordered w-full " />
+            <input
+              type="number"
+              className="input input-bordered w-full "
+              defaultValue={0}
+              value={data?.userShare}
+              onChange={(e) => {
+                if (!e.target.value) {
+                  setData({ ...data, userShare: undefined });
+                }
+                if (e.target.value >= 0 && e.target.value <= 20) {
+                  setData({ ...data, userShare: e.target.value });
+                }
+              }}
+            />
           </label>
           <label className="form-control w-full">
             <div className="label">
@@ -311,6 +326,7 @@ const Referral = () => {
             <input
               type="number"
               className="input input-bordered w-full "
+              value={20 - (data?.userShare || 0)}
               disabled
             />
           </label>
