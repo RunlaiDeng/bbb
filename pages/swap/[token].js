@@ -299,7 +299,7 @@ const Swap = () => {
         </div>
         <div className="card m-auto font-black grid text-xs" id="info">
           <div className="card-body p-2">
-            <div className="md:flex gap-4">
+            <div className="md:flex gap-4 items-center">
               <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
                 <Image
                   height={400}
@@ -447,8 +447,9 @@ const Swap = () => {
                   )}
                 </div>
 
-                <div className="flex gap-1">
-                  {dropToken?.token}{" "}
+                <div className="flex gap-1 items-center">
+                  <div className="opacity-50">Contract</div>
+                  {dropToken?.token?.substr(0,6)+"..."+dropToken?.token?.substr(36)}{" "}
                   <div
                     className={"cursor-pointer tooltip"}
                     data-tip="Copy Address"
