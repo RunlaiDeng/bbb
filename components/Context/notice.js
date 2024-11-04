@@ -9,10 +9,15 @@ export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const addNotification = (type, message) => {
-    setNotifications([...notifications, { type, message }]);
+    const id = Date.now(); // 为每个通知生成唯一的ID
+    const newNotification = { id, type, message };
+    setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
 
+    // 为每个通知设置2秒后移除的定时器
     setTimeout(() => {
-      setNotifications((notifications) => notifications.slice(1));
+      setNotifications((prevNotifications) => 
+        prevNotifications.filter((notification) => notification.id !== id)
+      );
     }, 2000);
   };
 
@@ -26,7 +31,10 @@ export const NotificationProvider = ({ children }) => {
         {notifications.map((notification, index) => {
           const type = notification.type;
           return (
-            <div key={index} className={`bg-white border-2 border-green-500 alert alert-${type}`}>
+            <div
+              key={index}
+              className={`bg-white border-2 border-green-500 alert alert-${type}`}
+            >
               {type == "success" && (
                 <svg
                   viewBox="0 0 1024 1024"
