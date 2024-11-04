@@ -58,6 +58,7 @@ const Home = () => {
     dMaxXdcCap: parseEther("1000000"),
     dMaxSymbolCap: parseEther(calculateSupply("1000000")),
     maxSymbol: "XDC",
+    buySymbol: "XDC",
   });
 
   const bbb = contracts[chainId]?.bbb;
