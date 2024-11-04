@@ -15,7 +15,7 @@ const chainConfig = {
   blockExplorerUrl: "https://xdcscan.com/",
   ticker: "XDC",
   tickerName: "XDC",
-  logo: "https://bbbpump.fun/xdc.png",
+  logo: "https://web3auth.io/images/web3authlog.png",
 };
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
@@ -26,11 +26,12 @@ const web3AuthInstance = new Web3Auth({
   clientId,
   web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
   privateKeyProvider,
+
   uiConfig: {
     mode: "dark",
     useLogoLoader: true,
-    logoLight: "https://bbbpump.fun/xdc.png",
-    logoDark: "https://bbbpump.fun/xdc.png",
+    logoLight: "https://web3auth.io/images/web3authlog.png",
+    logoDark: "https://web3auth.io/images/web3authlog.png",
     defaultLanguage: "en",
     theme: {
       primary: "#768729",

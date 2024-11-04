@@ -65,7 +65,7 @@ const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [metaMaskWallet, walletConnectWallet, rainbowWeb3AuthConnector],
+      wallets: [metaMaskWallet, walletConnectWallet],
     },
   ],
 });
