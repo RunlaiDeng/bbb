@@ -26,7 +26,7 @@ import {
 } from "@/components/Utils";
 
 const Swap = () => {
-  const { success, info } = useNotification();
+  const { success, info, failure } = useNotification();
   const router = useRouter();
   const { token } = router.query;
 
@@ -450,7 +450,8 @@ const Swap = () => {
                 <div className="flex gap-1">
                   {dropToken?.token}{" "}
                   <div
-                    className={"cursor-pointer"}
+                    className={"cursor-pointer tooltip"}
+                    data-tip="Copy Address"
                     onClick={() => {
                       copy(dropToken?.token);
                       success("copy success!");
@@ -490,6 +491,30 @@ const Swap = () => {
                         p-id="1646"
                       ></path>
                     </svg>
+                  </div>
+                  <div
+                    className={"cursor-pointer tooltip"}
+                    data-tip="Add To MetaMask"
+                    onClick={async () => {
+                      try {
+                        await window.ethereum.request({
+                          method: "wallet_watchAsset",
+                          params: {
+                            type: "ERC20",
+                            options: {
+                              address: dropToken.token,
+                              symbol: dropToken.symbol,
+                              decimals: 18,
+                              image: dropToken.imageUrl,
+                            },
+                          },
+                        });
+                      } catch (error) {
+                        failure("Failed to add token to MetaMask:" + error.message);
+                      }
+                    }}
+                  >
+                    <Image src="/metamask.jpg" width={20} height={20} />
                   </div>
                 </div>
                 <div className="opacity-50 mt-1 h-20 overflow-auto">
