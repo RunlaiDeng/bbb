@@ -14,7 +14,6 @@ import {
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-
 const xdc = /*#__PURE__*/ {
   id: 50,
   name: "XinFin Network",
@@ -57,9 +56,8 @@ const xdcParentNet = {
 
 const queryClient = new QueryClient();
 
-
 const config = getDefaultConfig({
-  appName: "Benybadboy",
+  appName: "BBBPump",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
   chains: [xdc],
   ssr: true, // If your dApp uses server side rendering (SSR)

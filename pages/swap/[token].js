@@ -1,7 +1,13 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useReadContracts,
+  useWatchAsset,
+} from "wagmi";
 import { contracts } from "@/config";
 import LightChart from "@/components/LightChart";
 import WriteButton from "@/components/WriteButton";
@@ -14,6 +20,7 @@ import { buyXDCLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
 import { track } from "@vercel/analytics";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   formatNumber,
   getDate,
@@ -26,6 +33,8 @@ import {
 } from "@/components/Utils";
 
 const Swap = () => {
+  const { openConnectModal } = useConnectModal();
+  const { watchAsset } = useWatchAsset();
   const { success, info, failure } = useNotification();
   const router = useRouter();
   const { token } = router.query;
@@ -37,7 +46,7 @@ const Swap = () => {
   }, []);
 
   const chainId = useChainId();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const mbbb = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
@@ -449,7 +458,9 @@ const Swap = () => {
 
                 <div className="flex gap-1 items-center">
                   <div className="opacity-50">Contract</div>
-                  {dropToken?.token?.substr(0,6)+"..."+dropToken?.token?.substr(36)}{" "}
+                  {dropToken?.token?.substr(0, 6) +
+                    "..." +
+                    dropToken?.token?.substr(36)}{" "}
                   <div
                     className={"cursor-pointer tooltip"}
                     data-tip="Copy Address"
@@ -496,22 +507,19 @@ const Swap = () => {
                   <div
                     className={"cursor-pointer tooltip"}
                     data-tip="Add To MetaMask"
-                    onClick={async () => {
-                      try {
-                        await window.ethereum.request({
-                          method: "wallet_watchAsset",
-                          params: {
-                            type: "ERC20",
-                            options: {
-                              address: dropToken.token,
-                              symbol: dropToken.symbol,
-                              decimals: 18,
-                              image: dropToken.imageUrl,
-                            },
+                    onClick={() => {
+                      if (!isConnected) {
+                        openConnectModal();
+                      } else {
+                        watchAsset({
+                          type: "ERC20",
+                          options: {
+                            address: dropToken.token,
+                            symbol: dropToken.symbol,
+                            decimals: 18,
+                            image: dropToken.imageUrl,
                           },
                         });
-                      } catch (error) {
-                        failure("Failed to add token to MetaMask:" + error.message);
                       }
                     }}
                   >
