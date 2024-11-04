@@ -53,6 +53,7 @@ const Register = () => {
             placeholder="0x"
             className="input input-bordered w-full"
             defaultValue={leader}
+            disabled
             onChange={(e) => setData({ ...data, leader: e.target.value })}
           />
           <div className="text-left font-black text-xs">

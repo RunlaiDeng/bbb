@@ -9,6 +9,11 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
 import { Analytics } from "@vercel/analytics/react";
+import {
+  metaMaskWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -52,11 +57,18 @@ const xdcParentNet = {
 
 const queryClient = new QueryClient();
 
+
 const config = getDefaultConfig({
   appName: "Benybadboy",
   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
   chains: [xdc],
   ssr: true, // If your dApp uses server side rendering (SSR)
+  wallets: [
+    {
+      groupName: "Recommended",
+      wallets: [metaMaskWallet, walletConnectWallet],
+    },
+  ],
 });
 
 const MyApp = ({ Component, pageProps }) => {
@@ -66,7 +78,11 @@ const MyApp = ({ Component, pageProps }) => {
       <NotificationProvider>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider locale={locale} showRecentTransactions={true}>
+            <RainbowKitProvider
+              locale={locale}
+              showRecentTransactions={true}
+              modalSize="compact"
+            >
               <Layout>
                 <Component {...pageProps} />
               </Layout>
