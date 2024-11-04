@@ -39,8 +39,6 @@ const Referral = () => {
   const leaderMap = reads0?.[1]?.result;
   const leaderConfig = reads0?.[2]?.result;
 
-  console.log(leaderConfig);
-
   const { success, info } = useNotification();
 
   const claimReferral = {

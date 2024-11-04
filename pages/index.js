@@ -255,10 +255,6 @@ const Home = () => {
     pages.push(i);
   }
 
-  const { failure } = useNotification();
-
-  console.log(data?.dSymbol, data?.maxSymbol);
-
   return (
     mount && (
       <>
