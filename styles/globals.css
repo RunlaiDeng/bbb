@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes shake {
+@keyframes shake-anima {
   0%,
   100% {
     transform: translateX(0);
@@ -57,20 +57,20 @@
 }
 
 .shake-rainbow-text {
-  animation: shake 0.3s infinite, ranbow 5s linear infinite;
+  animation: shake-anima 0.3s infinite, ranbow 5s linear infinite;
 }
 
 .shake-rainbow-outline {
-  animation: shake 0.3s infinite, ranbow-outline 5s linear infinite;
+  animation: shake-anima 0.3s infinite, ranbow-outline 5s linear infinite;
 }
 
 .shake-rainbow {
-  animation: shake 0.3s infinite, ranbow-outline 5s linear infinite,
+  animation: shake-anima 0.3s infinite, ranbow-outline 5s linear infinite,
     ranbow 5s linear infinite;
 }
 
 .shake {
-  animation: shake 0.3s infinite;
+  animation: shake-anima 0.3s infinite !important; 
 }
 
 .rainbow-text {

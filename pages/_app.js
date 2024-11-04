@@ -13,6 +13,7 @@ import {
   metaMaskWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { rainbowWeb3AuthConnector } from "@/components/Web3Auth";
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -64,7 +65,7 @@ const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [metaMaskWallet, walletConnectWallet],
+      wallets: [metaMaskWallet, walletConnectWallet, rainbowWeb3AuthConnector],
     },
   ],
 });
