@@ -670,9 +670,9 @@ const Home = () => {
                         />
                       </figure>
                       <div className="card-body text-xs p-2">
-                    
                         <div className="flex gap-2">
-                          Created{" "}
+                          <div className="opacity-50">Created</div>
+
                           <span className="hover:underline">
                             {item?.deployer?.substr(36)}
                           </span>
@@ -680,20 +680,25 @@ const Home = () => {
                         </div>
                         <div className="overflow-auto w-full h-20">
                           <span className="font-black">
-                            {item?.name} (symbol:{item?.symbol})
+                            {item?.name} (${item?.symbol}){" "}
                           </span>
-                          : {item?.description}
+
+                          <span className="opacity-50">
+                            {item?.description}
+                          </span>
                         </div>
 
-                        <div>Price: {calculatePrice(cap)} XDC</div>
+                        <div className="flex gap-1 items-center">
+                          <div className="opacity-50">Price</div>
+                          <div className="">{calculatePrice(cap)} XDC</div>
+                        </div>
 
-                        <div>
-                          <span className="">RLD Curve Progress: </span>
-                          <span>{formatNumber(cap / 1e18)} XDC </span>
-                          <span className="opacity-50">
-                            {" "}
-                            ({percent?.toFixed(2)}%)
-                          </span>
+                        <div className="flex gap-1 items-center">
+                          <div className="opacity-50">Progress </div>
+                          <div className="">
+                            {formatNumber(cap / 1e18)} XDC (
+                            {percent?.toFixed(2)}%)
+                          </div>
                         </div>
 
                         <progress
