@@ -12,6 +12,7 @@ import { Analytics } from "@vercel/analytics/react";
 import {
   metaMaskWallet,
   walletConnectWallet,
+  coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { rainbowWeb3AuthConnector } from "@/components/Web3Auth";
 
@@ -65,7 +66,7 @@ const config = getDefaultConfig({
   wallets: [
     {
       groupName: "Recommended",
-      wallets: [metaMaskWallet, walletConnectWallet],
+      wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet],
     },
   ],
 });

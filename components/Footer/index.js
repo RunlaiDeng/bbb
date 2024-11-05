@@ -12,18 +12,9 @@ const Footer = () => {
         className="w-full h-10"
       />
       <aside>
-        <div className="grid">
-          <Link
-            href={linktree}
-            target="_blank"
-            className="hover:text-green-500 hover:underline"
-          >
-            Contact Us
-          </Link>
-        </div>
 
         <p className="font-black">
-          Copyright © 2024 - All right reserved by BBB
+          Copyright © 2024 - All right reserved by BBBPump
         </p>
       </aside>
     </footer>
