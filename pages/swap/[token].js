@@ -390,7 +390,7 @@ const Swap = () => {
                     </div>
                   )}
                   {typeof window !== "undefined" && (
-                    <label className="swap ">
+                    <label className="swap btn btn-xs">
                       {/* this hidden checkbox controls the state */}
                       <input
                         type="checkbox"
