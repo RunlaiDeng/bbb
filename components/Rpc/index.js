@@ -18,25 +18,9 @@ const sendMsg = async (chainid, index, msg, address) => {
 const getTokens = async (sort, pageNumber = 1, pageSize = 30) => {
   return send("getTokens", [sort, pageNumber, pageSize]);
 };
-const uploadFile = async (file) => {
-  const formData = new FormData(); //
-  formData.append("file", file);
-  let res;
-  try {
-    res = await fetch(rpcUrl + "/uploadFile", {
-      method: "POST",
-      body: formData,
-    });
-  } catch (e) {
-    return undefined;
-  }
 
-  const json = await res?.json();
-
-  if (json?.error) {
-    return { error: json.error };
-  }
-  return json?.["result"];
+const getReferralInfo = async (account) => {
+  return send("getRefferalInfo", [account]);
 };
 
 const send = async (method, params) => {
@@ -71,6 +55,6 @@ module.exports = {
   getHolders,
   getMsg,
   sendMsg,
-  uploadFile,
+  getReferralInfo,
   getTokens,
 };
