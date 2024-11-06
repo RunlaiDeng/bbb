@@ -120,7 +120,7 @@ const Referral = () => {
               />
             </div>
             <div className="text-xs opacity-50">
-              It will automatically update every two weeks.
+              It will automatically update. Claim is coming soon
             </div>
             <div className="flex gap-2 items-center">
               Commission Rate{" "}
