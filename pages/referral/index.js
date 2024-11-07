@@ -147,12 +147,12 @@ const Referral = () => {
             </div>
             <div className="stats stats-horizontal shadow text-green-700 text-xs">
               <div className="stat">
-                <div className="stat-title">Invited User</div>
+                <div className="stat-title">Friends</div>
                 <div className="stat-value">{userShare?.toString() || 0}%</div>
               </div>
 
               <div className="stat">
-                <div className="stat-title">You</div>
+                <div className="stat-title">Mine</div>
                 <div className="stat-value">
                   {maxShare - (userShare?.toString() || 0)}%
                 </div>
