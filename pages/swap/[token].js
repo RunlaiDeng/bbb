@@ -30,6 +30,7 @@ import {
   getBytesLength,
   handleSrc,
   customToFixed,
+  getXDCPrice,
 } from "@/components/Utils";
 
 const Swap = () => {
@@ -40,8 +41,14 @@ const Swap = () => {
   const { token } = router.query;
 
   const [mount, setMount] = useState(false);
+  const [xdcPrice, setXdcPrice] = useState(0);
+
+  async function fetchData() {
+    setXdcPrice(await getXDCPrice());
+  }
 
   useEffect(() => {
+    fetchData();
     setMount(true);
   }, []);
 
@@ -199,9 +206,9 @@ const Swap = () => {
     let low;
     let color;
     const time = Number(kline?.[0] || 0);
-    const open = Number(formatEther(kline?.[1] || 0)) * 2;
-    const close = Number(formatEther(kline?.[2] || 0)) * 2;
-    const value = Number(formatEther(kline?.[3] || 0));
+    const open = xdcPrice * Number(formatEther(kline?.[1] || 0)) * 2;
+    const close = xdcPrice * Number(formatEther(kline?.[2] || 0)) * 2;
+    const value = xdcPrice * Number(formatEther(kline?.[3] || 0));
 
     if (open > close) {
       low = open;
@@ -518,8 +525,12 @@ const Swap = () => {
                     <span className="opacity-50">Price </span>
 
                     <span>
-                      {Number(formatEther(price || 0n))?.toFixed(6) * 2 +
-                        " XDC"}
+                      {"$" +
+                        (
+                          xdcPrice *
+                          Number(formatEther(price || 0n)) *
+                          2
+                        )?.toFixed(6)}
                     </span>
                   </div>
 
@@ -537,21 +548,25 @@ const Swap = () => {
                     <span className="opacity-50">Cap </span>
 
                     <span>
-                      {formatNumber(
-                        Number(
-                          formatEther(totalSupply || 0n) *
-                            formatEther(price || 0n) *
-                            2
-                        )
-                      ) + " XDC"}
+                      {"$" +
+                        formatNumber(
+                          xdcPrice *
+                            Number(
+                              formatEther(totalSupply || 0n) *
+                                formatEther(price || 0n) *
+                                2
+                            )
+                        )}
                     </span>
                   </div>
                   <div>
                     <span className="opacity-50">24H Volume </span>
 
                     <span>
-                      {formatNumber(Number(formatEther(tradeVolume24h || 0n))) +
-                        " XDC"}
+                      {"$" +
+                        formatNumber(
+                          xdcPrice * Number(formatEther(tradeVolume24h || 0n))
+                        )}
                     </span>
                   </div>
                   <div>
@@ -578,7 +593,7 @@ const Swap = () => {
                       className="object-cover w-full h-full"
                     />
                   </div>
-                  {symbol} / XDC
+                  {symbol} / USD
                 </div>
 
                 <LightChart {...trade} />
@@ -1031,8 +1046,10 @@ const Swap = () => {
                         <span className="opacity-50">RLD Curve Progress: </span>
 
                         <span className="">
-                          {formatNumber(Number(formatEther(xdcAmount || 0n))) +
-                            " XDC "}
+                          {"$" +
+                            formatNumber(
+                              xdcPrice * Number(formatEther(xdcAmount || 0n))
+                            )}
                         </span>
                         <span className="opacity-50">
                           (
@@ -1052,7 +1069,8 @@ const Swap = () => {
                       <div className="opacity-50 text-xs">
                         When the market cap reaches{" "}
                         <span className="text-green-500">
-                          {formatNumber(formatEther(maxXdc || 0n))} XDC
+                          {"$" +
+                            formatNumber(xdcPrice * formatEther(maxXdc || 0n))}
                         </span>{" "}
                         all the liquidity from the rld curve will be deposited
                         into icecreaswap and burned. Progression increases as

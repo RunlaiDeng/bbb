@@ -27,6 +27,7 @@ import {
   calculateSupply,
   calculateXdcAmount,
   sqrtPriceX96ToPrice,
+  getXDCPrice,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -46,6 +47,8 @@ const Home = () => {
   const [type, setType] = useState(() =>
     typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
   );
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     localStorage.setItem("type", type);
@@ -71,6 +74,7 @@ const Home = () => {
 
   const { info } = useNotification();
 
+  const [xdcPrice, setXdcPrice] = useState(0);
   async function fetchData() {
     const tokensResult = await rpc.getTokens(
       tokens?.sort,
@@ -78,7 +82,11 @@ const Home = () => {
       tokens?.size
     );
     setTokens(tokensResult);
+
+    setXdcPrice(await getXDCPrice());
   }
+
+  console.log(xdcPrice);
 
   const tokenList = tokens?.list;
 
@@ -142,7 +150,9 @@ const Home = () => {
   const latestDrop = reads0?.[2]?.result;
   const latestKing = reads0?.[3]?.result;
   const dropTokenLength = reads0?.[4].result;
-  const bbbPrice = sqrtPriceX96ToPrice(reads0?.[5]?.result?.[0])?.toFixed(6);
+  const bbbPrice = (
+    xdcPrice * sqrtPriceX96ToPrice(reads0?.[5]?.result?.[0])
+  )?.toFixed(6);
 
   const latestTrade = latestTradePro?.[0];
 
@@ -618,10 +628,10 @@ const Home = () => {
                           </div>
                         </div>
                       </td>
-                      <td>{bbbPrice} XDC</td>
+                      <td>${bbbPrice}</td>
                       <td>
                         <div className="sm:flex gap-2">
-                          <div className="whitespace-nowrap">- XDC </div>
+                          <div className="whitespace-nowrap">-</div>
                           <div className="opacity-50"> (100%)</div>
                         </div>
                       </td>
@@ -658,11 +668,13 @@ const Home = () => {
                               </div>
                             </div>
                           </td>
-                          <td>{calculatePrice(cap)?.toFixed(6)} XDC</td>
+                          <td>
+                            {"$" + (xdcPrice * calculatePrice(cap))?.toFixed(6)}
+                          </td>
                           <td>
                             <div className="sm:flex gap-2">
                               <div className="whitespace-nowrap">
-                                {formatNumber(cap / 1e18)} XDC{" "}
+                                {"$" + formatNumber((xdcPrice * cap) / 1e18)}{" "}
                               </div>
                               <div className="opacity-50">
                                 {" "}
@@ -724,12 +736,12 @@ const Home = () => {
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Price</div>
-                      <div className="">{bbbPrice} XDC</div>
+                      <div className="">${bbbPrice} XDC</div>
                     </div>
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Progress </div>
-                      <div className="">- XDC (100.00%)</div>
+                      <div className="">- (100.00%)</div>
                     </div>
 
                     <progress
@@ -785,13 +797,15 @@ const Home = () => {
 
                         <div className="flex gap-1 items-center">
                           <div className="opacity-50">Price</div>
-                          <div className="">{calculatePrice(cap)} XDC</div>
+                          <div className="">
+                            ${(xdcPrice * calculatePrice(cap))?.toFixed(6)}
+                          </div>
                         </div>
 
                         <div className="flex gap-1 items-center">
                           <div className="opacity-50">Progress </div>
                           <div className="">
-                            {formatNumber(cap / 1e18)} XDC (
+                            {"$" + formatNumber((xdcPrice * cap) / 1e18)}(
                             {percent?.toFixed(2)}%)
                           </div>
                         </div>

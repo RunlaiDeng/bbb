@@ -104,6 +104,15 @@ function sqrtPriceX96ToPrice(sqrtPriceX96) {
   return 1 / price;
 }
 
+async function getXDCPrice() {
+  const res = await fetch(
+    "https://api.bybit.com/v5/market/tickers?category=spot&symbol=XDCUSDT"
+  );
+  const json = await res.json();
+
+  return json?.result?.list?.[0]?.lastPrice || 0;
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -117,4 +126,5 @@ module.exports = {
   calculateSupply,
   calculateXdcAmount,
   sqrtPriceX96ToPrice,
+  getXDCPrice,
 };
