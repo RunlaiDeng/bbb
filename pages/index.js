@@ -86,9 +86,9 @@ const Home = () => {
     setXdcPrice(await getXDCPrice());
   }
 
-  const tokenList = tokens?.list?.map(item=>{
-    return item?.index
-  })
+  const tokenList = tokens?.list?.map((item) => {
+    return item?.index;
+  });
 
   useEffect(() => {
     fetchData();
@@ -545,10 +545,12 @@ const Home = () => {
                   {/* head */}
                   <thead>
                     <tr>
-                      <th className="w-1/2">Name</th>
-                      <th className="w-1/4">Price</th>
+                      <th className="w-3/8">Name</th>
+                      <th className="w-1/8 text-right">Price</th>
+                      <th className="w-1/8 text-right">24h Change</th>
+                      <th className="w-1/8 text-right">24h Volume</th>
                       <th
-                        className="cursor-pointer flex items-center w-1/4"
+                        className="cursor-pointer flex items-center w-1/8 justify-end"
                         onClick={() => {
                           if (show == 2) {
                             let setSort;
@@ -628,9 +630,11 @@ const Home = () => {
                           </div>
                         </div>
                       </td>
-                      <td>${bbbPrice}</td>
+                      <td className="text-right">${bbbPrice}</td>
+                      <td className="text-right">-</td>
+                      <td className="text-right">-</td>
                       <td>
-                        <div className="sm:flex gap-2">
+                        <div className="sm:flex gap-2 justify-end">
                           <div className="whitespace-nowrap">-</div>
                           <div className="opacity-50"> (100%)</div>
                         </div>
@@ -643,7 +647,7 @@ const Home = () => {
                         <tr
                           key={item?.index}
                           className={
-                            "cursor-pointer hover " +
+                            "cursor-pointer hover" +
                             (index == 0 && show == 2 && "shake")
                           }
                           onClick={() => {
@@ -668,11 +672,13 @@ const Home = () => {
                               </div>
                             </div>
                           </td>
-                          <td>
+                          <td className="text-right">
                             {"$" + (xdcPrice * calculatePrice(cap))?.toFixed(6)}
                           </td>
+                          <td className="text-right">-</td>
+                          <td className="text-right">-</td>
                           <td>
-                            <div className="sm:flex gap-2">
+                            <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
                                 {"$" + formatNumber((xdcPrice * cap) / 1e18)}{" "}
                               </div>
