@@ -267,15 +267,16 @@ const Home = () => {
         >
           <div>
             <div className="text-center">
-              <div className=" text-4xl font-black">
-                <Image
+              <div className="text-green-700 text-4xl font-black">
+                Launch a coin that is instantly tradeable in one click
+                {/* <Image
                   src="/title.png"
                   height={100}
                   width={300}
                   alt=""
                   className="m-auto"
                   style={{ width: "auto", height: "auto" }}
-                />
+                /> */}
               </div>
 
               <div
