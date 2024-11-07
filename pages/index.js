@@ -86,9 +86,9 @@ const Home = () => {
     setXdcPrice(await getXDCPrice());
   }
 
-  console.log(xdcPrice);
-
-  const tokenList = tokens?.list;
+  const tokenList = tokens?.list?.map(item=>{
+    return item?.index
+  })
 
   useEffect(() => {
     fetchData();
