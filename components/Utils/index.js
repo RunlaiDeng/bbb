@@ -105,12 +105,16 @@ function sqrtPriceX96ToPrice(sqrtPriceX96) {
 }
 
 async function getXDCPrice() {
-  const res = await fetch(
-    "https://api.bybit.com/v5/market/tickers?category=spot&symbol=XDCUSDT"
-  );
-  const json = await res.json();
+  try {
+    const res = await fetch(
+      "https://api.bybit.com/v5/market/tickers?category=spot&symbol=XDCUSDT"
+    );
+    const json = await res.json();
 
-  return json?.result?.list?.[0]?.lastPrice || 0;
+    return json?.result?.list?.[0]?.lastPrice || 0;
+  } catch (e) {
+    return 0;
+  }
 }
 
 module.exports = {
