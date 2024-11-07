@@ -94,6 +94,16 @@ function customToFixed(num) {
   return intPart;
 }
 
+function sqrtPriceX96ToPrice(sqrtPriceX96) {
+  const Q96 = BigInt(2) ** BigInt(96);
+
+  const sqrtRatioX96Float = Number(sqrtPriceX96) / Number(Q96);
+
+  const price = sqrtRatioX96Float ** 2;
+
+  return 1 / price;
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -106,4 +116,5 @@ module.exports = {
   customToFixed,
   calculateSupply,
   calculateXdcAmount,
+  sqrtPriceX96ToPrice,
 };

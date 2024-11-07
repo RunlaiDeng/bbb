@@ -26,6 +26,7 @@ import {
   handleSrc,
   calculateSupply,
   calculateXdcAmount,
+  sqrtPriceX96ToPrice,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -61,7 +62,7 @@ const Home = () => {
     buySymbol: "XDC",
   });
 
-  const bbb = contracts[chainId]?.bbb;
+  const pool = contracts[chainId]?.pool;
   const mbbb = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
@@ -114,6 +115,7 @@ const Home = () => {
         args: [],
       },
       { ...mbbb, functionName: "getDropTokenLength" },
+      { ...pool, functionName: "slot0" },
     ],
     multicallAddress: mutilCall?.address,
   });
@@ -140,6 +142,7 @@ const Home = () => {
   const latestDrop = reads0?.[2]?.result;
   const latestKing = reads0?.[3]?.result;
   const dropTokenLength = reads0?.[4].result;
+  const bbbPrice = sqrtPriceX96ToPrice(reads0?.[5]?.result?.[0])?.toFixed(6);
 
   const latestTrade = latestTradePro?.[0];
 
@@ -615,7 +618,7 @@ const Home = () => {
                           </div>
                         </div>
                       </td>
-                      <td>- XDC</td>
+                      <td>{bbbPrice} XDC</td>
                       <td>
                         <div className="sm:flex gap-2">
                           <div className="whitespace-nowrap">- XDC </div>
@@ -721,7 +724,7 @@ const Home = () => {
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Price</div>
-                      <div className="">- XDC</div>
+                      <div className="">{bbbPrice} XDC</div>
                     </div>
 
                     <div className="flex gap-1 items-center">

@@ -4,6 +4,7 @@ import ReferralProgramABI from "../abi/ReferralProgramABI.json";
 import mBBBABI from "../abi/mBBBABI.json";
 import mBBBV2ABI from "../abi/mBBBV2ABI.json";
 import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
+import PoolABI from "../abi/PoolABI.json";
 
 export const dexLink =
   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -73,6 +74,10 @@ export const contracts = {
     bbbpumpReferral: {
       address: "0x448918c063B031D181b785210d526819854F3f27",
       abi: BBBPumpReferralABI,
+    },
+    pool: {
+      address: "0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
+      abi: PoolABI,
     },
   },
 };
