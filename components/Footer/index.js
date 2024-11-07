@@ -132,6 +132,9 @@ const Footer = () => {
           >
             KOL
           </Link>
+          <Link className="link link-hover" href={"/referral"}>
+            Referral
+          </Link>
         </nav>
         <nav>
           <h6 className="footer-title">Support</h6>
