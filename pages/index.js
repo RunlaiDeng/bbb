@@ -86,9 +86,7 @@ const Home = () => {
     setXdcPrice(await getXDCPrice());
   }
 
-  const tokenList = tokens?.list?.map((item) => {
-    return item?.index;
-  });
+  const tokenList = tokens?.list;
 
   useEffect(() => {
     fetchData();
@@ -174,7 +172,7 @@ const Home = () => {
         searchDropTokens.push({
           ...mbbb,
           functionName: "getDropToken",
-          args: [tokenList?.[i]?.toString()],
+          args: [tokenList?.[i]?.index?.toString()],
         });
       }
     } else {
@@ -643,13 +641,17 @@ const Home = () => {
                     {dropTokens?.map((item, index) => {
                       const cap = item?.xdcAmount?.toString();
                       const percent = (100 * cap) / item?.maxXdc?.toString();
+                      const volume24h = formatNumber(
+                        xdcPrice *
+                          formatEther(tokenList?.[index]?.volume24 || 0)
+                      );
+                      const priceChange24h = (
+                        tokenList?.[index]?.priceChange24h * 100
+                      )?.toFixed(2);
                       return (
                         <tr
                           key={item?.index}
-                          className={
-                            "cursor-pointer hover" +
-                            (index == 0 && show == 2 && "shake")
-                          }
+                          className={"cursor-pointer hover"}
                           onClick={() => {
                             router.push("/swap/" + item?.token);
                           }}
@@ -675,8 +677,18 @@ const Home = () => {
                           <td className="text-right">
                             {"$" + (xdcPrice * calculatePrice(cap))?.toFixed(6)}
                           </td>
-                          <td className="text-right">-</td>
-                          <td className="text-right">-</td>
+                          <td
+                            className={
+                              "text-right " +
+                              (priceChange24h >= 0
+                                ? "text-green-700"
+                                : "text-red-700")
+                            }
+                          >
+                            {priceChange24h >= 0 && "+"}
+                            {priceChange24h}%
+                          </td>
+                          <td className="text-right">{"$" + volume24h}</td>
                           <td>
                             <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
@@ -765,8 +777,7 @@ const Home = () => {
                   return (
                     <div
                       className={
-                        "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full sm:w-72 m-auto sm:m-0 " +
-                        (index == 0 && "shake")
+                        "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full sm:w-72 m-auto sm:m-0 "
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
