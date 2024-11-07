@@ -103,7 +103,7 @@ const Referral = () => {
                 <div
                   className="btn btn-success m-auto w-max"
                   onClick={() => {
-                    info("coming soon");
+                    window.open("https://docs.bbbpump.fun/kol-program");
                   }}
                 >
                   Join now
@@ -311,7 +311,7 @@ const Referral = () => {
                     const referralPrize = referrals[item];
                     const shareFee = referralPrize?.shareFee;
                     const fee = referralPrize?.fee;
-                    console.log(referralPrize)
+                    console.log(referralPrize);
                     return (
                       <tr key={item}>
                         <td className="flex items-center gap-1">
