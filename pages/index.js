@@ -708,16 +708,14 @@ const Home = () => {
                       <span className="font-black">Beny Bad Boy ($BBB) </span>
 
                       <span className="opacity-50">
-                        BBB is tired of watching everyone play hot potato with
-                        the endless derivative
-                        ShibaCumGMElonKishuTurboAssFlokiMoon Inu coins. The
-                        Inu’s have had their day. It’s time for the most
-                        recognizable meme in the world to take his reign as king
-                        of the internet. BBB is here to make memecoins great
-                        again. Launched stealth with no presale, zero taxes,
-                        $BBB is a coin for the people, forever. Fueled by pure
-                        memetic power, let $BBB show you the way. Meme killer is
-                        here, its a not financial advise
+                        The Benybadboy (BBB) token is a community-driven
+                        memecoin project developed on the XDC blockchain.
+                        Launched initially for fun, BBB quickly gained traction,
+                        capturing attention in the cryptocurrency space due to
+                        its unique features and community-oriented development.
+                        The project offers multiple functionalities, including
+                        staking, yield farming, and burning mechanisms, allowing
+                        token holders to engage and earn rewards.
                       </span>
                     </div>
 
