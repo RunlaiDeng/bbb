@@ -95,7 +95,7 @@ const Home = () => {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 3000);
+    }, 10000);
     setMount(true);
     return () => clearInterval(interval);
   }, [mount, tokens?.pageNumber, tokens?.sort]);
