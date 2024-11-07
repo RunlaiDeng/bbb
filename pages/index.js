@@ -5,7 +5,7 @@ import {
   useBalance,
   useWatchContractEvent,
 } from "wagmi";
-import { contracts } from "@/config";
+import { contracts, dexLink } from "@/config";
 import WriteButton from "@/components/WriteButton";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -591,6 +591,38 @@ const Home = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    <tr
+                      className={"cursor-pointer hover shake"}
+                      onClick={() => {
+                        window.open(dexLink);
+                      }}
+                    >
+                      <td className="flex gap-2 items-center">
+                        <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+                          <Image
+                            height={400}
+                            width={400}
+                            src={"/bbb.jpg"}
+                            alt={""}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+
+                        <div className="sm:flex gap-2 items-center ">
+                          <div className="">BBB</div>
+                          <div className="opacity-50 text-xs whitespace-nowrap">
+                            Beny Bad Boy
+                          </div>
+                        </div>
+                      </td>
+                      <td>- XDC</td>
+                      <td>
+                        <div className="sm:flex gap-2">
+                          <div className="whitespace-nowrap">- XDC </div>
+                          <div className="opacity-50"> (100%)</div>
+                        </div>
+                      </td>
+                    </tr>
                     {dropTokens?.map((item, index) => {
                       const cap = item?.xdcAmount?.toString();
                       const percent = (100 * cap) / item?.maxXdc?.toString();
@@ -644,6 +676,68 @@ const Home = () => {
             )}
             {type == 2 && (
               <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
+                <div
+                  className={
+                    "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full sm:w-72 m-auto sm:m-0 shake"
+                  }
+                  onClick={() => {
+                    window.open(dexLink);
+                  }}
+                >
+                  <figure className="overflow-hidden h-80 sm:h-72">
+                    <Image
+                      height={400}
+                      width={400}
+                      src={"/bbb.jpg"}
+                      alt={""}
+                      className="object-cover w-full h-full"
+                    />
+                  </figure>
+                  <div className="card-body text-xs p-2">
+                    <div className="flex gap-2">
+                      <div className="opacity-50">Created</div>
+
+                      <span className="hover:underline">
+                        {"0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"?.substr(
+                          36
+                        )}
+                      </span>
+                      <span>09/06/24</span>
+                    </div>
+                    <div className="overflow-auto w-full h-20">
+                      <span className="font-black">Beny Bad Boy ($BBB) </span>
+
+                      <span className="opacity-50">
+                        BBB is tired of watching everyone play hot potato with
+                        the endless derivative
+                        ShibaCumGMElonKishuTurboAssFlokiMoon Inu coins. The
+                        Inu’s have had their day. It’s time for the most
+                        recognizable meme in the world to take his reign as king
+                        of the internet. BBB is here to make memecoins great
+                        again. Launched stealth with no presale, zero taxes,
+                        $BBB is a coin for the people, forever. Fueled by pure
+                        memetic power, let $BBB show you the way. Meme killer is
+                        here, its a not financial advise
+                      </span>
+                    </div>
+
+                    <div className="flex gap-1 items-center">
+                      <div className="opacity-50">Price</div>
+                      <div className="">- XDC</div>
+                    </div>
+
+                    <div className="flex gap-1 items-center">
+                      <div className="opacity-50">Progress </div>
+                      <div className="">- XDC (100.00%)</div>
+                    </div>
+
+                    <progress
+                      className="progress progress-success w-full"
+                      value={100}
+                      max="100"
+                    ></progress>
+                  </div>
+                </div>
                 {dropTokens?.map((item, index) => {
                   const xdcAmount = item?.xdcAmount;
                   const percent =
