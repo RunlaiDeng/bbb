@@ -342,7 +342,7 @@ const Referral = () => {
               <form method="dialog">
                 <button className="btn">X</button>
               </form>
-              <h3 className="font-bold label-text text-center mt-2 text-xs">
+              <h3 className="font-bold label-text text-center mt-2  whitespace-nowrap">
                 Commission Rate Setting
               </h3>
             </div>
