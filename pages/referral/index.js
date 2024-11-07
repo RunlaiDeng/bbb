@@ -80,6 +80,10 @@ const Referral = () => {
   const isKol = leaderMap?.[0];
   const userShare = leaderMap?.[2];
 
+  useEffect(() => {
+    setData({ ...data, userShare: userShare?.toString() });
+  }, [userShare]);
+
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
     data?.inviteLink;
@@ -87,6 +91,8 @@ const Referral = () => {
   const totalPrize = referralObj?.totalPrize;
   const leaderPrize = referralObj?.leaderPrize;
   const referrals = referralObj?.referrals;
+
+  const maxShare = isKol ? "30" : "20";
 
   return (
     mount && (
@@ -152,7 +158,7 @@ const Referral = () => {
               <div className="stat">
                 <div className="stat-title">You</div>
                 <div className="stat-value">
-                  {isKol ? 30 : 20 - (userShare?.toString() || 0)}%
+                  {maxShare - (userShare?.toString() || 0)}%
                 </div>
               </div>
             </div>
@@ -311,7 +317,7 @@ const Referral = () => {
                     const referralPrize = referrals[item];
                     const shareFee = referralPrize?.shareFee;
                     const fee = referralPrize?.fee;
-                    console.log(referralPrize);
+
                     return (
                       <tr key={item}>
                         <td className="flex items-center gap-1">
@@ -340,41 +346,27 @@ const Referral = () => {
               <form method="dialog">
                 <button className="btn">X</button>
               </form>
+              <h3 className="font-bold label-text text-center mt-2 text-xs">
+                Commission Rate Setting
+              </h3>
             </div>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Invited User (0-20)<span className="text-green-500">*</span>
-                </span>
-              </div>
+            <label className="form-control w-full mt-4">
               <input
-                type="number"
-                className="input input-bordered w-full "
-                defaultValue={0}
-                value={data?.userShare}
+                type="range"
+                min={0}
+                max={maxShare}
+                value={data?.userShare || 0}
+                className="range range-success range-xs"
                 onChange={(e) => {
-                  if (!e.target.value) {
-                    setData({ ...data, userShare: undefined });
-                  }
-                  if (e.target.value >= 0 && e.target.value <= 20) {
-                    setData({ ...data, userShare: e.target.value });
-                  }
+                  setData({ ...data, userShare: e.target.value });
                 }}
               />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  You <span className="text-green-500">*</span>
-                </span>
+              <div className="flex justify-between">
+                <div>Mine {maxShare - (data?.userShare || 0)}%</div>
+                <div>Friends {data?.userShare || 0}%</div>
               </div>
-              <input
-                type="number"
-                className="input input-bordered w-full "
-                value={20 - (data?.userShare || 0)}
-                disabled
-              />
             </label>
+
             <WriteButton
               {...changeCommission}
               className="btn btn-success w-full mt-4"

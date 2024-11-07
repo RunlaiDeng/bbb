@@ -47,7 +47,7 @@ const Register = () => {
           <div className="text-5xl text-green-700 font-black">
             Start Your BBBPump Journey
           </div>
-          <div className="text-left opacity-50 font-black">Invide code</div>
+          <div className="text-left opacity-50 font-black">Invite code</div>
           <input
             type="text"
             placeholder="0x"
