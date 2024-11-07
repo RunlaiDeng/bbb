@@ -64,10 +64,13 @@ const Referral = () => {
     },
   };
 
+  const isKol = leaderMap?.[0];
+  const userShare = leaderMap?.[2];
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const inviteLink = window.location.origin + "/register/" + address;
-      setData({ ...data, inviteLink });
+      setData({ ...data, inviteLink, userShare: userShare?.toString() });
     }
     const fetchData = async () => {
       const referralInfo = await rpc.getReferralInfo(address);
@@ -75,14 +78,7 @@ const Referral = () => {
       setMount(true);
     };
     fetchData();
-  }, [address]);
-
-  const isKol = leaderMap?.[0];
-  const userShare = leaderMap?.[2];
-
-  useEffect(() => {
-    setData({ ...data, userShare: userShare?.toString() });
-  }, [userShare]);
+  }, [address, userShare]);
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
