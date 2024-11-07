@@ -319,14 +319,14 @@ const Home = () => {
           <div>
             <div className="text-center mt-4">
               <div className=" text-4xl font-black">
-                <Image
+                {/* <Image
                   src="/title.png"
                   height={100}
                   width={300}
                   alt=""
                   className="m-auto"
                   style={{ width: "auto", height: "auto" }}
-                />
+                /> */}
               </div>
 
               <div

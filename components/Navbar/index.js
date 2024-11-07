@@ -11,20 +11,20 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[url('/bg.png')] bg-center w-full h-16">
+      <div className="bg-[url('/bg.png')] bg-center w-full h-18">
         <div className="navbar items-center font-black">
           <div className="navbar-start">
             <Image
-              src={"/favicon.ico"}
-              height={50}
-              width={50}
+              src={"/logo.png"}
+              height={150}
+              width={150}
               alt=""
               className=" cursor-pointer"
               onClick={() => {
                 router.push("/");
               }}
             />
-            <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 md:gap-0">
+            {/* <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 md:gap-0">
               <div
                 className="hover:text-green-500 cursor-pointer"
                 onClick={() => {
@@ -57,16 +57,16 @@ const Navbar = () => {
               >
                 [how it works]
               </div>
-            </div>
+            </div> */}
 
-            <div className="ml-2 hidden md:flex">
-              <Link
+            <div className="ml-2 hidden md:flex items-center pt-1">
+              {/* <Link
                 className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
                 href={"/buy"}
                 target="_blank"
               >
                 Buy $BBB
-              </Link>
+              </Link> */}
 
               <div className="dropdown dropdown-hover font-black">
                 <div
@@ -120,7 +120,7 @@ const Navbar = () => {
                 showBalance="false"
               />
             </div>
-            <div className="drawer drawer-end md:hidden">
+            <div className="drawer drawer-end md:hidden ">
               <input
                 id="my-drawer"
                 type="checkbox"
@@ -134,7 +134,7 @@ const Navbar = () => {
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer"
-                  className="btn drawer-button float-right"
+                  className="btn drawer-button float-right btn-ghost"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,9 +157,9 @@ const Navbar = () => {
                   <li>
                     <div className="flex justify-between items-center">
                       <Image
-                        src={"/favicon.ico"}
+                        src={"/logo.png"}
                         height={50}
-                        width={50}
+                        width={150}
                         alt=""
                         className=" cursor-pointer"
                         onClick={() => {
@@ -189,6 +189,18 @@ const Navbar = () => {
                     </div>
                   </li>
                   <li>
+                    <div>
+                      <ConnectButton
+                        accountStatus={{
+                          smallScreen: "avatar",
+                          largeScreen: "full",
+                        }}
+                        chainStatus="icon"
+                        showBalance="false"
+                      />
+                    </div>
+                  </li>
+                  {/* <li>
                     <Link
                       className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
                       href={"/buy"}
@@ -196,7 +208,7 @@ const Navbar = () => {
                     >
                       Buy $BBB
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className="hover:text-green-500 hover:bg-inherit"
@@ -248,18 +260,7 @@ const Navbar = () => {
                       </li>
                     </ul>
                   </li>
-                  <li>
-                    <div>
-                      <ConnectButton
-                        accountStatus={{
-                          smallScreen: "avatar",
-                          largeScreen: "full",
-                        }}
-                        chainStatus="icon"
-                        showBalance="false"
-                      />
-                    </div>
-                  </li>
+               
                 </ul>
               </div>
             </div>
