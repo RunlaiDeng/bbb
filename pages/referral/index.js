@@ -95,7 +95,7 @@ const Referral = () => {
           <div className="card-body font-black">
             <div className="card w-full m-auto outline outline-green-700 text-center text-green-700">
               <div className="card-body">
-                <div className=" text-xl"> Become KOL</div>
+                <div className="text-xl">Become KOL</div>
                 <div className="text-xs ">
                   Join the BBB Pump KOL program now to enjoy exclusive events
                   and up to 50% referral commission!
