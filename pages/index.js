@@ -265,71 +265,17 @@ const Home = () => {
           className="bg-[url('/bg.png')]  bg-center w-full"
           style={{ backgroundPosition: "center calc(50% - 4rem)" }}
         >
-          <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
-            {latestTrade?.index > 0 && (
-              <div
-                role="alert"
-                className="alert shake border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
-              >
-                <span className="flex gap-2 items-center">
-                  <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                  <span className="hover:underline cursor-pointer">
-                    {latestTrade?.account?.substr(36)}
-                  </span>{" "}
-                  {latestTrade?.tradeType === "buy" && "bought"}
-                  {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                  {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)} XDC
-                  of {latestTradePro?.[1]}
-                  {""}
-                  <div className="h-4 w-4 overflow-hidden">
-                    <Image
-                      height={400}
-                      width={400}
-                      src={latestTradePro?.[3]}
-                      alt={""}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </span>
-              </div>
-            )}
-            {latestDrop?.index > 0 && (
-              <div
-                role="alert"
-                className="alert shake border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
-              >
-                <span className="flex gap-2 items-center">
-                  <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                  <span className="hover:underline cursor-pointer">
-                    {latestDrop?.deployer?.substr(36)}
-                  </span>{" "}
-                  created {latestDrop?.symbol}{" "}
-                  <div className="h-4 w-4 overflow-hidden">
-                    <Image
-                      height={400}
-                      width={400}
-                      src={latestDrop?.imageUrl}
-                      alt={""}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  on {getDate(latestDrop?.createTime?.toString())}
-                </span>
-              </div>
-            )}
-          </div>
-
           <div>
-            <div className="text-center mt-4">
+            <div className="text-center">
               <div className=" text-4xl font-black">
-                {/* <Image
+                <Image
                   src="/title.png"
                   height={100}
                   width={300}
                   alt=""
                   className="m-auto"
                   style={{ width: "auto", height: "auto" }}
-                /> */}
+                />
               </div>
 
               <div
@@ -459,6 +405,7 @@ const Home = () => {
                   <a className={show == 2 ? "focus" : ""}>Terminal</a>
                 </li>
               </ul>
+
               <div className="ml-auto">
                 <ul className="menu menu-horizontal bg-base-200 rounded-box">
                   <li
@@ -528,7 +475,59 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-
+            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
+              {latestTrade?.index > 0 && (
+                <div
+                  role="alert"
+                  className="alert shake border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
+                >
+                  <span className="flex gap-2 items-center">
+                    <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                    <span className="hover:underline cursor-pointer">
+                      {latestTrade?.account?.substr(36)}
+                    </span>{" "}
+                    {latestTrade?.tradeType === "buy" && "bought"}
+                    {latestTrade?.tradeType === "sell" && "sold"}{" "}
+                    {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)}{" "}
+                    XDC of {latestTradePro?.[1]}
+                    {""}
+                    <div className="h-4 w-4 overflow-hidden">
+                      <Image
+                        height={400}
+                        width={400}
+                        src={latestTradePro?.[3]}
+                        alt={""}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  </span>
+                </div>
+              )}
+              {latestDrop?.index > 0 && (
+                <div
+                  role="alert"
+                  className="alert shake border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
+                >
+                  <span className="flex gap-2 items-center">
+                    <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                    <span className="hover:underline cursor-pointer">
+                      {latestDrop?.deployer?.substr(36)}
+                    </span>{" "}
+                    created {latestDrop?.symbol}{" "}
+                    <div className="h-4 w-4 overflow-hidden">
+                      <Image
+                        height={400}
+                        width={400}
+                        src={latestDrop?.imageUrl}
+                        alt={""}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    on {getDate(latestDrop?.createTime?.toString())}
+                  </span>
+                </div>
+              )}
+            </div>
             {type == 1 && (
               <div className="overflow-x-auto">
                 <table className="table">
@@ -838,6 +837,7 @@ const Home = () => {
             )}
           </div>
         </div>
+
         <dialog id="dropModal" className="modal font-black text-xs">
           <div className="modal-box">
             <div className="grid grid-cols-3">
