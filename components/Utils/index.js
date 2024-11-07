@@ -110,10 +110,10 @@ async function getXDCPrice() {
       "https://api.bybit.com/v5/market/tickers?category=spot&symbol=XDCUSDT"
     );
     const json = await res.json();
-
-    return json?.result?.list?.[0]?.lastPrice || 0;
+    const item = json?.result?.list?.[0];
+    return { price: item?.lastPrice || 0, priceChange24h: item?.price24hPcnt };
   } catch (e) {
-    return 0;
+    return { price: 0, priceChange24h: 0 };
   }
 }
 

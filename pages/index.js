@@ -75,6 +75,7 @@ const Home = () => {
   const { info } = useNotification();
 
   const [xdcPrice, setXdcPrice] = useState(0);
+  const [xdcPriceChange24h, setXdcPriceChange24h] = useState(0);
   async function fetchData() {
     const tokensResult = await rpc.getTokens(
       tokens?.sort,
@@ -82,8 +83,9 @@ const Home = () => {
       tokens?.size
     );
     setTokens(tokensResult);
-
-    setXdcPrice(await getXDCPrice());
+    const priceItem = await getXDCPrice();
+    setXdcPrice(priceItem.price);
+    setXdcPriceChange24h(priceItem.priceChange24h);
   }
 
   const tokenList = tokens?.list;
@@ -646,7 +648,10 @@ const Home = () => {
                           formatEther(tokenList?.[index]?.volume24 || 0)
                       );
                       const priceChange24h = (
-                        tokenList?.[index]?.priceChange24h * 100
+                        ((1 + Number(xdcPriceChange24h)) *
+                          (1 + Number(tokenList?.[index]?.priceChange24h)) -
+                          1) *
+                        100
                       )?.toFixed(2);
                       return (
                         <tr

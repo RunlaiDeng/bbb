@@ -44,7 +44,7 @@ const Swap = () => {
   const [xdcPrice, setXdcPrice] = useState(0);
 
   async function fetchData() {
-    setXdcPrice(await getXDCPrice());
+    setXdcPrice((await getXDCPrice()).price);
   }
 
   useEffect(() => {
