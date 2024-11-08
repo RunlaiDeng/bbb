@@ -278,7 +278,7 @@ const Home = () => {
           <div>
             <div className="text-center">
               <div className="text-green-700 text-4xl font-black">
-                Launch a coin that is instantly tradeable in one click
+                Launch a memecoin that is instantly tradable in one click
                 {/* <Image
                   src="/title.png"
                   height={100}
