@@ -520,7 +520,7 @@ const Swap = () => {
                     data-tip="View on XDCScan"
                     onClick={() => {
                       window.open(
-                        "https://xdcscan.com/address/" + dropToken.token
+                        "https://xdcscan.com/token/" + dropToken.token
                       );
                     }}
                   >
