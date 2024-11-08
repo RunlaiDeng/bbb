@@ -15,7 +15,7 @@ const sendMsg = async (chainid, index, msg, address) => {
   return send("sendMsg", [chainid, index, msg, address]);
 };
 
-const getTokens = async (sort = 1, pageNumber = 1, pageSize = 30) => {
+const getTokens = async (sort = 1, pageNumber = 1, pageSize = 10) => {
   return send("getTokens", [sort, pageNumber, pageSize]);
 };
 
