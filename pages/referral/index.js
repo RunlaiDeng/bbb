@@ -114,7 +114,9 @@ const Referral = () => {
             </div>
             <div className="font-black">Rewards</div>
             <div className="font-black text-green-700 flex items-center gap-2">
-              <div className="text-4xl">{formatEther(totalPrize || 0)} XDC</div>
+              <div className="text-4xl">
+                {Number(formatEther(totalPrize || 0))?.toFixed(6)} XDC
+              </div>
 
               <WriteButton
                 {...claimReferral}
@@ -292,7 +294,10 @@ const Referral = () => {
                         </td>
                         <td>{leaderConfig?.[1]?.toString() || 0}%</td>
 
-                        <td>{formatEther(leaderPrize || 0)} XDC</td>
+                        <td>
+                          {Number(formatEther(leaderPrize || 0))?.toFixed(6)}{" "}
+                          XDC
+                        </td>
                       </tr>
                     )}
                 </tbody>
@@ -325,8 +330,10 @@ const Referral = () => {
                           />
                           {item}
                         </td>
-                        <td>{formatEther(fee || 0)} XDC</td>
-                        <td>{formatEther(shareFee || 0)} XDC</td>
+                        <td>{Number(formatEther(fee || 0))?.toFixed(6)} XDC</td>
+                        <td>
+                          {Number(formatEther(shareFee || 0))?.toFixed(6)} XDC
+                        </td>
                       </tr>
                     );
                   })}
