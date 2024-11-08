@@ -513,7 +513,18 @@ const Swap = () => {
                       }
                     }}
                   >
-                    <Image src="/metamask.jpg" width={20} height={20} />
+                    <Image src="/metamask.jpg" width={20} height={20} alt="" />
+                  </div>
+                  <div
+                    className={"cursor-pointer tooltip"}
+                    data-tip="View on XDCScan"
+                    onClick={() => {
+                      window.open(
+                        "https://xdcscan.com/address/" + dropToken.token
+                      );
+                    }}
+                  >
+                    <Image src="/xdc.png" width={20} height={20} alt="" />
                   </div>
                 </div>
                 <div className="opacity-50 mt-1 h-20 overflow-auto">
