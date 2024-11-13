@@ -251,7 +251,6 @@ const Megadrop = () => {
       document.getElementById("dropModal").close();
     },
   };
-  
 
   const bbbIsEnough = false;
 
@@ -278,7 +277,7 @@ const Megadrop = () => {
         <div className="card-body font-black">
           <div className="font-black">Your Supplies</div>
           <div className="font-black text-xl   text-green-700">
-            {(mbbbBalance?.toString() || 0) / 1e18} mBBB
+            {((mbbbBalance?.toString() || 0) / 1e18)?.toFixed(6)} mBBB
           </div>
 
           <div className="grid grid-cols-2 gap-2">
