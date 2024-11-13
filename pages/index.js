@@ -77,11 +77,15 @@ const Home = () => {
   const [xdcPrice, setXdcPrice] = useState(0);
   const [xdcPriceChange24h, setXdcPriceChange24h] = useState(0);
   async function fetchData() {
-    const tokensResult = await rpc.getTokens(
+    let tokensResult = await rpc.getTokens(
       tokens?.sort,
       tokens?.pageNumber,
       tokens?.size
     );
+    if (tokensResult == undefined) {
+      tokensResult = { size: 10, pageNumber: tokens?.pageNumber || 1 };
+    }
+
     setTokens(tokensResult);
     const priceItem = await getXDCPrice();
     setXdcPrice(priceItem.price);
@@ -178,7 +182,14 @@ const Home = () => {
         });
       }
     } else {
-      for (let i = dropTokenLength?.toString(); i > 0; i--) {
+      const start =
+        dropTokenLength?.toString() - (tokens?.pageNumber - 1) * tokens?.size;
+      let stop = start - tokens?.size;
+      if (stop < 0) {
+        stop = 0;
+      }
+
+      for (let i = start; i > stop; i--) {
         searchDropTokens.push({
           ...mbbb,
           functionName: "getDropToken",
@@ -264,7 +275,10 @@ const Home = () => {
   };
 
   const pages = [];
-  for (let i = 1; i <= tokens?.totalPage; i++) {
+  const pageOnChain =
+    Math.floor(dropTokenLength?.toString() / tokens?.size) +
+    (dropTokenLength?.toString() % tokens?.size > 0 ? 1 : 0);
+  for (let i = 1; i <= (tokens?.totalPage || pageOnChain); i++) {
     pages.push(i);
   }
 
@@ -649,16 +663,28 @@ const Home = () => {
                     {dropTokens?.map((item, index) => {
                       const cap = item?.xdcAmount?.toString();
                       const percent = (100 * cap) / item?.maxXdc?.toString();
-                      const volume24h = formatNumber(
-                        xdcPrice *
-                          formatEther(tokenList?.[index]?.volume24 || 0)
-                      );
-                      const priceChange24h = (
-                        ((1 + Number(xdcPriceChange24h)) *
-                          (1 + Number(tokenList?.[index]?.priceChange24h)) -
-                          1) *
-                        100
-                      )?.toFixed(2);
+                      let volume24h =
+                        "$" +
+                        formatNumber(
+                          xdcPrice *
+                            formatEther(tokenList?.[index]?.volume24 || 0)
+                        );
+                      let priceChange24h =
+                        (
+                          ((1 + Number(xdcPriceChange24h || 0)) *
+                            (1 +
+                              Number(tokenList?.[index]?.priceChange24h || 0)) -
+                            1) *
+                          100
+                        )?.toFixed(2) + "%";
+
+                      if (tokenList?.[index]?.volume24 == undefined) {
+                        volume24h = "-";
+                      }
+                      if (tokenList?.[index]?.priceChange24h == undefined) {
+                        priceChange24h = "-";
+                      }
+
                       return (
                         <tr
                           key={item?.index}
@@ -691,15 +717,16 @@ const Home = () => {
                           <td
                             className={
                               "text-right " +
-                              (priceChange24h >= 0
-                                ? "text-green-700"
-                                : "text-red-700")
+                              (priceChange24h != "-" &&
+                                (priceChange24h?.replace("%", "") >= 0
+                                  ? "text-green-700"
+                                  : "text-red-700"))
                             }
                           >
-                            {priceChange24h >= 0 && "+"}
-                            {priceChange24h}%
+                            {priceChange24h?.replace("%", "") >= 0 && "+"}
+                            {priceChange24h}
                           </td>
-                          <td className="text-right">{"$" + volume24h}</td>
+                          <td className="text-right">{volume24h}</td>
                           <td>
                             <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
