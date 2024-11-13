@@ -849,7 +849,7 @@ const Home = () => {
                 })}
               </div>
             )}
-            {dropTokens?.length > 0 && (
+            {dropTokens?.length > 0 && show == 2 && (
               <ul className="menu menu-horizontal rounded-box ml-auto">
                 <li className="disabled">
                   <a style={{ background: "transparent" }}>{"<"}</a>
