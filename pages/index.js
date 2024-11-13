@@ -539,7 +539,12 @@ const Home = () => {
                 </div>
               )}
             </div>
-            {type == 1 && (
+            {!dropTokens && (
+              <div className="flex justify-center items-center mt-48">
+                <div className="loading loading-bars loading-lg text-success"></div>
+              </div>
+            )}
+            {type == 1 && dropTokens && (
               <div className="overflow-x-auto">
                 <table className="table">
                   {/* head */}
@@ -640,6 +645,7 @@ const Home = () => {
                         </div>
                       </td>
                     </tr>
+
                     {dropTokens?.map((item, index) => {
                       const cap = item?.xdcAmount?.toString();
                       const percent = (100 * cap) / item?.maxXdc?.toString();
@@ -712,7 +718,7 @@ const Home = () => {
                 </table>
               </div>
             )}
-            {type == 2 && (
+            {type == 2 && dropTokens && (
               <div className="flex flex-wrap justify-start gap-5 overflow-auto p-4">
                 <div
                   className={
