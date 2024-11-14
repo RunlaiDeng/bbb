@@ -117,6 +117,10 @@ async function getXDCPrice() {
   }
 }
 
+function aggregateTo5MinuteCandles(rawData) {
+  return rawData;
+}
+
 module.exports = {
   getDate,
   formatNumber,
@@ -131,4 +135,5 @@ module.exports = {
   calculateXdcAmount,
   sqrtPriceX96ToPrice,
   getXDCPrice,
+  aggregateTo5MinuteCandles,
 };

@@ -31,6 +31,7 @@ import {
   handleSrc,
   customToFixed,
   getXDCPrice,
+  aggregateTo5MinuteCandles,
 } from "@/components/Utils";
 
 const Swap = () => {
@@ -228,7 +229,8 @@ const Swap = () => {
       color,
     };
   });
-  klineMap = deleteSame(klineMap);
+  
+  klineMap = aggregateTo5MinuteCandles(deleteSame(klineMap));
 
   const trade = {
     trade: klineMap,
