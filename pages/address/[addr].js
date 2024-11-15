@@ -9,7 +9,7 @@ const Address = () => {
   useEffect(() => {
     setMount(true);
   }, []);
-  return mount && <></>;
+  return mount && <>{addr}</>;
 };
 
 export default Address;

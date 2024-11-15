@@ -122,7 +122,7 @@ const Swap = () => {
       }
     }
     if (index) {
-      getHolders();
+      // getHolders();
       getMsg(chainId?.toString(), index?.toString());
       setTokenInfo({
         ...tokenInfo,
@@ -229,7 +229,7 @@ const Swap = () => {
       color,
     };
   });
-  
+
   klineMap = aggregateTo5MinuteCandles(deleteSame(klineMap));
 
   const trade = {
@@ -1118,10 +1118,23 @@ const Swap = () => {
             </div>
             <div className="card bg-slate-100 mt-2 break-all" id="holders">
               <div className="card-body p-2">
-                <div className="font-black text-left ml-4">
-                  Holder distribution
+                <div className="font-black text-left ml-4 flex items-center gap-2">
+                  Holder distribution{" "}
+                  <div
+                    className={"cursor-pointer tooltip"}
+                    data-tip="View on XDCScan"
+                    onClick={() => {
+                      window.open(
+                        "https://xdcscan.com/token/" +
+                          dropToken.token +
+                          "#balances"
+                      );
+                    }}
+                  >
+                    <Image src="/xdc.png" width={20} height={20} alt="" />
+                  </div>
                 </div>
-                <div className="overflow-auto h-96 w-full">
+                {/* <div className="overflow-auto h-96 w-full">
                   <table className="table table-xs">
                     <thead>
                       <tr>
@@ -1145,7 +1158,7 @@ const Swap = () => {
                       })}
                     </tbody>
                   </table>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
