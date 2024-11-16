@@ -567,7 +567,7 @@ const Home = () => {
                       <th className="w-3/8">Name</th>
                       <th className="w-1/8 text-right">Price</th>
                       <th className="w-1/8 text-right">24h Change</th>
-                      <th className="w-1/8 text-right">24h Volume</th>
+                      {/* <th className="w-1/8 text-right">24h Volume</th> */}
                       <th
                         className="cursor-pointer flex items-center w-1/8 justify-end"
                         onClick={() => {
@@ -650,7 +650,7 @@ const Home = () => {
                         </div>
                       </td>
                       <td className="text-right">${bbbPrice}</td>
-                      <td className="text-right">-</td>
+                      {/* <td className="text-right">-</td> */}
                       <td className="text-right">-</td>
                       <td>
                         <div className="sm:flex gap-2 justify-end">
@@ -726,7 +726,7 @@ const Home = () => {
                             {priceChange24h?.replace("%", "") >= 0 && "+"}
                             {priceChange24h}
                           </td>
-                          <td className="text-right">{volume24h}</td>
+                          {/* <td className="text-right">{volume24h}</td> */}
                           <td>
                             <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
@@ -881,22 +881,50 @@ const Home = () => {
                 <li className="disabled">
                   <a style={{ background: "transparent" }}>{"<"}</a>
                 </li>
-                {pages?.map((item, index) => {
-                  return (
+                {tokens.pageNumber - 4 > 0 && (
+                  <>
                     <li
-                      key={item}
                       onClick={() => {
-                        setTokens({ ...tokens, pageNumber: item });
+                        setTokens({ ...tokens, pageNumber: 1 });
                       }}
                     >
-                      <a
-                        className={
-                          item == tokens?.pageNumber ? "focus font-bold" : ""
-                        }
-                      >
-                        {item}
-                      </a>
+                      <a>1</a>
                     </li>
+                    <li className="disabled">
+                      <a style={{ background: "transparent" }}>...</a>
+                    </li>
+                  </>
+                )}
+                {pages?.map((item, index) => {
+                  let showPageNumber = true;
+                  if (
+                    tokens.pageNumber - item > 2 ||
+                    item - tokens.pageNumber > 2
+                  ) {
+                    showPageNumber = false;
+                  }
+
+                  return (
+                    <>
+                      {showPageNumber && (
+                        <li
+                          key={item}
+                          onClick={() => {
+                            setTokens({ ...tokens, pageNumber: item });
+                          }}
+                        >
+                          <a
+                            className={
+                              item == tokens?.pageNumber
+                                ? "focus font-bold"
+                                : ""
+                            }
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      )}
+                    </>
                   );
                 })}
 
