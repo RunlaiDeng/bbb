@@ -4,10 +4,13 @@ import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { dexLink } from "@/config";
+import { useNotification } from "../Context/notice";
 const Navbar = () => {
   const router = useRouter();
 
   const [data, setData] = useState({});
+
+  const { info } = useNotification();
 
   return (
     <>
@@ -60,13 +63,15 @@ const Navbar = () => {
             </div> */}
 
             <div className="ml-2 hidden md:flex items-center pt-1">
-              {/* <Link
-                className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
-                href={"/buy"}
-                target="_blank"
+              <Link
+                className="btn mx-1 btn-ghost hover:bg-inherit"
+                href={""}
+                onClick={() => {
+                  info("coming soon");
+                }}
               >
-                Buy $BBB
-              </Link> */}
+                Buy Crypto
+              </Link>
 
               <div className="dropdown dropdown-hover font-black">
                 <div
@@ -200,15 +205,17 @@ const Navbar = () => {
                       />
                     </div>
                   </li>
-                  {/* <li>
+                  <li>
                     <Link
-                      className="btn mx-1 btn-ghost hover:bg-inherit shake-rainbow outline"
-                      href={"/buy"}
-                      target="_blank"
+                      className="hover:text-green-500 hover:bg-inherit"
+                      href={""}
+                      onClick={() => {
+                        info("coming soon");
+                      }}
                     >
-                      Buy $BBB
+                      Buy Crypto
                     </Link>
-                  </li> */}
+                  </li>
                   <li>
                     <Link
                       className="hover:text-green-500 hover:bg-inherit"
@@ -260,7 +267,6 @@ const Navbar = () => {
                       </li>
                     </ul>
                   </li>
-               
                 </ul>
               </div>
             </div>
