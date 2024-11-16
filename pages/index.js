@@ -878,22 +878,27 @@ const Home = () => {
             )}
             {dropTokens?.length > 0 && show == 2 && (
               <ul className="menu menu-horizontal rounded-box ml-auto">
-                <li className="disabled">
+                <li
+                  className={tokens.pageNumber == 1 ? "disabled" : ""}
+                  onClick={() => {
+                    setTokens({ ...tokens, pageNumber: tokens.pageNumber - 1 });
+                  }}
+                >
                   <a style={{ background: "transparent" }}>{"<"}</a>
                 </li>
+                {tokens.pageNumber - 3 > 0 && (
+                  <li
+                    onClick={() => {
+                      setTokens({ ...tokens, pageNumber: 1 });
+                    }}
+                  >
+                    <a>1</a>
+                  </li>
+                )}
                 {tokens.pageNumber - 4 > 0 && (
-                  <>
-                    <li
-                      onClick={() => {
-                        setTokens({ ...tokens, pageNumber: 1 });
-                      }}
-                    >
-                      <a>1</a>
-                    </li>
-                    <li className="disabled">
-                      <a style={{ background: "transparent" }}>...</a>
-                    </li>
-                  </>
+                  <li className="disabled">
+                    <a style={{ background: "transparent" }}>...</a>
+                  </li>
                 )}
                 {pages?.map((item, index) => {
                   let showPageNumber = true;
@@ -927,8 +932,28 @@ const Home = () => {
                     </>
                   );
                 })}
-
-                <li className="disabled">
+                {tokens.totalPage - tokens.pageNumber > 3 && (
+                  <li className="disabled">
+                    <a style={{ background: "transparent" }}>...</a>
+                  </li>
+                )}
+                {tokens.totalPage - tokens.pageNumber > 2 && (
+                  <li
+                    onClick={() => {
+                      setTokens({ ...tokens, pageNumber: tokens.totalPage });
+                    }}
+                  >
+                    <a>{tokens.totalPage}</a>
+                  </li>
+                )}
+                <li
+                  className={
+                    tokens.pageNumber == tokens.totalPage ? "disabled" : ""
+                  }
+                  onClick={() => {
+                    setTokens({ ...tokens, pageNumber: tokens.pageNumber + 1 });
+                  }}
+                >
                   <a style={{ background: "transparent" }}>{">"}</a>
                 </li>
               </ul>
