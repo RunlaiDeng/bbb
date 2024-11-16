@@ -64,13 +64,13 @@ const Navbar = () => {
 
             <div className="ml-2 hidden md:flex items-center pt-1">
               <Link
-                className="btn mx-1 btn-ghost hover:bg-inherit"
+                className="btn mx-1 btn-ghost hover:text-green-500 hover:bg-inherit"
                 href={""}
                 onClick={() => {
                   info("coming soon");
                 }}
               >
-                Buy Crypto
+                Buy XDC
               </Link>
 
               <div className="dropdown dropdown-hover font-black">
@@ -213,7 +213,7 @@ const Navbar = () => {
                         info("coming soon");
                       }}
                     >
-                      Buy Crypto
+                      Buy XDC
                     </Link>
                   </li>
                   <li>
