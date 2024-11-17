@@ -282,8 +282,6 @@ const Home = () => {
     pages.push(i);
   }
 
-  const [openSearch, setOpenSearch] = useState(false);
-
   return (
     mount && (
       <>
