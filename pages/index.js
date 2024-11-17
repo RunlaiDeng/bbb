@@ -564,7 +564,7 @@ const Home = () => {
                   {/* head */}
                   <thead>
                     <tr>
-                      <th className="w-3/8">Name</th>
+                      <th className="w-4/8">Name</th>
                       <th className="w-1/8 text-right">Price</th>
                       <th className="w-1/8 text-right">24h Change</th>
                       {/* <th className="w-1/8 text-right">24h Volume</th> */}
@@ -877,7 +877,7 @@ const Home = () => {
               </div>
             )}
             {dropTokens?.length > 0 && show == 2 && (
-              <ul className="menu menu-horizontal rounded-box ml-auto">
+              <ul className="menu menu-horizontal rounded-box ml-auto text-xs">
                 <li
                   className={tokens.pageNumber == 1 ? "disabled" : ""}
                   onClick={() => {
