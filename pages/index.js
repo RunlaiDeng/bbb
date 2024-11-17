@@ -377,40 +377,6 @@ const Home = () => {
           </div>
         )}
 
-        {/* <div className="m-auto mt-5 grid grid-cols-5 gap-2 w-72 md:w-96">
-          <label className="input input-bordered flex items-center gap-2 col-span-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input
-              type="text"
-              id="search"
-              className="grow"
-              placeholder="search for token"
-            />
-          </label>
-          <div
-            className="btn btn-success w-max m-auto col-span-1 text-white hover:bg-white hover:text-green-500 outline outline-2"
-            onClick={() => {
-              setData({
-                ...data,
-                search: document.getElementById("search").value,
-              });
-            }}
-          >
-            Search
-          </div>
-        </div> */}
-
         <div className="card m-auto w-full">
           <div className="card-body p-2">
             <div className="flex gap-2 text-slate-500 ml-4">
@@ -558,6 +524,34 @@ const Home = () => {
                 <div className="loading loading-bars loading-lg text-success"></div>
               </div>
             )}
+            {dropTokens && (
+              <div className="p-4 flex items-center gap-2">
+                <label className="w-96 flex items-center input gap-2 input-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-4 w-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <input type="text" className="grow" placeholder="0x" />
+                </label>
+                <div
+                  className="btn btn-xs cursor-pointer"
+                  onClick={() => {
+                    info("coming soon");
+                  }}
+                >
+                  Search
+                </div>
+              </div>
+            )}
+
             {type == 1 && dropTokens && (
               <div className="overflow-x-auto">
                 <table className="table">
