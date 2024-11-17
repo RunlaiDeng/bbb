@@ -334,17 +334,7 @@ const Navbar = () => {
                       More
                     </div>
                     <ul>
-                      <li>
-                        <Link
-                          href={"/referral"}
-                          className="hover:text-green-500 hover:bg-inherit"
-                          onClick={(e) => {
-                            setData({ ...data, drawerOpen: false });
-                          }}
-                        >
-                          Referral
-                        </Link>
-                      </li>
+                   
                       <li>
                         <Link
                           href={"/megadrop"}
