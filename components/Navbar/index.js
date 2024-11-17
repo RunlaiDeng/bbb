@@ -104,13 +104,15 @@ const Navbar = () => {
           <div className="navbar-center hidden xl:flex"></div>
           <div className="navbar-end">
             {isConnected && (
-              <div
-                className="flex items-center gap-2 btn-success"
-                onClick={() => {
-                  info("coming soon");
-                }}
-              >
-                <div className="btn btn-sm text-white">Deposit</div>
+              <div className="flex items-center gap-2 btn-success">
+                <div
+                  className="btn btn-sm text-white"
+                  onClick={() => {
+                    info("coming soon");
+                  }}
+                >
+                  Deposit
+                </div>
                 <div
                   className={
                     "w-8 dropdown dropdown-end " +
