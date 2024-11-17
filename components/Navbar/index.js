@@ -318,18 +318,6 @@ const Navbar = () => {
                       </div>
                     </div>
                   </li>
-
-                  <li>
-                    <Link
-                      className="hover:text-green-500 hover:bg-inherit"
-                      href={""}
-                      onClick={() => {
-                        info("coming soon");
-                      }}
-                    >
-                      Buy XDC
-                    </Link>
-                  </li>
                   <li>
                     <Link
                       className="hover:text-green-500 hover:bg-inherit"
