@@ -141,7 +141,7 @@ const Navbar = () => {
                   <div
                     tabIndex={0}
                     className={
-                      "card dropdown-content menu bg-white rounded-md z-[1] w-max shadow p-0 text-xs"
+                      "card dropdown-content menu bg-white rounded-md z-[1] w-72 shadow p-0 text-xs"
                     }
                   >
                     <div className="card-body p-0">
