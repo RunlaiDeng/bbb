@@ -159,7 +159,7 @@ const Navbar = () => {
                       </div>
 
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-slate-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                         onClick={() => {
                           info("coming soon");
                         }}
@@ -181,7 +181,7 @@ const Navbar = () => {
                         <div>Dashboard</div>
                       </div>
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-slate-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                         onClick={() => {
                           router.push("/referral");
                         }}
@@ -213,7 +213,7 @@ const Navbar = () => {
                         <div>Refferal</div>
                       </div>
                       <div
-                        className="flex items-center gap-2 hover:bg-slate-100 p-4 cursor-pointer"
+                        className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
                         onClick={() => {
                           disconnect();
                         }}
