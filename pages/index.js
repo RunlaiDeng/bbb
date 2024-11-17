@@ -872,7 +872,7 @@ const Home = () => {
               </div>
             )}
             {dropTokens?.length > 0 && show == 2 && (
-              <ul className="menu menu-horizontal rounded-box ml-auto text-xs">
+              <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
                 <li
                   className={tokens.pageNumber == 1 ? "disabled" : ""}
                   onClick={() => {
