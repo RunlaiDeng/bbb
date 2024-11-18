@@ -106,11 +106,25 @@ const Navbar = () => {
             {isConnected && (
               <div className="flex items-center gap-2 btn-success ">
                 <div
-                  className="btn btn-sm text-white"
+                  className="btn btn-sm text-white flex items-center"
                   onClick={() => {
                     info("coming soon");
                   }}
                 >
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="2583"
+                    width="16"
+                    height="16"
+                  >
+                    <path
+                      d="M881.778 446.578L510.52 813.909l-83.058-82.716-285.24-282.34 83.626-82.716L451.186 589.71V0h118.613v589.767l227.783-225.963 84.196 82.774z m-1.138 460.06H142.222V1024H880.64V906.638z"
+                      p-id="2584"
+                      fill="#ffffff"
+                    ></path>
+                  </svg>
                   Deposit
                 </div>
                 <div
