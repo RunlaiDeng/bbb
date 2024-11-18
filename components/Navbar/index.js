@@ -257,7 +257,7 @@ const Navbar = () => {
             )}
             {!isConnected && (
               <div
-                className="btn btn-sm"
+                className="btn btn-sm mr-1"
                 onClick={() => {
                   openConnectModal();
                 }}
