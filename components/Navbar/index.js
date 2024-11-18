@@ -142,8 +142,8 @@ const Navbar = () => {
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
                     p-id="1866"
-                    width="20"
-                    height="20"
+                    width="24"
+                    height="24"
                     className="cursor-pointer"
                   >
                     <path
@@ -287,8 +287,8 @@ const Navbar = () => {
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
                         p-id="1866"
-                        width="20"
-                        height="20"
+                        width="24"
+                        height="24"
                         className="cursor-pointer"
                       >
                         <path
