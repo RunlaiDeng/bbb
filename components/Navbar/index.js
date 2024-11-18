@@ -129,7 +129,7 @@ const Navbar = () => {
                 </div>
                 <div
                   className={
-                    "w-8 dropdown dropdown-end " +
+                    " dropdown dropdown-end hidden sm:block " +
                     (data?.showUserItems ? "dropdown-open" : "")
                   }
                   onMouseEnter={() => setData({ ...data, showUserItems: true })}
@@ -158,8 +158,8 @@ const Navbar = () => {
                       "card dropdown-content menu bg-white rounded-md z-[1] w-72 shadow p-0 text-xs"
                     }
                   >
-                    <div className="card-body p-0">
-                      <div className="flex items-center gap-2 p-4">
+                    <div className="card-body p-0 font-medium">
+                      <div className="flex items-center gap-4 p-4 text-xl">
                         <Image
                           src="/user.png"
                           alt="user"
@@ -266,6 +266,177 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
+                <div className="drawer drawer-end sm:hidden w-max">
+                  <input
+                    id="userDrawer"
+                    type="checkbox"
+                    className="drawer-toggle"
+                    checked={data?.userItemsOpen}
+                    onChange={() => {
+                      setData({ ...data, userItemsOpen: true });
+                    }}
+                  />
+                  <div className="drawer-content">
+                    {/* Page content here */}
+                    <label
+                      htmlFor="userDrawer"
+                      className="btn drawer-button float-right btn-ghost px-2 "
+                    >
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="1866"
+                        width="20"
+                        height="20"
+                        className="cursor-pointer"
+                      >
+                        <path
+                          d="M512 62.08A449.92 449.92 0 1 0 961.92 512 449.92 449.92 0 0 0 512 62.08z m0 135.04a135.04 135.04 0 1 1-135.04 135.04A134.72 134.72 0 0 1 512 197.12z m0 640a323.84 323.84 0 0 1-269.76-144.96c0-89.6 179.84-138.56 269.76-138.56s268.48 48.96 269.76 138.56A323.84 323.84 0 0 1 512 835.84z"
+                          p-id="1867"
+                          fill={data?.showUserItems ? "#0e932e" : ""}
+                        ></path>
+                      </svg>
+                    </label>
+                  </div>
+                  <div className="drawer-side z-50 font-black">
+                    <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
+                      <div className="card-body p-0 text-xl font-medium">
+                        <div className="flex justify-between items-center p-4">
+                          <div></div>
+
+                          <div
+                            className="text-right w-max"
+                            onClick={(e) => {
+                              setData({ ...data, userItemsOpen: false });
+                            }}
+                          >
+                            <svg
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              p-id="1638"
+                              width="20"
+                              height="20"
+                            >
+                              <path
+                                d="M553.708426 511.998977l318.623781-318.623781c11.988032-11.988032 12.301164-31.112602 0.699941-42.714847l-1.399883-1.399883c-11.602246-11.602246-30.725792-11.288091-42.713824 0.700965L510.293637 468.584188 191.669856 149.96143c-11.988032-11.989055-31.112602-12.302187-42.714847-0.700965l-1.399883 1.400906c-11.602246 11.602246-11.288091 30.725792 0.700965 42.714847l318.623781 318.622758L148.255067 830.621734c-11.989055 11.989055-12.302187 31.112602-0.700965 42.714847l1.399883 1.399883c11.602246 11.602246 30.726815 11.288091 42.714847-0.699941l318.623781-318.623781 318.623781 318.623781c11.988032 11.989055 31.111578 12.302187 42.713824 0.700965l1.399883-1.399883c11.602246-11.602246 11.288091-30.726815-0.699941-42.714847L553.708426 511.998977z"
+                                fill="#272636"
+                                p-id="1639"
+                              ></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="card-body p-0">
+                          <div className="flex items-center gap-4 p-4 text-xl">
+                            <Image
+                              src="/user.png"
+                              alt="user"
+                              height={40}
+                              width={40}
+                              className="rounded-md"
+                            />
+                            <div>
+                              <div>{address?.substr(36)}</div>
+                            </div>
+                          </div>
+
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            onClick={() => {
+                              info("coming soon");
+                            }}
+                          >
+                            <svg
+                              size="24"
+                              className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M4 8.5A4.5 4.5 0 018.5 4H20v16H8.5A4.5 4.5 0 014 15.5v-7zM8.5 7H17v3H8.5a1.5 1.5 0 110-3zm4.5 6h4v4h-4v-4z"
+                                fill="currentColor"
+                              ></path>
+                            </svg>
+
+                            <div>Assets</div>
+                          </div>
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            onClick={() => {
+                              info("coming soon");
+                            }}
+                          >
+                            <svg
+                              size="24"
+                              className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                              viewBox="0 0 24 24"
+                              width="16"
+                              height="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M4.5 3v18h4.91A7.5 7.5 0 0118.5 9.365V7l-4-4h-10zm16 13a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0zm-4.79-2.875h-2v4l3.031 1.75 1-1.732-2.031-1.173v-2.845z"
+                                fill="currentColor"
+                              ></path>
+                            </svg>
+                            <div>Orders</div>
+                          </div>
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            onClick={() => {
+                              router.push("/referral");
+                            }}
+                          >
+                            <svg
+                              className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M11 8.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM2 17a3 3 0 013-3h5a3 3 0 013 3v3H2v-3zm14.5-1v-3h-3v-3h3V7h3v3h3v3h-3v3h-3z"
+                                fill="currentColor"
+                              ></path>
+                            </svg>
+                            <div>Refferal</div>
+                          </div>
+                          <div
+                            className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
+                            onClick={() => {
+                              disconnect();
+                            }}
+                          >
+                            <svg
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              p-id="7250"
+                              width="16"
+                              height="16"
+                            >
+                              <path
+                                d="M972.8 512l-307.2-256 0 153.6-358.4 0 0 204.8 358.4 0 0 153.6 307.2-256zM153.6 153.6l409.6 0 0-102.4-409.6 0c-56.32 0-102.4 46.08-102.4 102.4l0 716.8c0 56.32 46.08 102.4 102.4 102.4l409.6 0 0-102.4-409.6 0 0-716.8z"
+                                fill="#444444"
+                                p-id="7251"
+                              ></path>
+                            </svg>
+                            <div>Log Out</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             {!isConnected && (
@@ -284,16 +455,16 @@ const Navbar = () => {
                 id="my-drawer"
                 type="checkbox"
                 className="drawer-toggle"
-                checked={data?.drawerOpen}
+                checked={data?.menuItemsOpen}
                 onChange={() => {
-                  setData({ ...data, drawerOpen: true });
+                  setData({ ...data, menuItemsOpen: true });
                 }}
               />
               <div className="drawer-content">
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer"
-                  className="btn drawer-button float-right btn-ghost pr-4 pl-0"
+                  className="btn drawer-button float-right btn-ghost px-2 "
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -319,7 +490,7 @@ const Navbar = () => {
                       <div
                         className="text-right w-max"
                         onClick={(e) => {
-                          setData({ ...data, drawerOpen: false });
+                          setData({ ...data, menuItemsOpen: false });
                         }}
                       >
                         <svg
@@ -342,7 +513,7 @@ const Navbar = () => {
                       className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
                         router.push("/");
-                        setData({ ...data, drawerOpen: false });
+                        setData({ ...data, menuItemsOpen: false });
                       }}
                     >
                       <svg
@@ -386,7 +557,7 @@ const Navbar = () => {
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                           onClick={(e) => {
                             router.push("/megadrop");
-                            setData({ ...data, drawerOpen: false });
+                            setData({ ...data, menuItemsOpen: false });
                           }}
                         >
                           <div>Megadrop</div>
@@ -395,7 +566,7 @@ const Navbar = () => {
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                           onClick={(e) => {
                             router.push("/farm");
-                            setData({ ...data, drawerOpen: false });
+                            setData({ ...data, menuItemsOpen: false });
                           }}
                         >
                           <div>Farm</div>

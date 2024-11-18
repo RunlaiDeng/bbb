@@ -383,7 +383,7 @@ const Home = () => {
         <div className="card m-auto w-full">
           <div className="card-body p-2">
             <div className="flex gap-2 text-slate-500 ml-4">
-              <ul className="menu menu-horizontal bg-base-200 rounded-box text-[8px] sm:text-xs">
+              <ul className="menu menu-horizontal bg-base-200 rounded-box">
                 <li
                   onClick={() => {
                     setShow(1);
