@@ -69,7 +69,6 @@ const Navbar = () => {
             </div> */}
 
             <div className="ml-2 hidden md:flex items-center pt-1">
-        
               <div className="dropdown dropdown-hover font-black">
                 <div
                   tabIndex={0}
@@ -105,7 +104,7 @@ const Navbar = () => {
           <div className="navbar-center hidden xl:flex"></div>
           <div className="navbar-end">
             {isConnected && (
-              <div className="flex items-center gap-2 btn-success">
+              <div className="flex items-center gap-2 btn-success ">
                 <div
                   className="btn btn-sm text-white"
                   onClick={() => {
@@ -280,7 +279,7 @@ const Navbar = () => {
                 {/* Page content here */}
                 <label
                   htmlFor="my-drawer"
-                  className="btn drawer-button float-right btn-ghost p-0"
+                  className="btn drawer-button float-right btn-ghost pr-4 pl-0"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -300,7 +299,7 @@ const Navbar = () => {
               <div className="drawer-side z-50 font-black">
                 <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
                   <div className="card-body p-0 text-xl font-medium">
-                    <div className="flex justify-between items-center mt-4">
+                    <div className="flex justify-between items-center p-4">
                       <div></div>
 
                       <div
