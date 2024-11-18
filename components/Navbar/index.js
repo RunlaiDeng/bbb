@@ -223,6 +223,7 @@ const Navbar = () => {
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                         onClick={() => {
                           router.push("/referral");
+               
                         }}
                       >
                         <svg
@@ -345,6 +346,7 @@ const Navbar = () => {
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={() => {
                               info("coming soon");
+                              // setData({ ...data, userItemsOpen: false });
                             }}
                           >
                             <svg
@@ -369,6 +371,7 @@ const Navbar = () => {
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={() => {
                               info("coming soon");
+                              // setData({ ...data, userItemsOpen: false });
                             }}
                           >
                             <svg
@@ -392,6 +395,7 @@ const Navbar = () => {
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={() => {
                               router.push("/referral");
+                              setData({ ...data, userItemsOpen: false });
                             }}
                           >
                             <svg
