@@ -72,7 +72,7 @@ const Home = () => {
   const [mount, setMount] = useState(false);
   const [tokens, setTokens] = useState({});
 
-  const { info } = useNotification();
+  const { info, failure } = useNotification();
 
   const [xdcPrice, setXdcPrice] = useState(0);
   const [xdcPriceChange24h, setXdcPriceChange24h] = useState(0);
@@ -96,12 +96,13 @@ const Home = () => {
 
   useEffect(() => {
     fetchData();
-
-    const interval = setInterval(() => {
-      fetchData();
-    }, 10000);
     setMount(true);
-    return () => clearInterval(interval);
+
+    // const interval = setInterval(() => {
+    //   fetchData();
+    // }, 10000);
+
+    // return () => clearInterval(interval);
   }, [mount, tokens?.pageNumber, tokens?.sort]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
@@ -212,16 +213,6 @@ const Home = () => {
       refetch1();
     }
   }, [dropTokens]);
-
-  if (data?.search) {
-    dropTokens = dropTokens.filter((item) => {
-      return (
-        item?.token?.toLowerCase()?.includes(data?.search?.toLowerCase()) ||
-        item?.name?.toLowerCase().includes(data?.search?.toLowerCase()) ||
-        item?.symbol?.toLowerCase().includes(data?.search?.toLowerCase())
-      );
-    });
-  }
 
   const router = useRouter();
 
@@ -539,13 +530,24 @@ const Home = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <input type="text" className="grow" placeholder="0x" />
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0x"
+                    onChange={(e) => {
+                      setData({ ...data, search: e.target.value });
+                    }}
+                  />
                 </label>
 
                 <div
                   className="btn btn-sm cursor-pointer"
                   onClick={() => {
-                    info("coming soon");
+                    if (data?.search) {
+                      router.push("/swap/" + data?.search);
+                    } else {
+                      info("please submit token address");
+                    }
                   }}
                 >
                   Search
