@@ -265,12 +265,8 @@ const Megadrop = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 py-1">
-        <div></div>
+      <div className="m-auto md:w-3/4 w-96 py-1">
         <div className="text-center font-black mt-2">MEGADROP</div>
-        <Link className="text-right" href="/help">
-          <button className="btn">?</button>
-        </Link>
       </div>
 
       <div className="card m-auto md:w-3/4 w-96 ">

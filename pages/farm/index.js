@@ -27,17 +27,8 @@ const Farm = () => {
   ];
   return (
     <>
-      <div className="grid grid-cols-3 m-auto md:w-3/4 w-96 mt-2 pb-1">
-        <div></div>
+      <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
         <div className="text-center font-black mt-2">Farm</div>
-        <div className="text-right">
-          <Link className="btn btn-xs" href="/farm/referral">
-            Referral
-          </Link>
-          <Link className="btn btn-xs ml-1" href="/help">
-            ?
-          </Link>
-        </div>
       </div>
       {farmerList?.map((farmer, index) => {
         return <FarmCard key={index} {...farmer} />;
