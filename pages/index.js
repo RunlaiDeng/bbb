@@ -4,6 +4,9 @@ import {
   useAccount,
   useBalance,
   useWatchContractEvent,
+  useClient,
+  usePublicClient,
+  useConfig,
 } from "wagmi";
 import { contracts, dexLink } from "@/config";
 import WriteButton from "@/components/WriteButton";
@@ -14,7 +17,7 @@ import Image from "next/image";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
-import { parseEther, formatEther } from "viem";
+import { parseEther, formatEther, decodeEventLog } from "viem";
 import rpc from "@/components/Rpc";
 import { track } from "@vercel/analytics";
 import {
@@ -47,8 +50,6 @@ const Home = () => {
   const [type, setType] = useState(() =>
     typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
   );
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     localStorage.setItem("type", type);
@@ -226,6 +227,8 @@ const Home = () => {
 
   const totalCost = (price || 0n) + (data?.dBuy || 0n);
 
+  const client = usePublicClient();
+
   const drop = {
     buttonName: "Confirm",
     disabled: !canDrop,
@@ -248,8 +251,17 @@ const Home = () => {
       track("laucnh");
     },
     callback: async (confirm, txHash) => {
-      refetch();
-      document.getElementById("dropModal").close();
+      if (confirm) {
+        const transaction = await client.getTransactionReceipt({
+          hash: txHash,
+        });
+        const log = transaction?.logs?.[1];
+        const data = log?.data;
+        const topics = log?.topics;
+        const result = decodeEventLog({ ...mbbb, data, topics });
+        const tokenAddress = result?.args?.token;
+        router.push("/swap/" + tokenAddress);
+      }
     },
   };
 
@@ -873,10 +885,11 @@ const Home = () => {
                 })}
               </div>
             )}
-            {dropTokens?.length > 0 && show == 2 && (
+            {/* {dropTokens?.length > 0 && show == 2 && (
               <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
                 <li
                   className={tokens.pageNumber == 1 ? "disabled" : ""}
+                  key={0}
                   onClick={() => {
                     setTokens({ ...tokens, pageNumber: tokens.pageNumber - 1 });
                   }}
@@ -885,6 +898,7 @@ const Home = () => {
                 </li>
                 {tokens.pageNumber - 3 > 0 && (
                   <li
+                    key={1}
                     onClick={() => {
                       setTokens({ ...tokens, pageNumber: 1 });
                     }}
@@ -893,7 +907,7 @@ const Home = () => {
                   </li>
                 )}
                 {tokens.pageNumber - 4 > 0 && (
-                  <li className="disabled">
+                  <li className="disabled" key={-1}>
                     <a style={{ background: "transparent" }}>...</a>
                   </li>
                 )}
@@ -930,12 +944,13 @@ const Home = () => {
                   );
                 })}
                 {tokens.totalPage - tokens.pageNumber > 3 && (
-                  <li className="disabled">
+                  <li className="disabled" key={-2}>
                     <a style={{ background: "transparent" }}>...</a>
                   </li>
                 )}
                 {tokens.totalPage - tokens.pageNumber > 2 && (
                   <li
+                    key={tokens.totalPage}
                     onClick={() => {
                       setTokens({ ...tokens, pageNumber: tokens.totalPage });
                     }}
@@ -950,6 +965,91 @@ const Home = () => {
                   onClick={() => {
                     setTokens({ ...tokens, pageNumber: tokens.pageNumber + 1 });
                   }}
+                  key={-3}
+                >
+                  <a style={{ background: "transparent" }}>{">"}</a>
+                </li>
+              </ul>
+            )} */}
+            {dropTokens?.length > 0 && show == 2 && (
+              <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
+                <li
+                  className={tokens.pageNumber == 1 ? "disabled" : ""}
+                  key={0}
+                  onClick={() => {
+                    setTokens({ ...tokens, pageNumber: tokens.pageNumber - 1 });
+                  }}
+                >
+                  <a style={{ background: "transparent" }}>{"<"}</a>
+                </li>
+
+                {pages?.map((item, index) => {
+                  let showPageItems = false;
+                  if (item == 1 || item == tokens.totalPage) {
+                    showPageItems = true;
+                  }
+                  const pageDiff = Math.abs(tokens.pageNumber - item);
+                  if (pageDiff <= 2) {
+                    showPageItems = true;
+                  }
+
+                  let showPassFront = false;
+
+                  if (item == 1 && tokens.pageNumber >= 5) {
+                    showPassFront = true;
+                  }
+
+                  let showPassBack = false;
+
+                  if (
+                    item == tokens?.totalPage &&
+                    tokens.totalPage - tokens.pageNumber >= 4
+                  ) {
+                    showPassBack = true;
+                  }
+
+                  return (
+                    <div key={item} className="flex items-center">
+                      {showPassBack && (
+                        <li className="disabled" key={-1}>
+                          <a style={{ background: "transparent" }}>...</a>
+                        </li>
+                      )}
+
+                      {showPageItems && (
+                        <li
+                          onClick={() => {
+                            setTokens({ ...tokens, pageNumber: item });
+                          }}
+                        >
+                          <a
+                            className={
+                              item == tokens?.pageNumber
+                                ? "focus font-bold"
+                                : ""
+                            }
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      )}
+                      {showPassFront && (
+                        <li className="disabled" key={-1}>
+                          <a style={{ background: "transparent" }}>...</a>
+                        </li>
+                      )}
+                    </div>
+                  );
+                })}
+
+                <li
+                  className={
+                    tokens.pageNumber == tokens.totalPage ? "disabled" : ""
+                  }
+                  onClick={() => {
+                    setTokens({ ...tokens, pageNumber: tokens.pageNumber + 1 });
+                  }}
+                  key={-3}
                 >
                   <a style={{ background: "transparent" }}>{">"}</a>
                 </li>

@@ -166,15 +166,15 @@ const Navbar = () => {
                       >
                         <svg
                           size="24"
-                          class="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                          className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
                           height="16"
                         >
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M4 8.5A4.5 4.5 0 018.5 4H20v16H8.5A4.5 4.5 0 014 15.5v-7zM8.5 7H17v3H8.5a1.5 1.5 0 110-3zm4.5 6h4v4h-4v-4z"
                             fill="currentColor"
                           ></path>
@@ -190,15 +190,15 @@ const Navbar = () => {
                       >
                         <svg
                           size="24"
-                          class="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                          className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
                           width="16"
                           height="16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M4.5 3v18h4.91A7.5 7.5 0 0118.5 9.365V7l-4-4h-10zm16 13a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0zm-4.79-2.875h-2v4l3.031 1.75 1-1.732-2.031-1.173v-2.845z"
                             fill="currentColor"
                           ></path>
@@ -212,15 +212,15 @@ const Navbar = () => {
                         }}
                       >
                         <svg
-                          class="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
+                          className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
                           height="16"
                         >
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M11 8.5a3.5 3.5 0 11-7 0 3.5 3.5 0 017 0zM2 17a3 3 0 013-3h5a3 3 0 013 3v3H2v-3zm14.5-1v-3h-3v-3h3V7h3v3h3v3h-3v3h-3z"
                             fill="currentColor"
                           ></path>
