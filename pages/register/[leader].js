@@ -44,7 +44,7 @@ const Register = () => {
     <>
       <div className="card m-auto w-full sm:w-3/4 text-center">
         <div className="card-body">
-          <div className="text-5xl text-green-700 font-black">
+          <div className="text-green-700">
             Start Your BBBPump Journey
           </div>
           <div className="text-left opacity-50 font-black">Invite code</div>
