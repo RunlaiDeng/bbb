@@ -234,7 +234,6 @@ const Navbar = () => {
                         }}
                       >
                         <svg
-                     
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -298,83 +297,121 @@ const Navbar = () => {
                 </label>
               </div>
               <div className="drawer-side z-50 font-black">
-                <ul className="menu bg-base-200 text-base-content min-h-full w-full p-4 font-full">
-                  {/* Sidebar content here */}
-                  <li>
-                    <div className="flex justify-between items-center">
-                      <Image
-                        src={"/logo.png"}
-                        height={50}
-                        width={150}
-                        alt=""
-                        className=" cursor-pointer"
-                        onClick={() => {
-                          router.push("/");
+                <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
+                  <div className="card-body p-0 text-xl font-medium">
+                    <div className="flex justify-between items-center mt-4">
+                      <div></div>
+
+                      <div
+                        className="text-right w-max"
+                        onClick={(e) => {
+                          setData({ ...data, drawerOpen: false });
                         }}
-                      />
-                      <div className="text-right">
+                      >
                         <svg
-                          t="1726993124102"
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
-                          p-id="1658"
+                          p-id="1638"
                           width="20"
                           height="20"
-                          onClick={(e) => {
-                            setData({ ...data, drawerOpen: false });
-                          }}
                         >
                           <path
-                            d="M918.4 489.6l-160-160c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l105.6 105.6L512 480c-19.2 0-32 12.8-32 32s12.8 32 32 32l307.2 0-105.6 105.6c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 12.8 9.6 22.4 9.6 9.6 0 16-3.2 22.4-9.6l160-163.2c0 0 0-3.2 3.2-3.2C931.2 518.4 931.2 499.2 918.4 489.6zM832 736c-19.2 0-32 12.8-32 32l0 64c0 19.2-12.8 32-32 32L224 864c-19.2 0-32-12.8-32-32L192 192c0-19.2 12.8-32 32-32l544 0c19.2 0 32 12.8 32 32l0 64c0 19.2 12.8 32 32 32s32-12.8 32-32L864 192c0-54.4-41.6-96-96-96L224 96C169.6 96 128 137.6 128 192l0 640c0 54.4 41.6 96 96 96l544 0c54.4 0 96-41.6 96-96l0-64C864 748.8 851.2 736 832 736z"
+                            d="M553.708426 511.998977l318.623781-318.623781c11.988032-11.988032 12.301164-31.112602 0.699941-42.714847l-1.399883-1.399883c-11.602246-11.602246-30.725792-11.288091-42.713824 0.700965L510.293637 468.584188 191.669856 149.96143c-11.988032-11.989055-31.112602-12.302187-42.714847-0.700965l-1.399883 1.400906c-11.602246 11.602246-11.288091 30.725792 0.700965 42.714847l318.623781 318.622758L148.255067 830.621734c-11.989055 11.989055-12.302187 31.112602-0.700965 42.714847l1.399883 1.399883c11.602246 11.602246 30.726815 11.288091 42.714847-0.699941l318.623781-318.623781 318.623781 318.623781c11.988032 11.989055 31.111578 12.302187 42.713824 0.700965l1.399883-1.399883c11.602246-11.602246 11.288091-30.726815-0.699941-42.714847L553.708426 511.998977z"
                             fill="#272636"
-                            p-id="1659"
+                            p-id="1639"
                           ></path>
                         </svg>
                       </div>
                     </div>
-                  </li>
-                  <li>
-                    <Link
-                      className="hover:text-green-500 hover:bg-inherit"
-                      href={"/"}
+                    <div
+                      className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
+                        router.push("/");
                         setData({ ...data, drawerOpen: false });
                       }}
                     >
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <div className="hover:text-green-500 hover:bg-inherit">
-                      More
+                      <svg
+                        viewBox="0 0 1036 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="2838"
+                        width="20"
+                        height="20"
+                      >
+                        <path
+                          d="M1014.628571 504L543.885714 33.6a36.491429 36.491429 0 0 0-51.657143 0L21.485714 504c-13.714286 13.714286-21.485714 32.342857-21.485714 51.771429 0 40.342857 32.8 73.142857 73.142857 73.142857h49.6V964.571429c0 20.228571 16.342857 36.571429 36.571429 36.571428H444.914286V745.142857h128v256h303.885714c20.228571 0 36.571429-16.342857 36.571429-36.571428V628.914286h49.6c19.428571 0 38.057143-7.657143 51.771428-21.485715 28.457143-28.571429 28.457143-74.857143-0.114286-103.428571z"
+                          p-id="2839"
+                        ></path>
+                      </svg>
+                      <div>Home</div>
                     </div>
-                    <ul>
-                      <li>
-                        <Link
-                          href={"/megadrop"}
-                          className="hover:text-green-500 hover:bg-inherit"
+                    <div
+                      tabIndex={0}
+                      className="collapse collapse-arrow bg-base-200"
+                    >
+                      <input type="checkbox" className="peer" />
+                      <div className="collapse-title text-xl font-medium flex items-center gap-2">
+                        <svg
+                          viewBox="0 0 1024 1024"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          p-id="15539"
+                          width="20"
+                          height="20"
+                        >
+                          <path
+                            d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
+                            p-id="15540"
+                          ></path>
+                        </svg>{" "}
+                        More
+                      </div>
+                      <div className="collapse-content">
+                        <div
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                           onClick={(e) => {
+                            router.push("/megadrop");
                             setData({ ...data, drawerOpen: false });
                           }}
                         >
-                          Megadrop
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href={"/farm"}
-                          className="hover:text-green-500 hover:bg-inherit"
+                          <div>Megadrop</div>
+                        </div>
+                        <div
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                           onClick={(e) => {
+                            router.push("/farm");
                             setData({ ...data, drawerOpen: false });
                           }}
                         >
-                          Farm
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                          <div>Farm</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                      onClick={() => {
+                        window.open("https://t.me/bbbsking");
+                      }}
+                    >
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="1507"
+                        width="20"
+                        height="20"
+                      >
+                        <path
+                          d="M960 403.2c-38.4-217.6-224-377.6-448-377.6-224 0-409.6 166.4-448 377.6C25.6 435.2 0 492.8 0 550.4c0 76.8 44.8 166.4 115.2 166.4 64 0 64-70.4 64-166.4 0-89.6 0-160-44.8-166.4C172.8 211.2 326.4 83.2 512 83.2c185.6 0 339.2 128 377.6 294.4-44.8 12.8-44.8 76.8-44.8 166.4 0 64 0 108.8 12.8 140.8-57.6 89.6-140.8 153.6-243.2 179.2-19.2-25.6-57.6-44.8-102.4-44.8-64 0-115.2 32-115.2 70.4 0 38.4 51.2 70.4 115.2 70.4s115.2-32 115.2-70.4c0 0 0 0 0 0 102.4-25.6 192-96 249.6-185.6 6.4 6.4 19.2 6.4 32 6.4 70.4 0 115.2-89.6 115.2-166.4C1024 492.8 998.4 435.2 960 403.2z"
+                          p-id="1508"
+                        ></path>
+                      </svg>
+                      <div>24/7 Chat Support</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

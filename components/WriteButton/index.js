@@ -1,6 +1,5 @@
 import {
   useAccount,
-  useWaitForTransaction,
   useWriteContract,
   useWaitForTransactionReceipt,
   usePublicClient,

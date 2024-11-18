@@ -301,8 +301,6 @@ const Swap = () => {
   const isFollowed = following?.[index];
 
   const [followed, setFollowed] = useState(isFollowed);
-
-  console.log(dropToken);
   return (
     mount && (
       <>
