@@ -69,6 +69,7 @@ const Navbar = () => {
             </div> */}
 
             <div className="ml-2 hidden md:flex items-center pt-1">
+        
               <div className="dropdown dropdown-hover font-black">
                 <div
                   tabIndex={0}
