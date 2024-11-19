@@ -243,7 +243,7 @@ const Address = () => {
                           </div>
                         </td>
                         <td className="text-right">
-                          ${Number(xdcPrice || 0)?.toLocaleString()}
+                          ${Number(xdcPrice || 0)?.toFixed(6)}
                         </td>
                         <td
                           className={
@@ -307,7 +307,7 @@ const Address = () => {
                               </div>
                             </td>
                             <td className="text-right">
-                              ${Number(item?.price || 0)?.toLocaleString()}
+                              ${Number(item?.price || 0)?.toFixed(6)}
                             </td>
                             <td
                               className={
