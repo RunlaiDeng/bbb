@@ -766,10 +766,13 @@ const Home = () => {
                           <td>
                             <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
-                                {"$" + ((xdcPrice * cap) / 1e18)?.toLocaleString()}{" "}
+                                {"$" +
+                                  (
+                                    (xdcPrice * cap) /
+                                    1e18
+                                  )?.toLocaleString()}{" "}
                               </div>
                               <div className="opacity-50">
-                                {" "}
                                 ({percent?.toFixed(2)}%)
                               </div>
                             </div>
