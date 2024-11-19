@@ -107,11 +107,12 @@ function sqrtPriceX96ToPrice(sqrtPriceX96) {
 async function getXDCPrice() {
   try {
     const res = await fetch(
-      "https://api.bybit.com/v5/market/tickers?category=spot&symbol=XDCUSDT"
+      "https://b.bitrue.com/kline-api/ticker?symbol=xdcusdt"
     );
     const json = await res.json();
-    const item = json?.result?.list?.[0];
-    return { price: item?.lastPrice || 0, priceChange24h: item?.price24hPcnt };
+    const item = json?.data?.ticker;
+    console.log(item)
+    return { price: item?.c || 0, priceChange24h: item?.r };
   } catch (e) {
     return { price: 0, priceChange24h: 0 };
   }
