@@ -104,6 +104,18 @@ function sqrtPriceX96ToPrice(sqrtPriceX96) {
   return 1 / price;
 }
 
+async function getERC20List(address) {
+  try {
+    const res = await fetch(
+      "https://api.xdcscan.io/addresses/" + address + "/tokens?type=ERC-20"
+    );
+    const json = await res.json();
+    return json;
+  } catch (e) {
+    return {};
+  }
+}
+
 async function getXDCPrice() {
   try {
     const res = await fetch(
@@ -111,7 +123,6 @@ async function getXDCPrice() {
     );
     const json = await res.json();
     const item = json?.data?.ticker;
-    console.log(item)
     return { price: item?.c || 0, priceChange24h: item?.r };
   } catch (e) {
     return { price: 0, priceChange24h: 0 };
@@ -137,4 +148,5 @@ module.exports = {
   sqrtPriceX96ToPrice,
   getXDCPrice,
   aggregateTo5MinuteCandles,
+  getERC20List,
 };

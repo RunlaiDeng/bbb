@@ -161,7 +161,7 @@ const Navbar = () => {
                     <div className="card-body p-0 font-medium">
                       <div className="flex items-center gap-4 p-4 text-xl">
                         <Image
-                          src="/user.png"
+                          src="/bbb.jpg"
                           alt="user"
                           height={40}
                           width={40}
@@ -175,7 +175,7 @@ const Navbar = () => {
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                         onClick={() => {
-                          info("coming soon");
+                          router.push("/dashboard/" + address);
                         }}
                       >
                         <svg
@@ -194,7 +194,7 @@ const Navbar = () => {
                           ></path>
                         </svg>
 
-                        <div>Assets</div>
+                        <div>Dashboard</div>
                       </div>
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
@@ -223,7 +223,6 @@ const Navbar = () => {
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                         onClick={() => {
                           router.push("/referral");
-               
                         }}
                       >
                         <svg
@@ -331,7 +330,7 @@ const Navbar = () => {
                         <div className="card-body p-0">
                           <div className="flex items-center gap-4 p-4 text-xl">
                             <Image
-                              src="/user.png"
+                              src="/bbb.jpg"
                               alt="user"
                               height={40}
                               width={40}
@@ -345,8 +344,8 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={() => {
-                              info("coming soon");
-                              // setData({ ...data, userItemsOpen: false });
+                              router.push("/dashboard/" + address);
+                              setData({ ...data, userItemsOpen: false });
                             }}
                           >
                             <svg
@@ -365,7 +364,7 @@ const Navbar = () => {
                               ></path>
                             </svg>
 
-                            <div>Assets</div>
+                            <div>Dashboard</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"

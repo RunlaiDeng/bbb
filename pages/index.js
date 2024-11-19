@@ -156,9 +156,8 @@ const Home = () => {
   const latestDrop = reads0?.[2]?.result;
   const latestKing = reads0?.[3]?.result;
   const dropTokenLength = reads0?.[4].result;
-  const bbbPrice = (
-    xdcPrice * sqrtPriceX96ToPrice(reads0?.[5]?.result?.[0])
-  )?.toFixed(6);
+  const sqrtPriceX96 = reads0?.[5]?.result?.[0];
+  const bbbPrice = (xdcPrice * sqrtPriceX96ToPrice(sqrtPriceX96))?.toFixed(6);
 
   const latestTrade = latestTradePro?.[0];
 
@@ -603,7 +602,7 @@ const Home = () => {
                     <tr>
                       <th className="w-4/8">Name</th>
                       <th className="w-1/8 text-right">Price</th>
-                      <th className="w-1/8 text-right">24h Change</th>
+                      <th className="w-1/8 text-right">24H Change</th>
                       {/* <th className="w-1/8 text-right">24h Volume</th> */}
                       <th
                         className="cursor-pointer flex items-center w-1/8 justify-end"
@@ -688,7 +687,7 @@ const Home = () => {
                       </td>
                       <td className="text-right">${bbbPrice}</td>
                       {/* <td className="text-right">-</td> */}
-                      <td className="text-right">-</td>
+                      <td className="text-right text-green-700">+0.00%</td>
                       <td>
                         <div className="sm:flex gap-2 justify-end">
                           <div className="whitespace-nowrap">-</div>

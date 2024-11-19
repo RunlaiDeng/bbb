@@ -23,6 +23,18 @@ export const rpcUrl = "https://api.benybadboy.xyz";
 
 // export const rpcUrl = "http://127.0.0.1:10033";
 
+export const dashboardConfig = {
+  "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {
+    imageUrl: "/bbb.jpg",
+    tradeLink: dexLink,
+    price: "bbb",
+  },
+  "0x37c00AE5C4b49Ab0F5fD2FFB1033588e9bC33B08": {
+    imageUrl: "/bbb.jpg",
+    price: "bbb",
+  },
+};
+
 export const contracts = {
   551: {
     bbb: {
