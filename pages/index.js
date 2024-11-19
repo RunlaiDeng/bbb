@@ -766,7 +766,7 @@ const Home = () => {
                           <td>
                             <div className="sm:flex gap-2 justify-end">
                               <div className="whitespace-nowrap">
-                                {"$" + formatNumber((xdcPrice * cap) / 1e18)}{" "}
+                                {"$" + ((xdcPrice * cap) / 1e18)?.toLocaleString()}{" "}
                               </div>
                               <div className="opacity-50">
                                 {" "}

@@ -22,7 +22,6 @@ import { useNotification } from "@/components/Context/notice";
 import { track } from "@vercel/analytics";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
-  formatNumber,
   getDate,
   deleteSame,
   setFollowing,
@@ -320,9 +319,7 @@ const Swap = () => {
           </div>
         )}
         {!dropToken && (
-          <div className="text-center mt-10">
-            Searching for {token}
-          </div>
+          <div className="text-center mt-10">Searching for {token}</div>
         )}
         {dropToken && (
           <>
@@ -568,9 +565,9 @@ const Swap = () => {
                         <span className="opacity-50">Total Supply </span>
 
                         <span>
-                          {formatNumber(
-                            Number(formatEther(totalSupply || 0n))
-                          ) +
+                          {Number(
+                            formatEther(totalSupply || 0n)
+                          )?.toLocaleString() +
                             " " +
                             dropToken?.symbol}
                         </span>
@@ -581,14 +578,14 @@ const Swap = () => {
 
                         <span>
                           {"$" +
-                            formatNumber(
+                            (
                               xdcPrice *
-                                Number(
-                                  formatEther(totalSupply || 0n) *
-                                    formatEther(price || 0n) *
-                                    2
-                                )
-                            )}
+                              Number(
+                                formatEther(totalSupply || 0n) *
+                                  formatEther(price || 0n) *
+                                  2
+                              )
+                            )?.toLocaleString()}
                         </span>
                       </div>
                       <div>
@@ -596,10 +593,10 @@ const Swap = () => {
 
                         <span>
                           {"$" +
-                            formatNumber(
+                            (
                               xdcPrice *
-                                Number(formatEther(tradeVolume24h || 0n))
-                            )}
+                              Number(formatEther(tradeVolume24h || 0n))
+                            )?.toLocaleString()}
                         </span>
                       </div>
                       <div>
@@ -1092,10 +1089,10 @@ const Swap = () => {
 
                             <span className="">
                               {"$" +
-                                formatNumber(
+                                (
                                   xdcPrice *
-                                    Number(formatEther(xdcAmount || 0n))
-                                )}
+                                  Number(formatEther(xdcAmount || 0n))
+                                )?.toLocaleString()}
                             </span>
                             <span className="opacity-50">
                               (
@@ -1116,9 +1113,9 @@ const Swap = () => {
                             When the market cap reaches{" "}
                             <span className="text-green-500">
                               {"$" +
-                                formatNumber(
+                                (
                                   xdcPrice * formatEther(maxXdc || 0n)
-                                )}
+                                )?.toLocaleString()}
                             </span>{" "}
                             all the liquidity from the rld curve will be
                             deposited into icecreaswap and burned. Progression
@@ -1130,21 +1127,21 @@ const Swap = () => {
                           <div className="opacity-50 text-xs mt-4">
                             There are{" "}
                             <span className="text-green-500">
-                              {formatNumber(
+                              {(
                                 formatEther(
                                   customToFixed(
                                     Math.sqrt(maxXdc?.toString() * 2e25)
                                   )
                                 ) - formatEther(totalSupply || 0n)
-                              )}{" "}
+                              )?.toLocaleString()}{" "}
                               {symbol}
                             </span>{" "}
                             still available for sale in the rld curve and there
                             are{" "}
                             <span className="text-green-500">
-                              {formatNumber(
-                                Number(formatEther(xdcAmount || 0n))
-                              )}{" "}
+                              {Number(
+                                formatEther(xdcAmount || 0n)
+                              )?.toLocaleString()}{" "}
                               XDC
                             </span>{" "}
                             in the rld curve.
