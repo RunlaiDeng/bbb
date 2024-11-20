@@ -152,6 +152,7 @@ const Address = () => {
     let tradeLink;
     let usdBalance = 0;
     let price = 0;
+    let show = false;
 
     if (dropToken) {
       tradeLink = "/swap/" + dropToken?.token;
@@ -160,6 +161,7 @@ const Address = () => {
 
       totalBalance += usdBalance;
       total24hChange += usdBalance - usdBalance / (1 + coin.priceChange24h);
+      show = true;
     }
 
     if (coinConfig?.price == "bbb") {
@@ -168,6 +170,7 @@ const Address = () => {
       price = bbbPrice;
       coin.priceChange24h = bbbPriceChange24h;
       total24hChange += usdBalance - usdBalance / (1 + bbbPriceChange24h);
+      show = true;
     }
 
     const token = {
@@ -178,10 +181,13 @@ const Address = () => {
       ...dropToken,
       usdBalance,
       price,
+      show,
     };
     return token;
   });
-
+  tokens = tokens?.filter((item) => {
+    return item.show;
+  });
   const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
 
