@@ -188,7 +188,9 @@ const Address = () => {
   const total24hChangePercent = Math.abs(
     total24hChange / (totalBalance - total24hChange)
   );
-  console.log(reads0, tokens);
+
+  const show = (mount && tokens) || data?.coins?.length == 0;
+
   return (
     <>
       <div className="card font-black p-0 m-auto w-96 sm:w-11/12 mt-4">
@@ -287,21 +289,31 @@ const Address = () => {
               </div>
             )}
           </div>
-          <div className="text-2xl sm:text-4xl">
-            ${totalBalance?.toLocaleString()}
-          </div>
-          <div className={"flex items-center text-xs gap-2 "}>
-            <div className="text-black">{"Totay's Pnl"}</div>{" "}
-            <div
-              className={
-                total24hChange >= 0 ? "text-green-700" : "text-red-700"
-              }
-            >
-              {total24hChange >= 0 ? "+" : "-"}$
-              {Math.abs(total24hChange)?.toLocaleString()}(
-              {(total24hChangePercent * 100)?.toFixed(2) + "%"})
+          {!show && (
+            <div className="flex justify-center items-center mt-4">
+              <div className="loading loading-bars loading-lg text-success"></div>
             </div>
-          </div>
+          )}
+          {show && (
+            <>
+              <div className="text-2xl sm:text-4xl">
+                ${totalBalance?.toLocaleString()}
+              </div>
+              <div className={"flex items-center text-xs gap-2 "}>
+                <div className="text-black">{"Totay's Pnl"}</div>{" "}
+                <div
+                  className={
+                    total24hChange >= 0 ? "text-green-700" : "text-red-700"
+                  }
+                >
+                  {total24hChange >= 0 ? "+" : "-"}$
+                  {Math.abs(total24hChange)?.toLocaleString()}(
+                  {(total24hChangePercent * 100)?.toFixed(2) + "%"})
+                </div>
+              </div>
+            </>
+          )}
+
           {addr == address && (
             <div className="gap-2 flex sm:hidden">
               <div
@@ -328,12 +340,12 @@ const Address = () => {
       <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
         <div className="card-body p-2">
           <div className="font-black p-4">My Assets</div>
-          {(!mount || !tokens) && (
+          {!show && (
             <div className="flex justify-center items-center mt-4">
               <div className="loading loading-bars loading-lg text-success"></div>
             </div>
           )}
-          {mount && tokens && (
+          {show && (
             <div className="overflow-x-auto">
               <table className="table">
                 {/* head */}
