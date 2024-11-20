@@ -243,12 +243,12 @@ const Address = () => {
           </div>
           <div className="card font-black border m-auto w-96 sm:w-11/12 mt-4">
             <div className="card-body">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 Estimated Balance{" "}
                 {addr == address && (
-                  <div className="flex gap-2">
+                  <div className="gap-2 hidden sm:flex">
                     <div
-                      className="btn btn-sm "
+                      className="btn btn-sm"
                       onClick={() => {
                         info("coming soon");
                       }}
@@ -256,7 +256,7 @@ const Address = () => {
                       Deposit
                     </div>
                     <div
-                      className="btn btn-sm "
+                      className="btn btn-sm"
                       onClick={() => {
                         info("coming soon");
                       }}
@@ -269,6 +269,26 @@ const Address = () => {
               <div className="text-2xl sm:text-4xl">
                 ${totalBalance?.toLocaleString()}
               </div>
+              {addr == address && (
+                <div className="gap-2 flex sm:hidden">
+                  <div
+                    className="btn btn-sm"
+                    onClick={() => {
+                      info("coming soon");
+                    }}
+                  >
+                    Deposit
+                  </div>
+                  <div
+                    className="btn btn-sm"
+                    onClick={() => {
+                      info("coming soon");
+                    }}
+                  >
+                    Withdraw
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
