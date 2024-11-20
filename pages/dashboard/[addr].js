@@ -311,28 +311,27 @@ const Address = () => {
                   {(total24hChangePercent * 100)?.toFixed(2) + "%"})
                 </div>
               </div>
+              {addr == address && (
+                <div className="gap-2 flex sm:hidden">
+                  <div
+                    className="btn btn-sm"
+                    onClick={() => {
+                      info("coming soon");
+                    }}
+                  >
+                    Deposit
+                  </div>
+                  <div
+                    className="btn btn-sm"
+                    onClick={() => {
+                      info("coming soon");
+                    }}
+                  >
+                    Withdraw
+                  </div>
+                </div>
+              )}
             </>
-          )}
-
-          {addr == address && (
-            <div className="gap-2 flex sm:hidden">
-              <div
-                className="btn btn-sm"
-                onClick={() => {
-                  info("coming soon");
-                }}
-              >
-                Deposit
-              </div>
-              <div
-                className="btn btn-sm"
-                onClick={() => {
-                  info("coming soon");
-                }}
-              >
-                Withdraw
-              </div>
-            </div>
           )}
         </div>
       </div>
