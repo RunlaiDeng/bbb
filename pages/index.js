@@ -881,7 +881,7 @@ const Home = () => {
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Price</div>
-                      <div className="">${bbbPrice} XDC</div>
+                      <div className="">${Number(bbbPrice)?.toFixed(6)} XDC</div>
                     </div>
 
                     <div className="flex gap-1 items-center">
