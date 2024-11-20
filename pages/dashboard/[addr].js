@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
 import {
   calculatePrice,
+  getBBBPrice,
   getERC20List,
   getXDCPrice,
   sqrtPriceX96ToPrice,
@@ -26,7 +27,17 @@ const Address = () => {
   const fetchData = async (addr) => {
     if (addr) {
       setMount(false);
-      const xdcPrice = await getXDCPrice();
+      const setPrice = {};
+
+      const xdc = await getXDCPrice();
+      const bbb = await getBBBPrice();
+      if (xdc.price != 0) {
+        setPrice.xdc = xdc;
+      }
+
+      if (bbb.price != 0) {
+        setPrice.bbb = bbb;
+      }
       const erc20List = await getERC20List(addr);
       const queryList = erc20List?.items?.map((item) => {
         return getAddress(item?.token?.address);
@@ -52,7 +63,7 @@ const Address = () => {
         if (queryInfo) {
           queryInfo.priceChange24h =
             (1 + Number(queryInfo.priceChange24h)) *
-              (1 + Number(xdcPrice.priceChange24h)) -
+              (1 + Number(xdc.priceChange24h)) -
             1;
         }
 
@@ -60,13 +71,13 @@ const Address = () => {
         return item;
       });
 
-      setData({ ...data, xdcPrice, coins: coins });
+      setData({ ...data, ...setPrice, coins: coins });
       setMount(true);
     }
   };
 
   const mbbb = contracts[chainId]?.mbbbv2;
-  const pool = contracts[chainId]?.pool;
+
   useEffect(() => {
     fetchData(addr);
   }, [addr]);
@@ -110,15 +121,11 @@ const Address = () => {
 
   const { data: reads2 } = useReadContracts({ contracts: searchDropTokens });
 
-  const { data: reads3 } = useReadContracts({
-    contracts: [{ ...pool, functionName: "slot0" }],
-  });
+  const xdcPrice = data?.xdc?.price;
+  const xdcPriceChange24h = data?.xdc?.priceChange24h;
 
-  const sqrtPriceX96 = reads3?.[0]?.result?.[0];
-  const xdcPrice = data?.xdcPrice?.price;
-  const priceChange24h = data?.xdcPrice?.priceChange24h;
-
-  const bbbPrice = (xdcPrice * sqrtPriceX96ToPrice(sqrtPriceX96))?.toFixed(6);
+  const bbbPrice = data?.bbb?.price;
+  const bbbPriceChange24h = data?.bbb?.priceChange24h;
 
   const dropTokens = reads2?.map((item) => {
     return item?.result;
@@ -133,7 +140,7 @@ const Address = () => {
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
   totalBalance += xdcUsdBalance;
   total24hChange +=
-    xdcUsdBalance - xdcUsdBalance / (1 + Number(priceChange24h));
+    xdcUsdBalance - xdcUsdBalance / (1 + Number(xdcPriceChange24h));
 
   let tokens = reads0?.map((item, index) => {
     const coin = data?.coins?.[index];
@@ -156,9 +163,11 @@ const Address = () => {
     }
 
     if (coinConfig?.price == "bbb") {
-      price = bbbPrice;
-      usdBalance = (price * Number(item?.result)) / 1e18;
+      usdBalance = (bbbPrice * Number(item?.result)) / 1e18;
       totalBalance += usdBalance;
+      price = bbbPrice;
+      coin.priceChange24h = bbbPriceChange24h;
+      total24hChange += usdBalance - usdBalance / (1 + bbbPriceChange24h);
     }
 
     const token = {
@@ -291,7 +300,7 @@ const Address = () => {
                 <div className="text-black">{"Totay's Pnl"}</div>{" "}
                 <div
                   className={
-                    total24hChange >= 0 ? "text-green-700" : "text-red-500"
+                    total24hChange >= 0 ? "text-green-700" : "text-red-700"
                   }
                 >
                   {total24hChange >= 0 ? "+" : "-"}$
@@ -374,13 +383,13 @@ const Address = () => {
                       <td
                         className={
                           "text-right hidden sm:table-cell " +
-                          (priceChange24h >= 0
+                          (xdcPriceChange24h >= 0
                             ? "text-green-700"
-                            : "text-red-500")
+                            : "text-red-700")
                         }
                       >
-                        {priceChange24h >= 0 && "+"}
-                        {(priceChange24h * 100)?.toFixed(2)}%
+                        {xdcPriceChange24h >= 0 ? "+" : "-"}
+                        {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                       </td>
                       <td className="text-right hidden sm:table-cell"></td>
                       <td className="text-right sm:hidden px-0">
@@ -456,7 +465,7 @@ const Address = () => {
                               "text-right hidden sm:table-cell " +
                               (item?.priceChange24h >= 0
                                 ? "text-green-700"
-                                : "text-red-500")
+                                : "text-red-700")
                             }
                           >
                             {item?.priceChange24h >= 0 && "+"}

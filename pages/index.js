@@ -31,6 +31,7 @@ import {
   calculateXdcAmount,
   sqrtPriceX96ToPrice,
   getXDCPrice,
+  getBBBPrice,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 
@@ -75,8 +76,14 @@ const Home = () => {
 
   const { info, failure } = useNotification();
 
-  const [xdcPrice, setXdcPrice] = useState(0);
-  const [xdcPriceChange24h, setXdcPriceChange24h] = useState(0);
+  const [priceItems, setPriceItems] = useState({});
+
+  const xdcPrice = priceItems?.xdc?.price;
+  const xdcPriceChange24h = priceItems?.xdc?.priceChange24h;
+  const bbbPrice = priceItems?.bbb?.price;
+  const bbbPriceChange24h = priceItems?.bbb?.priceChange24h;
+  const bbbCap = priceItems?.bbb?.cap;
+
   async function fetchData() {
     let tokensResult = await rpc.getTokens(
       tokens?.sort,
@@ -88,9 +95,17 @@ const Home = () => {
     }
 
     setTokens(tokensResult);
-    const priceItem = await getXDCPrice();
-    setXdcPrice(priceItem.price);
-    setXdcPriceChange24h(priceItem.priceChange24h);
+    const setPrice = {};
+    const xdc = await getXDCPrice();
+    const bbb = await getBBBPrice();
+    if (xdc.price != 0) {
+      setPrice.xdc = xdc;
+    }
+
+    if (bbb.price != 0) {
+      setPrice.bbb = bbb;
+    }
+    setPriceItems({ ...priceItems, ...setPrice });
   }
 
   const tokenList = tokens?.list;
@@ -156,8 +171,6 @@ const Home = () => {
   const latestDrop = reads0?.[2]?.result;
   const latestKing = reads0?.[3]?.result;
   const dropTokenLength = reads0?.[4].result;
-  const sqrtPriceX96 = reads0?.[5]?.result?.[0];
-  const bbbPrice = (xdcPrice * sqrtPriceX96ToPrice(sqrtPriceX96))?.toFixed(6);
 
   const latestTrade = latestTradePro?.[0];
 
@@ -624,7 +637,7 @@ const Home = () => {
                           }
                         }}
                       >
-                        Progress{" "}
+                        Cap{" "}
                         {show == 2 && (
                           <div>
                             <svg
@@ -685,12 +698,26 @@ const Home = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="text-right">${bbbPrice}</td>
+                      <td className="text-right">
+                        ${Number(bbbPrice)?.toFixed(6)}
+                      </td>
                       {/* <td className="text-right">-</td> */}
-                      <td className="text-right text-green-700">+0.00%</td>
+                      <td
+                        className={
+                          "text-right " +
+                          (bbbPriceChange24h >= 0
+                            ? "text-green-700"
+                            : "text-red-700")
+                        }
+                      >
+                        {bbbPriceChange24h >= 0 ? "+" : "-"}
+                        {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
+                      </td>
                       <td>
                         <div className="sm:flex gap-2 justify-end">
-                          <div className="whitespace-nowrap">-</div>
+                          <div className="whitespace-nowrap">
+                            {Number(bbbCap)?.toLocaleString()}
+                          </div>
                           <div className="opacity-50"> (100%)</div>
                         </div>
                       </td>
@@ -768,7 +795,7 @@ const Home = () => {
                               <div className="whitespace-nowrap">
                                 {"$" +
                                   (
-                                    (xdcPrice * cap) /
+                                    (2 * (xdcPrice * cap)) /
                                     1e18
                                   )?.toLocaleString()}{" "}
                               </div>
@@ -1388,7 +1415,7 @@ const Home = () => {
               </Link>
             )}
             {!canDrop && (
-              <div className="text-red-500">
+              <div className="text-red-700">
                 image, name, symbol, token description are required
               </div>
             )}

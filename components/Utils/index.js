@@ -129,6 +129,24 @@ async function getXDCPrice() {
   }
 }
 
+async function getBBBPrice() {
+  try {
+    const res = await fetch(
+      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e?include=dex"
+    );
+    const json = await res.json();
+    const item = json?.data?.attributes;
+    console.log(json);
+    return {
+      price: item?.base_token_price_usd || 0,
+      priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
+      cap: item?.market_cap_usd || 0,
+    };
+  } catch (e) {
+    return { price: 0, priceChange24h: 0 };
+  }
+}
+
 function aggregateTo5MinuteCandles(rawData) {
   return rawData;
 }
@@ -149,4 +167,5 @@ module.exports = {
   getXDCPrice,
   aggregateTo5MinuteCandles,
   getERC20List,
+  getBBBPrice,
 };

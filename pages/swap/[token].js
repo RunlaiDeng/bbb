@@ -1065,7 +1065,7 @@ const Swap = () => {
                     <div className="font-black mt-4 text-left">
                       {removed && (
                         <div className="grid grid-cols-2">
-                          <div className="text-red-500">Liquidity Moved</div>
+                          <div className="text-red-700">Liquidity Moved</div>
 
                           <Link
                             className="btn btn-success"
