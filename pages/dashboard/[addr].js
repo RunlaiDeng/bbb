@@ -50,6 +50,7 @@ const Address = () => {
         const queryInfo = listMapping[queryAddr];
 
         if (queryInfo) {
+          console.log(queryInfo.priceChange24h, xdcPrice.priceChange24h);
           queryInfo.priceChange24h =
             (1 + Number(queryInfo.priceChange24h)) *
               (1 + Number(xdcPrice.priceChange24h)) -
@@ -134,6 +135,7 @@ const Address = () => {
   totalBalance += xdcUsdBalance;
   total24hChange +=
     xdcUsdBalance - xdcUsdBalance / (1 + Number(priceChange24h));
+
   let tokens = reads0?.map((item, index) => {
     const coin = data?.coins?.[index];
     const tokenAddress = getAddress(coin?.address);
@@ -148,7 +150,7 @@ const Address = () => {
     if (dropToken) {
       tradeLink = "/swap/" + dropToken?.token;
       price = xdcPrice * calculatePrice(Number(dropToken?.xdcAmount));
-      usdBalance = (price * Number(item?.result)) / 1e18;
+      usdBalance = (price * Number(item?.result)) / 1e18 || 0;
 
       totalBalance += usdBalance;
       total24hChange += usdBalance - usdBalance / (1 + coin.priceChange24h);
