@@ -171,207 +171,204 @@ const Address = () => {
   console.log(tokens);
 
   return (
-    mount && (
-      <>
-        {!tokens && (
-          <div className="flex justify-center items-center mt-48">
-            <div className="loading loading-bars loading-lg text-success"></div>
+    <>
+      {(!mount || !tokens) && (
+        <div className="flex justify-center items-center mt-48">
+          <div className="loading loading-bars loading-lg text-success"></div>
+        </div>
+      )}
+      {mount && tokens && (
+        <>
+          {" "}
+          <div className="card font-black p-0 m-auto w-96 sm:w-11/12 mt-4">
+            <div className="card-body p-0">
+              <div className="flex items-center gap-4 p-4 text-xl">
+                <Image
+                  src="/bbb.jpg"
+                  alt="user"
+                  height={100}
+                  width={100}
+                  className="rounded-md"
+                />
+                <div>
+                  <div className="flex items-center">
+                    {addr?.substr(36)}
+                    {address != addr && <div>(Watch Only)</div>}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
-        {tokens && (
-          <>
-            {" "}
-            <div className="card font-black p-0 m-auto w-96 sm:w-11/12 mt-4">
-              <div className="card-body p-0">
-                <div className="flex items-center gap-4 p-4 text-xl">
-                  <Image
-                    src="/bbb.jpg"
-                    alt="user"
-                    height={100}
-                    width={100}
-                    className="rounded-md"
-                  />
-                  <div>
-                    <div className="flex items-center">
-                      {addr?.substr(36)}
-                      {address != addr && <div>(Watch Only)</div>}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card font-black border m-auto w-96 sm:w-11/12 mt-4">
-              <div className="card-body">
-                <div className="flex justify-between">
-                  Estimated Balance{" "}
-                  <div
-                    className="btn btn-sm text-white flex items-center btn-success"
-                    onClick={() => {
-                      info("coming soon");
-                    }}
+          <div className="card font-black border m-auto w-96 sm:w-11/12 mt-4">
+            <div className="card-body">
+              <div className="flex justify-between">
+                Estimated Balance{" "}
+                <div
+                  className="btn btn-sm text-white flex items-center btn-success"
+                  onClick={() => {
+                    info("coming soon");
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="2583"
+                    width="16"
+                    height="16"
                   >
-                    <svg
-                      viewBox="0 0 1024 1024"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      p-id="2583"
-                      width="16"
-                      height="16"
-                    >
-                      <path
-                        d="M881.778 446.578L510.52 813.909l-83.058-82.716-285.24-282.34 83.626-82.716L451.186 589.71V0h118.613v589.767l227.783-225.963 84.196 82.774z m-1.138 460.06H142.222V1024H880.64V906.638z"
-                        p-id="2584"
-                        fill="#ffffff"
-                      ></path>
-                    </svg>
-                    Deposit
-                  </div>
-                </div>
-                <div className="text-2xl sm:text-4xl">
-                  ${totalBalance?.toLocaleString()}
+                    <path
+                      d="M881.778 446.578L510.52 813.909l-83.058-82.716-285.24-282.34 83.626-82.716L451.186 589.71V0h118.613v589.767l227.783-225.963 84.196 82.774z m-1.138 460.06H142.222V1024H880.64V906.638z"
+                      p-id="2584"
+                      fill="#ffffff"
+                    ></path>
+                  </svg>
+                  Deposit
                 </div>
               </div>
+              <div className="text-2xl sm:text-4xl">
+                ${totalBalance?.toLocaleString()}
+              </div>
             </div>
-            <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
-              <div className="card-body">
-                <div className="font-black">My Assets</div>
-                <div className="overflow-x-auto">
-                  <table className="table">
-                    {/* head */}
-                    <thead>
-                      <tr>
-                        <th>Coin</th>
-                        <th className="text-right">Amount</th>
-                        <th className="text-right">Coin Price</th>
-                        <th className="text-right">24H Change</th>
-                        <th className="text-right">Trade</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="hover cursor-pointer">
-                        <td className="flex items-center gap-2">
-                          <div className="h-6 w-6 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src="/xdc.png"
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
+          </div>
+          <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
+            <div className="card-body">
+              <div className="font-black">My Assets</div>
+              <div className="overflow-x-auto">
+                <table className="table">
+                  {/* head */}
+                  <thead>
+                    <tr>
+                      <th>Coin</th>
+                      <th className="text-right">Amount</th>
+                      <th className="text-right">Coin Price</th>
+                      <th className="text-right">24H Change</th>
+                      <th className="text-right">Trade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="hover cursor-pointer">
+                      <td className="flex items-center gap-2">
+                        <div className="h-6 w-6 overflow-hidden">
+                          <Image
+                            height={400}
+                            width={400}
+                            src="/xdc.png"
+                            alt={""}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                        <div>
+                          <div>XDC</div>
+                          <div className="text-xs opacity-50 whitespace-nowrap">
+                            XDC Network
                           </div>
-                          <div>
-                            <div>XDC</div>
-                            <div className="text-xs opacity-50 whitespace-nowrap">
-                              XDC Network
-                            </div>
-                          </div>
-                        </td>
-                        <td className="text-right">
-                          <div>
-                            {Number(xdcBalance?.formatted)?.toLocaleString() ||
-                              0}
-                          </div>
-                          <div className="text-xs opacity-50">
-                            ${xdcUsdBalance?.toLocaleString() || 0}
-                          </div>
-                        </td>
-                        <td className="text-right">
-                          ${Number(xdcPrice || 0)?.toFixed(6)}
-                        </td>
-                        <td
+                        </div>
+                      </td>
+                      <td className="text-right">
+                        <div>
+                          {Number(xdcBalance?.formatted)?.toLocaleString() || 0}
+                        </div>
+                        <div className="text-xs opacity-50">
+                          ${xdcUsdBalance?.toLocaleString() || 0}
+                        </div>
+                      </td>
+                      <td className="text-right">
+                        ${Number(xdcPrice || 0)?.toFixed(6)}
+                      </td>
+                      <td
+                        className={
+                          "text-right " +
+                          (priceChange24h >= 0
+                            ? "text-green-700"
+                            : "text-red-500")
+                        }
+                      >
+                        {priceChange24h >= 0 && "+"}
+                        {(priceChange24h * 100)?.toFixed(2)}%
+                      </td>
+                      <td className="text-right"></td>
+                    </tr>
+                    {tokens?.map((item, index) => {
+                      return (
+                        <tr
+                          key={index}
                           className={
-                            "text-right " +
-                            (priceChange24h >= 0
-                              ? "text-green-700"
-                              : "text-red-500")
+                            "hover cursor-pointer " +
+                            (item?.balance == 0 ? "hidden" : "")
                           }
-                        >
-                          {priceChange24h >= 0 && "+"}
-                          {(priceChange24h * 100)?.toFixed(2)}%
-                        </td>
-                        <td className="text-right"></td>
-                      </tr>
-                      {tokens?.map((item, index) => {
-                        return (
-                          <tr
-                            key={index}
-                            className={
-                              "hover cursor-pointer " +
-                              (item?.balance == 0 ? "hidden" : "")
+                          onClick={() => {
+                            if (item?.tradeLink) {
+                              router.push(item?.tradeLink);
                             }
-                            onClick={() => {
-                              if (item?.tradeLink) {
-                                router.push(item?.tradeLink);
-                              }
-                            }}
-                          >
-                            <td className="flex items-center gap-2">
-                              <div className="h-6 w-6 overflow-hidden">
-                                {item?.imageUrl && (
-                                  <Image
-                                    height={400}
-                                    width={400}
-                                    src={item?.imageUrl}
-                                    alt={""}
-                                    className="object-cover w-full h-full"
-                                  />
-                                )}
-                              </div>
-                              <div>
-                                <div>{item.symbol}</div>
-                                <div className="text-xs opacity-50 whitespace-nowrap hidden sm:block">
-                                  {item.name}
-                                </div>
-                                <div className="text-xs opacity-50 whitespace-nowrap sm:hidden">
-                                  {item.name?.length > 10
-                                    ? item.name?.substr(0, 10) + "..."
-                                    : item.name}
-                                </div>
-                              </div>
-                            </td>
-                            <td className="text-right">
-                              <div>
-                                {Number(
-                                  item?.balance / BigInt(10 ** item?.decimals)
-                                )?.toLocaleString() || 0}
-                              </div>
-                              <div className="text-xs opacity-50">
-                                ${item?.usdBalance?.toLocaleString() || 0}
-                              </div>
-                            </td>
-                            <td className="text-right">
-                              ${Number(item?.price || 0)?.toFixed(6)}
-                            </td>
-                            <td
-                              className={
-                                "text-right " +
-                                (item?.priceChange24h >= 0
-                                  ? "text-green-700"
-                                  : "text-red-500")
-                              }
-                            >
-                              {item?.priceChange24h >= 0 && "+"}
-                              {(item?.priceChange24h * 100)?.toFixed(2)}%
-                            </td>
-                            <td className="text-right">
-                              {item?.tradeLink && (
-                                <div className="underline text-green-700 cursor-pointer">
-                                  Trade
-                                </div>
+                          }}
+                        >
+                          <td className="flex items-center gap-2">
+                            <div className="h-6 w-6 overflow-hidden">
+                              {item?.imageUrl && (
+                                <Image
+                                  height={400}
+                                  width={400}
+                                  src={item?.imageUrl}
+                                  alt={""}
+                                  className="object-cover w-full h-full"
+                                />
                               )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                            </div>
+                            <div>
+                              <div>{item.symbol}</div>
+                              <div className="text-xs opacity-50 whitespace-nowrap hidden sm:block">
+                                {item.name}
+                              </div>
+                              <div className="text-xs opacity-50 whitespace-nowrap sm:hidden">
+                                {item.name?.length > 10
+                                  ? item.name?.substr(0, 10) + "..."
+                                  : item.name}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-right">
+                            <div>
+                              {Number(
+                                item?.balance / BigInt(10 ** item?.decimals)
+                              )?.toLocaleString() || 0}
+                            </div>
+                            <div className="text-xs opacity-50">
+                              ${item?.usdBalance?.toLocaleString() || 0}
+                            </div>
+                          </td>
+                          <td className="text-right">
+                            ${Number(item?.price || 0)?.toFixed(6)}
+                          </td>
+                          <td
+                            className={
+                              "text-right " +
+                              (item?.priceChange24h >= 0
+                                ? "text-green-700"
+                                : "text-red-500")
+                            }
+                          >
+                            {item?.priceChange24h >= 0 && "+"}
+                            {(item?.priceChange24h * 100)?.toFixed(2)}%
+                          </td>
+                          <td className="text-right">
+                            {item?.tradeLink && (
+                              <div className="underline text-green-700 cursor-pointer">
+                                Trade
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
-          </>
-        )}
-      </>
-    )
+          </div>
+        </>
+      )}
+    </>
   );
 };
 
