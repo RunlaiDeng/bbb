@@ -50,7 +50,6 @@ const Address = () => {
         const queryInfo = listMapping[queryAddr];
 
         if (queryInfo) {
-          console.log(queryInfo.priceChange24h, xdcPrice.priceChange24h);
           queryInfo.priceChange24h =
             (1 + Number(queryInfo.priceChange24h)) *
               (1 + Number(xdcPrice.priceChange24h)) -
@@ -177,9 +176,9 @@ const Address = () => {
   const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
 
-  const total24hChangePercent =
-    total24hChange / (totalBalance + total24hChange);
-
+  const total24hChangePercent = Math.abs(
+    total24hChange / (totalBalance - total24hChange)
+  );
   return (
     <>
       {(!mount || !tokens) && (
