@@ -533,8 +533,15 @@ const Home = () => {
                     {latestTrade?.tradeType === "buy" && "bought"}
                     {latestTrade?.tradeType === "sell" && "sold"}{" "}
                     {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)}{" "}
-                    XDC of {latestTradePro?.[1]}
-                    {""}
+                    XDC of{" "}
+                    <div
+                      className="hover:underline cursor-pointer"
+                      onClick={() => {
+                        router.push("/swap/" + latestTrade?.token);
+                      }}
+                    >
+                      {latestTradePro?.[1]}
+                    </div>
                     <div className="h-4 w-4 overflow-hidden">
                       <Image
                         height={400}
@@ -562,7 +569,15 @@ const Home = () => {
                     >
                       {latestDrop?.deployer?.substr(36)}
                     </span>{" "}
-                    created {latestDrop?.symbol}{" "}
+                    created
+                    <div
+                      className="hover:underline cursor-pointer"
+                      onClick={() => {
+                        router.push("/swap/" + latestDrop?.token);
+                      }}
+                    >
+                      {latestDrop?.symbol}
+                    </div>
                     <div className="h-4 w-4 overflow-hidden">
                       <Image
                         height={400}
@@ -852,7 +867,7 @@ const Home = () => {
                       <span
                         className="hover:underline"
                         onClick={(e) => {
-                          e.stopPropagation()
+                          e.stopPropagation();
                           router.push(
                             "/dashboard/0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"
                           );
@@ -881,7 +896,9 @@ const Home = () => {
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Price</div>
-                      <div className="">${Number(bbbPrice)?.toFixed(6)} XDC</div>
+                      <div className="">
+                        ${Number(bbbPrice)?.toFixed(6)} XDC
+                      </div>
                     </div>
 
                     <div className="flex gap-1 items-center">
@@ -927,7 +944,7 @@ const Home = () => {
                           <span
                             className="hover:underline"
                             onClick={(e) => {
-                              e.stopPropagation()
+                              e.stopPropagation();
                               router.push("/dashboard/" + item?.deployer);
                             }}
                           >
