@@ -652,7 +652,12 @@ const Swap = () => {
                                     className="object-cover w-full h-full"
                                   />
                                 </div>
-                                <div className="hover:underline cursor-pointer font-black">
+                                <div
+                                  className="hover:underline cursor-pointer font-black"
+                                  onClick={() => {
+                                    router.push("/dashboard/" + item?.address);
+                                  }}
+                                >
                                   {item?.address?.substr(36)}
                                 </div>{" "}
                                 <time className="text-xs opacity-50">
