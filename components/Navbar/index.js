@@ -253,8 +253,9 @@ const Navbar = () => {
                       </div>
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
-                        onClick={() => {
-                          info("coming soon");
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push("/orders/" + address);
                         }}
                       >
                         <svg
@@ -483,9 +484,11 @@ const Navbar = () => {
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
-                            onClick={() => {
-                              info("coming soon");
-                              // setData({ ...data, userItemsOpen: false });
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              setData({ ...data, userItemsOpen: false });
+                              router.push("/orders/" + address);
                             }}
                           >
                             <svg

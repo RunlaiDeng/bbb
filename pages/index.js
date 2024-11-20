@@ -762,14 +762,13 @@ const Home = () => {
                           xdcPrice *
                             formatEther(tokenList?.[index]?.volume24 || 0)
                         );
-                      let priceChange24h =
-                        (
-                          ((1 + Number(xdcPriceChange24h || 0)) *
-                            (1 +
-                              Number(tokenList?.[index]?.priceChange24h || 0)) -
-                            1) *
-                          100
-                        )?.toFixed(2) + "%";
+                      let priceChange24h = (
+                        ((1 + Number(xdcPriceChange24h || 0)) *
+                          (1 +
+                            Number(tokenList?.[index]?.priceChange24h || 0)) -
+                          1) *
+                        100
+                      )?.toFixed(2);
 
                       if (tokenList?.[index]?.volume24 == undefined) {
                         volume24h = "-";
@@ -777,7 +776,6 @@ const Home = () => {
                       if (tokenList?.[index]?.priceChange24h == undefined) {
                         priceChange24h = "-";
                       }
-
                       return (
                         <tr
                           key={item?.index}
@@ -811,13 +809,13 @@ const Home = () => {
                             className={
                               "text-right " +
                               (priceChange24h != "-" &&
-                                (priceChange24h?.replace("%", "") >= 0
+                                (priceChange24h >= 0
                                   ? "text-green-700"
                                   : "text-red-700"))
                             }
                           >
-                            {priceChange24h?.replace("%", "") >= 0 && "+"}
-                            {priceChange24h}
+                            {priceChange24h >= 0 ? "+" : "-"}
+                            {Math.abs(priceChange24h)}%
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
                           <td>

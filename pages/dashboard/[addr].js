@@ -7,7 +7,6 @@ import {
   getBBBPrice,
   getERC20List,
   getXDCPrice,
-  sqrtPriceX96ToPrice,
 } from "@/components/Utils";
 import { erc20Abi, getAddress } from "viem";
 import { contracts, dashboardConfig } from "@/config";
@@ -46,7 +45,7 @@ const Address = () => {
       const queryTokens = await rpc.getTokens(
         1,
         1,
-        queryList.length,
+        queryList?.length,
         queryList
       );
 
