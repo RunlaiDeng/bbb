@@ -55,7 +55,7 @@ const Address = () => {
               (1 + Number(xdcPrice.priceChange24h)) -
             1;
         }
-        console.log(queryInfo?.priceChange24h);
+
         item = { ...item.token, ...queryInfo };
         return item;
       });
@@ -129,8 +129,11 @@ const Address = () => {
     return acc;
   }, {});
   let totalBalance = 0;
+  let total24hChange = 0;
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
   totalBalance += xdcUsdBalance;
+  total24hChange +=
+    xdcUsdBalance - xdcUsdBalance / (1 + Number(priceChange24h));
   let tokens = reads0?.map((item, index) => {
     const coin = data?.coins?.[index];
     const tokenAddress = getAddress(coin?.address);
@@ -148,7 +151,9 @@ const Address = () => {
       usdBalance = (price * Number(item?.result)) / 1e18;
 
       totalBalance += usdBalance;
+      total24hChange += usdBalance - usdBalance / (1 + coin.priceChange24h);
     }
+
     if (coinConfig?.price == "bbb") {
       price = bbbPrice;
       usdBalance = (price * Number(item?.result)) / 1e18;
@@ -169,6 +174,11 @@ const Address = () => {
 
   const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
+
+  console.log(total24hChange);
+
+  const total24hChangePercent =
+    total24hChange / (totalBalance + total24hChange);
 
   return (
     <>
@@ -277,6 +287,18 @@ const Address = () => {
               </div>
               <div className="text-2xl sm:text-4xl">
                 ${totalBalance?.toLocaleString()}
+              </div>
+              <div className={"flex items-center text-xs gap-2 "}>
+                <div className="text-black">{"Totay's Pnl"}</div>{" "}
+                <div
+                  className={
+                    total24hChange >= 0 ? "text-green-700" : "text-red-500"
+                  }
+                >
+                  {total24hChange >= 0 ? "+" : "-"}$
+                  {Math.abs(total24hChange)?.toLocaleString()}(
+                  {(total24hChangePercent * 100)?.toFixed(2) + "%"})
+                </div>
               </div>
               {addr == address && (
                 <div className="gap-2 flex sm:hidden">
