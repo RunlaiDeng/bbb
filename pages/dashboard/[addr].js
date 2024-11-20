@@ -181,7 +181,7 @@ const Address = () => {
         <>
           <div className="card font-black p-0 m-auto w-96 sm:w-11/12 mt-4">
             <div className="card-body p-0">
-              <div className="flex items-center gap-4 p-4 text-xl">
+              <div className="flex items-center gap-4 p-0 text-xl">
                 <Image
                   src="/bbb.jpg"
                   alt="user"
@@ -242,7 +242,7 @@ const Address = () => {
             </div>
           </div>
           <div className="card font-black border m-auto w-96 sm:w-11/12 mt-4">
-            <div className="card-body">
+            <div className="card-body p-6">
               <div className="flex justify-between items-center">
                 Estimated Balance{" "}
                 {addr == address && (
@@ -292,8 +292,8 @@ const Address = () => {
             </div>
           </div>
           <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
-            <div className="card-body">
-              <div className="font-black">My Assets</div>
+            <div className="card-body p-2">
+              <div className="font-black p-4">My Assets</div>
               <div className="overflow-x-auto">
                 <table className="table">
                   {/* head */}
@@ -301,9 +301,14 @@ const Address = () => {
                     <tr>
                       <th>Coin</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-right">Coin Price</th>
-                      <th className="text-right">24H Change</th>
-                      <th className="text-right">Trade</th>
+                      <th className="text-right hidden sm:table-cell">
+                        Coin Price
+                      </th>
+                      <th className="text-right hidden sm:table-cell">
+                        24H Change
+                      </th>
+                      <th className="text-right hidden sm:table-cell">Trade</th>
+                      <th className="text-right sm:hidden  px-0"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -333,12 +338,12 @@ const Address = () => {
                           ${xdcUsdBalance?.toLocaleString() || 0}
                         </div>
                       </td>
-                      <td className="text-right">
+                      <td className="text-right hidden sm:table-cell">
                         ${Number(xdcPrice || 0)?.toFixed(6)}
                       </td>
                       <td
                         className={
-                          "text-right " +
+                          "text-right hidden sm:table-cell " +
                           (priceChange24h >= 0
                             ? "text-green-700"
                             : "text-red-500")
@@ -347,7 +352,8 @@ const Address = () => {
                         {priceChange24h >= 0 && "+"}
                         {(priceChange24h * 100)?.toFixed(2)}%
                       </td>
-                      <td className="text-right"></td>
+                      <td className="text-right hidden sm:table-cell"></td>
+                      <td className="text-right sm:hidden  px-0"></td>
                     </tr>
                     {tokens?.map((item, index) => {
                       return (
@@ -397,12 +403,12 @@ const Address = () => {
                               ${item?.usdBalance?.toLocaleString() || 0}
                             </div>
                           </td>
-                          <td className="text-right">
+                          <td className="text-right hidden sm:table-cell">
                             ${Number(item?.price || 0)?.toFixed(6)}
                           </td>
                           <td
                             className={
-                              "text-right " +
+                              "text-right hidden sm:table-cell " +
                               (item?.priceChange24h >= 0
                                 ? "text-green-700"
                                 : "text-red-500")
@@ -411,12 +417,28 @@ const Address = () => {
                             {item?.priceChange24h >= 0 && "+"}
                             {(item?.priceChange24h * 100)?.toFixed(2)}%
                           </td>
-                          <td className="text-right">
+                          <td className="text-right hidden sm:table-cell">
                             {item?.tradeLink && (
                               <div className="underline text-green-700 cursor-pointer">
                                 Trade
                               </div>
                             )}
+                          </td>
+                          <td className="text-right sm:hidden px-0">
+                            <svg
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              p-id="12307"
+                              width="16"
+                              height="16"
+                            >
+                              <path
+                                d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
+                                fill="#444444"
+                                p-id="12308"
+                              ></path>
+                            </svg>
                           </td>
                         </tr>
                       );
