@@ -190,7 +190,7 @@ const Address = () => {
                   className="rounded-md"
                 />
                 <div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 text-xs sm:text-sm">
                     {addr?.substr(36)}
                     {address != addr && <div>(Watch Only)</div>}
                     <div
