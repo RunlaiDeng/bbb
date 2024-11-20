@@ -371,7 +371,12 @@ const Home = () => {
               <div className="card-body text-xs p-2">
                 <div className="flex gap-2">
                   Created{" "}
-                  <span className="hover:underline">
+                  <span
+                    className="hover:underline"
+                    onClick={() => {
+                      router.push("/dashboard/" + latestKing?.deployer);
+                    }}
+                  >
                     {latestKing?.deployer?.substr(36)}
                   </span>
                   <span>{getDate(latestKing?.createTime?.toString())}</span>
@@ -517,7 +522,12 @@ const Home = () => {
                 >
                   <span className="flex gap-2 items-center">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                    <span className="hover:underline cursor-pointer">
+                    <span
+                      className="hover:underline cursor-pointer"
+                      onClick={() => {
+                        router.push("/dashboard/" + latestTrade?.account);
+                      }}
+                    >
                       {latestTrade?.account?.substr(36)}
                     </span>{" "}
                     {latestTrade?.tradeType === "buy" && "bought"}
@@ -544,7 +554,12 @@ const Home = () => {
                 >
                   <span className="flex gap-2 items-center">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                    <span className="hover:underline cursor-pointer">
+                    <span
+                      className="hover:underline cursor-pointer"
+                      onClick={() => {
+                        router.push("/dashboard/" + latestDrop?.deployer);
+                      }}
+                    >
                       {latestDrop?.deployer?.substr(36)}
                     </span>{" "}
                     created {latestDrop?.symbol}{" "}
@@ -834,7 +849,15 @@ const Home = () => {
                     <div className="flex gap-2">
                       <div className="opacity-50">Created</div>
 
-                      <span className="hover:underline">
+                      <span
+                        className="hover:underline"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          router.push(
+                            "/dashboard/0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"
+                          );
+                        }}
+                      >
                         {"0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"?.substr(
                           36
                         )}
@@ -901,7 +924,13 @@ const Home = () => {
                         <div className="flex gap-2">
                           <div className="opacity-50">Created</div>
 
-                          <span className="hover:underline">
+                          <span
+                            className="hover:underline"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              router.push("/dashboard/" + item?.deployer);
+                            }}
+                          >
                             {item?.deployer?.substr(36)}
                           </span>
                           <span>{getDate(item?.createTime?.toString())}</span>

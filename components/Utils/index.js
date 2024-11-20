@@ -136,7 +136,6 @@ async function getBBBPrice() {
     );
     const json = await res.json();
     const item = json?.data?.attributes;
-    console.log(json);
     return {
       price: item?.base_token_price_usd || 0,
       priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
