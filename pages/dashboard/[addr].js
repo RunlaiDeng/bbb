@@ -11,6 +11,7 @@ import {
 import { erc20Abi, getAddress } from "viem";
 import { contracts, dashboardConfig } from "@/config";
 import { useNotification } from "@/components/Context/notice";
+import rpc from "@/components/Rpc";
 const Address = () => {
   const router = useRouter();
   const { addr } = router.query;
@@ -26,8 +27,39 @@ const Address = () => {
       setMount(false);
       const xdcPrice = await getXDCPrice();
       const erc20List = await getERC20List(addr);
+      const queryList = erc20List?.items?.map((item) => {
+        return getAddress(item?.token?.address);
+      });
 
-      setData({ ...data, xdcPrice, coins: erc20List?.items });
+      const queryTokens = await rpc.getTokens(
+        1,
+        1,
+        queryList.length,
+        queryList
+      );
+
+      const coins = erc20List?.items?.map((item, index) => {
+        const list = queryTokens?.list;
+        const listMapping = list?.reduce((acc, item) => {
+          acc[item.token] = item;
+          return acc;
+        }, {});
+        const queryAddr = getAddress(item?.token?.address);
+
+        const queryInfo = listMapping[queryAddr];
+
+        if (queryInfo) {
+          queryInfo.priceChange24h =
+            (1 + Number(queryInfo.priceChange24h)) *
+              (1 + Number(xdcPrice.priceChange24h)) -
+            1;
+        }
+        console.log(queryInfo?.priceChange24h);
+        item = { ...item.token, ...queryInfo };
+        return item;
+      });
+
+      setData({ ...data, xdcPrice, coins: coins });
       setMount(true);
     }
   };
@@ -40,7 +72,7 @@ const Address = () => {
 
   const searchBalances = data?.coins?.map((item) => {
     return {
-      address: item?.token?.address,
+      address: item?.address,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [addr],
@@ -53,7 +85,7 @@ const Address = () => {
     return {
       ...mbbb,
       functionName: "tokenMapping",
-      args: [item?.token?.address],
+      args: [item?.address],
     };
   });
 
@@ -99,19 +131,21 @@ const Address = () => {
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
   totalBalance += xdcUsdBalance;
   let tokens = reads0?.map((item, index) => {
-    const coin = data?.coins?.[index]?.token;
+    const coin = data?.coins?.[index];
     const tokenAddress = getAddress(coin?.address);
     const coinConfig = dashboardConfig[tokenAddress];
     const dropToken = dropTokensMapping?.[tokenAddress];
+    coin.priceChange24h = coin?.priceChange24h || 0;
 
     let tradeLink;
     let usdBalance = 0;
     let price = 0;
-    let priceChange24h = 0;
+
     if (dropToken) {
       tradeLink = "/swap/" + dropToken?.token;
       price = xdcPrice * calculatePrice(Number(dropToken?.xdcAmount));
       usdBalance = (price * Number(item?.result)) / 1e18;
+
       totalBalance += usdBalance;
     }
     if (coinConfig?.price == "bbb") {
@@ -128,7 +162,6 @@ const Address = () => {
       ...dropToken,
       usdBalance,
       price,
-      priceChange24h,
     };
     return token;
   });
