@@ -190,7 +190,7 @@ const Address = () => {
                   className="rounded-md"
                 />
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     {addr?.substr(36)}
                     {address != addr && <div>(Watch Only)</div>}
                     <div
@@ -235,6 +235,15 @@ const Address = () => {
                           p-id="1646"
                         ></path>
                       </svg>
+                    </div>
+                    <div
+                      className={"cursor-pointer tooltip"}
+                      data-tip="View on XDCScan"
+                      onClick={() => {
+                        window.open("https://xdcscan.com/address/" + addr);
+                      }}
+                    >
+                      <Image src="/xdc.png" width={20} height={20} alt="" />
                     </div>
                   </div>
                 </div>

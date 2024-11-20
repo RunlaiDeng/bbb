@@ -160,7 +160,7 @@ const Navbar = () => {
                     }
                   >
                     <div className="card-body p-0 font-medium">
-                      <div className="flex items-center gap-2 p-4 text-xl">
+                      <div className="flex items-center gap-1 p-4 text-xl">
                         <Image
                           src="/bbb.jpg"
                           alt="user"
@@ -213,6 +213,17 @@ const Navbar = () => {
                               p-id="1646"
                             ></path>
                           </svg>
+                        </div>
+                        <div
+                          className={"cursor-pointer tooltip"}
+                          data-tip="View on XDCScan"
+                          onClick={() => {
+                            window.open(
+                              "https://xdcscan.com/address/" + address
+                            );
+                          }}
+                        >
+                          <Image src="/xdc.png" width={20} height={20} alt="" />
                         </div>
                       </div>
 
@@ -372,7 +383,7 @@ const Navbar = () => {
                           </div>
                         </div>
                         <div className="card-body p-0">
-                          <div className="flex items-center gap-2 p-4 text-xl">
+                          <div className="flex items-center gap-1 p-4 text-xl">
                             <Image
                               src="/bbb.jpg"
                               alt="user"
@@ -425,6 +436,22 @@ const Navbar = () => {
                                   p-id="1646"
                                 ></path>
                               </svg>
+                            </div>
+                            <div
+                              className={"cursor-pointer tooltip"}
+                              data-tip="View on XDCScan"
+                              onClick={() => {
+                                window.open(
+                                  "https://xdcscan.com/address/" + address
+                                );
+                              }}
+                            >
+                              <Image
+                                src="/xdc.png"
+                                width={20}
+                                height={20}
+                                alt=""
+                              />
                             </div>
                           </div>
 
