@@ -175,8 +175,6 @@ const Address = () => {
   const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
 
-  console.log(total24hChange);
-
   const total24hChangePercent =
     total24hChange / (totalBalance + total24hChange);
 
