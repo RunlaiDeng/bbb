@@ -6,11 +6,11 @@ import mBBBV2ABI from "../abi/mBBBV2ABI.json";
 import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
 import PoolABI from "../abi/PoolABI.json";
 
-export const dexLink =
-  "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
-
 // export const dexLink =
-//   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
+//   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
+
+export const dexLink =
+  "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =
   "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e";
 
