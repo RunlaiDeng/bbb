@@ -15,6 +15,7 @@ import {
   coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { rainbowWeb3AuthConnector } from "@/components/Web3Auth";
+import Head from "next/head";
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -75,6 +76,13 @@ const MyApp = ({ Component, pageProps }) => {
   const { locale } = useRouter();
   return (
     <>
+      <Head>
+        <title>
+          BBBPump | The First Meme Fair Launch Platform on XDC
+          Network:swap,earn,meme culture,instantly tradable without having to
+          seed liquidity
+        </title>
+      </Head>
       <NotificationProvider>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>

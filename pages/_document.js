@@ -9,11 +9,7 @@ export default function Document() {
           name="keywords"
           content="bbbpump, BBB, crypto, meme token, benybadboy"
         />
-        <title>
-          BBBPump | The First Meme Fair Launch Platform on XDC
-          Network:swap,earn,meme culture,instantly tradable without having to
-          seed liquidity
-        </title>
+
       </Head>
       <body>
         <Main />
