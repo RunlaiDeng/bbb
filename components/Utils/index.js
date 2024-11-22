@@ -147,14 +147,13 @@ async function getXDCPrice() {
 function modifyNumber(num) {
   const dst = 10000;
   if (num > dst) {
+    (BigInt(num) / BigInt(dst)) * BigInt(dst);
     return Math.floor(num / dst) * dst;
   }
-  return num;
+  return num?.toString();
 }
 
 async function getQuoteFromIcecreamswap(src, dst, amount) {
-  amount = modifyNumber(amount);
-
   try {
     const res = await fetch(
       "https://aggregator.icecreamswap.com/50?src=" +
