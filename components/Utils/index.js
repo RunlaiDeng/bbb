@@ -154,7 +154,6 @@ function modifyNumber(num) {
 }
 
 async function getQuoteFromIcecreamswap(src, dst, amount) {
-  amount = modifyNumber(amount);
   try {
     const res = await fetch(
       "https://aggregator.icecreamswap.com/50?src=" +
