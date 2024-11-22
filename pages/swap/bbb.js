@@ -176,10 +176,10 @@ const BBB = () => {
 
     const handler = setTimeout(() => {
       fetchQuote();
-    }, 500); // 用户停止输入 500ms 后触发
+    }, 500);
 
     return () => {
-      clearTimeout(handler); // 清除上一个定时器
+      clearTimeout(handler);
     };
   }, [data?.buyAmount]);
 
@@ -198,13 +198,12 @@ const BBB = () => {
 
     const handler = setTimeout(() => {
       fetchQuote();
-    }, 500); // 用户停止输入 500ms 后触发
+    }, 500);
 
     return () => {
-      clearTimeout(handler); // 清除上一个定时器
+      clearTimeout(handler);
     };
   }, [data?.sellAmount]);
-  console.log(data);
   const sellTx = data?.sell?.tx || {};
   const buyTx = data?.buy?.tx || {};
   sellTx.value = BigInt(sellTx?.value || 0);
@@ -977,7 +976,10 @@ const BBB = () => {
                           {symbol}
                         </div>
                         {showApprove && (
-                          <WriteButton {...approve} className="btn btn-primary" />
+                          <WriteButton
+                            {...approve}
+                            className="btn btn-primary"
+                          />
                         )}
                         {!showApprove && (
                           <SendButton {...sell} className="btn btn-error" />
