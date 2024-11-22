@@ -615,7 +615,7 @@ const Home = () => {
                   <input
                     type="text"
                     className="grow"
-                    placeholder="0x"
+                    placeholder="0x or bbb"
                     onChange={(e) => {
                       setData({ ...data, search: e.target.value });
                     }}
