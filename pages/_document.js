@@ -22,6 +22,19 @@ export default function Document() {
           content="https://bbbpump.fun/bbbpump-card.png"
         ></meta>
         <meta name="twitter:card" content="summary_large_image"></meta>
+
+        <meta property="og:url" content="https://bbbpump.fun/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="BBBPump." />
+        <meta
+          property="og:description"
+          content="The First Meme Fair Launch Platform on XDC Network:swap,earn,meme culture,instantly tradable without having to seed liquidity"
+        />
+        <meta property="og:title" content="BBBPump" />
+        <meta
+          property="og:image"
+          content="https://bbbpump.fun/bbbpump-card.png"
+        />
       </Head>
       <body>
         <Main />
