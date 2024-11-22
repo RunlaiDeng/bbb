@@ -9,7 +9,19 @@ export default function Document() {
           name="keywords"
           content="bbbpump, BBB, crypto, meme token, benybadboy"
         />
-
+        <meta
+          name="twitter:title"
+          content="BBBPump - XDC Network's Meme Token | Build Your Community"
+        ></meta>
+        <meta
+          name="twitter:description"
+          content="Join BBBPump, the fun and community-driven meme token on the XDC Network. Pump the price, grow your community, and be part of the XDC revolution!"
+        ></meta>
+        <meta
+          name="twitter:image"
+          content="https://bbbpump.fun/bbbpump-card.png"
+        ></meta>
+        <meta name="twitter:card" content="summary_large_image"></meta>
       </Head>
       <body>
         <Main />
