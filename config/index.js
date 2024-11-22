@@ -16,10 +16,9 @@ export const chartLink =
 
 export const linktree = "https://linktr.ee/benybadboy";
 
-export const buyXDCLink =
-  "https://docs.benybadboy.xyz/how-to-play/how-to-buy-xdc";
+export const buyXDCLink = "https://docs.bbbpump.fun/how-to-play/how-to-buy-xdc";
 
-export const rpcUrl = "https://api.benybadboy.xyz";
+export const rpcUrl = "https://api.bbbpump.fun";
 
 // export const rpcUrl = "http://127.0.0.1:10033";
 

@@ -319,7 +319,7 @@ const Home = () => {
               </div>
 
               <div
-                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96 hover:bg-white hover:text-green-500 outline outline-2"
+                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
                 onClick={() => {
                   if (!isConnected) {
                     openConnectModal();
@@ -643,7 +643,7 @@ const Home = () => {
                   {/* head */}
                   <thead>
                     <tr>
-                      <th className="w-4/8">Name</th>
+                      <th className="w-4/8">Coin</th>
                       <th className="w-1/8 text-right">Price</th>
                       <th className="w-1/8 text-right">24H Change</th>
                       {/* <th className="w-1/8 text-right">24h Volume</th> */}
@@ -744,8 +744,8 @@ const Home = () => {
                         {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
                       </td>
                       <td>
-                        <div className="sm:flex gap-2 justify-end">
-                          <div className="whitespace-nowrap">
+                        <div className="flex gap-2 justify-end items-center">
+                          <div >
                             {Number(bbbCap)?.toLocaleString()}
                           </div>
                           <div className="opacity-50"> (100%)</div>
@@ -819,7 +819,7 @@ const Home = () => {
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
                           <td>
-                            <div className="sm:flex gap-2 justify-end">
+                            <div className="flex gap-2 justify-end items-center">
                               <div className="whitespace-nowrap">
                                 {"$" +
                                   (

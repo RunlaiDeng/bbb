@@ -28,6 +28,16 @@ const getReferralInfo = async (account) => {
   return send("getRefferalInfo", [account]);
 };
 
+const getOrders = async (
+  sort = 1,
+  pageNumber = 1,
+  pageSize = 10,
+  type,
+  account
+) => {
+  return send("getOrders", [sort, pageNumber, pageSize, type, account]);
+};
+
 const send = async (method, params) => {
   let res;
   try {
@@ -62,4 +72,5 @@ module.exports = {
   sendMsg,
   getReferralInfo,
   getTokens,
+  getOrders,
 };
