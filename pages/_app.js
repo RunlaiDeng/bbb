@@ -77,11 +77,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>
-          BBBPump | The First Meme Fair Launch Platform on XDC
-          Network:swap,earn,meme culture,instantly tradable without having to
-          seed liquidity
-        </title>
+        <title>BBBPump | The First Meme Launch Platform on XDC Network</title>
       </Head>
       <NotificationProvider>
         <WagmiProvider config={config}>
