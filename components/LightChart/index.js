@@ -14,14 +14,11 @@ const CandleStickChart = (props) => {
     const priceChart = createChart(priceChartContainerRef.current, {
       width: priceChartContainerRef.current.clientWidth,
       height: 300,
-
-      handleScroll: {
-        mouseWheel: false, // 禁用鼠标滚轮
-        pressedMouseMove: false, // 禁用按住鼠标移动
-      },
     });
     priceChartRef.current = priceChart;
-
+    priceChart.priceScale("right").applyOptions({
+      mode: 1,
+    });
     const candleSeries = priceChart.addCandlestickSeries({
       priceFormat: {
         minMove: 0.000001,

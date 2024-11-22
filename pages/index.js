@@ -707,7 +707,7 @@ const Home = () => {
                     <tr
                       className={"cursor-pointer hover "}
                       onClick={() => {
-                        window.open(dexLink);
+                        router.push(dexLink);
                       }}
                     >
                       <td className="flex gap-2 items-center">
@@ -846,7 +846,7 @@ const Home = () => {
                     "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 "
                   }
                   onClick={() => {
-                    window.open(dexLink);
+                    router.push(dexLink);
                   }}
                 >
                   <figure className="overflow-hidden h-80 sm:h-72">

@@ -334,7 +334,7 @@ const Home = () => {
             Available {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
           </div>
           {!bbbIsEnough && (
-            <Link className="underline text-xs" href={dexLink} target="_blank">
+            <Link className="underline text-xs" href={dexLink}>
               BBB is not enough ?
             </Link>
           )}

@@ -549,7 +549,7 @@ const Megadrop = () => {
             Available {(bbbBalance?.toString() || 0) / 1e18} BBB
           </div>
           {!bbbIsEnough && (
-            <Link className="underline text-xs" href={dexLink} target="_blank">
+            <Link className="underline text-xs" href={dexLink}>
               BBB is not enough ?
             </Link>
           )}

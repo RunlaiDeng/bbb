@@ -221,11 +221,7 @@ const FarmCard = (props) => {
                 {burnTokenName}
               </div>
               {!burnTokenIsEnough && (
-                <Link
-                  className="underline text-xs"
-                  href={dexLink}
-                  target="_blank"
-                >
+                <Link className="underline text-xs" href={dexLink}>
                   {burnTokenName} is not enough ?
                 </Link>
               )}

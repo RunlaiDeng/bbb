@@ -144,6 +144,46 @@ async function getXDCPrice() {
     return { price: 0, priceChange24h: 0 };
   }
 }
+function modifyNumber(num) {
+  const dst = 10000;
+  if (num > dst) {
+    return Math.floor(num / dst) * dst;
+  }
+  return num;
+}
+
+async function getQuoteFromIcecreamswap(src, dst, amount) {
+  amount = modifyNumber(amount);
+
+  try {
+    const res = await fetch(
+      "https://aggregator.icecreamswap.com/50?src=" +
+        src +
+        "&dst=" +
+        dst +
+        "&amount=" +
+        amount
+    );
+    const json = await res.json();
+    return json;
+  } catch (e) {
+    return {};
+  }
+}
+
+async function getKline(pool) {
+  try {
+    const res = await fetch(
+      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
+        pool +
+        "/ohlcv/day?aggregate=1&limit=1000"
+    );
+    const json = await res.json();
+    return json?.data?.attributes?.ohlcv_list;
+  } catch (e) {
+    return [];
+  }
+}
 
 async function getBBBPrice() {
   try {
@@ -152,13 +192,15 @@ async function getBBBPrice() {
     );
     const json = await res.json();
     const item = json?.data?.attributes;
+
     return {
       price: item?.base_token_price_usd || 0,
       priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
       cap: item?.market_cap_usd || 0,
+      volumeH24: item?.volume_usd?.h24,
     };
   } catch (e) {
-    return { price: 0, priceChange24h: 0 };
+    return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   }
 }
 
@@ -183,5 +225,7 @@ module.exports = {
   aggregateTo5MinuteCandles,
   getERC20List,
   getBBBPrice,
-  getDateSpecifics
+  getDateSpecifics,
+  getKline,
+  getQuoteFromIcecreamswap,
 };
