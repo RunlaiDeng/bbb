@@ -33,7 +33,7 @@ const Orders = () => {
       orders?.pageNumber,
       orders?.size,
       data?.type,
-      address
+      addr
     );
     setData({ ...data, xdc });
     setOrders(ordersResult);
