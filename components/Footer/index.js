@@ -1,4 +1,4 @@
-import { linktree } from "@/config";
+import { linktree, socialMedia } from "@/config";
 import Link from "next/link";
 import Image from "next/image";
 const Footer = () => {
@@ -19,7 +19,7 @@ const Footer = () => {
             <div
               className="btn btn-xs"
               onClick={(e) => {
-                window.open("https://x.com/bbbpumpdotfun");
+                window.open(socialMedia.x);
               }}
             >
               <svg
@@ -34,8 +34,7 @@ const Footer = () => {
             <div
               className="btn btn-xs"
               onClick={(e) => {
-                e.stopPropagation();
-                window.open("https://t.me/bbbpump");
+                window.open(socialMedia.tg);
               }}
             >
               <svg
