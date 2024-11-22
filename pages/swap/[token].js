@@ -547,7 +547,7 @@ const Swap = () => {
                       {description}
                     </div>
 
-                    <div className="md:flex gap-2 ">
+                    <div className="xl:flex gap-2 ">
                       <div>
                         <span className="opacity-50">Price </span>
 

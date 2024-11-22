@@ -92,3 +92,12 @@ export const contracts = {
     },
   },
 };
+
+export const socialMedia = {
+  x: "https://t.me/bbbpump",
+  cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
+  coingecko:
+    "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
+  tg: "https://x.com/bbbpumpdotfun",
+  website: "https://bbbpump.fun",
+};
