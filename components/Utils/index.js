@@ -144,14 +144,6 @@ async function getXDCPrice() {
     return { price: 0, priceChange24h: 0 };
   }
 }
-function modifyNumber(num) {
-  const dst = 10000;
-  if (num > dst) {
-    Math.floor(num / dst) * dst;
-    return Math.floor(num / dst) * dst;
-  }
-  return num?.toString();
-}
 
 async function getQuoteFromIcecreamswap(src, dst, amount) {
   try {
@@ -181,6 +173,27 @@ async function getKline(pool) {
     return json?.data?.attributes?.ohlcv_list;
   } catch (e) {
     return [];
+  }
+}
+
+async function getPrice(pool) {
+  try {
+    const res = await fetch(
+      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
+        pool +
+        "?include=dex"
+    );
+    const json = await res.json();
+    const item = json?.data?.attributes;
+
+    return {
+      price: item?.base_token_price_usd || 0,
+      priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
+      cap: item?.market_cap_usd || 0,
+      volumeH24: item?.volume_usd?.h24,
+    };
+  } catch (e) {
+    return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   }
 }
 
@@ -227,4 +240,5 @@ module.exports = {
   getDateSpecifics,
   getKline,
   getQuoteFromIcecreamswap,
+  getPrice,
 };

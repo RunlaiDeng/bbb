@@ -745,9 +745,7 @@ const Home = () => {
                       </td>
                       <td>
                         <div className="flex gap-2 justify-end items-center">
-                          <div >
-                            {Number(bbbCap)?.toLocaleString()}
-                          </div>
+                          <div>${Number(bbbCap)?.toLocaleString()}</div>
                           <div className="opacity-50"> (100%)</div>
                         </div>
                       </td>
@@ -900,8 +898,10 @@ const Home = () => {
                     </div>
 
                     <div className="flex gap-1 items-center">
-                      <div className="opacity-50">Progress </div>
-                      <div className="">- (100.00%)</div>
+                      <div className="opacity-50">Cap </div>
+                      <div className="">
+                        ${Number(bbbCap)?.toLocaleString()} (100.00%)
+                      </div>
                     </div>
 
                     <progress
@@ -968,10 +968,11 @@ const Home = () => {
                         </div>
 
                         <div className="flex gap-1 items-center">
-                          <div className="opacity-50">Progress </div>
+                          <div className="opacity-50">Cap </div>
                           <div className="">
-                            {"$" + formatNumber((xdcPrice * cap) / 1e18)}(
-                            {percent?.toFixed(2)}%)
+                            {"$" +
+                              ((2 * xdcPrice * cap) / 1e18)?.toLocaleString()}
+                            ({percent?.toFixed(2)}%)
                           </div>
                         </div>
 
