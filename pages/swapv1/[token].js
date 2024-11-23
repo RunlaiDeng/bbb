@@ -6,78 +6,53 @@ import {
   useBalance,
   useChainId,
   useReadContracts,
-  useSendTransaction,
   useWatchAsset,
 } from "wagmi";
-import { contracts, bbbInfo, icecreamswap } from "@/config";
+import { contracts } from "@/config";
 import LightChart from "@/components/LightChart";
 import WriteButton from "@/components/WriteButton";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import rpc from "@/components/Rpc";
 import Link from "next/link";
-import { parseEther, formatEther, erc20Abi } from "viem";
+import { parseEther, formatEther } from "viem";
+import ImageUpload from "@/components/ImageUpload";
+import { buyXDCLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
 import { track } from "@vercel/analytics";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import SendButton from "@/components/SendButton";
 import {
-  getBBBPrice,
-  getKline,
-  getPool,
-  getQuoteFromPool,
-  getQuoteFrompoolAddress,
+  getDate,
+  deleteSame,
+  setFollowing,
+  getFollowing,
+  getBytesLength,
+  handleSrc,
+  customToFixed,
+  getXDCPrice,
+  aggregateTo5MinuteCandles,
 } from "@/components/Utils";
 
-const BBB = (props) => {
-  const [mount, setMount] = useState(false);
+const Swap = () => {
   const { openConnectModal } = useConnectModal();
   const { watchAsset } = useWatchAsset();
   const { success, info, failure } = useNotification();
   const router = useRouter();
-  const { token } = props;
+  const { token } = router.query;
 
-  const chainId = useChainId();
-  const bbb = contracts[chainId]?.bbb;
-  const [data, setData] = useState({
-    state: "buy",
-  });
+  const [mount, setMount] = useState(false);
+  const [xdcPrice, setXdcPrice] = useState(0);
 
   async function fetchData() {
-    setMount(false);
-    if (token) {
-      const pool = await getPool(token);
-      if (pool) {
-        const bbb = {
-          price: pool?.base_token_price_usd || 0,
-          priceChange24h: pool?.price_change_percentage?.h24 / 100 || 0,
-          cap: pool?.market_cap_usd || 0,
-          volumeH24: pool?.volume_usd?.h24,
-        };
-        console.log(pool?.address);
-        const kline = await getKline(pool?.address);
-
-        setData({ ...data, pool, bbb, kline: kline?.reverse() });
-      }
-    }
-
-    setMount(true);
+    setXdcPrice((await getXDCPrice()).price);
   }
-  useEffect(() => {
-    fetchData();
-  }, [token]);
-
-  const poolAddress = data?.pool?.address;
-
-  const bbbPrice = data?.bbb?.price;
-  const bbbCap = data?.bbb?.cap;
-  const bbbVolumeH24 = data?.bbb?.volumeH24;
 
   useEffect(() => {
     fetchData();
     setMount(true);
   }, []);
 
+  const chainId = useChainId();
   const { address, isConnected } = useAccount();
 
   const mbbb = contracts[chainId]?.mbbbv2;
@@ -102,53 +77,30 @@ const BBB = (props) => {
         ...tokenContract,
         functionName: "totalSupply",
       },
-      {
-        ...tokenContract,
-        functionName: "allowance",
-        args: [address, icecreamswap],
-      },
     ],
+    multicallAddress: mutilCall?.address,
   });
+
   const dropToken = reads0?.[0]?.result;
   const tokenBalance = reads0?.[1]?.result || 0n;
   const totalSupply = reads0?.[2]?.result || 0n;
-  const allowance = reads0?.[3]?.result;
   const xdcBalance = balance?.value || 0n;
-  let name;
-  let symbol;
-  let imageUrl;
-  let description;
-  let website;
-  let telegram;
-  let twitter;
-  let coingecko;
-  let cmc;
-  let index;
-  if (token == bbb.address) {
-    name = bbbInfo.name;
-    symbol = bbbInfo.symbol;
-    imageUrl = bbbInfo.imageUrl;
-    description = bbbInfo.description;
-    website = bbbInfo.website;
-    telegram = bbbInfo.tg;
-    twitter = bbbInfo.x;
-    cmc = bbbInfo.cmc;
-    index = symbol;
-  } else {
-    name = dropToken?.name;
-    symbol = dropToken?.symbol;
-    imageUrl = dropToken?.imageUrl;
-    description = dropToken?.description;
-    website = dropToken?.website;
-    telegram = dropToken?.telegram;
-    twitter = dropToken?.twitter;
-    index = dropToken?.index;
-  }
-  if (poolAddress) {
-    coingecko = "https://www.geckoterminal.com/xdc/pools/" + poolAddress;
-  }
+  const name = dropToken?.name;
+  const symbol = dropToken?.symbol;
+  const index = dropToken?.index?.toString();
+  const xdcAmount = dropToken?.xdcAmount;
+  const removed = dropToken?.removed;
+  const maxXdc = dropToken?.maxXdc;
+  const imageUrl = dropToken?.imageUrl;
+  const description = dropToken?.description;
+  const deployer = dropToken?.deployer;
+  const website = dropToken?.website;
+  const telegram = dropToken?.telegram;
+  const twitter = dropToken?.twitter;
 
-  console.log(allowance);
+  const [data, setData] = useState({
+    state: "buy",
+  });
 
   const [tokenInfo, setTokenInfo] = useState({});
   const [holders, setHolders] = useState([]);
@@ -165,14 +117,21 @@ const BBB = (props) => {
       const msgResult = await rpc.getMsg(chainId, index);
 
       if (Array.isArray(msgResult)) {
-        setMsg([...msgResult]);
+        setMsg(msgResult);
       }
     }
-    if (chainId && index) {
+    if (index) {
       // getHolders();
       getMsg(chainId?.toString(), index?.toString());
       setTokenInfo({
         ...tokenInfo,
+        name,
+        symbol,
+        imageUrl,
+        description,
+        website,
+        telegram,
+        twitter,
         sendMsgContent: "",
       });
     }
@@ -182,76 +141,110 @@ const BBB = (props) => {
 
   useEffect(() => {
     getData();
-  }, [chainId, index]);
+  }, [index, dropToken]);
 
+  const { data: reads1, refetch: refetch1 } = useReadContracts({
+    contracts: [
+      {
+        ...mbbb,
+        functionName: "price",
+        args: [index],
+      },
+      {
+        ...mbbb,
+        functionName: "getBuyAmount",
+        args: [index, data?.buyAmount?.toString()],
+      },
+      {
+        ...mbbb,
+        functionName: "getSellAmount",
+        args: [index, data?.sellAmount?.toString()],
+      },
+      {
+        ...mbbb,
+        functionName: "getKlineLength",
+        args: [index],
+      },
+      {
+        ...mbbb,
+        functionName: "getTradeVolume",
+        args: [index],
+      },
+    ],
+    multicallAddress: mutilCall?.address,
+  });
   const refetch = () => {
     refetch0();
+    refetch1();
   };
+
+  const price = reads1?.[0]?.result;
+  const buyTokenAmount = reads1?.[1]?.result;
+  const sellXDCAmount = reads1?.[2]?.result;
+  const klineLength = reads1?.[3]?.result;
+  const tradeVolume = reads1?.[4]?.result;
+
+  const tradeVolume24h = tradeVolume?.[1];
+
+  const searchKline = [];
+
+  for (let i = 0; i < klineLength; i++) {
+    searchKline.push({
+      ...mbbb,
+      functionName: "klineMap",
+      args: [index, i],
+    });
+  }
+
+  const { data: reads2, refetch: refetch2 } = useReadContracts({
+    contracts: searchKline,
+    multicallAddress: mutilCall?.address,
+  });
+  let klineMap = reads2?.map((item) => {
+    const kline = item?.result;
+    let high;
+    let low;
+    let color;
+    const time = Number(kline?.[0] || 0);
+    const open = xdcPrice * Number(formatEther(kline?.[1] || 0)) * 2;
+    const close = xdcPrice * Number(formatEther(kline?.[2] || 0)) * 2;
+    const value = xdcPrice * Number(formatEther(kline?.[3] || 0));
+
+    if (open > close) {
+      low = open;
+      high = close;
+      color = "red";
+    } else {
+      low = close;
+      high = open;
+    }
+    return {
+      time,
+      open,
+      close,
+      value,
+      high,
+      low,
+      color,
+    };
+  });
+
+  klineMap = aggregateTo5MinuteCandles(deleteSame(klineMap));
 
   const trade = {
-    trade: data?.kline?.map((item) => {
-      return {
-        time: item?.[0],
-        open: item?.[1],
-        high: item?.[2],
-        low: item?.[3],
-        close: item?.[4],
-      };
-    }),
+    trade: klineMap,
+    volume: klineMap,
   };
-
-  useEffect(() => {
-    async function fetchQuote() {
-      if (data?.buyAmount) {
-        const res = await getQuoteFromPool(
-          "0x0000000000000000000000000000000000000000",
-          token,
-          data?.buyAmount?.toString()
-        );
-
-        setData({ ...data, buy: res });
-      }
-    }
-
-    const handler = setTimeout(() => {
-      fetchQuote();
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [data?.buyAmount]);
-
-  useEffect(() => {
-    async function fetchQuote() {
-      if (data?.sellAmount) {
-        const res = await getQuoteFromPool(
-          token,
-          "0x0000000000000000000000000000000000000000",
-          data?.sellAmount?.toString()
-        );
-
-        setData({ ...data, sell: res });
-      }
-    }
-
-    const handler = setTimeout(() => {
-      fetchQuote();
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [data?.sellAmount]);
-  const sellTx = data?.sell?.tx || {};
-  const buyTx = data?.buy?.tx || {};
-  sellTx.value = BigInt(sellTx?.value || 0);
-  buyTx.value = BigInt(buyTx?.value || 0);
 
   const buy = {
     buttonName: "Place Trade",
-    disabled: !buyTx?.data,
-    data: buyTx,
+    disabled: removed || !data?.buyAmount,
+    data: {
+      ...mbbb,
+      functionName: "buy",
+      args: [index],
+      value: data?.buyAmount,
+    },
     before: () => {
       track("buy");
     },
@@ -262,8 +255,12 @@ const BBB = (props) => {
 
   const sell = {
     buttonName: "Place Trade",
-    disabled: !sellTx?.data,
-    data: sellTx,
+    disabled: removed || !data?.sellAmount,
+    data: {
+      ...mbbb,
+      functionName: "sell",
+      args: [index, data?.sellAmount],
+    },
     before: () => {
       track("sell");
     },
@@ -272,28 +269,37 @@ const BBB = (props) => {
     },
   };
 
-  const MAX_UINT256 = BigInt(
-    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-  );
-
-  const approve = {
-    buttonName: "Approve",
+  const update = {
+    buttonName: "Confirm",
     data: {
-      address: token,
-      abi: erc20Abi,
-      functionName: "approve",
-      args: [poolAddress, MAX_UINT256],
+      ...mbbb,
+      functionName: "updateToken",
+      args: [
+        index,
+        tokenInfo?.imageUrl,
+        tokenInfo?.description,
+        tokenInfo?.website,
+        tokenInfo?.telegram,
+        tokenInfo?.twitter,
+      ],
     },
     callback: () => {
       refetch();
+      document.getElementById("updateModal").close();
     },
   };
 
-  let showApprove = true;
-  if (allowance && allowance > (data?.sellAmount || 0)) {
-    showApprove = false;
-  }
+  const imageUpload = {
+    image: tokenInfo?.imageUrl,
+    callback: (file) => {
+      setTokenInfo({ ...tokenInfo, imageUrl: file });
+    },
+  };
 
+  const following = getFollowing();
+  const isFollowed = following?.[index];
+
+  const [followed, setFollowed] = useState(isFollowed);
   return (
     mount && (
       <>
@@ -307,25 +313,25 @@ const BBB = (props) => {
             [Go back]
           </div>
         </div>
-        {!trade && (
+        {!dropToken && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
           </div>
         )}
-        {!trade && (
+        {!dropToken && (
           <div className="text-center mt-10">Searching for {token}</div>
         )}
-        {trade && (
+        {dropToken && (
           <>
             {" "}
             <div className="card m-auto font-black grid text-xs" id="info">
               <div className="card-body p-2">
                 <div className="md:flex gap-4 items-center">
-                  <figure className="h-72 w-full md:h-48 md:w-48 overflow-hidden">
+                  <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
                     <Image
                       height={400}
                       width={400}
-                      src={imageUrl}
+                      src={handleSrc(imageUrl)}
                       alt={""}
                       className="object-cover w-full h-full"
                     />
@@ -333,49 +339,12 @@ const BBB = (props) => {
                   <div className="mt-4 sm:mt-0">
                     <div className="text-xl flex gap-2 items-center">
                       {name} (${symbol})
-                      {coingecko && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(coingecko);
-                          }}
-                        >
-                          <Image
-                            src="/coingecko.png"
-                            height={20}
-                            width={20}
-                            alt=""
-                          />
-                        </div>
-                      )}
-                      {cmc && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(cmc);
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            p-id="4445"
-                            width="20"
-                            height="20"
-                          >
-                            <path
-                              d="M877.2608 611.8912c-17.92 11.264-38.912 12.6976-54.8864 3.6864-20.3264-11.4688-31.488-38.2976-31.488-75.6736V428.1856c0-53.9136-21.2992-92.3136-56.9856-102.656-60.416-17.6128-105.8816 56.32-122.9824 84.0704L504.32 582.4512V371.2c-1.1776-48.5888-16.9472-77.6704-46.9504-86.4256-19.8144-5.7856-49.5104-3.4816-78.336 40.6528l-238.7968 383.488A421.3248 421.3248 0 0 1 91.6992 512c0-231.0144 185.088-418.9184 412.672-418.9184 227.4816 0 412.5696 187.904 412.5696 418.9184 0 0.4096 0.1024 0.768 0.1536 1.1264 0 0.4096-0.1024 0.768-0.0512 1.1264 2.1504 44.7488-12.3392 80.384-39.7824 97.6896z m131.3792-99.84v-2.3552C1007.36 228.352 781.6192 0 504.32 0 226.2528 0 0 229.6832 0 512s226.2528 512 504.32 512c127.5904 0 249.3952-48.4864 342.8864-136.5504a47.0016 47.0016 0 0 0 2.4576-65.7408 45.3632 45.3632 0 0 0-64.8192-2.5088 407.8592 407.8592 0 0 1-280.5248 111.7184c-121.856 0-231.424-53.9136-307.0464-139.4176L412.672 445.6448v159.4368c0 76.5952 29.696 101.376 54.5792 108.544 24.9344 7.2704 62.976 2.304 103.0144-62.6176l118.4256-192a348.16 348.16 0 0 1 10.496-16.1792v97.0752c0 71.5776 28.672 128.8192 78.6432 157.0304 45.056 25.4464 101.7344 23.1424 147.8656-5.9904 55.9616-35.328 86.0672-100.4544 82.944-178.944z"
-                              fill="#17181B"
-                              p-id="4446"
-                            ></path>
-                          </svg>
-                        </div>
-                      )}
                       {twitter && (
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(twitter);
+                            e.stopPropagation();
+                            window.open("https://x.com/" + twitter);
                           }}
                         >
                           <svg
@@ -392,7 +361,8 @@ const BBB = (props) => {
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(telegram);
+                            e.stopPropagation();
+                            window.open("https://t.me/" + telegram);
                           }}
                         >
                           <svg
@@ -412,7 +382,8 @@ const BBB = (props) => {
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(website);
+                            e.stopPropagation();
+                            window.open("https://" + website);
                           }}
                         >
                           <svg
@@ -426,16 +397,76 @@ const BBB = (props) => {
                           </svg>
                         </div>
                       )}
+                      {address == deployer && (
+                        <div
+                          className="btn btn-xs btn-success"
+                          onClick={() => {
+                            document.getElementById("updateModal").showModal();
+                          }}
+                        >
+                          update
+                        </div>
+                      )}
+                      {typeof window !== "undefined" && (
+                        <label className="swap btn btn-xs">
+                          {/* this hidden checkbox controls the state */}
+                          <input
+                            type="checkbox"
+                            checked={isFollowed}
+                            onChange={(e) => {
+                              setFollowing(index, e.target.checked);
+                              setFollowed(e.target.checked);
+                            }}
+                          />
+
+                          {/* sun icon */}
+                          <div className="swap-off swap-rotate">
+                            <svg
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              p-id="5573"
+                              width="20"
+                              height="20"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3-12.3 12.7-12.1 32.9 0.6 45.3l183.7 179.1-43.4 252.9c-1.2 6.9-0.1 14.1 3.2 20.3 8.2 15.6 27.6 21.7 43.2 13.4L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z"
+                                p-id="5574"
+                                fill="#0e932e"
+                              ></path>
+                            </svg>
+                          </div>
+                          {/* moon icon */}
+                          <div className="swap-on">
+                            <svg
+                              viewBox="0 0 1024 1024"
+                              version="1.1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              p-id="5267"
+                              width="20"
+                              height="20"
+                            >
+                              <path
+                                d="M785.352203 933.397493c-4.074805 0-8.151657-0.970094-11.833513-3.007497l-261.311471-142.488225L250.942821 930.388972c-8.343015 4.559852-18.527982 3.8814-26.28669-1.599428-7.760754-5.5279-11.640108-14.987343-10.088776-24.347524l47.578622-285.365306L72.563154 429.470355c-6.594185-6.547113-8.971325-16.295128-6.110161-25.122167 2.814092-8.850575 10.379395-15.397688 19.546172-16.949021l285.512662-47.577598 118.529557-236.989529c4.172019-8.391111 12.803607-13.701047 22.165836-13.701047 9.359158 0 17.992793 5.309936 22.163789 13.701047l118.529557 236.989529 285.511639 47.577598c9.217942 1.551332 16.73208 8.051373 19.593244 16.949021 2.813069 8.875135 0.48607 18.575054-6.109138 25.122167L762.264369 619.077737l47.577598 285.365306c1.50119 9.360182-2.37714 18.819624-10.087753 24.347524C795.487028 931.797042 790.394033 933.397493 785.352203 933.397493z"
+                                p-id="5268"
+                                fill="#0e932e"
+                              ></path>
+                            </svg>
+                          </div>
+                        </label>
+                      )}
                     </div>
 
                     <div className="flex gap-1 items-center">
                       <div className="opacity-50">Contract</div>
-                      {token?.substr(0, 6) + "..." + token?.substr(36)}{" "}
+                      {dropToken?.token?.substr(0, 6) +
+                        "..." +
+                        dropToken?.token?.substr(36)}{" "}
                       <div
                         className={"cursor-pointer tooltip"}
                         data-tip="Copy Address"
                         onClick={() => {
-                          copy(token);
+                          copy(dropToken?.token);
                           success("copy success!");
                         }}
                       >
@@ -484,10 +515,10 @@ const BBB = (props) => {
                             watchAsset({
                               type: "ERC20",
                               options: {
-                                address: token,
-                                symbol: symbol,
+                                address: dropToken.token,
+                                symbol: dropToken.symbol,
                                 decimals: 18,
-                                image: imageUrl,
+                                image: dropToken.imageUrl,
                               },
                             });
                           }
@@ -504,7 +535,9 @@ const BBB = (props) => {
                         className={"cursor-pointer tooltip"}
                         data-tip="View on XDCScan"
                         onClick={() => {
-                          window.open("https://xdcscan.com/token/" + token);
+                          window.open(
+                            "https://xdcscan.com/token/" + dropToken.token
+                          );
                         }}
                       >
                         <Image src="/xdc.png" width={20} height={20} alt="" />
@@ -518,7 +551,14 @@ const BBB = (props) => {
                       <div>
                         <span className="opacity-50">Price </span>
 
-                        <span>{"$" + Number(bbbPrice)?.toFixed(6)}</span>
+                        <span>
+                          {"$" +
+                            (
+                              xdcPrice *
+                              Number(formatEther(price || 0n)) *
+                              2
+                            )?.toFixed(6)}
+                        </span>
                       </div>
 
                       <div>
@@ -529,26 +569,42 @@ const BBB = (props) => {
                             formatEther(totalSupply || 0n)
                           )?.toLocaleString() +
                             " " +
-                            symbol}
+                            dropToken?.symbol}
                         </span>
                       </div>
 
                       <div>
                         <span className="opacity-50">Cap </span>
 
-                        <span>{"$" + Number(bbbCap)?.toLocaleString()}</span>
+                        <span>
+                          {"$" +
+                            (
+                              xdcPrice *
+                              Number(
+                                formatEther(totalSupply || 0n) *
+                                  formatEther(price || 0n) *
+                                  2
+                              )
+                            )?.toLocaleString()}
+                        </span>
                       </div>
                       <div>
                         <span className="opacity-50">24H Volume </span>
 
                         <span>
-                          {"$" + Number(bbbVolumeH24)?.toLocaleString()}
+                          {"$" +
+                            (
+                              xdcPrice *
+                              Number(formatEther(tradeVolume24h || 0n))
+                            )?.toLocaleString()}
                         </span>
                       </div>
                       <div>
                         <span className="opacity-50">Token Created </span>
 
-                        <span>09/06/24</span>
+                        <span>
+                          {getDate(dropToken?.createTime?.toString())}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -564,7 +620,7 @@ const BBB = (props) => {
                         <Image
                           height={400}
                           width={400}
-                          src={imageUrl}
+                          src={handleSrc(imageUrl)}
                           alt={""}
                           className="object-cover w-full h-full"
                         />
@@ -848,9 +904,7 @@ const BBB = (props) => {
                           <input
                             type="number"
                             className="grow"
-                            value={formatEther(
-                              BigInt(data?.buy?.toAmount || 0n)
-                            )}
+                            value={formatEther(buyTokenAmount || 0n)}
                             disabled
                           />
                           {symbol}
@@ -859,7 +913,7 @@ const BBB = (props) => {
                             <Image
                               height={400}
                               width={400}
-                              src={imageUrl}
+                              src={handleSrc(imageUrl)}
                               alt={""}
                               className="object-cover w-full h-full"
                             />
@@ -872,7 +926,7 @@ const BBB = (props) => {
                             : undefined}{" "}
                           {"XDC"}
                         </div>
-                        <SendButton className="btn btn-success" {...buy} />
+                        <WriteButton {...buy} className="btn btn-success" />
                       </>
                     )}
                     {data?.state == "sell" && (
@@ -913,7 +967,7 @@ const BBB = (props) => {
                             <Image
                               height={400}
                               width={400}
-                              src={imageUrl}
+                              src={handleSrc(imageUrl)}
                               alt={""}
                               className="object-cover w-full h-full"
                             />
@@ -985,9 +1039,7 @@ const BBB = (props) => {
                           <input
                             type="number"
                             className="grow"
-                            value={formatEther(
-                              BigInt(data?.sell?.toAmount || 0)
-                            )}
+                            value={formatEther(sellXDCAmount || 0n)}
                             disabled
                           />
                           XDC
@@ -1004,26 +1056,106 @@ const BBB = (props) => {
                         <div className="text-right text-xs">
                           Available :{" "}
                           {tokenBalance >= 0
-                            ? Number(
-                                formatEther(tokenBalance)
-                              )?.toLocaleString()
+                            ? Number(formatEther(tokenBalance))?.toFixed()
                             : undefined}{" "}
                           {symbol}
                         </div>
-                        {showApprove && (
-                          <WriteButton
-                            {...approve}
-                            className="btn btn-primary"
-                          />
-                        )}
-                        {!showApprove && (
-                          <SendButton {...sell} className="btn btn-error" />
-                        )}
+                        <WriteButton {...sell} className="btn btn-error" />
                       </>
                     )}
                   </div>
                 </div>
+                <div className="card bg-slate-100 mt-2">
+                  <div className="card-body  p-2">
+                    <div className="font-black mt-4 text-left">
+                      {removed && (
+                        <div className="grid grid-cols-2">
+                          <div className="text-red-700">Liquidity Moved</div>
 
+                          <Link
+                            className="btn btn-success"
+                            href={
+                              "https://icecreamswap.com/swap?chain=xdc&outputCurrency=" +
+                              token +
+                              "&inputCurrency=XDC"
+                            }
+                            target={"_blank"}
+                          >
+                            Go swap
+                          </Link>
+                        </div>
+                      )}
+                      {!removed && (
+                        <>
+                          <div>
+                            <span className="opacity-50">
+                              RLD Curve Progress:{" "}
+                            </span>
+
+                            <span className="">
+                              {"$" +
+                                (
+                                  xdcPrice *
+                                  Number(formatEther(xdcAmount || 0n))
+                                )?.toLocaleString()}
+                            </span>
+                            <span className="opacity-50">
+                              (
+                              {(
+                                (xdcAmount?.toString() * 100) /
+                                maxXdc?.toString()
+                              )?.toFixed(2)}
+                              %)
+                            </span>
+                          </div>
+                          <progress
+                            className="progress progress-success w-full"
+                            value={xdcAmount?.toString()}
+                            max={maxXdc?.toString()}
+                          ></progress>
+
+                          <div className="opacity-50 text-xs">
+                            When the market cap reaches{" "}
+                            <span className="text-green-500">
+                              {"$" +
+                                (
+                                  xdcPrice * formatEther(maxXdc || 0n)
+                                )?.toLocaleString()}
+                            </span>{" "}
+                            all the liquidity from the rld curve will be
+                            deposited into icecreaswap and burned. Progression
+                            increases as the price goes up. After removing
+                            liquidity, the Megadrop Staker is snapshot and
+                            receives <span className="text-green-500">2%</span>{" "}
+                            of the token supply.
+                          </div>
+                          <div className="opacity-50 text-xs mt-4">
+                            There are{" "}
+                            <span className="text-green-500">
+                              {(
+                                formatEther(
+                                  customToFixed(
+                                    Math.sqrt(maxXdc?.toString() * 2e25)
+                                  )
+                                ) - formatEther(totalSupply || 0n)
+                              )?.toLocaleString()}{" "}
+                              {symbol}
+                            </span>{" "}
+                            still available for sale in the rld curve and there
+                            are{" "}
+                            <span className="text-green-500">
+                              {Number(
+                                formatEther(xdcAmount || 0n)
+                              )?.toLocaleString()}{" "}
+                              XDC
+                            </span>{" "}
+                            in the rld curve.
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
                 <div className="card bg-slate-100 mt-2 break-all" id="holders">
                   <div className="card-body p-2">
                     <div className="font-black text-left ml-4 flex items-center gap-2">
@@ -1033,7 +1165,9 @@ const BBB = (props) => {
                         data-tip="View on XDCScan"
                         onClick={() => {
                           window.open(
-                            "https://xdcscan.com/token/" + token + "#balances"
+                            "https://xdcscan.com/token/" +
+                              dropToken.token +
+                              "#balances"
                           );
                         }}
                       >
@@ -1131,6 +1265,180 @@ const BBB = (props) => {
                 </a>
               </li>
             </ul>
+            <dialog id="updateModal" className="modal font-black">
+              <div className="modal-box">
+                <div className="grid grid-cols-3">
+                  <form method="dialog">
+                    <button className="btn">X</button>
+                  </form>
+                  <h3 className="font-bold text-lg text-center mt-2">
+                    Upadate token
+                  </h3>
+                </div>
+                <div className="text-center mt-5">
+                  <label className="form-control w-full">
+                    <div className="label">
+                      <span className="label-text">
+                        Image <span className="text-green-500">*</span>
+                      </span>
+                    </div>
+                    <ImageUpload {...imageUpload} />
+                  </label>
+                  <label className="form-control w-full">
+                    <div className="label">
+                      <span className="label-text">
+                        Name <span className="text-green-500">*</span>
+                      </span>
+                      <span className="text-right">
+                        {getBytesLength(tokenInfo?.name)}/20
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full "
+                      value={tokenInfo?.name}
+                      disabled
+                    />
+                  </label>
+                  <label className="form-control w-full">
+                    <div className="label">
+                      <span className="label-text">
+                        Symbol <span className="text-green-500">*</span>
+                      </span>
+                      <span className="text-right">
+                        {getBytesLength(tokenInfo?.symbol)}/10
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      className="input input-bordered w-full"
+                      value={tokenInfo?.symbol}
+                      disabled
+                    />
+                  </label>
+
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">
+                        Token Decription{" "}
+                        <span className="text-green-500">*</span>
+                      </span>
+                      <span className="text-right">
+                        {getBytesLength(tokenInfo?.description)}/256
+                      </span>
+                    </div>
+                    <textarea
+                      className="textarea textarea-bordered h-24"
+                      value={tokenInfo?.description}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        if (getBytesLength(newValue) <= 256) {
+                          setTokenInfo({ ...tokenInfo, description: newValue });
+                        }
+                      }}
+                    ></textarea>
+                  </label>
+
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">Website</span>
+                      <span className="text-right">
+                        {getBytesLength(data?.website)}/64
+                      </span>
+                    </div>
+                    <label className="input input-bordered flex items-center gap-2">
+                      https://
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Optional"
+                        value={data?.website}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (getBytesLength(newValue) <= 64) {
+                            setTokenInfo({ ...tokenInfo, website: newValue });
+                          }
+                        }}
+                      />
+                    </label>
+                  </label>
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">Telegram</span>
+                      <span className="text-right">
+                        {getBytesLength(data?.telegram)}/64
+                      </span>
+                    </div>
+
+                    <label className="input input-bordered flex items-center gap-2">
+                      https://t.me/
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Optional"
+                        value={data?.telegram}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (getBytesLength(newValue) <= 64) {
+                            setTokenInfo({ ...tokenInfo, telegram: newValue });
+                          }
+                        }}
+                      />
+                    </label>
+                  </label>
+                  <label className="form-control">
+                    <div className="label">
+                      <span className="label-text">twitter</span>
+                      <span className="text-right">
+                        {getBytesLength(data?.twitter)}/64
+                      </span>
+                    </div>
+
+                    <label className="input input-bordered flex items-center gap-2">
+                      https://x.com/
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="Optional"
+                        value={data?.twitter}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (getBytesLength(newValue) <= 64) {
+                            setTokenInfo({ ...tokenInfo, twitter: newValue });
+                          }
+                        }}
+                      />
+                    </label>
+                  </label>
+                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                    Cost
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder={(price || 0n) / BigInt(1e18)}
+                      disabled
+                    />
+                    <div className="font-black">XDC</div>
+                  </label>
+                </div>
+                <div className="mt-1 text-xs">
+                  Available {balance?.formatted} XDC
+                </div>
+                {
+                  <Link
+                    className="underline text-xs"
+                    href={buyXDCLink}
+                    target="_blank"
+                  >
+                    XDC is not enough ?
+                  </Link>
+                }
+                <WriteButton
+                  {...update}
+                  className="btn mt-5 w-full btn-success"
+                />
+              </div>
+            </dialog>
           </>
         )}
       </>
@@ -1138,4 +1446,4 @@ const BBB = (props) => {
   );
 };
 
-export default BBB;
+export default Swap;

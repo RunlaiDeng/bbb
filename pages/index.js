@@ -8,7 +8,7 @@ import {
   usePublicClient,
   useConfig,
 } from "wagmi";
-import { contracts, dexLink } from "@/config";
+import { bbbInfo, contracts, dexLink } from "@/config";
 import WriteButton from "@/components/WriteButton";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -864,30 +864,19 @@ const Home = () => {
                         className="hover:underline"
                         onClick={(e) => {
                           e.stopPropagation();
-                          router.push(
-                            "/dashboard/0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"
-                          );
+                          router.push("/dashboard/" + bbbInfo.deployer);
                         }}
                       >
-                        {"0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0"?.substr(
-                          36
-                        )}
+                        {bbbInfo.deployer?.substr(36)}
                       </span>
-                      <span>09/06/24</span>
+                      <span>{bbbInfo.createTime}</span>
                     </div>
                     <div className="overflow-auto w-full h-20">
-                      <span className="font-black">Beny Bad Boy ($BBB) </span>
-
-                      <span className="opacity-50">
-                        The Benybadboy (BBB) token is a community-driven
-                        memecoin project developed on the XDC blockchain.
-                        Launched initially for fun, BBB quickly gained traction,
-                        capturing attention in the cryptocurrency space due to
-                        its unique features and community-oriented development.
-                        The project offers multiple functionalities, including
-                        staking, yield farming, and burning mechanisms, allowing
-                        token holders to engage and earn rewards.
+                      <span className="font-black">
+                        {bbbInfo.name} (${bbbInfo.symbol}){" "}
                       </span>
+
+                      <span className="opacity-50">{bbbInfo.description}</span>
                     </div>
 
                     <div className="flex gap-1 items-center">

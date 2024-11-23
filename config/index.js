@@ -93,11 +93,20 @@ export const contracts = {
   },
 };
 
-export const socialMedia = {
+export const icecreamswap = "0x2a9a2D31819cD71B60F25729Bc60a2D7E7545233";
+
+export const bbbInfo = {
+  name: "Beny Bad Boy",
+  symbol: "BBB",
+  imageUrl: "/bbb.jpg",
+  description:
+    "The Benybadboy (BBB) token is a community-driven memecoin project developed on the XDC blockchain.",
   x: "https://t.me/bbbpump",
   cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
   coingecko:
     "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
   tg: "https://x.com/bbbpumpdotfun",
   website: "https://bbbpump.fun",
+  createTime: "09/06/24",
+  deployer: "0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0",
 };

@@ -9,7 +9,7 @@ import {
   useSendTransaction,
   useWatchAsset,
 } from "wagmi";
-import { contracts, socialMedia } from "@/config";
+import { contracts, bbbInfo } from "@/config";
 import LightChart from "@/components/LightChart";
 import WriteButton from "@/components/WriteButton";
 import ERC20ABI from "@/abi/ERC20ABI.json";
@@ -25,6 +25,7 @@ import {
   getBBBPrice,
   getKline,
   getQuoteFromIcecreamswap,
+  getQuoteFromPool,
 } from "@/components/Utils";
 
 const BBB = () => {
@@ -159,7 +160,7 @@ const BBB = () => {
   useEffect(() => {
     async function fetchQuote() {
       if (data?.buyAmount) {
-        const res = await getQuoteFromIcecreamswap(
+        const res = await getQuoteFromPool(
           "0x0000000000000000000000000000000000000000",
           token,
           data?.buyAmount?.toString()
@@ -292,7 +293,7 @@ const BBB = () => {
                       <div
                         className="btn btn-xs"
                         onClick={(e) => {
-                          window.open(socialMedia.coingecko);
+                          window.open(bbbInfo.coingecko);
                         }}
                       >
                         <Image
@@ -305,7 +306,7 @@ const BBB = () => {
                       <div
                         className="btn btn-xs"
                         onClick={(e) => {
-                          window.open(socialMedia.cmc);
+                          window.open(bbbInfo.cmc);
                         }}
                       >
                         <svg
@@ -326,7 +327,7 @@ const BBB = () => {
                       <div
                         className="btn btn-xs"
                         onClick={(e) => {
-                          window.open(socialMedia.x);
+                          window.open(bbbInfo.x);
                         }}
                       >
                         <svg
@@ -341,7 +342,7 @@ const BBB = () => {
                       <div
                         className="btn btn-xs"
                         onClick={(e) => {
-                          window.open(socialMedia.tg);
+                          window.open(bbbInfo.tg);
                         }}
                       >
                         <svg
@@ -359,7 +360,7 @@ const BBB = () => {
                       <div
                         className="btn btn-xs"
                         onClick={(e) => {
-                          window.open(socialMedia.website);
+                          window.open(bbbInfo.website);
                         }}
                       >
                         <svg

@@ -120,12 +120,25 @@ function sqrtPriceX96ToPrice(sqrtPriceX96) {
   return 1 / price;
 }
 
+async function getPool(token) {
+  try {
+    const json = await send(
+      "https://api.geckoterminal.com/api/v2/networks/xdc/tokens/" +
+        token +
+        "/pools?page=1"
+    );
+    const pool = json?.data?.[0]?.attributes;
+    return pool;
+  } catch (e) {
+    return {};
+  }
+}
+
 async function getERC20List(address) {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://api.xdcscan.io/addresses/" + address + "/tokens?type=ERC-20"
     );
-    const json = await res.json();
     return json;
   } catch (e) {
     return {};
@@ -134,10 +147,10 @@ async function getERC20List(address) {
 
 async function getXDCPrice() {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://b.bitrue.com/kline-api/ticker?symbol=xdcusdt"
     );
-    const json = await res.json();
+
     const item = json?.data?.ticker;
     return { price: item?.c || 0, priceChange24h: item?.r };
   } catch (e) {
@@ -145,9 +158,9 @@ async function getXDCPrice() {
   }
 }
 
-async function getQuoteFromIcecreamswap(src, dst, amount) {
+async function getQuoteFromPool(src, dst, amount) {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://aggregator.icecreamswap.com/50?src=" +
         src +
         "&dst=" +
@@ -155,7 +168,6 @@ async function getQuoteFromIcecreamswap(src, dst, amount) {
         "&amount=" +
         amount
     );
-    const json = await res.json();
     return json;
   } catch (e) {
     return {};
@@ -164,12 +176,12 @@ async function getQuoteFromIcecreamswap(src, dst, amount) {
 
 async function getKline(pool) {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
         pool +
         "/ohlcv/day?aggregate=1&limit=1000"
     );
-    const json = await res.json();
+
     return json?.data?.attributes?.ohlcv_list;
   } catch (e) {
     return [];
@@ -178,12 +190,12 @@ async function getKline(pool) {
 
 async function getPrice(pool) {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
         pool +
         "?include=dex"
     );
-    const json = await res.json();
+
     const item = json?.data?.attributes;
 
     return {
@@ -199,10 +211,10 @@ async function getPrice(pool) {
 
 async function getBBBPrice() {
   try {
-    const res = await fetch(
+    const json = await send(
       "https://api.geckoterminal.com/api/v2/networks/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e?include=dex"
     );
-    const json = await res.json();
+
     const item = json?.data?.attributes;
 
     return {
@@ -219,6 +231,18 @@ async function getBBBPrice() {
 function aggregateTo5MinuteCandles(rawData) {
   return rawData;
 }
+
+const send = async (url) => {
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (e) {
+    throw e;
+  }
+
+  const json = await res?.json();
+  return json;
+};
 
 module.exports = {
   getDate,
@@ -239,6 +263,7 @@ module.exports = {
   getBBBPrice,
   getDateSpecifics,
   getKline,
-  getQuoteFromIcecreamswap,
+  getQuoteFromPool,
   getPrice,
+  getPool
 };
