@@ -76,3 +76,7 @@
 .rainbow-text {
   animation: ranbow 5s linear infinite;
 }
+
+.rainbow-outline{
+  animation: ranbow-outline 5s linear infinite;
+}

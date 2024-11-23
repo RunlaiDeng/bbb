@@ -342,13 +342,13 @@ const Home = () => {
           />
         </div>
         {latestKing?.index > 0 && (
-          <div className="p-4 sm:w-96 m-auto">
+          <div className="p-4 sm:w-96 m-auto ">
             <div className="rainbow-text font-black w-max m-auto">
               👑 BBB KING 👑
             </div>
             <div
               className={
-                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24"
+                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2"
               }
               onClick={() => {
                 router.push("/swap/" + latestKing?.token);
