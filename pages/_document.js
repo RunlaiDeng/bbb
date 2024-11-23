@@ -4,10 +4,12 @@ export default function Document() {
   return (
     <Html lang="en" data-theme="light">
       <Head>
+        <link rel="canonical" href="https://bbbpump.fun/"></link>
         <meta
           name="description"
           content="BBBPump | The First Meme Fair Launch Platform on XDC Network:swap,earn,meme culture,instantly tradable without having to seed liquidity"
         />
+
         <meta
           name="keywords"
           content="bbbpump, BBB, crypto, meme token, benybadboy"
