@@ -526,7 +526,7 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4">
+            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap">
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
@@ -544,7 +544,7 @@ const Home = () => {
                     </span>{" "}
                     {latestTrade?.tradeType === "buy" && "bought"}
                     {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                    {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(6)}{" "}
+                    {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(2)}{" "}
                     XDC of{" "}
                     <div
                       className="hover:underline cursor-pointer"
