@@ -107,6 +107,7 @@ export const bbbInfo = {
     "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
   tg: "https://x.com/bbbpumpdotfun",
   website: "https://bbbpump.fun",
+  youtube: "https://www.youtube.com/@bbbpump",
   createTime: "09/06/24",
   deployer: "0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0",
 };
