@@ -386,8 +386,8 @@ const Home = () => {
                 <div className=" overflow-auto h-10 font-black mt-2">
                   {latestKing?.name} (symbol:{latestKing?.symbol})
                 </div>
-                <div className="mt-2">
-                  <span> Market Cap: </span>
+                <div className="flex gap-2 mt-2">
+                  <span className="opacity-50">Cap</span>
                   <span>
                     $
                     {(
@@ -395,6 +395,14 @@ const Home = () => {
                       1e18
                     )?.toLocaleString()}
                   </span>
+                  <div className="opacity-50">
+                    (
+                    {(
+                      (100 * latestKing?.xdcAmount?.toString()) /
+                      latestKing?.maxXdc?.toString()
+                    )?.toFixed(2)}
+                    %)
+                  </div>
                 </div>
               </div>
             </div>
