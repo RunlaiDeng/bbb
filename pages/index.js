@@ -374,7 +374,8 @@ const Home = () => {
 
                   <span
                     className="hover:underline"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       router.push("/dashboard/" + latestKing?.deployer);
                     }}
                   >
@@ -395,8 +396,6 @@ const Home = () => {
                     )?.toLocaleString()}
                   </span>
                 </div>
-
-              
               </div>
             </div>
           </div>
