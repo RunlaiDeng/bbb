@@ -758,7 +758,7 @@ const Home = () => {
                       <td>
                         <div className="flex gap-2 justify-end items-center">
                           <div>${Number(bbbCap)?.toLocaleString()}</div>
-                          <div className="opacity-50"> (100%)</div>
+                          <div className="opacity-50"> (100.00%)</div>
                         </div>
                       </td>
                     </tr>
