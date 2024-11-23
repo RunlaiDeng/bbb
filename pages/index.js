@@ -578,7 +578,7 @@ const Home = () => {
                       <span>{getDate(latestKing?.createTime?.toString())}</span>
                     </div>
                     <div className=" overflow-auto h-10 font-black mt-2">
-                      {latestKing?.name} (symbol:{latestKing?.symbol})
+                      {latestKing?.name} (${latestKing?.symbol})
                     </div>
                     <div className="flex gap-2 mt-2">
                       <span className="opacity-50">Cap</span>
