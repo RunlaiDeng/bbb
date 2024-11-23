@@ -391,7 +391,7 @@ const Home = () => {
                   <span>
                     $
                     {(
-                      (xdcPrice * latestKing?.xdcAmount?.toString()) /
+                      (2 * xdcPrice * latestKing?.xdcAmount?.toString()) /
                       1e18
                     )?.toLocaleString()}
                   </span>
