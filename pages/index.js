@@ -341,73 +341,6 @@ const Home = () => {
             alt=""
           />
         </div>
-        {latestKing?.index > 0 && (
-          <div className="p-4 sm:w-96 m-auto ">
-            <div className="rainbow-text font-black w-max m-auto">
-              👑 BBB KING 👑
-            </div>
-            <div
-              className={
-                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2"
-              }
-              onClick={() => {
-                router.push("/swap/" + latestKing?.token);
-              }}
-            >
-              <figure className="w-24 overflow-hidden">
-                <Image
-                  height={400}
-                  width={400}
-                  src={
-                    latestKing?.imageUrl
-                      ? latestKing?.imageUrl
-                      : "/didntupload.png"
-                  }
-                  alt={latestKing?.name}
-                  className="object-cover w-full h-full"
-                />
-              </figure>
-
-              <div className="card-body text-xs p-2 whitespace-nowrap">
-                <div className="flex gap-2">
-                  <div className="opacity-50">Created</div>
-
-                  <span
-                    className="hover:underline"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push("/dashboard/" + latestKing?.deployer);
-                    }}
-                  >
-                    {latestKing?.deployer?.substr(36)}
-                  </span>
-                  <span>{getDate(latestKing?.createTime?.toString())}</span>
-                </div>
-                <div className=" overflow-auto h-10 font-black mt-2">
-                  {latestKing?.name} (symbol:{latestKing?.symbol})
-                </div>
-                <div className="flex gap-2 mt-2">
-                  <span className="opacity-50">Cap</span>
-                  <span>
-                    $
-                    {(
-                      (2 * xdcPrice * latestKing?.xdcAmount?.toString()) /
-                      1e18
-                    )?.toLocaleString()}
-                  </span>
-                  <div className="opacity-50">
-                    (
-                    {(
-                      (100 * latestKing?.xdcAmount?.toString()) /
-                      latestKing?.maxXdc?.toString()
-                    )?.toFixed(2)}
-                    %)
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="card m-auto w-full">
           <div className="card-body p-2">
@@ -526,6 +459,7 @@ const Home = () => {
                 </ul>
               </div>
             </div>
+     
             <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap">
               {latestTrade?.index > 0 && (
                 <div
@@ -604,6 +538,70 @@ const Home = () => {
                 </div>
               )}
             </div>
+            {latestKing?.index > 0 && (
+              <div className="px-4 w-full m-auto ">
+                <div
+                  className={
+                    "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2"
+                  }
+                  onClick={() => {
+                    router.push("/swap/" + latestKing?.token);
+                  }}
+                >
+                  <figure className="w-24 overflow-hidden">
+                    <Image
+                      height={400}
+                      width={400}
+                      src={
+                        latestKing?.imageUrl
+                          ? latestKing?.imageUrl
+                          : "/didntupload.png"
+                      }
+                      alt={latestKing?.name}
+                      className="object-cover w-full h-full"
+                    />
+                  </figure>
+
+                  <div className="card-body text-xs p-2 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <div className="opacity-50">Created</div>
+
+                      <span
+                        className="hover:underline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push("/dashboard/" + latestKing?.deployer);
+                        }}
+                      >
+                        {latestKing?.deployer?.substr(36)}
+                      </span>
+                      <span>{getDate(latestKing?.createTime?.toString())}</span>
+                    </div>
+                    <div className=" overflow-auto h-10 font-black mt-2">
+                      {latestKing?.name} (symbol:{latestKing?.symbol})
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <span className="opacity-50">Cap</span>
+                      <span>
+                        $
+                        {(
+                          (2 * xdcPrice * latestKing?.xdcAmount?.toString()) /
+                          1e18
+                        )?.toLocaleString()}
+                      </span>
+                      <div className="opacity-50">
+                        (
+                        {(
+                          (100 * latestKing?.xdcAmount?.toString()) /
+                          latestKing?.maxXdc?.toString()
+                        )?.toFixed(2)}
+                        %)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {!dropTokens && (
               <div className="flex justify-center items-center mt-48">
                 <div className="loading loading-bars loading-lg text-success"></div>

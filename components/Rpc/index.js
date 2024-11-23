@@ -38,6 +38,10 @@ const getOrders = async (
   return send("getOrders", [sort, pageNumber, pageSize, type, account]);
 };
 
+const getStats = async () => {
+  return send("getStats", []);
+};
+
 const send = async (method, params) => {
   let res;
   try {
@@ -73,4 +77,5 @@ module.exports = {
   getReferralInfo,
   getTokens,
   getOrders,
+  getStats,
 };
