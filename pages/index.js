@@ -342,13 +342,13 @@ const Home = () => {
           />
         </div>
         {latestKing?.index > 0 && (
-          <div className="">
-            <div className="rainbow-text font-black w-max m-auto mb-2">
+          <div className=" mb-2">
+            <div className="rainbow-text font-black w-max m-auto">
               👑 BBB KING 👑
             </div>
             <div
               className={
-                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-72 h-24"
+                "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-96 h-24"
               }
               onClick={() => {
                 router.push("/swap/" + latestKing?.token);
@@ -368,9 +368,10 @@ const Home = () => {
                 />
               </figure>
 
-              <div className="card-body text-xs p-2">
+              <div className="card-body text-xs p-2 whitespace-nowrap">
                 <div className="flex gap-2">
-                  Created{" "}
+                  <div className="opacity-50">Created</div>
+
                   <span
                     className="hover:underline"
                     onClick={() => {
@@ -381,17 +382,21 @@ const Home = () => {
                   </span>
                   <span>{getDate(latestKing?.createTime?.toString())}</span>
                 </div>
-
-                <div>
+                <div className=" overflow-auto h-10 font-black mt-2">
+                  {latestKing?.name} (symbol:{latestKing?.symbol})
+                </div>
+                <div className="mt-2">
                   <span> Market Cap: </span>
                   <span>
-                    {formatNumber(latestKing?.xdcAmount?.toString() / 1e18)} XDC{" "}
+                    $
+                    {(
+                      (xdcPrice * latestKing?.xdcAmount?.toString()) /
+                      1e18
+                    )?.toLocaleString()}
                   </span>
                 </div>
 
-                <div className="break-all overflow-auto w-40 h-10 font-black">
-                  {latestKing?.name} (symbol:{latestKing?.symbol})
-                </div>
+              
               </div>
             </div>
           </div>
