@@ -1,23 +1,31 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
-import { getXDCPrice } from "@/components/Utils";
+import { getKline, getXDCPrice } from "@/components/Utils";
 const About = () => {
   const [data, setData] = useState({});
   async function fetchData(params) {
     const xdc = await getXDCPrice();
     const stats = await rpc.getStats();
-    setData({ ...data, xdc, stats });
+    const klines = await getKline("0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e");
+    let bbbVolume = 0;
+    console.log(klines);
+    for (const k of klines) {
+      bbbVolume += Number(k?.[5]);
+    }
+    setData({ ...data, xdc, stats, bbbVolume });
   }
   useEffect(() => {
     fetchData();
   }, []);
   const xdcPrice = data?.xdc?.price;
   const stats = data?.stats;
-
-  const fee = Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+  const fee =
+    Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice +
+    data?.bbbVolume * 0.01;
   const volume =
-    Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+    Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice +
+    data?.bbbVolume;
   return (
     <>
       <div className="card">
@@ -55,7 +63,7 @@ const About = () => {
                 </svg>
               </div>
               <div>
-                <div>{stats?.user}</div>
+                <div>{(stats?.user + 1039917)?.toLocaleString()}</div>
                 <div className="text-xs opacity-50">Total users</div>
               </div>
             </div>
