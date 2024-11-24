@@ -55,7 +55,8 @@ const BBB = (props) => {
           volumeH24: pool?.volume_usd?.h24,
         };
 
-        const kline = await getKline(pool?.address);
+        // const kline = await getKline(pool?.address);
+        const kline = [];
 
         setData({ ...data, pool, bbb, kline: kline?.reverse() });
       }
@@ -147,8 +148,6 @@ const BBB = (props) => {
   if (poolAddress) {
     coingecko = "https://www.geckoterminal.com/xdc/pools/" + poolAddress;
   }
-
-
 
   const [tokenInfo, setTokenInfo] = useState({});
   const [holders, setHolders] = useState([]);
@@ -571,8 +570,22 @@ const BBB = (props) => {
                       </div>
                       {symbol} / USD
                     </div>
-
-                    <LightChart {...trade} />
+                    <div className="h-[400px]">
+                      <iframe
+                        height="100%"
+                        width="100%"
+                        id="geckoterminal-embed"
+                        title="GeckoTerminal Embed"
+                        src={
+                          "https://www.geckoterminal.com/xdc/pools/" +
+                          poolAddress +
+                          "?embed=1&info=0&swaps=0"
+                        }
+                        frameborder="0"
+                        allow="clipboard-write"
+                        allowfullscreen
+                      ></iframe>
+                    </div>
                   </div>
                 </div>
 
