@@ -19,7 +19,7 @@ const About = () => {
     100 * Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const volume =
     100 * Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
-  const user = 132 * stats?.user;
+  const user = 133 * stats?.user;
   return (
     <>
       <div className="card">
