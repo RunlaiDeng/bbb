@@ -535,6 +535,7 @@ const Navbar = () => {
                             className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
                             onClick={() => {
                               disconnect();
+                              setData({ ...data, showUserItems: false });
                             }}
                           >
                             <svg
