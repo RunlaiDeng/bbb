@@ -188,7 +188,6 @@ const Orders = () => {
                     </thead>
                     <tbody>
                       {list?.map((item, index) => {
-                
                         const drop = drops?.[index];
                         const price = BigInt(
                           Math.floor(
@@ -205,7 +204,7 @@ const Orders = () => {
                           )
                         );
                         return (
-                          <tr key={item?.index} className="whitespace-nowrap">
+                          <tr key={item?.tid} className="whitespace-nowrap">
                             <td>{getDateSpecifics(item?.time)}</td>
                             <td className="flex gap-2 items-center">
                               <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
@@ -264,7 +263,9 @@ const Orders = () => {
                               )?.toFixed(2)}
                             </td>
                             <td>
-                              {Number(formatEther(item?.fee || 0))?.toFixed(2)}{" "}
+                              {Number(
+                                formatEther(BigInt(Number(item?.fee)) || 0)
+                              )?.toFixed(2)}{" "}
                               XDC
                             </td>
                             <td>
