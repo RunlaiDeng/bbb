@@ -464,7 +464,7 @@ const Home = () => {
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert shake border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
+                  className="alert  border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
                 >
                   <span className="flex gap-2 items-center">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -503,7 +503,7 @@ const Home = () => {
               {latestDrop?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert shake border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
+                  className="alert  border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
                 >
                   <span className="flex gap-2 items-center">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
