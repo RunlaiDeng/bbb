@@ -460,7 +460,7 @@ const Home = () => {
               </div>
             </div>
      
-            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap">
+            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 ">
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
@@ -609,7 +609,7 @@ const Home = () => {
             )}
             {dropTokens && (
               <div className="p-4 flex items-center gap-2">
-                <label className="w-96 flex items-center input input-bordered gap-2 input-sm">
+                <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -624,7 +624,7 @@ const Home = () => {
                   </svg>
                   <input
                     type="text"
-                    className="grow"
+                    className="w-full"
                     placeholder="0x or bbb"
                     onChange={(e) => {
                       setData({ ...data, search: e.target.value });
