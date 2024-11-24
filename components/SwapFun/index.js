@@ -327,11 +327,20 @@ const Swap = (props) => {
           </div>
           by
           <div
-            className="hover:underline cursor-pointer"
+            className="hover:underline cursor-pointer flex gap-1 items-center"
             onClick={(e) => {
               router.push("/dashboard/" + deployer);
             }}
           >
+            <div className="h-4 w-4 overflow-hidden">
+              <Image
+                height={400}
+                width={400}
+                src={"/bbb.jpg"}
+                alt={""}
+                className="object-cover w-full h-full"
+              />
+            </div>
             {deployer?.substr(36)}
           </div>
           at <div>{createTime}</div>
