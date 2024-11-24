@@ -342,15 +342,15 @@ const BBB = (props) => {
           <div>at {createTime}</div>
           <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
         </div>
-        {!trade && (
+        {!name && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
           </div>
         )}
-        {!trade && (
+        {!name && (
           <div className="text-center mt-10">Searching for {token}</div>
         )}
-        {trade && (
+        {name && (
           <>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
               <div className="md:col-span-3 font-black text-2xl text-center">
