@@ -7,13 +7,8 @@ const About = () => {
   async function fetchData(params) {
     const xdc = await getXDCPrice();
     const stats = await rpc.getStats();
-    const klines = await getKline("0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e");
-    let bbbVolume = 0;
-    console.log(klines);
-    for (const k of klines) {
-      bbbVolume += Number(k?.[5]);
-    }
-    setData({ ...data, xdc, stats, bbbVolume });
+
+    setData({ ...data, xdc, stats });
   }
   useEffect(() => {
     fetchData();
@@ -21,11 +16,9 @@ const About = () => {
   const xdcPrice = data?.xdc?.price;
   const stats = data?.stats;
   const fee =
-    Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice +
-    data?.bbbVolume * 0.01;
+    100 * Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const volume =
-    Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice +
-    data?.bbbVolume;
+    100 * Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   return (
     <>
       <div className="card">
