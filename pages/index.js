@@ -319,7 +319,7 @@ const Home = () => {
               </div>
 
               <div
-                className="btn btn-success text-white btn-lg mt-8 w-72 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
+                className="btn btn-success text-white btn-lg mt-8 mx-4 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
                 onClick={() => {
                   if (!isConnected) {
                     openConnectModal();
@@ -460,13 +460,13 @@ const Home = () => {
               </div>
             </div>
      
-            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 ">
+            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap ">
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
                   className="alert  border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
                 >
-                  <span className="flex gap-2 items-center">
+                  <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
                     <span
                       className="hover:underline cursor-pointer"
@@ -505,7 +505,7 @@ const Home = () => {
                   role="alert"
                   className="alert  border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
                 >
-                  <span className="flex gap-2 items-center">
+                  <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
                     <span
                       className="hover:underline cursor-pointer"
@@ -562,7 +562,7 @@ const Home = () => {
                     />
                   </figure>
 
-                  <div className="card-body text-xs p-2 whitespace-nowrap">
+                  <div className="card-body text-xs p-2 whitespace-nowrap   overflow-x-auto">
                     <div className="flex gap-2">
                       <div className="opacity-50">Created</div>
 
@@ -577,7 +577,7 @@ const Home = () => {
                       </span>
                       <span>{getDate(latestKing?.createTime?.toString())}</span>
                     </div>
-                    <div className=" overflow-auto h-10 font-black mt-2">
+                    <div className=" h-10 font-black mt-2">
                       {latestKing?.name} (${latestKing?.symbol})
                     </div>
                     <div className="flex gap-2 mt-2">
