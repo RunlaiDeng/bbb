@@ -23,10 +23,13 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import SendButton from "@/components/SendButton";
 import {
   getBBBPrice,
+  getDate,
+  getFollowing,
   getKline,
   getPool,
   getQuoteFromPool,
   getQuoteFrompoolAddress,
+  setFollowing,
 } from "@/components/Utils";
 
 const BBB = (props) => {
@@ -48,7 +51,7 @@ const BBB = (props) => {
     if (token) {
       const pool = await getPool(token);
       if (pool) {
-        const bbb = {
+        const poolInfo = {
           price: pool?.base_token_price_usd || 0,
           priceChange24h: pool?.price_change_percentage?.h24 / 100 || 0,
           cap: pool?.market_cap_usd || 0,
@@ -58,7 +61,7 @@ const BBB = (props) => {
         // const kline = await getKline(pool?.address);
         const kline = [];
 
-        setData({ ...data, pool, bbb, kline: kline?.reverse() });
+        setData({ ...data, pool, poolInfo, kline: kline?.reverse() });
       }
     }
 
@@ -70,9 +73,7 @@ const BBB = (props) => {
 
   const poolAddress = data?.pool?.address;
 
-  const bbbPrice = data?.bbb?.price;
-  const bbbCap = data?.bbb?.cap;
-  const bbbVolumeH24 = data?.bbb?.volumeH24;
+  const poolCap = data?.poolInfo?.cap;
 
   useEffect(() => {
     fetchData();
@@ -125,6 +126,8 @@ const BBB = (props) => {
   let coingecko;
   let cmc;
   let index;
+  let deployer;
+  let createTime;
   if (token == bbb.address) {
     name = bbbInfo.name;
     symbol = bbbInfo.symbol;
@@ -135,6 +138,8 @@ const BBB = (props) => {
     twitter = bbbInfo.x;
     cmc = bbbInfo.cmc;
     index = symbol;
+    deployer = bbbInfo.deployer;
+    createTime = bbbInfo.createTime;
   } else {
     name = dropToken?.name;
     symbol = dropToken?.symbol;
@@ -144,6 +149,8 @@ const BBB = (props) => {
     telegram = dropToken?.telegram;
     twitter = dropToken?.twitter;
     index = dropToken?.index;
+    deployer = dropToken?.deployer;
+    createTime = getDate(dropToken?.createTime);
   }
   if (poolAddress) {
     coingecko = "https://www.geckoterminal.com/xdc/pools/" + poolAddress;
@@ -293,6 +300,9 @@ const BBB = (props) => {
     showApprove = false;
   }
 
+  const following = getFollowing();
+  const isFollowed = following?.[index];
+  const [followed, setFollowed] = useState(isFollowed);
   return (
     mount && (
       <>
@@ -306,6 +316,22 @@ const BBB = (props) => {
             [Go back]
           </div>
         </div>
+        <div className="px-4 flex gap-1">
+          <div className="font-black">
+            {name} (${symbol})
+          </div>
+          by
+          <div
+            className="hover:underline cursor-pointer"
+            onClick={(e) => {
+              router.push("/dashboard/" + deployer);
+            }}
+          >
+            {deployer?.substr(36)}
+          </div>
+          at <div>{createTime}</div>
+          <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
+        </div>
         {!trade && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
@@ -316,260 +342,10 @@ const BBB = (props) => {
         )}
         {trade && (
           <>
-            {" "}
-            <div className="card m-auto font-black grid text-xs" id="info">
-              <div className="card-body p-2">
-                <div className="md:flex gap-4 items-center">
-                  <figure className="h-72 w-full md:h-48 md:w-48 overflow-hidden">
-                    <Image
-                      height={400}
-                      width={400}
-                      src={imageUrl}
-                      alt={""}
-                      className="object-cover w-full h-full"
-                    />
-                  </figure>
-                  <div className="mt-4 sm:mt-0">
-                    <div className="text-xl flex gap-2 items-center">
-                      {name} (${symbol})
-                      {coingecko && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(coingecko);
-                          }}
-                        >
-                          <Image
-                            src="/coingecko.png"
-                            height={20}
-                            width={20}
-                            alt=""
-                          />
-                        </div>
-                      )}
-                      {cmc && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(cmc);
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            p-id="4445"
-                            width="20"
-                            height="20"
-                          >
-                            <path
-                              d="M877.2608 611.8912c-17.92 11.264-38.912 12.6976-54.8864 3.6864-20.3264-11.4688-31.488-38.2976-31.488-75.6736V428.1856c0-53.9136-21.2992-92.3136-56.9856-102.656-60.416-17.6128-105.8816 56.32-122.9824 84.0704L504.32 582.4512V371.2c-1.1776-48.5888-16.9472-77.6704-46.9504-86.4256-19.8144-5.7856-49.5104-3.4816-78.336 40.6528l-238.7968 383.488A421.3248 421.3248 0 0 1 91.6992 512c0-231.0144 185.088-418.9184 412.672-418.9184 227.4816 0 412.5696 187.904 412.5696 418.9184 0 0.4096 0.1024 0.768 0.1536 1.1264 0 0.4096-0.1024 0.768-0.0512 1.1264 2.1504 44.7488-12.3392 80.384-39.7824 97.6896z m131.3792-99.84v-2.3552C1007.36 228.352 781.6192 0 504.32 0 226.2528 0 0 229.6832 0 512s226.2528 512 504.32 512c127.5904 0 249.3952-48.4864 342.8864-136.5504a47.0016 47.0016 0 0 0 2.4576-65.7408 45.3632 45.3632 0 0 0-64.8192-2.5088 407.8592 407.8592 0 0 1-280.5248 111.7184c-121.856 0-231.424-53.9136-307.0464-139.4176L412.672 445.6448v159.4368c0 76.5952 29.696 101.376 54.5792 108.544 24.9344 7.2704 62.976 2.304 103.0144-62.6176l118.4256-192a348.16 348.16 0 0 1 10.496-16.1792v97.0752c0 71.5776 28.672 128.8192 78.6432 157.0304 45.056 25.4464 101.7344 23.1424 147.8656-5.9904 55.9616-35.328 86.0672-100.4544 82.944-178.944z"
-                              fill="#17181B"
-                              p-id="4446"
-                            ></path>
-                          </svg>
-                        </div>
-                      )}
-                      {twitter && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(twitter);
-                          }}
-                        >
-                          <svg
-                            height="20"
-                            width="20"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                          >
-                            <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
-                          </svg>
-                        </div>
-                      )}
-                      {telegram && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(telegram);
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="20"
-                            width="20"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M21.961 4.33581C21.9448 4.26415 21.9094 4.19792 21.8583 4.14382C21.8072 4.08972 21.7423 4.04967 21.6702 4.02773C21.4074 3.97723 21.1355 3.99594 20.8827 4.08191C20.8827 4.08191 3.35851 10.1941 2.35768 10.8709C2.14268 11.0165 2.07018 11.1014 2.03434 11.2008C1.86101 11.686 2.40018 11.8946 2.40018 11.8946L6.91684 13.3226C6.99321 13.3359 7.07174 13.3315 7.14601 13.3097C8.17268 12.6798 17.4793 6.97509 18.0202 6.78345C18.1035 6.75919 18.1677 6.78345 18.151 6.84409C17.936 7.57588 9.89351 14.508 9.84934 14.5501C9.82783 14.5672 9.81107 14.5892 9.80059 14.6142C9.79011 14.6392 9.78624 14.6664 9.78934 14.6932L9.36768 18.9723C9.36768 18.9723 9.19101 20.3041 10.5635 18.9723C11.5368 18.0271 12.471 17.2443 12.9377 16.8635C14.491 17.9042 16.1618 19.0548 16.8827 19.6572C17.0039 19.7711 17.1476 19.8601 17.3051 19.9189C17.4626 19.9776 17.6307 20.005 17.7993 19.9993C18.007 19.9747 18.2021 19.8894 18.3585 19.7546C18.515 19.6198 18.6254 19.442 18.6752 19.2448C18.6752 19.2448 21.8668 6.77375 21.9735 5.10317C21.9843 4.94145 21.9985 4.83472 22.0002 4.72232C22.0054 4.59235 21.9922 4.46231 21.961 4.33581Z"
-                              fill="currenColor"
-                            ></path>
-                          </svg>
-                        </div>
-                      )}
-                      {website && (
-                        <div
-                          className="btn btn-xs"
-                          onClick={(e) => {
-                            window.open(website);
-                          }}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            height="20"
-                            width="20"
-                          >
-                            <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z"></path>
-                            <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z"></path>
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex gap-1 items-center">
-                      <div className="opacity-50">Contract</div>
-                      {token?.substr(0, 6) + "..." + token?.substr(36)}{" "}
-                      <div
-                        className={"cursor-pointer tooltip"}
-                        data-tip="Copy Address"
-                        onClick={() => {
-                          copy(token);
-                          success("copy success!");
-                        }}
-                      >
-                        <svg
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="1641"
-                          width="20"
-                          height="20"
-                        >
-                          <path
-                            d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                            fill="#5E6570"
-                            p-id="1642"
-                          ></path>
-                          <path
-                            d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                            fill="#5E6570"
-                            p-id="1643"
-                          ></path>
-                          <path
-                            d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
-                            fill="#5E6570"
-                            p-id="1644"
-                          ></path>
-                          <path
-                            d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
-                            fill="#5E6570"
-                            p-id="1645"
-                          ></path>
-                          <path
-                            d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
-                            fill="#5E6570"
-                            p-id="1646"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div
-                        className={"cursor-pointer tooltip"}
-                        data-tip="Add To MetaMask"
-                        onClick={() => {
-                          if (!isConnected) {
-                            openConnectModal();
-                          } else {
-                            watchAsset({
-                              type: "ERC20",
-                              options: {
-                                address: token,
-                                symbol: symbol,
-                                decimals: 18,
-                                image: imageUrl,
-                              },
-                            });
-                          }
-                        }}
-                      >
-                        <Image
-                          src="/metamask.jpg"
-                          width={20}
-                          height={20}
-                          alt=""
-                        />
-                      </div>
-                      <div
-                        className={"cursor-pointer tooltip"}
-                        data-tip="View on XDCScan"
-                        onClick={() => {
-                          window.open("https://xdcscan.com/token/" + token);
-                        }}
-                      >
-                        <Image src="/xdc.png" width={20} height={20} alt="" />
-                      </div>
-                    </div>
-                    <div className="opacity-50 mt-1 h-20 overflow-auto">
-                      {description}
-                    </div>
-
-                    <div className="xl:flex gap-2 ">
-                      <div>
-                        <span className="opacity-50">Price </span>
-
-                        <span>{"$" + Number(bbbPrice)?.toFixed(6)}</span>
-                      </div>
-
-                      <div>
-                        <span className="opacity-50">Total Supply </span>
-
-                        <span>
-                          {Number(
-                            formatEther(totalSupply || 0n)
-                          )?.toLocaleString() +
-                            " " +
-                            symbol}
-                        </span>
-                      </div>
-
-                      <div>
-                        <span className="opacity-50">Cap </span>
-
-                        <span>{"$" + Number(bbbCap)?.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="opacity-50">24H Volume </span>
-
-                        <span>
-                          {"$" + Number(bbbVolumeH24)?.toLocaleString()}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="opacity-50">Token Created </span>
-
-                        <span>09/06/24</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
               <div className="md:col-span-3 font-black text-2xl text-center">
-                <div className="card bg-slate-100" id="chart">
+                <div className="card bg-gray-100" id="chart">
                   <div className="card-body p-2">
-                    <div className="text-xs text-left flex items-center gap-2">
-                      <div className="h-6 w-6 overflow-hidden">
-                        <Image
-                          height={400}
-                          width={400}
-                          src={imageUrl}
-                          alt={""}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      {symbol} / USD
-                    </div>
                     <div className="h-[400px]">
                       <iframe
                         height="100%"
@@ -590,7 +366,7 @@ const BBB = (props) => {
                 </div>
 
                 <div
-                  className="card bg-slate-100 text-xs mt-2 font-normal"
+                  className="card bg-gray-100 text-xs mt-2 font-normal"
                   id="chat"
                 >
                   <div className="card-body p-2">
@@ -723,7 +499,7 @@ const BBB = (props) => {
                 </div>
               </div>
               <div className="md:col-span-2 text-center">
-                <div className="card bg-slate-100" id="swap">
+                <div className="card bg-gray-100" id="swap">
                   <div className="card-body font-black  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
@@ -1036,10 +812,255 @@ const BBB = (props) => {
                     )}
                   </div>
                 </div>
-
-                <div className="card bg-slate-100 mt-2 break-all" id="holders">
+                <div className="card bg-gray-100 mt-2">
                   <div className="card-body p-2">
-                    <div className="font-black text-left ml-4 flex items-center gap-2">
+                    <div className="text-xl flex gap-2 items-center">
+                      {coingecko && (
+                        <div
+                          className="btn btn-xs"
+                          onClick={(e) => {
+                            window.open(coingecko);
+                          }}
+                        >
+                          <Image
+                            src="/coingecko.png"
+                            height={20}
+                            width={20}
+                            alt=""
+                          />
+                        </div>
+                      )}
+                      {cmc && (
+                        <div
+                          className="btn btn-xs"
+                          onClick={(e) => {
+                            window.open(cmc);
+                          }}
+                        >
+                          <svg
+                            viewBox="0 0 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            p-id="4445"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              d="M877.2608 611.8912c-17.92 11.264-38.912 12.6976-54.8864 3.6864-20.3264-11.4688-31.488-38.2976-31.488-75.6736V428.1856c0-53.9136-21.2992-92.3136-56.9856-102.656-60.416-17.6128-105.8816 56.32-122.9824 84.0704L504.32 582.4512V371.2c-1.1776-48.5888-16.9472-77.6704-46.9504-86.4256-19.8144-5.7856-49.5104-3.4816-78.336 40.6528l-238.7968 383.488A421.3248 421.3248 0 0 1 91.6992 512c0-231.0144 185.088-418.9184 412.672-418.9184 227.4816 0 412.5696 187.904 412.5696 418.9184 0 0.4096 0.1024 0.768 0.1536 1.1264 0 0.4096-0.1024 0.768-0.0512 1.1264 2.1504 44.7488-12.3392 80.384-39.7824 97.6896z m131.3792-99.84v-2.3552C1007.36 228.352 781.6192 0 504.32 0 226.2528 0 0 229.6832 0 512s226.2528 512 504.32 512c127.5904 0 249.3952-48.4864 342.8864-136.5504a47.0016 47.0016 0 0 0 2.4576-65.7408 45.3632 45.3632 0 0 0-64.8192-2.5088 407.8592 407.8592 0 0 1-280.5248 111.7184c-121.856 0-231.424-53.9136-307.0464-139.4176L412.672 445.6448v159.4368c0 76.5952 29.696 101.376 54.5792 108.544 24.9344 7.2704 62.976 2.304 103.0144-62.6176l118.4256-192a348.16 348.16 0 0 1 10.496-16.1792v97.0752c0 71.5776 28.672 128.8192 78.6432 157.0304 45.056 25.4464 101.7344 23.1424 147.8656-5.9904 55.9616-35.328 86.0672-100.4544 82.944-178.944z"
+                              fill="#17181B"
+                              p-id="4446"
+                            ></path>
+                          </svg>
+                        </div>
+                      )}
+                      {twitter && (
+                        <div
+                          className="btn btn-xs"
+                          onClick={(e) => {
+                            window.open(twitter);
+                          }}
+                        >
+                          <svg
+                            height="20"
+                            width="20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                          >
+                            <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
+                          </svg>
+                        </div>
+                      )}
+                      {telegram && (
+                        <div
+                          className="btn btn-xs"
+                          onClick={(e) => {
+                            window.open(telegram);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="20"
+                            width="20"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M21.961 4.33581C21.9448 4.26415 21.9094 4.19792 21.8583 4.14382C21.8072 4.08972 21.7423 4.04967 21.6702 4.02773C21.4074 3.97723 21.1355 3.99594 20.8827 4.08191C20.8827 4.08191 3.35851 10.1941 2.35768 10.8709C2.14268 11.0165 2.07018 11.1014 2.03434 11.2008C1.86101 11.686 2.40018 11.8946 2.40018 11.8946L6.91684 13.3226C6.99321 13.3359 7.07174 13.3315 7.14601 13.3097C8.17268 12.6798 17.4793 6.97509 18.0202 6.78345C18.1035 6.75919 18.1677 6.78345 18.151 6.84409C17.936 7.57588 9.89351 14.508 9.84934 14.5501C9.82783 14.5672 9.81107 14.5892 9.80059 14.6142C9.79011 14.6392 9.78624 14.6664 9.78934 14.6932L9.36768 18.9723C9.36768 18.9723 9.19101 20.3041 10.5635 18.9723C11.5368 18.0271 12.471 17.2443 12.9377 16.8635C14.491 17.9042 16.1618 19.0548 16.8827 19.6572C17.0039 19.7711 17.1476 19.8601 17.3051 19.9189C17.4626 19.9776 17.6307 20.005 17.7993 19.9993C18.007 19.9747 18.2021 19.8894 18.3585 19.7546C18.515 19.6198 18.6254 19.442 18.6752 19.2448C18.6752 19.2448 21.8668 6.77375 21.9735 5.10317C21.9843 4.94145 21.9985 4.83472 22.0002 4.72232C22.0054 4.59235 21.9922 4.46231 21.961 4.33581Z"
+                              fill="currenColor"
+                            ></path>
+                          </svg>
+                        </div>
+                      )}
+                      {website && (
+                        <div
+                          className="btn btn-xs"
+                          onClick={(e) => {
+                            window.open(website);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            height="20"
+                            width="20"
+                          >
+                            <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z"></path>
+                            <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z"></path>
+                          </svg>
+                        </div>
+                      )}
+                      {typeof window !== "undefined" &&
+                        token != bbbInfo.address && (
+                          <label className="swap btn btn-xs">
+                            {/* this hidden checkbox controls the state */}
+                            <input
+                              type="checkbox"
+                              checked={isFollowed}
+                              onChange={(e) => {
+                                setFollowing(index, e.target.checked);
+                                setFollowed(e.target.checked);
+                              }}
+                            />
+
+                            {/* sun icon */}
+                            <div className="swap-off swap-rotate">
+                              <svg
+                                viewBox="0 0 1024 1024"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                p-id="5573"
+                                width="20"
+                                height="20"
+                              >
+                                <path
+                                  d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3-12.3 12.7-12.1 32.9 0.6 45.3l183.7 179.1-43.4 252.9c-1.2 6.9-0.1 14.1 3.2 20.3 8.2 15.6 27.6 21.7 43.2 13.4L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3zM664.8 561.6l36.1 210.3L512 672.7 323.1 772l36.1-210.3-152.8-149L417.6 382 512 190.7 606.4 382l211.2 30.7-152.8 148.9z"
+                                  p-id="5574"
+                                  fill="#0e932e"
+                                ></path>
+                              </svg>
+                            </div>
+                            {/* moon icon */}
+                            <div className="swap-on">
+                              <svg
+                                viewBox="0 0 1024 1024"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                p-id="5267"
+                                width="20"
+                                height="20"
+                              >
+                                <path
+                                  d="M785.352203 933.397493c-4.074805 0-8.151657-0.970094-11.833513-3.007497l-261.311471-142.488225L250.942821 930.388972c-8.343015 4.559852-18.527982 3.8814-26.28669-1.599428-7.760754-5.5279-11.640108-14.987343-10.088776-24.347524l47.578622-285.365306L72.563154 429.470355c-6.594185-6.547113-8.971325-16.295128-6.110161-25.122167 2.814092-8.850575 10.379395-15.397688 19.546172-16.949021l285.512662-47.577598 118.529557-236.989529c4.172019-8.391111 12.803607-13.701047 22.165836-13.701047 9.359158 0 17.992793 5.309936 22.163789 13.701047l118.529557 236.989529 285.511639 47.577598c9.217942 1.551332 16.73208 8.051373 19.593244 16.949021 2.813069 8.875135 0.48607 18.575054-6.109138 25.122167L762.264369 619.077737l47.577598 285.365306c1.50119 9.360182-2.37714 18.819624-10.087753 24.347524C795.487028 931.797042 790.394033 933.397493 785.352203 933.397493z"
+                                  p-id="5268"
+                                  fill="#0e932e"
+                                ></path>
+                              </svg>
+                            </div>
+                          </label>
+                        )}
+                    </div>
+                    <div className="flex gap-1 items-center">
+                      <div className="opacity-50">Contract</div>
+                      {token?.substr(0, 6) + "..." + token?.substr(36)}{" "}
+                      <div
+                        className={"cursor-pointer tooltip"}
+                        data-tip="Copy Address"
+                        onClick={() => {
+                          copy(token);
+                          success("copy success!");
+                        }}
+                      >
+                        <svg
+                          viewBox="0 0 1024 1024"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          p-id="1641"
+                          width="20"
+                          height="20"
+                        >
+                          <path
+                            d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
+                            fill="#5E6570"
+                            p-id="1642"
+                          ></path>
+                          <path
+                            d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
+                            fill="#5E6570"
+                            p-id="1643"
+                          ></path>
+                          <path
+                            d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
+                            fill="#5E6570"
+                            p-id="1644"
+                          ></path>
+                          <path
+                            d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
+                            fill="#5E6570"
+                            p-id="1645"
+                          ></path>
+                          <path
+                            d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
+                            fill="#5E6570"
+                            p-id="1646"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div
+                        className={"cursor-pointer tooltip"}
+                        data-tip="Add To MetaMask"
+                        onClick={() => {
+                          if (!isConnected) {
+                            openConnectModal();
+                          } else {
+                            watchAsset({
+                              type: "ERC20",
+                              options: {
+                                address: token,
+                                symbol: symbol,
+                                decimals: 18,
+                                image: imageUrl,
+                              },
+                            });
+                          }
+                        }}
+                      >
+                        <Image
+                          src="/metamask.jpg"
+                          width={20}
+                          height={20}
+                          alt=""
+                        />
+                      </div>
+                      <div
+                        className={"cursor-pointer tooltip"}
+                        data-tip="View on XDCScan"
+                        onClick={() => {
+                          window.open("https://xdcscan.com/token/" + token);
+                        }}
+                      >
+                        <Image src="/xdc.png" width={20} height={20} alt="" />
+                      </div>
+                    </div>
+
+                    <div className="h-48 w-48 overflow-hidden">
+                      <Image
+                        height={400}
+                        width={400}
+                        src={imageUrl}
+                        alt={""}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <div className="mt-1 overflow-auto text-left">
+                      <div className="font-black">
+                        {name} (${symbol})
+                      </div>
+                      <div className="opacity-50 text-xs"> {description}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="card bg-gray-100 mt-2 break-all" id="holders">
+                  <div className="card-body p-2">
+                    <div className="font-black text-left flex items-center gap-2">
                       Holder distribution{" "}
                       <div
                         className={"cursor-pointer tooltip"}
