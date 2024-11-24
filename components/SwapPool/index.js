@@ -316,17 +316,18 @@ const BBB = (props) => {
             [Go back]
           </div>
         </div>
-        <div className="px-4 flex gap-1">
+        <div className="px-4 sm:flex gap-1">
           <div className="font-black">
             {name} (${symbol})
           </div>
-          by
+
           <div
             className="hover:underline cursor-pointer flex gap-1 items-center"
             onClick={(e) => {
               router.push("/dashboard/" + deployer);
             }}
           >
+            by
             <div className="h-4 w-4 overflow-hidden">
               <Image
                 height={400}
@@ -338,7 +339,7 @@ const BBB = (props) => {
             </div>
             {deployer?.substr(36)}
           </div>
-          at <div>{createTime}</div>
+          <div>at {createTime}</div>
           <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
         </div>
         {!trade && (
