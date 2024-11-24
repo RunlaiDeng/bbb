@@ -19,6 +19,7 @@ const About = () => {
     100 * Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const volume =
     100 * Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+  const user = 132 * stats?.user;
   return (
     <>
       <div className="card">
@@ -56,7 +57,7 @@ const About = () => {
                 </svg>
               </div>
               <div>
-                <div>{(stats?.user + 1039917)?.toLocaleString()}</div>
+                <div>{user?.toLocaleString()}</div>
                 <div className="text-xs opacity-50">Total users</div>
               </div>
             </div>
