@@ -232,10 +232,17 @@ function aggregateTo5MinuteCandles(rawData) {
   return rawData;
 }
 
-const send = async (url) => {
+const send = async (
+  url,
+  params = {
+    headers: {
+      Accept: "application/json;version=20230302",
+    },
+  }
+) => {
   let res;
   try {
-    res = await fetch(url);
+    res = await fetch(url, params);
   } catch (e) {
     throw e;
   }
@@ -265,5 +272,5 @@ module.exports = {
   getKline,
   getQuoteFromPool,
   getPrice,
-  getPool
+  getPool,
 };

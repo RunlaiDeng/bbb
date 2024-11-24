@@ -54,7 +54,7 @@ const BBB = (props) => {
           cap: pool?.market_cap_usd || 0,
           volumeH24: pool?.volume_usd?.h24,
         };
-        console.log(pool?.address);
+
         const kline = await getKline(pool?.address);
 
         setData({ ...data, pool, bbb, kline: kline?.reverse() });
@@ -148,7 +148,7 @@ const BBB = (props) => {
     coingecko = "https://www.geckoterminal.com/xdc/pools/" + poolAddress;
   }
 
-  console.log(allowance);
+
 
   const [tokenInfo, setTokenInfo] = useState({});
   const [holders, setHolders] = useState([]);

@@ -14,7 +14,7 @@ const About = () => {
   }, []);
   const xdcPrice = data?.xdc?.price;
   const stats = data?.stats;
-  console.log(xdcPrice, stats);
+
   const fee = Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const volume =
     Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;

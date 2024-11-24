@@ -188,7 +188,7 @@ const Orders = () => {
                     </thead>
                     <tbody>
                       {list?.map((item, index) => {
-                        console.log(item);
+                
                         const drop = drops?.[index];
                         const price = BigInt(
                           Math.floor(
