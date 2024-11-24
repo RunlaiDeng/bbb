@@ -61,7 +61,7 @@ const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
   appName: "BBBPump",
-  projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
+  projectId: "217f6d1a5ddc675f99fd1a69622d8cd7",
   chains: [xdc],
   ssr: true, // If your dApp uses server side rendering (SSR)
   wallets: [
