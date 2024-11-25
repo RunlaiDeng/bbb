@@ -264,7 +264,7 @@ const Orders = () => {
                             </td>
                             <td>
                               {Number(
-                                formatEther(BigInt(Number(item?.fee)) || 0)
+                                formatEther(BigInt(Number(item?.fee)||0))
                               )?.toFixed(2)}{" "}
                               XDC
                             </td>
