@@ -1075,11 +1075,10 @@ const BBB = (props) => {
                       </div>
                       <div className="opacity-50 text-xs"> {description}</div>
                     </div>
-                  </div>
-                </div>
-                <div className="card bg-gray-100 mt-2 break-all" id="holders">
-                  <div className="card-body p-2">
-                    <div className="font-black text-left flex items-center gap-2">
+                    <div
+                      className="font-black text-left mt-2 flex items-center gap-2"
+                      id="holders"
+                    >
                       Holder distribution{" "}
                       <div
                         className={"cursor-pointer tooltip"}
@@ -1093,31 +1092,6 @@ const BBB = (props) => {
                         <Image src="/xdc.png" width={20} height={20} alt="" />
                       </div>
                     </div>
-                    {/* <div className="overflow-auto h-96 w-full">
-                  <table className="table table-xs">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Account</th>
-                        <th>Percent</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {holders?.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td className="hover:underline cursor-pointer font-black">
-                              {item?.address?.substr(36)}
-                            </td>
-
-                            <td>{item?.percent?.toFixed(2)}%</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div> */}
                   </div>
                 </div>
               </div>

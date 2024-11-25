@@ -1132,52 +1132,26 @@ const Swap = (props) => {
                           </div>
                         </>
                       )}
-                    </div>
-                  </div>
-                </div>
-                <div className="card bg-gray-100 mt-2 break-all" id="holders">
-                  <div className="card-body p-2">
-                    <div className="font-black text-left ml-4 flex items-center gap-2">
-                      Holder distribution{" "}
                       <div
-                        className={"cursor-pointer tooltip"}
-                        data-tip="View on XDCScan"
-                        onClick={() => {
-                          window.open(
-                            "https://xdcscan.com/token/" +
-                              dropToken.token +
-                              "#balances"
-                          );
-                        }}
+                        className="font-black text-left mt-2 flex items-center gap-2"
+                        id="holders"
                       >
-                        <Image src="/xdc.png" width={20} height={20} alt="" />
+                        Holder distribution{" "}
+                        <div
+                          className={"cursor-pointer tooltip"}
+                          data-tip="View on XDCScan"
+                          onClick={() => {
+                            window.open(
+                              "https://xdcscan.com/token/" +
+                                dropToken.token +
+                                "#balances"
+                            );
+                          }}
+                        >
+                          <Image src="/xdc.png" width={20} height={20} alt="" />
+                        </div>
                       </div>
                     </div>
-                    {/* <div className="overflow-auto h-96 w-full">
-                  <table className="table table-xs">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Account</th>
-                        <th>Percent</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {holders?.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td className="hover:underline cursor-pointer font-black">
-                              {item?.address?.substr(36)}
-                            </td>
-
-                            <td>{item?.percent?.toFixed(2)}%</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div> */}
                   </div>
                 </div>
               </div>
