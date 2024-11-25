@@ -8,7 +8,7 @@ import {
   getERC20List,
   getXDCPrice,
 } from "@/components/Utils";
-import { erc20Abi, getAddress } from "viem";
+import { erc20Abi, formatEther, getAddress } from "viem";
 import { contracts, dashboardConfig } from "@/config";
 import { useNotification } from "@/components/Context/notice";
 import rpc from "@/components/Rpc";
@@ -121,7 +121,7 @@ const Address = () => {
   const { data: reads2 } = useReadContracts({ contracts: searchDropTokens });
 
   const xdcPrice = data?.xdc?.price;
-  const xdcPriceChange24h = data?.xdc?.priceChange24h;
+  const xdcPriceChange24h = Number(data?.xdc?.priceChange24h);
 
   const bbbPrice = data?.bbb?.price;
   const bbbPriceChange24h = data?.bbb?.priceChange24h;
@@ -138,8 +138,7 @@ const Address = () => {
   let total24hChange = 0;
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
   totalBalance += xdcUsdBalance;
-  total24hChange +=
-    xdcUsdBalance - xdcUsdBalance / (1 + Number(xdcPriceChange24h));
+  total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
 
   let tokens = reads0?.map((item, index) => {
     const coin = data?.coins?.[index];
@@ -157,18 +156,26 @@ const Address = () => {
       tradeLink = "/swap/" + dropToken?.token;
       price = xdcPrice * calculatePrice(Number(dropToken?.xdcAmount));
       usdBalance = (price * Number(item?.result)) / 1e18 || 0;
-
       totalBalance += usdBalance;
       total24hChange += usdBalance - usdBalance / (1 + coin.priceChange24h);
       show = true;
     }
 
-    if (coinConfig?.price == "bbb") {
-      usdBalance = (bbbPrice * Number(item?.result)) / 1e18;
-      totalBalance += usdBalance;
+    if (coinConfig?.price == "bbb" || coinConfig?.price == "mbbb") {
       price = bbbPrice;
+      usdBalance = (price * Number(item?.result)) / 1e18;
+      totalBalance += usdBalance;
       coin.priceChange24h = bbbPriceChange24h;
       total24hChange += usdBalance - usdBalance / (1 + bbbPriceChange24h);
+      show = true;
+    }
+
+    if (coinConfig?.price == "wxdc") {
+      price = xdcPrice;
+      usdBalance = (price * Number(item?.result)) / 1e18;
+      totalBalance += usdBalance;
+      coin.priceChange24h = xdcPriceChange24h;
+      total24hChange += usdBalance - usdBalance / (1 + xdcPriceChange24h);
       show = true;
     }
 
@@ -466,9 +473,11 @@ const Address = () => {
                         </td>
                         <td className="text-right">
                           <div>
-                            {Number(
-                              item?.balance / BigInt(10 ** item?.decimals)
-                            )?.toLocaleString() || 0}
+                            {formatEther(item?.balance) >= 1000
+                              ? Number(
+                                  formatEther(item?.balance)
+                                )?.toLocaleString() || 0
+                              : formatEther(item?.balance)}
                           </div>
                           <div className="text-xs opacity-50">
                             ${item?.usdBalance?.toLocaleString() || 0}

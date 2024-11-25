@@ -30,7 +30,11 @@ export const dashboardConfig = {
   },
   "0x37c00AE5C4b49Ab0F5fD2FFB1033588e9bC33B08": {
     imageUrl: "/bbb.jpg",
-    price: "bbb",
+    price: "mbbb",
+  },
+  "0x951857744785E80e2De051c32EE7b25f9c458C42": {
+    imageUrl: "/xdc.png",
+    price: "wxdc",
   },
 };
 
