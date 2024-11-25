@@ -360,7 +360,7 @@ const BBB = (props) => {
             </div>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
               <div className="md:col-span-3 font-black text-2xl text-center">
-                <div className="card bg-gray-100" id="chart">
+                <div className="card " id="chart">
                   <div className="card-body p-2">
                     <div className="h-[400px]">
                       <iframe
@@ -382,7 +382,7 @@ const BBB = (props) => {
                 </div>
 
                 <div
-                  className="card bg-gray-100 text-xs mt-2 font-normal"
+                  className="card  text-xs mt-2 font-normal"
                   id="chat"
                 >
                   <div className="card-body p-2">
@@ -831,7 +831,7 @@ const BBB = (props) => {
                     )}
                   </div>
                 </div>
-                <div className="card bg-gray-100 mt-2" id="info">
+                <div className="card  mt-2" id="info">
                   <div className="card-body p-2">
                     <div className="text-xl flex gap-2 items-center">
                       {coingecko && (
