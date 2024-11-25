@@ -851,7 +851,7 @@ const Home = () => {
               <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 overflow-auto p-4">
                 <div
                   className={
-                    "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 "
+                    "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 rounded-none"
                   }
                   onClick={() => {
                     router.push(dexLink);
@@ -918,7 +918,7 @@ const Home = () => {
                   return (
                     <div
                       className={
-                        "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 "
+                        "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 rounded-none"
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
