@@ -362,9 +362,9 @@ const Swap = (props) => {
               <div>at {createTime}</div>
               <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
             </div>
-            <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
+            <div className="m-auto grid md:grid-cols-5 gap-[1px] sm:mx-2">
               <div className="md:col-span-3 font-black text-2xl text-center">
-                <div className="card " id="chart">
+                <div className="card outline rounded-none outline-gray-200" id="chart">
                   <div className="card-body p-2">
                     <div className="text-xs text-left flex items-center gap-2">
                       <div className="h-6 w-6 overflow-hidden">
@@ -384,7 +384,7 @@ const Swap = (props) => {
                 </div>
 
                 <div
-                  className="card  text-xs mt-2 font-normal"
+                  className="card outline rounded-none outline-gray-200 text-xs font-normal"
                   id="chat"
                 >
                   <div className="card-body p-2">
@@ -520,7 +520,7 @@ const Swap = (props) => {
                 </div>
               </div>
               <div className="md:col-span-2 text-center">
-                <div className="card bg-gray-100" id="swap">
+                <div className="card outline rounded-none outline-gray-200" id="swap">
                   <div className="card-body font-black  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
@@ -819,7 +819,7 @@ const Swap = (props) => {
                     )}
                   </div>
                 </div>
-                <div className="card  mt-2" id="info">
+                <div className="card outline rounded-none outline-gray-200" id="info">
                   <div className="card-body  p-2">
                     <div className="font-black mt-4 text-left">
                       <div className="text-xl flex gap-2 items-center">
@@ -1133,7 +1133,7 @@ const Swap = (props) => {
                         </>
                       )}
                       <div
-                        className="font-black text-left mt-2 flex items-center gap-2"
+                        className="font-black text-left flex items-center gap-2"
                         id="holders"
                       >
                         Holder distribution{" "}
