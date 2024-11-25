@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   useAccount,
   useBalance,
@@ -160,6 +160,8 @@ const BBB = (props) => {
   const [holders, setHolders] = useState([]);
   const [msg, setMsg] = useState([]);
 
+  const scrollRef = useRef(null);
+
   async function getData() {
     async function getHolders() {
       const holdersResult = await rpc.getHolders(token);
@@ -171,7 +173,10 @@ const BBB = (props) => {
       const msgResult = await rpc.getMsg(chainId, index);
 
       if (Array.isArray(msgResult)) {
-        setMsg([...msgResult]);
+        setMsg(msgResult.reverse());
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = 0;
+        }
       }
     }
     if (chainId && index) {
@@ -381,11 +386,14 @@ const BBB = (props) => {
                   id="chat"
                 >
                   <div className="card-body p-2">
-                    <div className="overflow-auto h-96">
+                    <div className="overflow-auto h-96" ref={scrollRef}>
                       {msg?.map((item, index) => {
                         return (
-                          <div className="card my-2" key={index}>
-                            <div className="card-body p-0">
+                          <div
+                            className="card bg-gray-200 rounded-none my-1"
+                            key={index}
+                          >
+                            <div className="card-body p-1">
                               <div className="flex gap-2 ">
                                 <div className="h-4 w-4 overflow-hidden">
                                   <Image
@@ -823,7 +831,7 @@ const BBB = (props) => {
                     )}
                   </div>
                 </div>
-                <div className="card bg-gray-100 mt-2">
+                <div className="card bg-gray-100 mt-2" id="info">
                   <div className="card-body p-2">
                     <div className="text-xl flex gap-2 items-center">
                       {coingecko && (
