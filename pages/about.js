@@ -141,7 +141,7 @@ const About = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="w-8 h-8"
+                      class="w-8 h-8"
                     >
                       <path
                         d="M21.5 8.5a6 6 0 11-12 0 6 6 0 0112 0z"
@@ -170,8 +170,8 @@ const About = () => {
                           y2="9.5"
                           gradientUnits="userSpaceOnUse"
                         >
-                          <stop stop-color="#F0B90B"></stop>
-                          <stop offset="1" stop-color="#F8D33A"></stop>
+                          <stop stop-color="#e86f2b"></stop>
+                          <stop offset="1" stop-color="#e86f2b"></stop>
                         </linearGradient>
                         <linearGradient
                           id="spot-g_svg__paint1_linear"
@@ -181,8 +181,8 @@ const About = () => {
                           y2="3"
                           gradientUnits="userSpaceOnUse"
                         >
-                          <stop stop-color="#F0B90B"></stop>
-                          <stop offset="1" stop-color="#F8D33A"></stop>
+                          <stop stop-color="#e86f2b"></stop>
+                          <stop offset="1" stop-color="#e86f2b"></stop>
                         </linearGradient>
                         <linearGradient
                           id="spot-g_svg__paint2_linear"
@@ -192,8 +192,8 @@ const About = () => {
                           y2="15"
                           gradientUnits="userSpaceOnUse"
                         >
-                          <stop stop-color="#F0B90B"></stop>
-                          <stop offset="1" stop-color="#F8D33A"></stop>
+                          <stop stop-color="#e86f2b"></stop>
+                          <stop offset="1" stop-color="#e86f2b"></stop>
                         </linearGradient>
                       </defs>
                     </svg>

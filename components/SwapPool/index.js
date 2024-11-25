@@ -847,6 +847,16 @@ const BBB = (props) => {
                 >
                   <div className="card-body p-2">
                     <div className="text-xl flex gap-2 items-center">
+                      {address == deployer && token != bbbInfo.address && (
+                        <div
+                          className="btn btn-xs btn-success"
+                          onClick={() => {
+                            document.getElementById("updateModal").showModal();
+                          }}
+                        >
+                          update
+                        </div>
+                      )}
                       {coingecko && (
                         <div
                           className="btn btn-xs"
