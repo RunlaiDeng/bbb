@@ -285,7 +285,7 @@ const Address = () => {
                 <div
                   className="btn btn-sm"
                   onClick={() => {
-                    info("coming soon");
+                    router.push("/deposit");
                   }}
                 >
                   Deposit

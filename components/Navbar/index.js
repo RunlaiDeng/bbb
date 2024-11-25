@@ -109,7 +109,7 @@ const Navbar = () => {
                 <div
                   className="btn btn-sm text-white flex items-center"
                   onClick={() => {
-                    info("coming soon");
+                    router.push("/deposit")
                   }}
                 >
                   <svg
