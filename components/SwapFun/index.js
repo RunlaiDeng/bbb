@@ -321,32 +321,7 @@ const Swap = (props) => {
             [Go back]
           </div>
         </div>
-        <div className="px-4 sm:flex gap-1">
-          <div className="font-black">
-            {name} (${symbol})
-          </div>
 
-          <div
-            className="hover:underline cursor-pointer flex gap-1 items-center"
-            onClick={(e) => {
-              router.push("/dashboard/" + deployer);
-            }}
-          >
-            by
-            <div className="h-4 w-4 overflow-hidden">
-              <Image
-                height={400}
-                width={400}
-                src={"/bbb.jpg"}
-                alt={""}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            {deployer?.substr(36)}
-          </div>
-          <div>at {createTime}</div>
-          <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
-        </div>
         {!dropToken && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
@@ -357,6 +332,32 @@ const Swap = (props) => {
         )}
         {dropToken && (
           <>
+            <div className="px-4 sm:flex gap-1">
+              <div className="font-black">
+                {name} (${symbol})
+              </div>
+
+              <div
+                className="hover:underline cursor-pointer flex gap-1 items-center"
+                onClick={(e) => {
+                  router.push("/dashboard/" + deployer);
+                }}
+              >
+                by
+                <div className="h-4 w-4 overflow-hidden">
+                  <Image
+                    height={400}
+                    width={400}
+                    src={"/bbb.jpg"}
+                    alt={""}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                {deployer?.substr(36)}
+              </div>
+              <div>at {createTime}</div>
+              <div>cap: ${Number(poolCap)?.toLocaleString()}</div>
+            </div>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
               <div className="md:col-span-3 font-black text-2xl text-center">
                 <div className="card bg-gray-100" id="chart">
