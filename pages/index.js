@@ -464,7 +464,7 @@ const Home = () => {
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert  border-green-500  bg-transparent border-2 w-full p-2 flex items-center"
+                  className="alert  border-green-500  bg-transparent border-2 w-full p-2 flex items-center rounded-none"
                 >
                   <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -503,7 +503,7 @@ const Home = () => {
               {latestDrop?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert  border-green-500 bg-transparent border-2 w-full p-2 flex items-center"
+                  className="alert  border-green-500 bg-transparent border-2 w-full p-2 flex items-center rounded-none"
                 >
                   <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -542,7 +542,7 @@ const Home = () => {
               <div className="px-4 w-full m-auto ">
                 <div
                   className={
-                    "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2"
+                    "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2 rounded-none"
                   }
                   onClick={() => {
                     router.push("/swap/" + latestKing?.token);
