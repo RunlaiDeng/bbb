@@ -322,15 +322,15 @@ const BBB = (props) => {
           </div>
         </div>
 
-        {!name && (
+        {!poolAddress && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
           </div>
         )}
-        {!name && (
+        {!poolAddress && (
           <div className="text-center mt-10">Searching for {token}</div>
         )}
-        {name && (
+        {poolAddress && (
           <>
             <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
               <div className="card-body p-0">
