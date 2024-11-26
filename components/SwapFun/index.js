@@ -105,51 +105,6 @@ const Swap = (props) => {
     state: "buy",
   });
 
-  const [tokenInfo, setTokenInfo] = useState({});
-  const [holders, setHolders] = useState([]);
-  const [msg, setMsg] = useState([]);
-
-  const scrollRef = useRef(null);
-  async function getData() {
-    async function getHolders() {
-      const holdersResult = await rpc.getHolders(token);
-      if (Array.isArray(holdersResult)) {
-        setHolders(holdersResult);
-      }
-    }
-    async function getMsg(chainId, index) {
-      const msgResult = await rpc.getMsg(chainId, index);
-
-      if (Array.isArray(msgResult)) {
-        setMsg(msgResult.reverse());
-        if (scrollRef.current) {
-          scrollRef.current.scrollTop = 0;
-        }
-      }
-    }
-    if (index) {
-      // getHolders();
-      getMsg(chainId?.toString(), index?.toString());
-      setTokenInfo({
-        ...tokenInfo,
-        name,
-        symbol,
-        imageUrl,
-        description,
-        website,
-        telegram,
-        twitter,
-        sendMsgContent: "",
-      });
-    }
-  }
-
-  const { info: notice } = useNotification();
-
-  useEffect(() => {
-    getData();
-  }, [index, dropToken]);
-
   const { data: reads1, refetch: refetch1 } = useReadContracts({
     contracts: [
       {
@@ -273,13 +228,6 @@ const Swap = (props) => {
     },
     callback: () => {
       refetch();
-    },
-  };
-
-  const imageUpload = {
-    image: tokenInfo?.imageUrl,
-    callback: (file) => {
-      setTokenInfo({ ...tokenInfo, imageUrl: file });
     },
   };
 
