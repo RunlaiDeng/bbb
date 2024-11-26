@@ -34,6 +34,7 @@ import {
 import Live from "../Live";
 import TokenInfo from "../TokenInfo";
 import TokenChat from "../TokenChat";
+import TokenTrade from "../TokenTrade";
 
 const BBB = (props) => {
   const [mount, setMount] = useState(false);
@@ -335,6 +336,9 @@ const BBB = (props) => {
     chainId,
     index,
     address,
+  };
+  const tTrade = {
+    poolAddress,
   };
   return (
     mount && (
@@ -739,32 +743,7 @@ const BBB = (props) => {
                 </div>
               </div>
               <div className="md:col-span-1 text-center  hidden md:block">
-                <div
-                  className="card outline rounded-none outline-gray-200"
-                  id="chart"
-                >
-                  <div className="card-body p-2">
-                    <div className="text-left font-bold text-sm">
-                      Market Trades
-                    </div>
-                    <div className="h-screen">
-                      <iframe
-                        height="100%"
-                        width="100%"
-                        id="geckoterminal-embed"
-                        title="GeckoTerminal Embed"
-                        src={
-                          "https://www.geckoterminal.com/xdc/pools/" +
-                          poolAddress +
-                          "?embed=1&info=0&swaps=1&chart=0"
-                        }
-                        frameBorder="0"
-                        allow="clipboard-write"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </div>
-                </div>
+                <TokenTrade {...tTrade} />
               </div>
             </div>
             <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">

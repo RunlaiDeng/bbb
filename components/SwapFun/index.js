@@ -34,6 +34,7 @@ import {
 } from "@/components/Utils";
 import TokenInfo from "../TokenInfo";
 import TokenChat from "../TokenChat";
+import TokenTrade from "../TokenTrade";
 
 const Swap = (props) => {
   const { openConnectModal } = useConnectModal();
@@ -267,6 +268,9 @@ const Swap = (props) => {
     chainId,
     index,
     address,
+  };
+  const tTrade = {
+    poolAddress:undefined,
   };
 
   return (
@@ -643,14 +647,7 @@ const Swap = (props) => {
                 </div>
               </div>
               <div className="md:col-span-1 text-center hidden md:block">
-                <div className="card">
-                  <div className="card-body p-2">
-                    <div className="text-left font-bold text-sm">
-                      Market Trades
-                    </div>
-                    <div className="mt-10">Coming soon</div>
-                  </div>
-                </div>
+                <TokenTrade {...tTrade} />
               </div>
             </div>
             <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
