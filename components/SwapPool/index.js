@@ -31,6 +31,7 @@ import {
   getQuoteFrompoolAddress,
   setFollowing,
 } from "@/components/Utils";
+import Live from "../Live";
 
 const BBB = (props) => {
   const [mount, setMount] = useState(false);
@@ -308,6 +309,8 @@ const BBB = (props) => {
   const following = getFollowing();
   const isFollowed = following?.[index];
   const [followed, setFollowed] = useState(isFollowed);
+
+  const live = { name, symbol, token, index, isDeployer: deployer == address };
   return (
     mount && (
       <>
@@ -321,7 +324,7 @@ const BBB = (props) => {
             [Go back]
           </div>
         </div>
-
+        {/* <Live {...live} /> */}
         {!poolAddress && (
           <div className="flex justify-center items-center mt-48">
             <div className="loading loading-bars loading-lg text-success"></div>
@@ -380,9 +383,9 @@ const BBB = (props) => {
                           poolAddress +
                           "?embed=1&info=0&swaps=0"
                         }
-                        frameborder="0"
+                        frameBorder="0"
                         allow="clipboard-write"
-                        allowfullscreen
+                        allowFullScreen
                       ></iframe>
                     </div>
                   </div>

@@ -146,16 +146,7 @@ async function getERC20List(address) {
 }
 
 async function getXDCPrice() {
-  try {
-    const json = await send(
-      "https://b.bitrue.com/kline-api/ticker?symbol=xdcusdt"
-    );
-
-    const item = json?.data?.ticker;
-    return { price: item?.c || 0, priceChange24h: item?.r };
-  } catch (e) {
-    return { price: 0, priceChange24h: 0 };
-  }
+  return getPrice("0xfcabba53dac7b6b19714c7d741a46f6dad260107");
 }
 
 async function getQuoteFromPool(src, dst, amount) {
@@ -210,22 +201,7 @@ async function getPrice(pool) {
 }
 
 async function getBBBPrice() {
-  try {
-    const json = await send(
-      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e?include=dex"
-    );
-
-    const item = json?.data?.attributes;
-
-    return {
-      price: item?.base_token_price_usd || 0,
-      priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
-      cap: item?.market_cap_usd || 0,
-      volumeH24: item?.volume_usd?.h24,
-    };
-  } catch (e) {
-    return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
-  }
+  return getPrice("0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e");
 }
 
 function aggregateTo5MinuteCandles(rawData) {

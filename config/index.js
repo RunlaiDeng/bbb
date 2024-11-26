@@ -20,7 +20,7 @@ export const buyXDCLink = "https://docs.bbbpump.fun/how-to-play/how-to-buy-xdc";
 
 export const rpcUrl = "https://api.bbbpump.fun";
 
-// export const rpcUrl = "http://127.0.0.1:10033";
+// export const rpcUrl = "http://192.168.0.145:10033";
 
 export const dashboardConfig = {
   "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {
@@ -115,4 +115,8 @@ export const bbbInfo = {
   createTime: "09/06/24",
   deployer: "0x2475Dcd4Fe333bE814Ef7C8f8CE8A1E9B5FcDEA0",
   address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+};
+
+export const mux = {
+  ws: "ws://127.0.0.1:4000/",
 };

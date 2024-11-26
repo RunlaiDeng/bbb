@@ -42,6 +42,18 @@ const getStats = async () => {
   return send("getStats", []);
 };
 
+const startLive = async (index) => {
+  return send("startLive", [index]);
+};
+
+const stopLive = async (index) => {
+  return send("stopLive", [index]);
+};
+
+const getLive = async (index) => {
+  return send("getLive", [index]);
+};
+
 const send = async (method, params) => {
   let res;
   try {
@@ -78,4 +90,7 @@ module.exports = {
   getTokens,
   getOrders,
   getStats,
+  startLive,
+  stopLive,
+  getLive,
 };
