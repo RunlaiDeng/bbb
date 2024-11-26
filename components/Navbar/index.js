@@ -36,7 +36,7 @@ const Navbar = () => {
             />
             {/* <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 md:gap-0">
               <div
-                className="hover:text-green-500 cursor-pointer"
+                className="hover:text-green-700 cursor-pointer"
                 onClick={() => {
                   window.open("https://x.com/bbbpumpdotfun");
                 }}
@@ -44,7 +44,7 @@ const Navbar = () => {
                 [twitter]
               </div>
               <div
-                className="hover:text-green-500 cursor-pointer"
+                className="hover:text-green-700 cursor-pointer"
                 onClick={() => {
                   window.open("https://t.me/bbbsking");
                 }}
@@ -52,7 +52,7 @@ const Navbar = () => {
                 [support]
               </div>
               <div
-                className="hover:text-green-500 cursor-pointer"
+                className="hover:text-green-700 cursor-pointer"
                 onClick={() => {
                   window.open("https://t.me/bbbpump");
                 }}
@@ -60,7 +60,7 @@ const Navbar = () => {
                 [telegram]
               </div>
               <div
-                className="hover:text-green-500 cursor-pointer"
+                className="hover:text-green-700 cursor-pointer"
                 onClick={() =>
                   document.getElementById("howisworks").showModal()
                 }
@@ -74,7 +74,7 @@ const Navbar = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn m-1 btn-ghost hover:text-green-500 hover:bg-inherit"
+                  className="btn m-1 btn-ghost hover:text-green-700 hover:bg-inherit"
                 >
                   More
                 </div>
@@ -85,7 +85,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       href={"/megadrop"}
-                      className="hover:text-green-500 hover:bg-inherit"
+                      className="hover:text-green-700 hover:bg-inherit"
                     >
                       Megadrop
                     </Link>
@@ -93,7 +93,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       href={"/farm"}
-                      className="hover:text-green-500 hover:bg-inherit"
+                      className="hover:text-green-700 hover:bg-inherit"
                     >
                       Farm
                     </Link>
@@ -730,7 +730,7 @@ const Navbar = () => {
           <div className="font-bold my-4">
             Pump prevents rugs by making sure that all created tokens are safe.
             Each coin on pump is a{" "}
-            <span className="text-green-500">fair-launch</span> with{" "}
+            <span className="text-green-700">fair-launch</span> with{" "}
             <span className="text-blue-500">no presale</span> and{" "}
             <span className="text-orange-500">no team allocation.</span>
           </div>

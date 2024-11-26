@@ -136,7 +136,7 @@ const Home = () => {
     <>
       <div className="text-center mt-5">
         <div
-          className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
+          className="btn btn-ghost w-max hover:text-green-700 hover:bg-inherit text-2xl"
           onClick={() => {
             if (!isConnected) {
               openConnectModal();
@@ -280,7 +280,7 @@ const Home = () => {
                   });
                 }}
               />
-              <div className="collapse-title text-left pl-0  hover:underline text-green-500">
+              <div className="collapse-title text-left pl-0  hover:underline text-green-700">
                 Show more options {data?.showOptions ? "↑" : "↓"}
               </div>
               <div className="collapse-content pl-0">

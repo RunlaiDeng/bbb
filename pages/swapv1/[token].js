@@ -305,7 +305,7 @@ const Swap = () => {
       <>
         <div className="text-center">
           <div
-            className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
+            className="btn btn-ghost w-max hover:text-green-700 hover:bg-inherit text-2xl"
             onClick={() => {
               router.push("/");
             }}
@@ -1116,7 +1116,7 @@ const Swap = () => {
 
                           <div className="opacity-50 text-xs">
                             When the market cap reaches{" "}
-                            <span className="text-green-500">
+                            <span className="text-green-700">
                               {"$" +
                                 (
                                   xdcPrice * formatEther(maxXdc || 0n)
@@ -1126,12 +1126,12 @@ const Swap = () => {
                             deposited into icecreaswap and burned. Progression
                             increases as the price goes up. After removing
                             liquidity, the Megadrop Staker is snapshot and
-                            receives <span className="text-green-500">2%</span>{" "}
+                            receives <span className="text-green-700">2%</span>{" "}
                             of the token supply.
                           </div>
                           <div className="opacity-50 text-xs mt-4">
                             There are{" "}
-                            <span className="text-green-500">
+                            <span className="text-green-700">
                               {(
                                 formatEther(
                                   customToFixed(
@@ -1143,7 +1143,7 @@ const Swap = () => {
                             </span>{" "}
                             still available for sale in the rld curve and there
                             are{" "}
-                            <span className="text-green-500">
+                            <span className="text-green-700">
                               {Number(
                                 formatEther(xdcAmount || 0n)
                               )?.toLocaleString()}{" "}
@@ -1279,7 +1279,7 @@ const Swap = () => {
                   <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">
-                        Image <span className="text-green-500">*</span>
+                        Image <span className="text-green-700">*</span>
                       </span>
                     </div>
                     <ImageUpload {...imageUpload} />
@@ -1287,7 +1287,7 @@ const Swap = () => {
                   <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">
-                        Name <span className="text-green-500">*</span>
+                        Name <span className="text-green-700">*</span>
                       </span>
                       <span className="text-right">
                         {getBytesLength(tokenInfo?.name)}/20
@@ -1303,7 +1303,7 @@ const Swap = () => {
                   <label className="form-control w-full">
                     <div className="label">
                       <span className="label-text">
-                        Symbol <span className="text-green-500">*</span>
+                        Symbol <span className="text-green-700">*</span>
                       </span>
                       <span className="text-right">
                         {getBytesLength(tokenInfo?.symbol)}/10
@@ -1321,7 +1321,7 @@ const Swap = () => {
                     <div className="label">
                       <span className="label-text">
                         Token Decription{" "}
-                        <span className="text-green-500">*</span>
+                        <span className="text-green-700">*</span>
                       </span>
                       <span className="text-right">
                         {getBytesLength(tokenInfo?.description)}/256

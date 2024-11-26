@@ -33,7 +33,7 @@ export const NotificationProvider = ({ children }) => {
           return (
             <div
               key={index}
-              className={`bg-white border-2 border-green-500 alert alert-${type}`}
+              className={`bg-white border-2 border-green-700 alert alert-${type}`}
             >
               {type == "success" && (
                 <svg

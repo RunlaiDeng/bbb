@@ -71,12 +71,12 @@ export default function ImageUpload(props) {
     <div className="max-w-sm mx-auto w-full">
       <label
         htmlFor="file-upload"
-        className="flex flex-col items-center justify-center w-28 h-28 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-500 m-auto"
+        className="flex flex-col items-center justify-center w-28 h-28 rounded-lg border-2 border-dashed border-gray-700 cursor-pointer hover:border-green-700 m-auto"
       >
         {loading && ( // Show loading indicator
           <div className="flex flex-col items-center">
             <svg
-              className="animate-spin w-12 h-12 text-green-500 mb-4" // Add spin animation
+              className="animate-spin w-12 h-12 text-green-700 mb-4" // Add spin animation
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
@@ -101,7 +101,7 @@ export default function ImageUpload(props) {
           !image && ( // Only show this if not loading and no image
             <div className="flex flex-col items-center">
               <svg
-                className="w-12 h-12 text-green-500 mb-4"
+                className="w-12 h-12 text-green-700 mb-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

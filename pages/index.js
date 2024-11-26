@@ -466,7 +466,7 @@ const Home = () => {
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert  border-green-500  bg-transparent border-2 w-full p-2 flex items-center "
+                  className="alert  border-green-700  bg-transparent border-2 w-full p-2 flex items-center "
                 >
                   <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -505,7 +505,7 @@ const Home = () => {
               {latestDrop?.index > 0 && (
                 <div
                   role="alert"
-                  className="alert  border-green-500 bg-transparent border-2 w-full p-2 flex items-center "
+                  className="alert  border-green-700 bg-transparent border-2 w-full p-2 flex items-center "
                 >
                   <span className="flex gap-2 items-center overflow-auto">
                     <Image height={16} width={16} src="/bbb.jpg" alt={""} />
@@ -544,7 +544,7 @@ const Home = () => {
               <div className="px-4 w-full m-auto ">
                 <div
                   className={
-                    "card cursor-pointer hover:outline-4 outline outline-green-500 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2 "
+                    "card cursor-pointer hover:outline-4 outline outline-green-700 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2 "
                   }
                   onClick={() => {
                     router.push("/swap/" + latestKing?.token);
@@ -853,7 +853,7 @@ const Home = () => {
               <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 overflow-auto p-4">
                 <div
                   className={
-                    "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 "
+                    "card cursor-pointer hover:outline-4 hover:outline outline-green-700 bg-slate-100 w-full m-auto sm:m-0 "
                   }
                   onClick={() => {
                     router.push(dexLink);
@@ -920,7 +920,7 @@ const Home = () => {
                   return (
                     <div
                       className={
-                        "card cursor-pointer hover:outline-4 hover:outline outline-green-500 bg-slate-100 w-full m-auto sm:m-0 "
+                        "card cursor-pointer hover:outline-4 hover:outline outline-green-700 bg-slate-100 w-full m-auto sm:m-0 "
                       }
                       onClick={() => {
                         router.push("/swap/" + item?.token);
@@ -1090,7 +1090,7 @@ const Home = () => {
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">
-                    Image <span className="text-green-500">*</span>
+                    Image <span className="text-green-700">*</span>
                   </span>
                 </div>
                 <ImageUpload {...imageUpload} />
@@ -1098,7 +1098,7 @@ const Home = () => {
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">
-                    Name <span className="text-green-500">*</span>
+                    Name <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
                     {getBytesLength(data?.dName)}/20
@@ -1119,7 +1119,7 @@ const Home = () => {
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">
-                    Symbol <span className="text-green-500">*</span>
+                    Symbol <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
                     {getBytesLength(data?.dSymbol)}/10
@@ -1152,7 +1152,7 @@ const Home = () => {
               <label className="form-control">
                 <div className="label">
                   <span className="label-text">
-                    Token Decription <span className="text-green-500">*</span>
+                    Token Decription <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
                     {getBytesLength(data?.dDesciption)}/256
@@ -1181,7 +1181,7 @@ const Home = () => {
                     });
                   }}
                 />
-                <div className="collapse-title text-left pl-0 text-green-500">
+                <div className="collapse-title text-left pl-0 text-green-700">
                   Show more options {data?.showOptions ? "↑" : "↓"}
                 </div>
                 <div className="collapse-content p-0 w-72 sm:w-full">
@@ -1435,7 +1435,7 @@ const Home = () => {
               {/* <div className="text-left text-xs text-slate-500">
                 Cost <span className="text-xl text-black">FREE</span>{" "}
                 <span className="line-through text-slate-500">100</span>{" "}
-                <span className="text-green-500">100% OFF</span>{" XDC"}
+                <span className="text-green-700">100% OFF</span>{" XDC"}
               </div> */}
               <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                 Cost
@@ -1445,7 +1445,7 @@ const Home = () => {
                   placeholder={formatEther(totalCost || 0) + " XDC"}
                   disabled
                 />
-                {/* <div className="text-green-500">Free</div> */}
+                {/* <div className="text-green-700">Free</div> */}
               </label>
             </div>
             <div className="mt-1 text-xs">

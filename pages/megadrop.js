@@ -323,8 +323,8 @@ const Megadrop = () => {
             <div className="flex gap-2">
               <div
                 className={
-                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
-                  (data?.drop == 0 ? " text-green-500 bg-inherit" : "")
+                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
+                  (data?.drop == 0 ? " text-green-700 bg-inherit" : "")
                 }
                 onClick={() => {
                   setData({ ...data, drop: 0 });
@@ -334,8 +334,8 @@ const Megadrop = () => {
               </div>
               <div
                 className={
-                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
-                  (data?.drop == 1 ? " text-green-500 bg-inherit" : "")
+                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
+                  (data?.drop == 1 ? " text-green-700 bg-inherit" : "")
                 }
                 onClick={() => {
                   setData({ ...data, drop: 1 });
@@ -345,8 +345,8 @@ const Megadrop = () => {
               </div>
               <div
                 className={
-                  "btn btn-ghost hover:text-green-500 hover:bg-inherit" +
-                  (data?.drop == 2 ? " text-green-500 bg-inherit" : "")
+                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
+                  (data?.drop == 2 ? " text-green-700 bg-inherit" : "")
                 }
                 onClick={() => {
                   setData({ ...data, drop: 2 });
