@@ -366,348 +366,7 @@ const BBB = (props) => {
               </div>
             </div>
             <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
-              <div className="md:col-span-3 font-black text-2xl text-center">
-                <div
-                  className="card outline rounded-none outline-gray-200"
-                  id="chart"
-                >
-                  <div className="card-body p-2">
-                    <div className="h-[400px]">
-                      <iframe
-                        height="100%"
-                        width="100%"
-                        id="geckoterminal-embed"
-                        title="GeckoTerminal Embed"
-                        src={
-                          "https://www.geckoterminal.com/xdc/pools/" +
-                          poolAddress +
-                          "?embed=1&info=0&swaps=0"
-                        }
-                        frameBorder="0"
-                        allow="clipboard-write"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="card outline rounded-none outline-gray-200"
-                  id="swap"
-                >
-                  <div className="card-body font-black  p-2">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div
-                        className={
-                          "btn w-full " +
-                          (data?.state == "buy" && "btn-success")
-                        }
-                        onClick={() => {
-                          setData({ ...data, state: "buy" });
-                        }}
-                      >
-                        Buy
-                      </div>
-                      <div
-                        className={
-                          "btn w-full " + (data?.state == "sell" && "btn-error")
-                        }
-                        onClick={() => {
-                          setData({ ...data, state: "sell" });
-                        }}
-                      >
-                        Sell
-                      </div>
-                    </div>
-                    {data?.state == "buy" && (
-                      <>
-                        <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            type="number"
-                            className="grow"
-                            value={
-                              data?.buyAmount >= 0
-                                ? formatEther(data?.buyAmount)
-                                : undefined
-                            }
-                            placeholder="0"
-                            onChange={(e) => {
-                              const newValue = e.target.value;
-                              if (!newValue) {
-                                setData({
-                                  ...data,
-                                  buyAmount: undefined,
-                                });
-                              }
-
-                              if (
-                                /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(
-                                  newValue
-                                )
-                              ) {
-                                setData({
-                                  ...data,
-                                  buyAmount: parseEther(newValue),
-                                });
-                              }
-                            }}
-                          />
-                          XDC
-                          <div className="h-6 w-6 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src="/xdc.png"
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </label>
-                        <div role="tablist" className="tabs">
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                buyAmount: 0n,
-                              });
-                            }}
-                          >
-                            0%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                buyAmount:
-                                  (xdcBalance * BigInt(25)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            25%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                buyAmount:
-                                  (xdcBalance * BigInt(50)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            50%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                buyAmount:
-                                  (xdcBalance * BigInt(75)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            75%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                buyAmount: xdcBalance,
-                              });
-                            }}
-                          >
-                            100%
-                          </a>
-                        </div>
-                        <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            type="number"
-                            className="grow"
-                            value={formatEther(
-                              BigInt(data?.buy?.toAmount || 0n)
-                            )}
-                            disabled
-                          />
-                          {symbol}
-
-                          <div className="h-6 w-6 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src={imageUrl}
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </label>
-                        <div className="text-right text-xs">
-                          Avbl :{" "}
-                          {xdcBalance >= 0
-                            ? Number(formatEther(xdcBalance))?.toFixed(2)
-                            : undefined}{" "}
-                          {"XDC"}
-                        </div>
-                        <SendButton className="btn btn-success" {...buy} />
-                      </>
-                    )}
-                    {data?.state == "sell" && (
-                      <>
-                        <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            type="number"
-                            className="grow"
-                            value={
-                              data?.sellAmount >= 0
-                                ? formatEther(data?.sellAmount)
-                                : undefined
-                            }
-                            placeholder="0"
-                            onChange={(e) => {
-                              const newValue = e.target.value;
-
-                              if (!newValue) {
-                                setData({
-                                  ...data,
-                                  sellAmount: undefined,
-                                });
-                              }
-                              if (
-                                /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(
-                                  newValue
-                                )
-                              ) {
-                                setData({
-                                  ...data,
-                                  sellAmount: parseEther(newValue),
-                                });
-                              }
-                            }}
-                          />
-                          {symbol}
-                          <div className="h-6 w-6 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src={imageUrl}
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </label>
-                        <div role="tablist" className="tabs">
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({ ...data, sellAmount: 0n });
-                            }}
-                          >
-                            0%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                sellAmount:
-                                  (tokenBalance * BigInt(25)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            25%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                sellAmount:
-                                  (tokenBalance * BigInt(50)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            50%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                sellAmount:
-                                  (tokenBalance * BigInt(75)) / BigInt(100),
-                              });
-                            }}
-                          >
-                            75%
-                          </a>
-                          <a
-                            role="tab"
-                            className="tab btn btn-xs"
-                            onClick={() => {
-                              setData({
-                                ...data,
-                                sellAmount: tokenBalance,
-                              });
-                            }}
-                          >
-                            100%
-                          </a>
-                        </div>
-                        <label className="input input-bordered flex items-center gap-2">
-                          <input
-                            type="number"
-                            className="grow"
-                            value={formatEther(
-                              BigInt(data?.sell?.toAmount || 0)
-                            )}
-                            disabled
-                          />
-                          XDC
-                          <div className="h-6 w-6 overflow-hidden">
-                            <Image
-                              height={400}
-                              width={400}
-                              src="/xdc.png"
-                              alt={""}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </label>
-                        <div className="text-right text-xs">
-                          Avbl :{" "}
-                          {tokenBalance >= 0
-                            ? Number(
-                                formatEther(tokenBalance)
-                              )?.toLocaleString()
-                            : undefined}{" "}
-                          {symbol}
-                        </div>
-                        {showApprove && (
-                          <WriteButton
-                            {...approve}
-                            className="btn btn-primary"
-                          />
-                        )}
-                        {!showApprove && (
-                          <SendButton {...sell} className="btn btn-error" />
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="md:col-span-2 text-center">
+              <div className="md:col-span-1 text-center  hidden md:block">
                 <div
                   className="card outline rounded-none outline-gray-200"
                   id="info"
@@ -1117,6 +776,373 @@ const BBB = (props) => {
                         ↑
                       </kbd>
                     </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-3 font-black text-2xl text-center">
+                <div
+                  className="card outline rounded-none outline-gray-200"
+                  id="chart"
+                >
+                  <div className="card-body p-2">
+                    <div className="h-[400px]">
+                      <iframe
+                        height="100%"
+                        width="100%"
+                        id="geckoterminal-embed"
+                        title="GeckoTerminal Embed"
+                        src={
+                          "https://www.geckoterminal.com/xdc/pools/" +
+                          poolAddress +
+                          "?embed=1&info=0&swaps=0"
+                        }
+                        frameBorder="0"
+                        allow="clipboard-write"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="card outline rounded-none outline-gray-200"
+                  id="swap"
+                >
+                  <div className="card-body font-black  p-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div
+                        className={
+                          "btn w-full " +
+                          (data?.state == "buy" && "btn-success")
+                        }
+                        onClick={() => {
+                          setData({ ...data, state: "buy" });
+                        }}
+                      >
+                        Buy
+                      </div>
+                      <div
+                        className={
+                          "btn w-full " + (data?.state == "sell" && "btn-error")
+                        }
+                        onClick={() => {
+                          setData({ ...data, state: "sell" });
+                        }}
+                      >
+                        Sell
+                      </div>
+                    </div>
+                    {data?.state == "buy" && (
+                      <>
+                        <label className="input input-bordered flex items-center gap-2">
+                          <input
+                            type="number"
+                            className="grow"
+                            value={
+                              data?.buyAmount >= 0
+                                ? formatEther(data?.buyAmount)
+                                : undefined
+                            }
+                            placeholder="0"
+                            onChange={(e) => {
+                              const newValue = e.target.value;
+                              if (!newValue) {
+                                setData({
+                                  ...data,
+                                  buyAmount: undefined,
+                                });
+                              }
+
+                              if (
+                                /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(
+                                  newValue
+                                )
+                              ) {
+                                setData({
+                                  ...data,
+                                  buyAmount: parseEther(newValue),
+                                });
+                              }
+                            }}
+                          />
+                          XDC
+                          <div className="h-6 w-6 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src="/xdc.png"
+                              alt={""}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        </label>
+                        <div role="tablist" className="tabs">
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                buyAmount: 0n,
+                              });
+                            }}
+                          >
+                            0%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                buyAmount:
+                                  (xdcBalance * BigInt(25)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            25%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                buyAmount:
+                                  (xdcBalance * BigInt(50)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            50%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                buyAmount:
+                                  (xdcBalance * BigInt(75)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            75%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                buyAmount: xdcBalance,
+                              });
+                            }}
+                          >
+                            100%
+                          </a>
+                        </div>
+                        <label className="input input-bordered flex items-center gap-2">
+                          <input
+                            type="number"
+                            className="grow"
+                            value={formatEther(
+                              BigInt(data?.buy?.toAmount || 0n)
+                            )}
+                            disabled
+                          />
+                          {symbol}
+
+                          <div className="h-6 w-6 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src={imageUrl}
+                              alt={""}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        </label>
+                        <div className="text-right text-xs">
+                          Avbl :{" "}
+                          {xdcBalance >= 0
+                            ? Number(formatEther(xdcBalance))?.toFixed(2)
+                            : undefined}{" "}
+                          {"XDC"}
+                        </div>
+                        <SendButton className="btn btn-success" {...buy} />
+                      </>
+                    )}
+                    {data?.state == "sell" && (
+                      <>
+                        <label className="input input-bordered flex items-center gap-2">
+                          <input
+                            type="number"
+                            className="grow"
+                            value={
+                              data?.sellAmount >= 0
+                                ? formatEther(data?.sellAmount)
+                                : undefined
+                            }
+                            placeholder="0"
+                            onChange={(e) => {
+                              const newValue = e.target.value;
+
+                              if (!newValue) {
+                                setData({
+                                  ...data,
+                                  sellAmount: undefined,
+                                });
+                              }
+                              if (
+                                /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(
+                                  newValue
+                                )
+                              ) {
+                                setData({
+                                  ...data,
+                                  sellAmount: parseEther(newValue),
+                                });
+                              }
+                            }}
+                          />
+                          {symbol}
+                          <div className="h-6 w-6 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src={imageUrl}
+                              alt={""}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        </label>
+                        <div role="tablist" className="tabs">
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({ ...data, sellAmount: 0n });
+                            }}
+                          >
+                            0%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                sellAmount:
+                                  (tokenBalance * BigInt(25)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            25%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                sellAmount:
+                                  (tokenBalance * BigInt(50)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            50%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                sellAmount:
+                                  (tokenBalance * BigInt(75)) / BigInt(100),
+                              });
+                            }}
+                          >
+                            75%
+                          </a>
+                          <a
+                            role="tab"
+                            className="tab btn btn-xs"
+                            onClick={() => {
+                              setData({
+                                ...data,
+                                sellAmount: tokenBalance,
+                              });
+                            }}
+                          >
+                            100%
+                          </a>
+                        </div>
+                        <label className="input input-bordered flex items-center gap-2">
+                          <input
+                            type="number"
+                            className="grow"
+                            value={formatEther(
+                              BigInt(data?.sell?.toAmount || 0)
+                            )}
+                            disabled
+                          />
+                          XDC
+                          <div className="h-6 w-6 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src="/xdc.png"
+                              alt={""}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        </label>
+                        <div className="text-right text-xs">
+                          Avbl :{" "}
+                          {tokenBalance >= 0
+                            ? Number(
+                                formatEther(tokenBalance)
+                              )?.toLocaleString()
+                            : undefined}{" "}
+                          {symbol}
+                        </div>
+                        {showApprove && (
+                          <WriteButton
+                            {...approve}
+                            className="btn btn-primary"
+                          />
+                        )}
+                        {!showApprove && (
+                          <SendButton {...sell} className="btn btn-error" />
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="md:col-span-1 text-center  hidden md:block">
+                <div
+                  className="card outline rounded-none outline-gray-200"
+                  id="chart"
+                >
+                  <div className="card-body p-2">
+                    <div className="h-screen">
+                      <iframe
+                        height="100%"
+                        width="100%"
+                        id="geckoterminal-embed"
+                        title="GeckoTerminal Embed"
+                        src={
+                          "https://www.geckoterminal.com/xdc/pools/" +
+                          poolAddress +
+                          "?embed=1&info=0&swaps=1&chart=0"
+                        }
+                        frameBorder="0"
+                        allow="clipboard-write"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
                   </div>
                 </div>
               </div>
