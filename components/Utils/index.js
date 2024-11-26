@@ -42,7 +42,7 @@ const getDateSpecifics = (timestamp) => {
 };
 
 const getDate = (timestamp) => {
-  const date = new Date(timestamp * 1000);
+  const date = new Date(Number(timestamp) * 1000);
 
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
