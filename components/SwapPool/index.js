@@ -902,7 +902,7 @@ const BBB = (props) => {
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(twitter);
+                            window.open("https://x.com/" + twitter);
                           }}
                         >
                           <svg
@@ -919,7 +919,7 @@ const BBB = (props) => {
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(telegram);
+                            window.open("https://t.me/" + telegram);
                           }}
                         >
                           <svg
@@ -939,7 +939,7 @@ const BBB = (props) => {
                         <div
                           className="btn btn-xs"
                           onClick={(e) => {
-                            window.open(website);
+                            window.open("https://" + website);
                           }}
                         >
                           <svg

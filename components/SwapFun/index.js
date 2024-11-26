@@ -837,16 +837,18 @@ const Swap = (props) => {
                   <div className="card-body  p-2">
                     <div className="font-black mt-4 text-left">
                       <div className="text-xl flex gap-2 items-center">
-                      {address == deployer && (
-                        <div
-                          className="btn btn-xs btn-success"
-                          onClick={() => {
-                            document.getElementById("updateModal").showModal();
-                          }}
-                        >
-                          update
-                        </div>
-                      )}
+                        {address == deployer && (
+                          <div
+                            className="btn btn-xs btn-success"
+                            onClick={() => {
+                              document
+                                .getElementById("updateModal")
+                                .showModal();
+                            }}
+                          >
+                            update
+                          </div>
+                        )}
                         {coingecko && (
                           <div
                             className="btn btn-xs"
@@ -889,7 +891,7 @@ const Swap = (props) => {
                           <div
                             className="btn btn-xs"
                             onClick={(e) => {
-                              window.open(twitter);
+                              window.open("https://x.com/" + twitter);
                             }}
                           >
                             <svg
@@ -906,7 +908,7 @@ const Swap = (props) => {
                           <div
                             className="btn btn-xs"
                             onClick={(e) => {
-                              window.open(telegram);
+                              window.open("https://t.me/" +telegram);
                             }}
                           >
                             <svg
@@ -926,7 +928,7 @@ const Swap = (props) => {
                           <div
                             className="btn btn-xs"
                             onClick={(e) => {
-                              window.open(website);
+                              window.open("https://" +website);
                             }}
                           >
                             <svg
