@@ -8,7 +8,7 @@ const CAMERA_CONSTRAINTS = {
   video: { width: 960, height: 540 },
 };
 
-export default (props) => {
+const Live = (props) => {
   const index = props?.index;
 
   const [connected, setConnected] = useState(false);
@@ -155,3 +155,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default Live;
