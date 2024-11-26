@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import rpc from "@/components/Rpc";
 import { useNotification } from "../Context/notice";
 import Image from "next/image";
+import { useRouter } from "next/router";
 const TokenChat = (props) => {
   const { chainId, index, address } = props;
-
+  const router = useRouter();
   const scrollRef = useRef(null);
   const [tokenInfo, setTokenInfo] = useState({});
   const [msg, setMsg] = useState([]);
