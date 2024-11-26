@@ -1,11 +1,17 @@
 import Image from "next/image";
 import WriteButton from "../WriteButton";
 import Link from "next/link";
-import { getBytesLength, getFollowing, setFollowing } from "../Utils";
+import {
+  customToFixed,
+  getBytesLength,
+  getFollowing,
+  setFollowing,
+} from "../Utils";
 import { useEffect, useState } from "react";
 import ImageUpload from "../ImageUpload";
 import { useChainId } from "wagmi";
 import { contracts } from "@/config";
+import { formatEther } from "viem";
 const TokenInfo = (props) => {
   const {
     token,
@@ -23,6 +29,11 @@ const TokenInfo = (props) => {
     createTime,
     canUpdate,
     isBBB,
+    showRLD,
+    xdcPrice,
+    xdcAmount,
+    maxXdc,
+    totalSupply,
   } = props;
 
   const [tokenInfo, setTokenInfo] = useState({});
@@ -316,6 +327,62 @@ const TokenInfo = (props) => {
             </div>
             <div className="opacity-50 text-xs"> {description}</div>
           </div>
+          {showRLD && (
+            <div className="text-left">
+              <div className="mt-4">
+                <span className="opacity-50">RLD Curve Progress: </span>
+
+                <span className="">
+                  {"$" +
+                    (
+                      xdcPrice * Number(formatEther(xdcAmount || 0n))
+                    )?.toLocaleString()}
+                </span>
+                <span className="opacity-50">
+                  (
+                  {(
+                    (xdcAmount?.toString() * 100) /
+                    maxXdc?.toString()
+                  )?.toFixed(2)}
+                  %)
+                </span>
+              </div>
+              <progress
+                className="progress progress-success w-full"
+                value={xdcAmount?.toString()}
+                max={maxXdc?.toString()}
+              ></progress>
+
+              <div className="opacity-50 text-xs">
+                When the market cap reaches{" "}
+                <span className="text-green-500">
+                  {"$" +
+                    (xdcPrice * formatEther(maxXdc || 0n))?.toLocaleString()}
+                </span>{" "}
+                all the liquidity from the rld curve will be deposited into
+                icecreaswap and burned. Progression increases as the price goes
+                up. After removing liquidity, the Megadrop Staker is snapshot
+                and receives <span className="text-green-500">2%</span> of the
+                token supply.
+              </div>
+              <div className="opacity-50 text-xs mt-4">
+                There are{" "}
+                <span className="text-green-500">
+                  {(
+                    formatEther(
+                      customToFixed(Math.sqrt(maxXdc?.toString() * 2e25))
+                    ) - formatEther(totalSupply || 0n)
+                  )?.toLocaleString()}{" "}
+                  {symbol}
+                </span>{" "}
+                still available for sale in the rld curve and there are{" "}
+                <span className="text-green-500">
+                  {Number(formatEther(xdcAmount || 0n))?.toLocaleString()} XDC
+                </span>{" "}
+                in the rld curve.
+              </div>
+            </div>
+          )}
           <div
             className="font-bold text-left mt-2 flex items-center gap-2"
             id="holders"

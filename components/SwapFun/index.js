@@ -291,7 +291,7 @@ const Swap = (props) => {
 
   const isBBB = token == bbbInfo.address;
   const canUpdate = address == deployer && !isBBB;
-
+  const showRLD = true;
   const tInfo = {
     token,
     name,
@@ -308,6 +308,11 @@ const Swap = (props) => {
     createTime,
     canUpdate,
     isBBB,
+    showRLD,
+    xdcPrice,
+    xdcAmount,
+    maxXdc,
+    totalSupply
   };
   return (
     mount && (
