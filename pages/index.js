@@ -297,6 +297,8 @@ const Home = () => {
     pages.push(i);
   }
 
+  const showList = dropTokens && xdcPrice;
+
   return (
     mount && (
       <>
@@ -459,7 +461,7 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-     
+
             <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap ">
               {latestTrade?.index > 0 && (
                 <div
@@ -538,7 +540,7 @@ const Home = () => {
                 </div>
               )}
             </div>
-            {latestKing?.index > 0 && (
+            {latestKing?.index > 0 && xdcPrice && (
               <div className="px-4 w-full m-auto ">
                 <div
                   className={
@@ -602,12 +604,12 @@ const Home = () => {
                 </div>
               </div>
             )}
-            {!dropTokens && (
+            {!showList && (
               <div className="flex justify-center items-center mt-48">
                 <div className="loading loading-bars loading-lg text-success"></div>
               </div>
             )}
-            {dropTokens && (
+            {showList && (
               <div className="p-4 flex items-center gap-2">
                 <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
                   <svg
