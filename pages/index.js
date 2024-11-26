@@ -1449,7 +1449,7 @@ const Home = () => {
               </label>
             </div>
             <div className="mt-1 text-xs">
-              Available {balance?.formatted} XDC
+              Avbl {balance?.formatted} XDC
             </div>
             {!bbbIsEnough && (
               <Link

@@ -331,7 +331,7 @@ const Home = () => {
             </label>
           </div>
           <div className="mt-1 text-xs">
-            Available {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
+            Avbl {((bbbBalance || 0n) / BigInt(1e18))?.toString()} BBB
           </div>
           {!bbbIsEnough && (
             <Link className="underline text-xs" href={dexLink}>

@@ -547,7 +547,7 @@ const Swap = (props) => {
                           </div>
                         </label>
                         <div className="text-right text-xs">
-                          Available :{" "}
+                          Avbl :{" "}
                           {xdcBalance >= 0
                             ? Number(formatEther(xdcBalance))?.toFixed(2)
                             : undefined}{" "}
@@ -681,7 +681,7 @@ const Swap = (props) => {
                           </div>
                         </label>
                         <div className="text-right text-xs">
-                          Available :{" "}
+                          Avbl :{" "}
                           {tokenBalance >= 0
                             ? Number(formatEther(tokenBalance))?.toFixed()
                             : undefined}{" "}
@@ -1400,7 +1400,7 @@ const Swap = (props) => {
                   </label>
                 </div>
                 <div className="mt-1 text-xs">
-                  Available {balance?.formatted} XDC
+                  Avbl {balance?.formatted} XDC
                 </div>
                 {
                   <Link

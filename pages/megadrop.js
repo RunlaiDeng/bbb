@@ -546,7 +546,7 @@ const Megadrop = () => {
             </label>
           </div>
           <div className="text-xs mt-1">
-            Available {(bbbBalance?.toString() || 0) / 1e18} BBB
+            Avbl {(bbbBalance?.toString() || 0) / 1e18} BBB
           </div>
           {!bbbIsEnough && (
             <Link className="underline text-xs" href={dexLink}>
@@ -610,7 +610,7 @@ const Megadrop = () => {
             </label>
           </div>
           <div className="text-xs mt-1">
-            Available {(mbbbBalance?.toString() || 0) / 1e18} mBBB
+            Avbl {(mbbbBalance?.toString() || 0) / 1e18} mBBB
           </div>
           <WriteButton {...unStake} className="btn mt-5 w-full btn-success" />
         </div>

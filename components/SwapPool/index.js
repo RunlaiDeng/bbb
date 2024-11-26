@@ -549,7 +549,7 @@ const BBB = (props) => {
                           </div>
                         </label>
                         <div className="text-right text-xs">
-                          Available :{" "}
+                          Avbl :{" "}
                           {xdcBalance >= 0
                             ? Number(formatEther(xdcBalance))?.toFixed(2)
                             : undefined}{" "}
@@ -685,7 +685,7 @@ const BBB = (props) => {
                           </div>
                         </label>
                         <div className="text-right text-xs">
-                          Available :{" "}
+                          Avbl :{" "}
                           {tokenBalance >= 0
                             ? Number(
                                 formatEther(tokenBalance)

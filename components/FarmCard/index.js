@@ -216,7 +216,7 @@ const FarmCard = (props) => {
                 Purchase at least one to unlock the referral bonus.
               </div>
               <div className="mt-1 text-xs">
-                Available{" "}
+                Avbl{" "}
                 {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()}{" "}
                 {burnTokenName}
               </div>
