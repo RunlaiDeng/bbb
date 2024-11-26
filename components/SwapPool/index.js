@@ -35,6 +35,7 @@ import Live from "../Live";
 import TokenInfo from "../TokenInfo";
 import TokenChat from "../TokenChat";
 import TokenTrade from "../TokenTrade";
+import useWindowSize from "../Hook/useWindowSize";
 
 const BBB = (props) => {
   const [mount, setMount] = useState(false);
@@ -193,7 +194,7 @@ const BBB = (props) => {
     }
   }
 
-  const { info: notice } = useNotification();
+  const { width: windowWidth } = useWindowSize();
 
   useEffect(() => {
     getData();
@@ -395,10 +396,12 @@ const BBB = (props) => {
               </div>
             </div>
             <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
-              <div className="md:col-span-1 text-center  hidden md:block">
-                <TokenInfo {...tInfo} />
-                <TokenChat {...tChat} />
-              </div>
+              {windowWidth > 768 && (
+                <div className="md:col-span-1 text-center  hidden md:block">
+                  <TokenInfo {...tInfo} />
+                  <TokenChat {...tChat} />
+                </div>
+              )}
 
               <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div
@@ -742,72 +745,12 @@ const BBB = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="md:col-span-1 text-center  hidden md:block">
-                <TokenTrade {...tTrade} />
-              </div>
+              {windowWidth > 768 && (
+                <div className="md:col-span-1 text-center  hidden md:block">
+                  <TokenTrade {...tTrade} />
+                </div>
+              )}
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("info");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Info
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("chart");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Chart
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("swap");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Swap
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("chat");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Chat
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("holders");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Holders
-                </a>
-              </li>
-            </ul>
           </>
         )}
       </>

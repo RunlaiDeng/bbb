@@ -35,6 +35,7 @@ import {
 import TokenInfo from "../TokenInfo";
 import TokenChat from "../TokenChat";
 import TokenTrade from "../TokenTrade";
+import useWindowSize from "../Hook/useWindowSize";
 
 const Swap = (props) => {
   const { openConnectModal } = useConnectModal();
@@ -270,8 +271,10 @@ const Swap = (props) => {
     address,
   };
   const tTrade = {
-    poolAddress:undefined,
+    poolAddress: undefined,
   };
+
+  const { width: windowWidth } = useWindowSize();
 
   return (
     mount && (
@@ -329,10 +332,13 @@ const Swap = (props) => {
             </div>
 
             <div className="m-auto grid md:grid-cols-5 gap-[1px] sm:mx-2">
-              <div className="md:col-span-1 text-center hidden md:block">
-                <TokenInfo {...tInfo} />
-                <TokenChat {...tChat} />
-              </div>
+              {windowWidth > 768 && (
+                <div className="md:col-span-1 text-center hidden md:block">
+                  <TokenInfo {...tInfo} />
+                  <TokenChat {...tChat} />
+                </div>
+              )}
+
               <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div
                   className="card outline rounded-none outline-gray-200"
@@ -646,72 +652,13 @@ const Swap = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="md:col-span-1 text-center hidden md:block">
-                <TokenTrade {...tTrade} />
-              </div>
+              {windowWidth > 768 && (
+                <div className="md:col-span-1 text-center hidden md:block">
+                  <TokenTrade {...tTrade} />
+                </div>
+              )}
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("info");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Info
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("chart");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Chart
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("swap");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Swap
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("chat");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Chat
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => {
-                    const target = document.getElementById("holders");
-                    if (target) {
-                      target.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Holders
-                </a>
-              </li>
-            </ul>
+          
           </>
         )}
       </>
