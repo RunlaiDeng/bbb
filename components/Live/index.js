@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import MuxPlayer from "@mux/mux-player-react";
 import { mux } from "@/config";
 import rpc from "@/components/Rpc";
