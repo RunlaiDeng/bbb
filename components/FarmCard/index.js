@@ -136,7 +136,7 @@ const FarmCard = (props) => {
   return (
     <>
       <div className="card m-auto md:w-3/4 w-96 mt-2 rounded-none">
-        <div className="card-body font-black">
+        <div className="card-body font-bold">
           <div className="grid lg:grid-cols-3 gap-2">
             <div className="grid grid-cols-2 gap-2">
               <Image
@@ -146,7 +146,7 @@ const FarmCard = (props) => {
                 width={200}
                 className="mask mask-squircle m-auto"
               />
-              <div className="text-5xl font-black text-center mt-28">
+              <div className="text-5xl font-bold text-center mt-28">
                 X {data.value}
               </div>
             </div>
@@ -203,13 +203,13 @@ const FarmCard = (props) => {
               {!showApprove && (
                 <WriteButton
                   {...buy}
-                  className="btn font-black btn-lg mt-5 w-full btn-success"
+                  className="btn font-bold btn-lg mt-5 w-full btn-success"
                 />
               )}
               {showApprove && (
                 <WriteButton
                   {...approve}
-                  className="btn font-black btn-lg mt-5 w-full btn-success"
+                  className="btn font-bold btn-lg mt-5 w-full btn-success"
                 />
               )}
               <div className="text-xs">
@@ -245,7 +245,7 @@ const FarmCard = (props) => {
                       width={50}
                       className="mask mask-squircle m-auto"
                     />{" "}
-                    <div className="font-black mt-4">
+                    <div className="font-bold mt-4">
                       X{stake?.toString() || 0}
                     </div>
                   </div>
@@ -265,7 +265,7 @@ const FarmCard = (props) => {
                       width={50}
                       className="mask mask-squircle m-auto"
                     />{" "}
-                    <div className="font-black mt-4">
+                    <div className="font-bold mt-4">
                       X{pendingPoint?.toString() || 0}
                     </div>
                   </div>
@@ -273,7 +273,7 @@ const FarmCard = (props) => {
               </div>
               <WriteButton
                 {...collect}
-                className="btn font-black btn-lg mt-4 w-full btn-success"
+                className="btn font-bold btn-lg mt-4 w-full btn-success"
               />
             </div>
           </div>

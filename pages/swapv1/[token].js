@@ -324,7 +324,7 @@ const Swap = () => {
         {dropToken && (
           <>
             {" "}
-            <div className="card m-auto font-black grid text-xs" id="info">
+            <div className="card m-auto font-bold grid text-xs" id="info">
               <div className="card-body p-2">
                 <div className="md:flex gap-4 items-center">
                   <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
@@ -612,7 +612,7 @@ const Swap = () => {
               </div>
             </div>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
-              <div className="md:col-span-3 font-black text-2xl text-center">
+              <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div className="card bg-slate-100" id="chart">
                   <div className="card-body p-2">
                     <div className="text-xs text-left flex items-center gap-2">
@@ -653,7 +653,7 @@ const Swap = () => {
                                   />
                                 </div>
                                 <div
-                                  className="hover:underline cursor-pointer font-black"
+                                  className="hover:underline cursor-pointer font-bold"
                                   onClick={() => {
                                     router.push("/dashboard/" + item?.address);
                                   }}
@@ -767,7 +767,7 @@ const Swap = () => {
               </div>
               <div className="md:col-span-2 text-center">
                 <div className="card bg-slate-100" id="swap">
-                  <div className="card-body font-black  p-2">
+                  <div className="card-body font-bold  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
                         className={
@@ -1067,7 +1067,7 @@ const Swap = () => {
                 </div>
                 <div className="card bg-slate-100 mt-2">
                   <div className="card-body  p-2">
-                    <div className="font-black mt-4 text-left">
+                    <div className="font-bold mt-4 text-left">
                       {removed && (
                         <div className="grid grid-cols-2">
                           <div className="text-red-700">Liquidity Moved</div>
@@ -1158,7 +1158,7 @@ const Swap = () => {
                 </div>
                 <div className="card bg-slate-100 mt-2 break-all" id="holders">
                   <div className="card-body p-2">
-                    <div className="font-black text-left ml-4 flex items-center gap-2">
+                    <div className="font-bold text-left ml-4 flex items-center gap-2">
                       Holder distribution{" "}
                       <div
                         className={"cursor-pointer tooltip"}
@@ -1188,7 +1188,7 @@ const Swap = () => {
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td className="hover:underline cursor-pointer font-black">
+                            <td className="hover:underline cursor-pointer font-bold">
                               {item?.address?.substr(36)}
                             </td>
 
@@ -1203,7 +1203,7 @@ const Swap = () => {
                 </div>
               </div>
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black flex justify-between">
+            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
               <li>
                 <a
                   onClick={() => {
@@ -1265,7 +1265,7 @@ const Swap = () => {
                 </a>
               </li>
             </ul>
-            <dialog id="updateModal" className="modal font-black">
+            <dialog id="updateModal" className="modal font-bold">
               <div className="modal-box">
                 <div className="grid grid-cols-3">
                   <form method="dialog">
@@ -1418,7 +1418,7 @@ const Swap = () => {
                       placeholder={(price || 0n) / BigInt(1e18)}
                       disabled
                     />
-                    <div className="font-black">XDC</div>
+                    <div className="font-bold">XDC</div>
                   </label>
                 </div>
                 <div className="mt-1 text-xs">

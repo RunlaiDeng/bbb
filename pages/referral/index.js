@@ -94,7 +94,7 @@ const Referral = () => {
     mount && (
       <div className="">
         <div className="card m-auto w-full ">
-          <div className="card-body font-black">
+          <div className="card-body font-bold">
             <div className="card w-full m-auto outline outline-green-700 text-center text-green-700">
               <div className="card-body">
                 <div className="text-xl">Become KOL</div>
@@ -112,8 +112,8 @@ const Referral = () => {
                 </div>
               </div>
             </div>
-            <div className="font-black">Rewards</div>
-            <div className="font-black text-green-700 flex items-center gap-2">
+            <div className="font-bold">Rewards</div>
+            <div className="font-bold text-green-700 flex items-center gap-2">
               <div className="text-4xl">
                 {Number(formatEther(totalPrize || 0))?.toFixed(6)} XDC
               </div>
@@ -268,7 +268,7 @@ const Referral = () => {
             >
               <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm297.1 84L257.3 234.6 379.4 396H283.8L209 298.1 123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5L313.6 116h47.5zM323.3 367.6L153.4 142.9H125.1L296.9 367.6h26.3z" />
             </svg>
-            <div className="font-black">Invitee cashback</div>
+            <div className="font-bold">Invitee cashback</div>
             <div className="overflow-x-auto whitespace-nowrap">
               <table className="table table-xs">
                 <thead>
@@ -303,7 +303,7 @@ const Referral = () => {
                 </tbody>
               </table>
             </div>
-            <div className="font-black">Invited Users</div>
+            <div className="font-bold">Invited Users</div>
             <div className="overflow-x-auto whitespace-nowrap">
               <table className="table table-xs">
                 <thead>
@@ -344,7 +344,7 @@ const Referral = () => {
         </div>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         <dialog id="commissionRate" className="modal">
-          <div className="modal-box font-black">
+          <div className="modal-box font-bold">
             <div className="grid grid-cols-3">
               <form method="dialog">
                 <button className="btn">X</button>

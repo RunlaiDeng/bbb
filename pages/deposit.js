@@ -20,7 +20,7 @@ const Desposit = () => {
   return (
     <>
       <div className="card w-96 m-auto">
-        <div className="card-body text-center font-black">
+        <div className="card-body text-center font-bold">
           <h3>Deposit XDC</h3>
           {address && (
             <div className="m-auto">
@@ -30,7 +30,7 @@ const Desposit = () => {
         </div>
       </div>
       <div className="card w-96 m-auto outline outline-gray-200">
-        <div className="card-body text-left font-black">
+        <div className="card-body text-left font-bold">
           <div className="opacity-50">Network</div>
           <div>XDC</div>
           <div className="divider my-1"></div>

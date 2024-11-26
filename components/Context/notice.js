@@ -27,7 +27,7 @@ export const NotificationProvider = ({ children }) => {
 
   return (
     <NotificationContext.Provider value={{ success, info, failure }}>
-      <div className="toast toast-top toast-center text-xs z-50 font-black">
+      <div className="toast toast-top toast-center text-xs z-50 font-bold">
         {notifications.map((notification, index) => {
           const type = notification.type;
           return (

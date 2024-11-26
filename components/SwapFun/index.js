@@ -315,7 +315,7 @@ const Swap = (props) => {
   return (
     mount && (
       <>
-        <div className="text-center">
+        {/* <div className="text-center">
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
             onClick={() => {
@@ -324,7 +324,7 @@ const Swap = (props) => {
           >
             [Go back]
           </div>
-        </div>
+        </div> */}
 
         {!dropToken && (
           <div className="flex justify-center items-center mt-48">
@@ -339,7 +339,7 @@ const Swap = (props) => {
             <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
               <div className="card-body p-0">
                 <div className="px-4 sm:flex gap-1 ">
-                  <div className="font-black">
+                  <div className="font-bold">
                     {name} (${symbol})
                   </div>
 
@@ -374,7 +374,7 @@ const Swap = (props) => {
                   id="info"
                 >
                   <div className="card-body  p-2">
-                    <div className="font-black mt-4 text-left">
+                    <div className="font-bold text-left">
                       <div className="text-xl flex gap-2 items-center">
                         {address == deployer && (
                           <div
@@ -623,7 +623,7 @@ const Swap = (props) => {
                         />
                       </div>
                       <div className="mt-1 overflow-auto text-left">
-                        <div className="font-black">
+                        <div className="font-bold">
                           {name} (${symbol})
                         </div>
                         <div className="opacity-50 text-xs"> {description}</div>
@@ -698,7 +698,7 @@ const Swap = (props) => {
                         </>
                       )}
                       <div
-                        className="font-black text-left flex items-center gap-2"
+                        className="font-bold text-left flex items-center gap-2"
                         id="holders"
                       >
                         Holder distribution{" "}
@@ -743,7 +743,7 @@ const Swap = (props) => {
                                   />
                                 </div>
                                 <div
-                                  className="hover:underline cursor-pointer font-black"
+                                  className="hover:underline cursor-pointer font-bold"
                                   onClick={() => {
                                     router.push("/dashboard/" + item?.address);
                                   }}
@@ -855,25 +855,13 @@ const Swap = (props) => {
                   </div>
                 </div>
               </div>
-              <div className="md:col-span-3 font-black text-2xl text-center">
+              <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div
                   className="card outline rounded-none outline-gray-200"
                   id="chart"
                 >
                   <div className="card-body p-2">
-                    <div className="text-xs text-left flex items-center gap-2">
-                      <div className="h-6 w-6 overflow-hidden">
-                        <Image
-                          height={400}
-                          width={400}
-                          src={handleSrc(imageUrl)}
-                          alt={""}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      {symbol} / USD
-                    </div>
-
+                    <div className="text-left font-bold text-sm">Chart</div>
                     <LightChart {...trade} />
                   </div>
                 </div>
@@ -881,7 +869,7 @@ const Swap = (props) => {
                   className="card outline rounded-none outline-gray-200"
                   id="swap"
                 >
-                  <div className="card-body font-black  p-2">
+                  <div className="card-body font-bold  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
                         className={
@@ -1181,10 +1169,17 @@ const Swap = (props) => {
                 </div>
               </div>
               <div className="md:col-span-1 text-center hidden md:block">
-                <div className="mt-10">Coming soon</div>
+                <div className="card">
+                  <div className="card-body p-2">
+                    <div className="text-left font-bold text-sm">
+                      Market Trades
+                    </div>
+                    <div className="mt-10">Coming soon</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black flex justify-between">
+            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
               <li>
                 <a
                   onClick={() => {
@@ -1246,7 +1241,7 @@ const Swap = (props) => {
                 </a>
               </li>
             </ul>
-            <dialog id="updateModal" className="modal font-black">
+            <dialog id="updateModal" className="modal font-bold">
               <div className="modal-box">
                 <div className="grid grid-cols-3">
                   <form method="dialog">
@@ -1399,7 +1394,7 @@ const Swap = (props) => {
                       placeholder={(price || 0n) / BigInt(1e18)}
                       disabled
                     />
-                    <div className="font-black">XDC</div>
+                    <div className="font-bold">XDC</div>
                   </label>
                 </div>
                 <div className="mt-1 text-xs">

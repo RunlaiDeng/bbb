@@ -185,7 +185,7 @@ const Home = () => {
       </div>
 
       <div className="card m-auto md:w-full w-96">
-        <div className="card-body font-black">
+        <div className="card-body font-bold">
           <div className="grid grid-cols-2">
             <div className="">Terminal</div>
           </div>
@@ -233,7 +233,7 @@ const Home = () => {
         </div>
       </div>
 
-      <dialog id="dropModal" className="modal font-black">
+      <dialog id="dropModal" className="modal font-bold">
         <div className="modal-box">
           <div className="grid grid-cols-3">
             <form method="dialog">
@@ -298,7 +298,7 @@ const Home = () => {
                       }
                     }}
                   />
-                  <div className="font-black">{data?.dSymbol || "MEMES"}</div>
+                  <div className="font-bold">{data?.dSymbol || "MEMES"}</div>
                 </label>
                 <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                   Drop Percent
@@ -314,7 +314,7 @@ const Home = () => {
                       }
                     }}
                   />
-                  <div className="font-black">%</div>
+                  <div className="font-bold">%</div>
                 </label>
               </div>
             </div>
@@ -327,7 +327,7 @@ const Home = () => {
                 placeholder={(price || 0n) / BigInt(1e18)}
                 disabled
               />
-              <div className="font-black">BBB</div>
+              <div className="font-bold">BBB</div>
             </label>
           </div>
           <div className="mt-1 text-xs">

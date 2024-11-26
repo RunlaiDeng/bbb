@@ -47,7 +47,7 @@ const Register = () => {
           <div className="text-green-700">
             Start Your BBBPump Journey
           </div>
-          <div className="text-left opacity-50 font-black">Invite code</div>
+          <div className="text-left opacity-50 font-bold">Invite code</div>
           <input
             type="text"
             placeholder="0x"
@@ -56,7 +56,7 @@ const Register = () => {
             disabled
             onChange={(e) => setData({ ...data, leader: e.target.value })}
           />
-          <div className="text-left font-black text-xs">
+          <div className="text-left font-bold text-xs">
             You can get{" "}
             <span className="text-green-700">{userShare?.toString()}%</span>{" "}
             trade fee back

@@ -308,7 +308,7 @@ const Home = () => {
         >
           <div>
             <div className="text-center">
-              <div className="text-green-700 text-xl sm:text-4xl font-black">
+              <div className="text-green-700 text-xl sm:text-4xl font-bold">
                 Launch a memecoin that is instantly tradable in one click
                 {/* <Image
                   src="/title.png"
@@ -462,7 +462,7 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="font-black text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap ">
+            <div className="font-bold text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap ">
               {latestTrade?.index > 0 && (
                 <div
                   role="alert"
@@ -579,7 +579,7 @@ const Home = () => {
                       </span>
                       <span>{getDate(latestKing?.createTime?.toString())}</span>
                     </div>
-                    <div className=" h-10 font-black mt-2">
+                    <div className=" h-10 font-bold mt-2">
                       {latestKing?.name} (${latestKing?.symbol})
                     </div>
                     <div className="flex gap-2 mt-2">
@@ -884,7 +884,7 @@ const Home = () => {
                       <span>{bbbInfo.createTime}</span>
                     </div>
                     <div className="overflow-auto w-full h-20">
-                      <span className="font-black">
+                      <span className="font-bold">
                         {bbbInfo.name} (${bbbInfo.symbol}){" "}
                       </span>
 
@@ -952,7 +952,7 @@ const Home = () => {
                           <span>{getDate(item?.createTime?.toString())}</span>
                         </div>
                         <div className="overflow-auto w-full h-20">
-                          <span className="font-black">
+                          <span className="font-bold">
                             {item?.name} (${item?.symbol}){" "}
                           </span>
 
@@ -1076,7 +1076,7 @@ const Home = () => {
           </div>
         </div>
 
-        <dialog id="dropModal" className="modal font-black text-xs">
+        <dialog id="dropModal" className="modal font-bold text-xs">
           <div className="modal-box">
             <div className="grid grid-cols-3">
               <form method="dialog">
@@ -1305,7 +1305,7 @@ const Home = () => {
                           }
                         }}
                       />
-                      <div className="font-black">XDC</div>
+                      <div className="font-bold">XDC</div>
                     </label>
                   )}
                   {data?.dSymbol == data?.maxSymbol && (
@@ -1341,7 +1341,7 @@ const Home = () => {
                           }
                         }}
                       />
-                      <div className="font-black">{data?.dSymbol}</div>
+                      <div className="font-bold">{data?.dSymbol}</div>
                     </label>
                   )}
 
@@ -1391,7 +1391,7 @@ const Home = () => {
                           }
                         }}
                       />
-                      <div className="font-black">XDC</div>
+                      <div className="font-bold">XDC</div>
                     </label>
                   )}
                   {data?.buySymbol == data?.dSymbol && (
@@ -1426,7 +1426,7 @@ const Home = () => {
                           }
                         }}
                       />
-                      <div className="font-black">{data?.dSymbol}</div>
+                      <div className="font-bold">{data?.dSymbol}</div>
                     </label>
                   )}
                 </div>

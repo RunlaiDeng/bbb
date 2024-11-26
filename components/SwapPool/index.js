@@ -314,7 +314,7 @@ const BBB = (props) => {
   return (
     mount && (
       <>
-        <div className="text-center">
+        {/* <div className="text-center">
           <div
             className="btn btn-ghost w-max hover:text-green-500 hover:bg-inherit text-2xl"
             onClick={() => {
@@ -323,7 +323,7 @@ const BBB = (props) => {
           >
             [Go back]
           </div>
-        </div>
+        </div> */}
         {/* <Live {...live} /> */}
         {!poolAddress && (
           <div className="flex justify-center items-center mt-48">
@@ -338,7 +338,7 @@ const BBB = (props) => {
             <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
               <div className="card-body p-0">
                 <div className="px-4 sm:flex gap-1 ">
-                  <div className="font-black">
+                  <div className="font-bold">
                     {name} (${symbol})
                   </div>
 
@@ -619,13 +619,13 @@ const BBB = (props) => {
                       />
                     </div>
                     <div className="mt-1 overflow-auto text-left">
-                      <div className="font-black">
+                      <div className="font-bold">
                         {name} (${symbol})
                       </div>
                       <div className="opacity-50 text-xs"> {description}</div>
                     </div>
                     <div
-                      className="font-black text-left mt-2 flex items-center gap-2"
+                      className="font-bold text-left mt-2 flex items-center gap-2"
                       id="holders"
                     >
                       Holder distribution{" "}
@@ -667,7 +667,7 @@ const BBB = (props) => {
                                   />
                                 </div>
                                 <div
-                                  className="hover:underline cursor-pointer font-black"
+                                  className="hover:underline cursor-pointer font-bold"
                                   onClick={() => {
                                     router.push("/dashboard/" + item?.address);
                                   }}
@@ -780,12 +780,13 @@ const BBB = (props) => {
                 </div>
               </div>
 
-              <div className="md:col-span-3 font-black text-2xl text-center">
+              <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div
                   className="card outline rounded-none outline-gray-200"
                   id="chart"
                 >
                   <div className="card-body p-2">
+                    <div className="text-left font-bold text-sm">Chart</div>
                     <div className="h-[400px]">
                       <iframe
                         height="100%"
@@ -808,7 +809,7 @@ const BBB = (props) => {
                   className="card outline rounded-none outline-gray-200"
                   id="swap"
                 >
-                  <div className="card-body font-black  p-2">
+                  <div className="card-body font-bold  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
                         className={
@@ -1127,6 +1128,9 @@ const BBB = (props) => {
                   id="chart"
                 >
                   <div className="card-body p-2">
+                    <div className="text-left font-bold text-sm">
+                      Market Trades
+                    </div>
                     <div className="h-screen">
                       <iframe
                         height="100%"
@@ -1147,7 +1151,7 @@ const BBB = (props) => {
                 </div>
               </div>
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black flex justify-between">
+            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
               <li>
                 <a
                   onClick={() => {

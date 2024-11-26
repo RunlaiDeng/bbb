@@ -3,7 +3,7 @@ const Help = () => {
     <>
       <div className="grid grid-cols-3 m-auto md:w-3/4 w-96  pb-1">
         <div></div>
-        <div className="text-center font-black mt-2">
+        <div className="text-center font-bold mt-2">
           Frequently Asked Questions
         </div>
         <div></div>

@@ -266,19 +266,19 @@ const Megadrop = () => {
   return (
     <>
       <div className="m-auto md:w-3/4 w-96 py-1">
-        <div className="text-center font-black mt-2">MEGADROP</div>
+        <div className="text-center font-bold mt-2">MEGADROP</div>
       </div>
 
       <div className="card m-auto md:w-3/4 w-96 ">
-        <div className="card-body font-black">
-          <div className="font-black">Your Supplies</div>
-          <div className="font-black text-xl   text-green-700">
+        <div className="card-body font-bold">
+          <div className="font-bold">Your Supplies</div>
+          <div className="font-bold text-xl   text-green-700">
             {((mbbbBalance?.toString() || 0) / 1e18)?.toFixed(6)} mBBB
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <label
-              className="btn font-black btn-lg mt-5 w-full btn-success m-auto"
+              className="btn font-bold btn-lg mt-5 w-full btn-success m-auto"
               onClick={() => {
                 if (!isConnected) {
                   openConnectModal();
@@ -290,7 +290,7 @@ const Megadrop = () => {
               Stake
             </label>
             <label
-              className="btn font-black btn-lg mt-5 w-full m-auto"
+              className="btn font-bold btn-lg mt-5 w-full m-auto"
               onClick={() => {
                 if (!isConnected) {
                   openConnectModal();
@@ -315,7 +315,7 @@ const Megadrop = () => {
         </div>
       </div> */}
       <div className="card m-auto md:w-3/4 w-96">
-        <div className="card-body font-black">
+        <div className="card-body font-bold">
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
           </div>
@@ -498,7 +498,7 @@ const Megadrop = () => {
           )}
         </div>
       </div>
-      <dialog id="depositModal" className="modal font-black">
+      <dialog id="depositModal" className="modal font-bold">
         <div className="modal-box">
           <div className="grid grid-cols-3">
             <form method="dialog">
@@ -531,9 +531,9 @@ const Megadrop = () => {
                   }
                 }}
               />
-              <div className="font-black">BBB</div>
+              <div className="font-bold">BBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer font-black"
+                className="kbd kbd-sm cursor-pointer font-bold"
                 onClick={() => {
                   setData({
                     ...data,
@@ -561,7 +561,7 @@ const Megadrop = () => {
           )}
         </div>
       </dialog>
-      <dialog id="withdrawModal" className="modal font-black">
+      <dialog id="withdrawModal" className="modal font-bold">
         <div className="modal-box">
           <div className="grid grid-cols-3">
             <form method="dialog">
@@ -595,9 +595,9 @@ const Megadrop = () => {
                   }
                 }}
               />
-              <div className="font-black">mBBB</div>
+              <div className="font-bold">mBBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer font-black"
+                className="kbd kbd-sm cursor-pointer font-bold"
                 onClick={() => {
                   setData({
                     ...data,
@@ -615,7 +615,7 @@ const Megadrop = () => {
           <WriteButton {...unStake} className="btn mt-5 w-full btn-success" />
         </div>
       </dialog>
-      <dialog id="dropModal" className="modal font-black">
+      <dialog id="dropModal" className="modal font-bold">
         <div className="modal-box">
           <div className="grid grid-cols-3">
             <form method="dialog">
@@ -678,7 +678,7 @@ const Megadrop = () => {
                       }
                     }}
                   />
-                  <div className="font-black">{data?.dSymbol || "MEMES"}</div>
+                  <div className="font-bold">{data?.dSymbol || "MEMES"}</div>
                 </label>
                 <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                   Drop Percent
@@ -694,7 +694,7 @@ const Megadrop = () => {
                       }
                     }}
                   />
-                  <div className="font-black">%</div>
+                  <div className="font-bold">%</div>
                 </label>
               </div>
             </div>
@@ -707,7 +707,7 @@ const Megadrop = () => {
                 placeholder={(price || 0n) / BigInt(1e18)}
                 disabled
               />
-              <div className="font-black">BBB</div>
+              <div className="font-bold">BBB</div>
             </label>
           </div>
           {showApprove && (

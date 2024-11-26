@@ -205,7 +205,7 @@ const Address = () => {
 
   return (
     <>
-      <div className="card font-black p-0 m-auto w-96 sm:w-11/12 mt-4">
+      <div className="card font-bold p-0 m-auto w-96 sm:w-11/12 mt-4">
         <div className="card-body p-0">
           <div className="flex items-center gap-4 p-0 text-xl">
             <Image
@@ -276,7 +276,7 @@ const Address = () => {
           </div>
         </div>
       </div>
-      <div className="card font-black border m-auto w-96 sm:w-11/12 mt-4">
+      <div className="card font-bold border m-auto w-96 sm:w-11/12 mt-4">
         <div className="card-body p-6">
           <div className="flex justify-between items-center">
             Estimated Balance{" "}
@@ -350,7 +350,7 @@ const Address = () => {
 
       <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
         <div className="card-body p-2">
-          <div className="font-black p-4">My Assets</div>
+          <div className="font-bold p-4">My Assets</div>
           {!show && (
             <div className="flex justify-center items-center mt-4">
               <div className="loading loading-bars loading-lg text-success"></div>

@@ -24,7 +24,7 @@ const About = () => {
     <>
       <div className="card">
         <div className="card-body">
-          <div className="sm:flex font-black items-center gap-4 mt-10">
+          <div className="sm:flex font-bold items-center gap-4 mt-10">
             <div>
               <div className="text-5xl">Welcome to BBBPump</div>
 
@@ -38,7 +38,7 @@ const About = () => {
               <Image src={"/logo.png"} height={1000} width={1000} alt="" />
             </div>
           </div>
-          <div className="grid sm:grid-cols-3 font-black mt-8 gap-4 ">
+          <div className="grid sm:grid-cols-3 font-bold mt-8 gap-4 ">
             <div className="flex gap-4 items-center">
               <div>
                 <svg
@@ -111,7 +111,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="sm:flex font-black items-center gap-4 mt-24">
+          <div className="sm:flex font-bold items-center gap-4 mt-24">
             <div>
               <Image src={"/vision.png"} height={1000} width={1000} alt="" />
             </div>
@@ -127,7 +127,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="font-black items-center gap-4 mt-24">
+          <div className="font-bold items-center gap-4 mt-24">
             <div>
               <div className="text-5xl">Our Ecosystem</div>
               <div className="opacity-50 mt-8">

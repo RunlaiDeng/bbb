@@ -22,7 +22,7 @@ const Navbar = () => {
   return (
     <>
       <div className="bg-[url('/bg.png')] bg-center w-full h-18">
-        <div className="navbar items-center font-black">
+        <div className="navbar items-center font-bold">
           <div className="navbar-start">
             <Image
               src={"/logo.png"}
@@ -70,7 +70,7 @@ const Navbar = () => {
             </div> */}
 
             <div className="ml-2 hidden md:flex items-center pt-1">
-              <div className="dropdown dropdown-hover font-black">
+              <div className="dropdown dropdown-hover font-bold">
                 <div
                   tabIndex={0}
                   role="button"
@@ -356,7 +356,7 @@ const Navbar = () => {
                       </svg>
                     </label>
                   </div>
-                  <div className="drawer-side z-50 font-black">
+                  <div className="drawer-side z-50 font-bold">
                     <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
                       <div className="card-body p-0 text-xl font-medium">
                         <div className="flex justify-between items-center p-4">
@@ -603,7 +603,7 @@ const Navbar = () => {
                   </svg>
                 </label>
               </div>
-              <div className="drawer-side z-50 font-black">
+              <div className="drawer-side z-50 font-bold">
                 <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
                   <div className="card-body p-0 text-xl font-medium">
                     <div className="flex justify-between items-center p-4">
@@ -726,8 +726,8 @@ const Navbar = () => {
       </div>
       <dialog id="howisworks" className="modal text-center">
         <div className="modal-box">
-          <h1 className="text-xl font-black">How is works</h1>
-          <div className="font-black my-4">
+          <h1 className="text-xl font-bold">How is works</h1>
+          <div className="font-bold my-4">
             Pump prevents rugs by making sure that all created tokens are safe.
             Each coin on pump is a{" "}
             <span className="text-green-500">fair-launch</span> with{" "}

@@ -125,7 +125,7 @@ const Live = (props) => {
                 </>
               )}
 
-              <div className="font-black">
+              <div className="font-bold">
                 {connected ? "Connected" : "DisConnected"}
               </div>
               <div className="row">

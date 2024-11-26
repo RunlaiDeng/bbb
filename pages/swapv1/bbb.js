@@ -275,7 +275,7 @@ const BBB = () => {
         {trade && (
           <>
             {" "}
-            <div className="card m-auto font-black grid text-xs" id="info">
+            <div className="card m-auto font-bold grid text-xs" id="info">
               <div className="card-body p-2">
                 <div className="md:flex gap-4 items-center">
                   <figure className="h-72 w-full md:h-36 md:w-36 overflow-hidden">
@@ -504,7 +504,7 @@ const BBB = () => {
               </div>
             </div>
             <div className="m-auto grid md:grid-cols-5 gap-2 sm:mx-2">
-              <div className="md:col-span-3 font-black text-2xl text-center">
+              <div className="md:col-span-3 font-bold text-2xl text-center">
                 <div className="card bg-slate-100" id="chart">
                   <div className="card-body p-2">
                     <div className="text-xs text-left flex items-center gap-2">
@@ -545,7 +545,7 @@ const BBB = () => {
                                   />
                                 </div>
                                 <div
-                                  className="hover:underline cursor-pointer font-black"
+                                  className="hover:underline cursor-pointer font-bold"
                                   onClick={() => {
                                     router.push("/dashboard/" + item?.address);
                                   }}
@@ -659,7 +659,7 @@ const BBB = () => {
               </div>
               <div className="md:col-span-2 text-center">
                 <div className="card bg-slate-100" id="swap">
-                  <div className="card-body font-black  p-2">
+                  <div className="card-body font-bold  p-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div
                         className={
@@ -974,7 +974,7 @@ const BBB = () => {
 
                 <div className="card bg-slate-100 mt-2 break-all" id="holders">
                   <div className="card-body p-2">
-                    <div className="font-black text-left ml-4 flex items-center gap-2">
+                    <div className="font-bold text-left ml-4 flex items-center gap-2">
                       Holder distribution{" "}
                       <div
                         className={"cursor-pointer tooltip"}
@@ -1002,7 +1002,7 @@ const BBB = () => {
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td className="hover:underline cursor-pointer font-black">
+                            <td className="hover:underline cursor-pointer font-bold">
                               {item?.address?.substr(36)}
                             </td>
 
@@ -1017,7 +1017,7 @@ const BBB = () => {
                 </div>
               </div>
             </div>
-            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-black flex justify-between">
+            <ul className="menu menu-horizontal bg-base-200 fixed bottom-0 left-0 w-full z-50 md:hidden font-bold flex justify-between">
               <li>
                 <a
                   onClick={() => {
