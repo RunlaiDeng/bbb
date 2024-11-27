@@ -114,7 +114,7 @@ const TokenTrade = (props) => {
                           $
                           {Number(
                             Number(
-                              2 * xdcPrice * formatEther(item?.xdcAmount || 0)
+                              xdcPrice * formatEther(item?.xdcAmount || 0)
                             )?.toFixed(6)
                           )?.toLocaleString()}
                         </td>
