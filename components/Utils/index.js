@@ -157,7 +157,8 @@ async function getQuoteFromPool(src, dst, amount) {
         "&dst=" +
         dst +
         "&amount=" +
-        amount
+        amount +
+        "&slippage=10"
     );
     return json;
   } catch (e) {
