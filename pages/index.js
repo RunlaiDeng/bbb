@@ -540,7 +540,7 @@ const Home = () => {
                 </div>
               )}
             </div>
-            {latestKing?.index > 0 && xdcPrice && (
+            {latestKing?.index > 0 && (
               <div className="px-4 w-full m-auto ">
                 <div
                   className={
