@@ -120,7 +120,7 @@ const TokenTrade = (props) => {
                         <td
                           className="hover:underline cursor-pointer flex items-center"
                           onClick={() => {
-                            router.push("/dashboard/" + item?.address);
+                            router.push("/dashboard/" + item?.account);
                           }}
                         >
                           {item?.account?.substr(36)}{" "}
@@ -195,7 +195,7 @@ const TokenTrade = (props) => {
                         <td
                           className="hover:underline cursor-pointer flex items-center"
                           onClick={() => {
-                            router.push("/dashboard/" + item?.address);
+                            router.push("/dashboard/" + item?.account);
                           }}
                         >
                           {item?.account?.substr(36)}{" "}
