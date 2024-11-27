@@ -9,7 +9,7 @@ const TokenTrade = (props) => {
   const [data, setData] = useState({ type: 1 });
 
   async function fetchData() {
-    const orders = await rpc.getOrders(1, 1, 100, 2, undefined, token);
+    const orders = await rpc.getOrders(1, 1, 50, 2, undefined, token);
     console.log(orders);
     setData({ ...data, orders });
   }
@@ -108,13 +108,15 @@ const TokenTrade = (props) => {
                         <td>
                           $
                           {Number(
-                            2 * xdcPrice * formatEther(item?.xdcAmount || 0)
-                          )?.toFixed(6)}
+                            Number(
+                              2 * xdcPrice * formatEther(item?.xdcAmount || 0)
+                            )?.toFixed(6)
+                          )?.toLocaleString()}
                         </td>
                         <td
                           className="hover:underline cursor-pointer flex items-center"
                           onClick={() => {
-                            router.push("/dashboard/" + item?.account);
+                            router.push("/dashboard/" + item?.address);
                           }}
                         >
                           {item?.account?.substr(36)}{" "}
