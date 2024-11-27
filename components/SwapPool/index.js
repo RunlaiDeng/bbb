@@ -414,7 +414,7 @@ const BBB = (props) => {
                 >
                   <div className="card-body p-2">
                     <div className="text-left font-bold text-sm">Chart</div>
-                    <div className="h-[400px]">
+                    <div className="h-[500px]">
                       <iframe
                         height="100%"
                         width="100%"

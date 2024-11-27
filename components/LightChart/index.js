@@ -13,7 +13,7 @@ const CandleStickChart = (props) => {
     // 创建价格图表
     const priceChart = createChart(priceChartContainerRef.current, {
       width: priceChartContainerRef.current.clientWidth,
-      height: 300,
+      height: 500,
     });
     priceChartRef.current = priceChart;
     priceChart.priceScale("right").applyOptions({
