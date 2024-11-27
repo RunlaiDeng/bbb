@@ -271,7 +271,9 @@ const Swap = (props) => {
     address,
   };
   const tTrade = {
-    poolAddress: undefined,
+    token,
+    symbol,
+    xdcPrice,
   };
 
   const { width: windowWidth } = useWindowSize();
@@ -658,7 +660,6 @@ const Swap = (props) => {
                 </div>
               )}
             </div>
-          
           </>
         )}
       </>

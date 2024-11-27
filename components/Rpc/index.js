@@ -33,9 +33,10 @@ const getOrders = async (
   pageNumber = 1,
   pageSize = 10,
   type,
-  account
+  account,
+  token
 ) => {
-  return send("getOrders", [sort, pageNumber, pageSize, type, account]);
+  return send("getOrders", [sort, pageNumber, pageSize, type, account, token]);
 };
 
 const getStats = async () => {

@@ -314,6 +314,7 @@ const BBB = (props) => {
 
   const isBBB = token == bbbInfo.address;
   const canUpdate = address == deployer && !isBBB;
+  const graduate = true;
 
   const tInfo = {
     token,
@@ -340,6 +341,9 @@ const BBB = (props) => {
   };
   const tTrade = {
     poolAddress,
+    token,
+    graduate,
+    
   };
   return (
     mount && (

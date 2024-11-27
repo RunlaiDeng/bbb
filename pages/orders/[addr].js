@@ -191,8 +191,8 @@ const Orders = () => {
                         const drop = drops?.[index];
                         const price = BigInt(
                           Math.floor(
-                            ((Number(item?.open) || 0) +
-                              (Number(item?.close) || 0)) *
+                            (
+                             2* (Number(item?.close) || 0)) *
                               xdcPrice
                           )
                         );
@@ -206,7 +206,7 @@ const Orders = () => {
                         return (
                           <tr key={item?.tid} className="whitespace-nowrap">
                             <td>{getDateSpecifics(item?.time)}</td>
-                            <td className="flex gap-2 items-center">
+                            <td className="flex gap-1 items-center">
                               <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
                                 <Image
                                   height={400}

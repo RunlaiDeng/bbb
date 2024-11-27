@@ -119,11 +119,9 @@ const About = () => {
               <div className="text-5xl">Our Vision</div>
 
               <div className="opacity-50 mt-8">
-                Our vision is to build an all-in-one platform that integrates
-                DeFi, DEX, Launchpad, and blockchain technology, focusing on
-                supporting meme projects. All profits will be directed towards
-                BBB holders, ensuring the platform operates to maximize benefits
-                for BBB holders.
+                Our vision is to increase the freedom of money globally. We
+                believe that by spreading this freedom, we can significantly
+                improve lives around the world.
               </div>
             </div>
           </div>
