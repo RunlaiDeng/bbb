@@ -274,6 +274,7 @@ const Swap = (props) => {
     token,
     symbol,
     xdcPrice,
+    address
   };
 
   const { width: windowWidth } = useWindowSize();
