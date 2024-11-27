@@ -9,9 +9,11 @@ import {
 } from "../Utils";
 import { useEffect, useState } from "react";
 import ImageUpload from "../ImageUpload";
-import { useChainId } from "wagmi";
+import { useAccount, useChainId, useWatchAsset } from "wagmi";
 import { contracts } from "@/config";
 import { formatEther } from "viem";
+import { useNotification } from "../Context/notice";
+import copy from "copy-to-clipboard";
 const TokenInfo = (props) => {
   const {
     token,
@@ -81,6 +83,9 @@ const TokenInfo = (props) => {
       document.getElementById("updateModal").close();
     },
   };
+  const { isConnected } = useAccount();
+  const { watchAsset } = useWatchAsset();
+  const { success } = useNotification();
 
   return (
     <>
