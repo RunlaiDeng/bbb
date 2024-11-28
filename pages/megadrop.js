@@ -44,82 +44,12 @@ const Megadrop = () => {
         args: [address],
       },
       { ...bbb, functionName: "balanceOf", args: [address] },
-      {
-        ...mbbb,
-        functionName: "getDropTokenLength",
-        args: [],
-      },
-      {
-        ...mbbb,
-        functionName: "price",
-        args: [],
-      },
-      {
-        ...mbbb,
-        functionName: "totalSupply",
-        args: [],
-      },
     ],
-    multicallAddress: mutilCall?.address,
   });
 
   const allowance = reads0?.[0]?.result;
   const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
-  const dropTokenLength = reads0?.[3]?.result;
-  const price = reads0?.[4]?.result;
-  const mbbbTotalSupply = reads0?.[5]?.result;
-
-  const searchDropTokens = [];
-
-  for (let i = 0; i < dropTokenLength; i++) {
-    searchDropTokens.push({
-      ...mbbb,
-      functionName: "getDropToken",
-      args: [i],
-    });
-  }
-
-  const { data: reads1 } = useReadContracts({
-    contracts: searchDropTokens,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const dropTokens = reads1?.map((item) => item?.result);
-
-  const searchClaimAmt = [];
-
-  for (let i = 0; i < dropTokenLength; i++) {
-    searchClaimAmt.push({
-      ...mbbb,
-      functionName: "getClaimAmt",
-      args: [i, address],
-    });
-  }
-
-  const { data: reads2 } = useReadContracts({
-    contracts: searchClaimAmt,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const claimAmts = reads2?.map((item) => item?.result);
-
-  const searchClaimed = [];
-
-  for (let i = 0; i < dropTokenLength; i++) {
-    searchClaimed.push({
-      ...mbbb,
-      functionName: "claimed",
-      args: [address, i],
-    });
-  }
-
-  const { data: reads3 } = useReadContracts({
-    contracts: searchClaimed,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const claimed = reads3?.map((item) => item?.result);
 
   const { data: reads7 } = useReadContracts({
     contracts: [
@@ -129,10 +59,11 @@ const Megadrop = () => {
         args: [],
       },
     ],
-    multicallAddress: mutilCall?.address,
   });
 
   const dropTokenLengthV2 = reads7?.[0]?.result;
+
+  console.log(dropTokenLengthV2);
 
   const searchDropTokensV2 = [];
 
@@ -146,7 +77,6 @@ const Megadrop = () => {
 
   const { data: reads4, refetch: refetch1 } = useReadContracts({
     contracts: searchDropTokensV2,
-    multicallAddress: mutilCall?.address,
   });
 
   let dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
@@ -234,24 +164,6 @@ const Megadrop = () => {
     },
   };
 
-  const drop = {
-    buttonName: "Confirm",
-    data: {
-      ...mbbb,
-      functionName: "drop",
-      args: [
-        data?.dName,
-        data?.dSymbol,
-        BigInt(data?.dTotalSupply) * BigInt(1e18),
-        data?.dDropPercent,
-      ],
-    },
-    callback: () => {
-      refetch();
-      document.getElementById("dropModal").close();
-    },
-  };
-
   const bbbIsEnough = false;
 
   let showApprove = true;
@@ -319,183 +231,78 @@ const Megadrop = () => {
           <div className="grid grid-cols-2">
             <div className="">Drop History</div>
           </div>
-          <div className=" rounded-none hidden">
-            <div className="flex gap-2">
-              <div
-                className={
-                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
-                  (data?.drop == 0 ? " text-green-700 bg-inherit" : "")
-                }
-                onClick={() => {
-                  setData({ ...data, drop: 0 });
-                }}
-              >
-                Official
-              </div>
-              <div
-                className={
-                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
-                  (data?.drop == 1 ? " text-green-700 bg-inherit" : "")
-                }
-                onClick={() => {
-                  setData({ ...data, drop: 1 });
-                }}
-              >
-                Community V1
-              </div>
-              <div
-                className={
-                  "btn btn-ghost hover:text-green-700 hover:bg-inherit" +
-                  (data?.drop == 2 ? " text-green-700 bg-inherit" : "")
-                }
-                onClick={() => {
-                  setData({ ...data, drop: 2 });
-                }}
-              >
-                Community V2
-              </div>
-            </div>
+
+          <div className="overflow-x-auto  rounded-none">
+            <table className="table">
+              {/* head */}
+              <thead className="text-center">
+                <tr>
+                  <th>Coin</th>
+                  <th>Total Airdrop Amount</th>
+                  <th>My Staked BBB Amount</th>
+                  <th>Total Staked BBB</th>
+                  <th>My Staked BBB Percentage</th>
+                  <th>My Airdrop Amount</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dropTokensV2?.map((item, index) => {
+                  const claim = {
+                    buttonName: "Claim",
+                    data: {
+                      ...mbbbv2,
+                      functionName: "claim",
+                      args: [index + 1, address],
+                    },
+                    callback: () => {
+                      refetch();
+                    },
+                  };
+
+                  const amtsv2 = claimAmtsV2?.[index];
+
+                  const airdropAmount = amtsv2?.[0];
+                  const totalAirdropAmount = amtsv2?.[1];
+                  const stakeMbbbAmount = amtsv2?.[2];
+                  const totalStakeMbbbAmount = amtsv2?.[3];
+                  const stakePercent =
+                    (100 * stakeMbbbAmount?.toString() || 0) /
+                      totalStakeMbbbAmount?.toString() || 0;
+
+                  return (
+                    <tr key={item?.index} className="text-center">
+                      <td>
+                        <div
+                          className={`cursor-pointer tooltip ${
+                            isCopied ? "tooltip-success" : ""
+                          }`}
+                          data-tip={tooltipText}
+                          onClick={() => {
+                            handleCopyClick(item?.token);
+                          }}
+                        >
+                          {item?.symbol}
+                        </div>
+                      </td>
+                      <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
+                      <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                      <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                      <td>{stakePercent?.toString() || 0} %</td>
+                      <td>{airdropAmount?.toString() / 1e18 || 0}</td>
+                      <td>
+                        {!amtsv2 || airdropAmount?.toString() == 0 ? (
+                          <>Unavailable</>
+                        ) : (
+                          <WriteButton {...claim} className="btn btn-success" />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-
-          {data?.drop == 1 && (
-            <div className="overflow-x-auto  rounded-none">
-              <table className="table">
-                {/* head */}
-                <thead className="text-center">
-                  <tr>
-                    <th></th>
-                    <th>Memes Symbol</th>
-                    <th>My Airdrop Amount</th>
-                    <th>Operation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dropTokens?.map((item, index) => {
-                    const claim = {
-                      buttonName: "Claim",
-                      data: {
-                        ...mbbb,
-                        functionName: "claim",
-                        args: [index],
-                      },
-                      callback: () => {
-                        refetch();
-                      },
-                    };
-
-                    return (
-                      <tr key={index} className="text-center">
-                        <th>{index}</th>
-                        <td>
-                          <div
-                            className={`cursor-pointer tooltip ${
-                              isCopied ? "tooltip-success" : ""
-                            }`}
-                            data-tip={tooltipText}
-                            onClick={() => {
-                              handleCopyClick(item?.token);
-                            }}
-                          >
-                            {item?.symbol}
-                          </div>
-                        </td>
-                        <td>{claimAmts?.[index]?.toString() / 1e18 || 0}</td>
-                        <td>
-                          {claimed?.[index] ||
-                          claimAmts?.[index]?.toString() == 0 ? (
-                            <>Unavailable</>
-                          ) : (
-                            <WriteButton
-                              {...claim}
-                              className="btn btn-success"
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {data?.drop == 2 && (
-            <div className="overflow-x-auto  rounded-none">
-              <table className="table">
-                {/* head */}
-                <thead className="text-center">
-                  <tr>
-                    <th></th>
-                    <th>Memes Symbol</th>
-                    <th>Total Airdrop Amount</th>
-                    <th>My Staked BBB Amount</th>
-                    <th>Total Staked BBB</th>
-                    <th>My Staked BBB Percentage</th>
-                    <th>My Airdrop Amount</th>
-                    <th>Operation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dropTokensV2?.map((item, index) => {
-                    const claim = {
-                      buttonName: "Claim",
-                      data: {
-                        ...mbbbv2,
-                        functionName: "claim",
-                        args: [index + 1, address],
-                      },
-                      callback: () => {
-                        refetch();
-                      },
-                    };
-
-                    const amtsv2 = claimAmtsV2?.[index];
-
-                    const airdropAmount = amtsv2?.[0];
-                    const totalAirdropAmount = amtsv2?.[1];
-                    const stakeMbbbAmount = amtsv2?.[2];
-                    const totalStakeMbbbAmount = amtsv2?.[3];
-                    const stakePercent =
-                      (100 * stakeMbbbAmount?.toString() || 0) /
-                        totalStakeMbbbAmount?.toString() || 0;
-
-                    return (
-                      <tr key={item?.index} className="text-center">
-                        <th>{index + 1}</th>
-                        <td>
-                          <div
-                            className={`cursor-pointer tooltip ${
-                              isCopied ? "tooltip-success" : ""
-                            }`}
-                            data-tip={tooltipText}
-                            onClick={() => {
-                              handleCopyClick(item?.token);
-                            }}
-                          >
-                            {item?.symbol}
-                          </div>
-                        </td>
-                        <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
-                        <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
-                        <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
-                        <td>{stakePercent?.toString() || 0} %</td>
-                        <td>{airdropAmount?.toString() / 1e18 || 0}</td>
-                        <td>
-                          {!amtsv2 || airdropAmount?.toString() == 0 ? (
-                            <>Unavailable</>
-                          ) : (
-                            <WriteButton
-                              {...claim}
-                              className="btn btn-success"
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
       </div>
       <dialog id="depositModal" className="modal font-bold">
@@ -613,109 +420,6 @@ const Megadrop = () => {
             Avbl {(mbbbBalance?.toString() || 0) / 1e18} mBBB
           </div>
           <WriteButton {...unStake} className="btn mt-5 w-full btn-success" />
-        </div>
-      </dialog>
-      <dialog id="dropModal" className="modal font-bold">
-        <div className="modal-box">
-          <div className="grid grid-cols-3">
-            <form method="dialog">
-              <button className="btn">X</button>
-            </form>
-            <h3 className="font-bold text-lg text-center mt-2">Drop Memes</h3>
-          </div>
-          <div className="text-center mt-5">
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto">
-              Name
-              <input
-                type="text"
-                className="grow"
-                placeholder="Memes"
-                value={data?.dName}
-                onChange={(e) => {
-                  setData({ ...data, dName: e.target.value });
-                }}
-              />
-            </label>
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Symbol
-              <input
-                type="text"
-                className="grow"
-                placeholder="MEMES"
-                value={data?.dSymbol}
-                onChange={(e) => {
-                  setData({ ...data, dSymbol: e.target.value });
-                }}
-              />
-            </label>
-
-            <div className="collapse">
-              <input
-                type="checkbox"
-                value={data?.showOptions}
-                onClick={(e) => {
-                  setData({
-                    ...data,
-                    showOptions: e.target.checked,
-                  });
-                }}
-              />
-              <div className="collapse-title text-left pl-0 text-blue-500">
-                Show more options {data?.showOptions ? "↑" : "↓"}
-              </div>
-              <div className="collapse-content pl-0">
-                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                  Total Supply
-                  <input
-                    type="text"
-                    className="grow"
-                    placeholder="0.00"
-                    value={data?.dTotalSupply}
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (/^\d*$/.test(newValue)) {
-                        setData({ ...data, dTotalSupply: newValue });
-                      }
-                    }}
-                  />
-                  <div className="font-bold">{data?.dSymbol || "MEMES"}</div>
-                </label>
-                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                  Drop Percent
-                  <input
-                    type="text"
-                    className="grow"
-                    placeholder="0.00"
-                    value={data?.dDropPercent}
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (/^\d*$/.test(newValue) && newValue <= 100) {
-                        setData({ ...data, dDropPercent: newValue });
-                      }
-                    }}
-                  />
-                  <div className="font-bold">%</div>
-                </label>
-              </div>
-            </div>
-
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Cost
-              <input
-                type="text"
-                className="grow"
-                placeholder={(price || 0n) / BigInt(1e18)}
-                disabled
-              />
-              <div className="font-bold">BBB</div>
-            </label>
-          </div>
-          {showApprove && (
-            <WriteButton {...approve} className="btn mt-5 w-full btn-success" />
-          )}
-          {!showApprove && (
-            <WriteButton {...drop} className="btn mt-5 w-full btn-success" />
-          )}
         </div>
       </dialog>
     </>
