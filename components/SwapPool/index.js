@@ -138,9 +138,9 @@ const BBB = (props) => {
     symbol = bbbInfo.symbol;
     imageUrl = bbbInfo.imageUrl;
     description = bbbInfo.description;
-    website = bbbInfo.website;
-    telegram = bbbInfo.tg;
-    twitter = bbbInfo.x;
+    website = bbbInfo.website?.replace("https://", "");
+    telegram = bbbInfo.tg?.replace("https://t.me/", "");
+    twitter = bbbInfo.x?.replace("https://x.com/", "");
     cmc = bbbInfo.cmc;
     index = symbol;
     deployer = bbbInfo.deployer;
