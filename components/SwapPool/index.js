@@ -747,7 +747,7 @@ const BBB = (props) => {
                     )}
                     {token == bbbInfo.address && (
                       <div
-                        className="text-left font-bold text-xs hover:underline cursor-pointer flex items-center "
+                        className="text-left font-bold text-xs hover:underline cursor-pointer flex items-center text-red-700"
                         onClick={() => {
                           window.open(xswapDexLink);
                         }}
