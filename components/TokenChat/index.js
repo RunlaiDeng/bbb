@@ -70,7 +70,7 @@ const TokenChat = (props) => {
                     <div
                       className="cursor-pointer hover:bg-slate-300 rounded-lg flex gap-2 p-1"
                       onClick={() => {
-                        notice("Coming soon");
+                        info("Coming soon");
                       }}
                     >
                       <svg
