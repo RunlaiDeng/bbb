@@ -142,7 +142,9 @@ const TokenTrade = (props) => {
                         </td>
                         <td
                           className="hover:underline cursor-pointer"
-                          onClick={() => {}}
+                          onClick={() => {
+                            window.open("https://xdcscan.com/tx/" + item?.hash);
+                          }}
                         >
                           <svg
                             viewBox="0 0 1024 1024"
@@ -237,7 +239,9 @@ const TokenTrade = (props) => {
                         </td>
                         <td
                           className="hover:underline cursor-pointer"
-                          onClick={() => {}}
+                          onClick={() => {
+                            window.open("https://xdcscan.com/tx/" + item?.hash);
+                          }}
                         >
                           <svg
                             viewBox="0 0 1024 1024"
