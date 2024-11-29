@@ -1,6 +1,7 @@
 import Image from "next/image";
 const TokenHead = (props) => {
   const { name, symbol, deployer, createTime, poolCap } = props;
+  
   return (
     <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
       <div className="card-body p-0">

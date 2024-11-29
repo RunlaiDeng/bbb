@@ -2,15 +2,16 @@ import { bbbInfo, contracts } from "@/config";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
-import { getDate, getPool } from "@/components/Utils";
+import { getDate, getPool, getXDCPrice } from "@/components/Utils";
 import TokenInfo from "@/components/TokenInfo";
 import TokenChat from "@/components/TokenChat";
 import TokenTradePool from "@/components/TokenTradePool";
 import useWindowSize from "@/components/Hook/useWindowSize";
 import TokenSwapPool from "@/components/TokenSwapPool";
-import TokenHead from "@/components/TokenHead";
+import TokenHeadPool from "@/components/TokenHeadPool";
 import TokenSwapFun from "@/components/TokenSwapFun";
 import TokenTradeFun from "@/components/TokenTradeFun";
+import TokenHeadFun from "@/components/TokenHeadFun";
 
 const Swap = () => {
   const router = useRouter();
@@ -25,7 +26,15 @@ const Swap = () => {
     token = bbb.address;
   }
 
+  async function fetchData() {
+    const xdc = await getXDCPrice();
+    setData({ ...data, xdc });
+  }
+
+  const xdcPrice = data?.xdc?.price;
+
   useEffect(() => {
+    fetchData();
     setMount(true);
   }, []);
 
@@ -123,7 +132,6 @@ const Swap = () => {
     poolAddress = pool?.address;
     showData = poolAddress;
   } else {
-    poolCap = 0;
     showData = dropToken;
   }
 
@@ -159,6 +167,7 @@ const Swap = () => {
   const tTradeFun = {
     symbol,
     token,
+    xdcPrice,
   };
 
   const tSwapPool = {
@@ -174,12 +183,23 @@ const Swap = () => {
     token,
     imageUrl,
     symbol,
+    xdcPrice,
   };
 
-  const tHead = {
+  const tHeadPool = {
     name,
     symbol,
     poolCap,
+    createTime,
+    deployer,
+  };
+
+  const tHeadFun = {
+    index,
+    name,
+    symbol,
+    token,
+    xdcPrice,
     createTime,
     deployer,
   };
@@ -189,7 +209,11 @@ const Swap = () => {
       <>
         {showData ? (
           <>
-            <TokenHead {...tHead} />
+            {graduate ? (
+              <TokenHeadPool {...tHeadPool} />
+            ) : (
+              <TokenHeadFun {...tHeadFun} />
+            )}
 
             <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
               {windowWidth > 768 && (

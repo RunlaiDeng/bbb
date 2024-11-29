@@ -6,19 +6,18 @@ import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 
 const TokenTradeFun = (props) => {
-  const { token, symbol } = props;
+  const { token, symbol, xdcPrice } = props;
   const [data, setData] = useState({ type: 1 });
   const { address } = useAccount();
 
   async function fetchData() {
-    const xdc = await getXDCPrice();
     if (data?.type == 1) {
       const orders = await rpc.getOrders(1, 1, 50, 2, undefined, token);
-      setData({ ...data, xdc, orders });
+      setData({ ...data, orders });
     }
     if (data?.type == 2) {
       const myOrders = await rpc.getOrders(1, 1, 50, 2, address, token);
-      setData({ ...data, xdc, myOrders });
+      setData({ ...data, myOrders });
     }
   }
   useEffect(() => {
@@ -27,7 +26,6 @@ const TokenTradeFun = (props) => {
 
   const list = data?.orders?.list;
   const myList = data?.myOrders?.list;
-  const xdcPrice = data?.xdc?.price;
 
   const router = useRouter();
   return (
@@ -110,7 +108,7 @@ const TokenTradeFun = (props) => {
                         {item?.account?.substr(36)}{" "}
                         <svg
                           t="1732778050219"
-                          class="icon"
+                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +141,7 @@ const TokenTradeFun = (props) => {
                       >
                         <svg
                           t="1732778050219"
-                          class="icon"
+                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +226,7 @@ const TokenTradeFun = (props) => {
                         {item?.account?.substr(36)}{" "}
                         <svg
                           t="1732778050219"
-                          class="icon"
+                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +259,7 @@ const TokenTradeFun = (props) => {
                       >
                         <svg
                           t="1732778050219"
-                          class="icon"
+                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
