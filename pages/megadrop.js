@@ -63,8 +63,6 @@ const Megadrop = () => {
 
   const dropTokenLengthV2 = reads7?.[0]?.result;
 
-  console.log(dropTokenLengthV2);
-
   const searchDropTokensV2 = [];
 
   for (let i = 0; i < dropTokenLengthV2; i++) {

@@ -128,7 +128,7 @@ const TokenSwap = (props) => {
       }
     },
   };
-console.log(allowance)
+
   let showApprove = true;
   if (allowance && allowance >= (data?.sellAmount || 0)) {
     showApprove = false;
@@ -304,7 +304,7 @@ console.log(allowance)
               <div className="text-right text-xs">
                 Avbl :{" "}
                 {xdcBalance >= 0
-                  ? Number(formatEther(xdcBalance))?.toFixed(2)
+                  ? Number(formatEther(xdcBalance))?.toLocaleString()
                   : undefined}{" "}
                 {"XDC"}
               </div>
