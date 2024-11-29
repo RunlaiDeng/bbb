@@ -5,13 +5,23 @@ import { track } from "@vercel/analytics";
 import { icecreamswap, xswapDexLink } from "@/config";
 import { useAccount, useBalance, useReadContracts } from "wagmi";
 import SendButton from "@/components/SendButton";
-import { getQuoteFromPool } from "../Utils";
+import { getBBBPrice, getPrice, getQuoteFromPool } from "../Utils";
 import WriteButton from "../WriteButton";
 const TokenSwap = (props) => {
   const [data, setData] = useState({ state: "buy" });
-  const { poolAddress, isBBB, symbol, imageUrl, token } = props;
+  const { poolAddress, isBBB, symbol, imageUrl, token, xdcPrice } = props;
+
+  async function fetchData() {
+    const pool = await getPrice(poolAddress);
+    setData({ ...data, pool });
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const { address } = useAccount();
+
+  const poolPrice = data?.pool?.price;
 
   const { data: balance } = useBalance({ address: address });
   const tokenContract = { address: token, abi: erc20Abi };
@@ -86,9 +96,19 @@ const TokenSwap = (props) => {
   const buyTx = data?.buy?.tx || {};
   sellTx.value = BigInt(sellTx?.value || 0);
   buyTx.value = BigInt(buyTx?.value || 0);
+  const toBuyAmount = BigInt(data?.buy?.toAmount || 0);
+  const toSellAmount = BigInt(data?.sell?.toAmount || 0);
+
+  const usdBuyIn = Number(buyTx?.value) * xdcPrice;
+  const usdBuyTo = Number(toBuyAmount) * poolPrice;
+  const usdSellIn = Number(sellTx?.value) * xdcPrice;
+  const usdSellTo = Number(toSellAmount) * poolPrice;
+  const disableBuy = !buyTx?.data || usdBuyIn * 0.4 > usdBuyTo;
+  const disableSell = !sellTx?.data || usdSellIn * 0.4 > usdSellTo;
+
   const buy = {
     buttonName: "Place Trade",
-    disabled: !buyTx?.data || true,
+    disabled: disableBuy,
     data: buyTx,
     before: () => {
       track("buy");
@@ -100,7 +120,7 @@ const TokenSwap = (props) => {
 
   const sell = {
     buttonName: "Place Trade",
-    disabled: !sellTx?.data || true,
+    disabled: disableSell,
     data: sellTx,
     before: () => {
       track("sell");
@@ -286,7 +306,7 @@ const TokenSwap = (props) => {
                 <input
                   type="number"
                   className="grow"
-                  value={formatEther(BigInt(data?.buy?.toAmount || 0n))}
+                  value={formatEther(BigInt(toBuyAmount || 0n))}
                   disabled
                 />
                 {symbol}
@@ -414,7 +434,7 @@ const TokenSwap = (props) => {
                 <input
                   type="number"
                   className="grow"
-                  value={formatEther(BigInt(data?.sell?.toAmount || 0))}
+                  value={formatEther(BigInt(toSellAmount || 0))}
                   disabled
                 />
                 XDC

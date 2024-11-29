@@ -21,21 +21,23 @@ const Swap = () => {
   const mbbb = contracts[chainId]?.mbbbv2;
   const [data, setData] = useState({});
   const [mount, setMount] = useState(false);
+  const [price, setPrice] = useState({});
 
   if (token == "bbb") {
     token = bbb.address;
   }
 
   async function fetchData() {
+    setMount(false);
     const xdc = await getXDCPrice();
-    setData({ ...data, xdc });
+    setPrice({ ...price, xdc });
+    setMount(true);
   }
 
-  const xdcPrice = data?.xdc?.price;
+  const xdcPrice = price?.xdc?.price;
 
   useEffect(() => {
     fetchData();
-    setMount(true);
   }, []);
 
   const { data: reads0 } = useReadContracts({
@@ -130,9 +132,9 @@ const Swap = () => {
     const pool = data?.pool;
     poolCap = pool?.cap;
     poolAddress = pool?.address;
-    showData = poolAddress;
+    showData = poolAddress != undefined && xdcPrice != undefined;
   } else {
-    showData = dropToken;
+    showData = dropToken != undefined && xdcPrice != undefined;
   }
 
   const tInfo = {
@@ -176,6 +178,7 @@ const Swap = () => {
     symbol,
     imageUrl,
     token,
+    xdcPrice,
   };
 
   const tSwapFun = {
@@ -204,55 +207,47 @@ const Swap = () => {
     deployer,
   };
 
-  return (
-    mount && (
-      <>
-        {showData ? (
-          <>
-            {graduate ? (
-              <TokenHeadPool {...tHeadPool} />
-            ) : (
-              <TokenHeadFun {...tHeadFun} />
-            )}
+  return showData ? (
+    <>
+      {graduate ? (
+        <TokenHeadPool {...tHeadPool} />
+      ) : (
+        <TokenHeadFun {...tHeadFun} />
+      )}
 
-            <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
-              {windowWidth > 768 && (
-                <div className="md:col-span-1 text-center  hidden md:block">
-                  <TokenInfo {...tInfo} />
-                  <TokenChat {...tChat} />
-                </div>
-              )}
-
-              <div className="md:col-span-3 font-bold text-2xl text-center">
-                {graduate ? (
-                  <TokenSwapPool {...tSwapPool} />
-                ) : (
-                  <TokenSwapFun {...tSwapFun} />
-                )}
-              </div>
-              {windowWidth > 768 && (
-                <div className="md:col-span-1 text-center  hidden md:block">
-                  {graduate ? (
-                    <TokenTradePool {...tTradePool} />
-                  ) : (
-                    <TokenTradeFun {...tTradeFun} />
-                  )}
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex justify-center items-center mt-48">
-              <div className="loading loading-bars loading-lg text-success"></div>
-            </div>
-            <div className="text-center mt-10">Searching for {token}</div>
-          </>
+      <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
+        {windowWidth > 768 && (
+          <div className="md:col-span-1 text-center  hidden md:block">
+            <TokenInfo {...tInfo} />
+            <TokenChat {...tChat} />
+          </div>
         )}
-        {/* {!removed && <SwapFun {...tokenInput} />}
-        {removed && <SwapPool {...tokenInput} />} */}
-      </>
-    )
+
+        <div className="md:col-span-3 font-bold text-2xl text-center">
+          {graduate ? (
+            <TokenSwapPool {...tSwapPool} />
+          ) : (
+            <TokenSwapFun {...tSwapFun} />
+          )}
+        </div>
+        {windowWidth > 768 && (
+          <div className="md:col-span-1 text-center  hidden md:block">
+            {graduate ? (
+              <TokenTradePool {...tTradePool} />
+            ) : (
+              <TokenTradeFun {...tTradeFun} />
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="flex justify-center items-center mt-48">
+        <div className="loading loading-bars loading-lg text-success"></div>
+      </div>
+      <div className="text-center mt-10">Searching for {token}</div>
+    </>
   );
 };
 
