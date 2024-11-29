@@ -229,9 +229,6 @@ const Home = () => {
 
   const router = useRouter();
 
-  const MAX_UINT256 = BigInt(
-    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-  );
 
   const [image, setImage] = useState("");
 

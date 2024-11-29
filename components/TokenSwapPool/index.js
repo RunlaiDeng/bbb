@@ -88,7 +88,7 @@ const TokenSwap = (props) => {
   buyTx.value = BigInt(buyTx?.value || 0);
   const buy = {
     buttonName: "Place Trade",
-    disabled: !buyTx?.data,
+    disabled: !buyTx?.data || true,
     data: buyTx,
     before: () => {
       track("buy");
@@ -100,7 +100,7 @@ const TokenSwap = (props) => {
 
   const sell = {
     buttonName: "Place Trade",
-    disabled: !sellTx?.data,
+    disabled: !sellTx?.data || true,
     data: sellTx,
     before: () => {
       track("sell");
@@ -452,7 +452,6 @@ const TokenSwap = (props) => {
             >
               <svg
                 t="1732767890609"
-                
                 viewBox="0 0 1024 1024"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
