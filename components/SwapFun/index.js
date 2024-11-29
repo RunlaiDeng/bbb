@@ -38,9 +38,6 @@ import TokenTrade from "../TokenTrade";
 import useWindowSize from "../Hook/useWindowSize";
 
 const Swap = (props) => {
-  const { openConnectModal } = useConnectModal();
-  const { watchAsset } = useWatchAsset();
-  const { success, info, failure } = useNotification();
   const router = useRouter();
   const { token } = props;
 
@@ -274,7 +271,7 @@ const Swap = (props) => {
     token,
     symbol,
     xdcPrice,
-    address
+    address,
   };
 
   const { width: windowWidth } = useWindowSize();
