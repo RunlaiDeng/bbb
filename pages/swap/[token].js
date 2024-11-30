@@ -62,6 +62,8 @@ const Swap = () => {
   let index;
   let deployer;
   let createTime;
+  let xdcAmount;
+  let maxXdc;
 
   let graduate;
   if (token == bbb.address) {
@@ -93,6 +95,8 @@ const Swap = () => {
     index = dropToken?.index;
     deployer = dropToken?.deployer;
     createTime = getDate(dropToken?.createTime);
+    xdcAmount = dropToken?.xdcAmount;
+    maxXdc = dropToken?.maxXdc;
   }
 
   const { width: windowWidth } = useWindowSize();
@@ -128,6 +132,7 @@ const Swap = () => {
   let poolCap;
   let poolAddress;
   let showData;
+  let showRLD;
   if (graduate) {
     const pool = data?.pool;
     poolCap = pool?.cap;
@@ -135,6 +140,7 @@ const Swap = () => {
     showData = poolAddress != undefined && xdcPrice != undefined;
   } else {
     showData = dropToken != undefined && xdcPrice != undefined;
+    showRLD = true;
   }
 
   const tInfo = {
@@ -153,6 +159,10 @@ const Swap = () => {
     createTime,
     canUpdate,
     isBBB,
+    showRLD,
+    xdcAmount,
+    maxXdc,
+    xdcPrice,
   };
 
   const tChat = {
