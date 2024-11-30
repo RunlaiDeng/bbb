@@ -49,7 +49,7 @@ const Home = () => {
   }, [show]);
 
   const [type, setType] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("type") || "2" : "2"
+    typeof window !== "undefined" ? localStorage.getItem("type") || "1" : "1"
   );
 
   useEffect(() => {
