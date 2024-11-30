@@ -51,7 +51,7 @@ const TokenSwapFun = (props) => {
   const buyTokenAmount = reads0?.[0]?.result;
   const sellXDCAmount = reads0?.[1]?.result;
   const klineLength = reads0?.[2]?.result;
-  const tokenBalance = reads0?.[4]?.result || 0n;
+  const tokenBalance = reads0?.[3]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
 
   const searchKline = [];
