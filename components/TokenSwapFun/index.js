@@ -28,11 +28,6 @@ const TokenSwapFun = (props) => {
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       {
-        ...mbbb,
-        functionName: "getKlineLength",
-        args: [index],
-      },
-      {
         ...tokenContract,
         functionName: "balanceOf",
         args: [address],
@@ -40,8 +35,7 @@ const TokenSwapFun = (props) => {
     ],
   });
 
-  const klineLength = reads0?.[0]?.result;
-  const tokenBalance = reads0?.[1]?.result || 0n;
+  const tokenBalance = reads0?.[0]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
@@ -61,53 +55,6 @@ const TokenSwapFun = (props) => {
 
   const maxBuy = reads1?.[0]?.result;
   const maxSell = reads1?.[1]?.result;
-
-  const searchKline = [];
-  for (let i = 0; i < klineLength; i++) {
-    searchKline.push({
-      ...mbbb,
-      functionName: "klineMap",
-      args: [index, i],
-    });
-  }
-  const { data: reads2, refetch: refetch2 } = useReadContracts({
-    contracts: searchKline,
-  });
-  let klineMap = reads2?.map((item) => {
-    const kline = item?.result;
-    let high;
-    let low;
-    let color;
-    const time = Number(kline?.[0] || 0);
-    const open = xdcPrice * Number(formatEther(kline?.[1] || 0)) * 2;
-    const close = xdcPrice * Number(formatEther(kline?.[2] || 0)) * 2;
-    const value = xdcPrice * Number(formatEther(kline?.[3] || 0));
-
-    if (open > close) {
-      low = open;
-      high = close;
-      color = "red";
-    } else {
-      low = close;
-      high = open;
-    }
-    return {
-      time,
-      open,
-      close,
-      value,
-      high,
-      low,
-      color,
-    };
-  });
-
-  klineMap = deleteSame(klineMap);
-
-  const trade = {
-    trade: klineMap,
-    volume: klineMap,
-  };
 
   const refetch = () => {
     refetch0();
@@ -154,13 +101,6 @@ const TokenSwapFun = (props) => {
 
   return (
     <>
-      <div className="card" id="chart">
-        <div className="card-body p-2">
-          <div className="text-left font-bold text-sm">Chart</div>
-          <LightChart {...trade} />
-        </div>
-      </div>
-      <div className="divider my-1"></div>
       <div className="card" id="swap">
         <div className="card-body font-bold  p-2">
           <div className="grid grid-cols-2 gap-2">

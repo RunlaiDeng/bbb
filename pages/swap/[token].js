@@ -12,6 +12,8 @@ import TokenHeadPool from "@/components/TokenHeadPool";
 import TokenSwapFun from "@/components/TokenSwapFun";
 import TokenTradeFun from "@/components/TokenTradeFun";
 import TokenHeadFun from "@/components/TokenHeadFun";
+import TokenChartPool from "@/components/TokenChartPool";
+import TokenChartFun from "@/components/TokenChartFun";
 
 const Swap = () => {
   const router = useRouter();
@@ -217,6 +219,20 @@ const Swap = () => {
     deployer,
   };
 
+  const tChartPool = {
+    poolAddress,
+  };
+
+  const tChartFun = { index, xdcPrice };
+
+  const [type, setType] = useState("chart");
+
+  useEffect(() => {
+    if (windowWidth >= 1024) {
+      setType("chart");
+    }
+  }, [windowWidth]);
+
   return showData ? (
     <>
       {graduate ? (
@@ -225,24 +241,76 @@ const Swap = () => {
         <TokenHeadFun {...tHeadFun} />
       )}
 
-      <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
-        {windowWidth > 768 && (
-          <div className="md:col-span-1 text-center hidden md:block h-screen overflow-y-auto outline rounded-none outline-gray-200">
+      <div className="m-auto grid lg:grid-cols-5 sm:mx-2 gap-[1px]">
+        {windowWidth > 1024 && (
+          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
             <div className="divider my-[0.5px]"></div>
             <TokenChat {...tChat} />
           </div>
         )}
 
-        <div className="md:col-span-3 font-bold text-2xl text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
-          {graduate ? (
-            <TokenSwapPool {...tSwapPool} />
-          ) : (
-            <TokenSwapFun {...tSwapFun} />
+        <div className="lg:col-span-3 font-bold text-2xl text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+          <div className="card">
+            <div className="card-body p-2">
+              <div className="flex gap-2 items-center">
+                <div
+                  className={
+                    "font-bold text-sm cursor-pointer " +
+                    (type == "chart" ? "text-green-700" : "")
+                  }
+                  onClick={() => {
+                    setType("chart");
+                  }}
+                >
+                  Chart
+                </div>
+                <div
+                  className={
+                    "font-bold text-sm cursor-pointer lg:hidden " +
+                    (type == "info" ? "text-green-700" : "")
+                  }
+                  onClick={() => {
+                    setType("info");
+                  }}
+                >
+                  Info
+                </div>
+                <div
+                  className={
+                    "font-bold text-sm cursor-pointer lg:hidden " +
+                    (type == "chat" ? "text-green-700" : "")
+                  }
+                  onClick={() => {
+                    setType("chat");
+                  }}
+                >
+                  Chat
+                </div>
+              </div>
+            </div>
+          </div>
+          {graduate && (
+            <>
+              {type == "chart" && <TokenChartPool {...tChartPool} />}
+              {type == "info" && <TokenInfo {...tInfo} />}
+              {type == "chat" && <TokenChat {...tChat} />}
+              <div className="divider my-1"></div>
+              <TokenSwapPool {...tSwapPool} />
+            </>
+          )}
+          {!graduate && (
+            <>
+              {type == "chart" && <TokenChartFun {...tChartFun} />}
+              {type == "info" && <TokenInfo {...tInfo} />}
+              {type == "chat" && <TokenChat {...tChat} />}
+              <div className="divider my-1"></div>
+              <TokenSwapFun {...tSwapFun} />
+            </>
           )}
         </div>
-        {windowWidth > 768 && (
-          <div className="md:col-span-1 text-center hidden md:block h-screen overflow-y-auto outline rounded-none outline-gray-200">
+        {windowWidth > 1024 && (
+          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             {graduate ? (
               <TokenTradePool {...tTradePool} />
             ) : (

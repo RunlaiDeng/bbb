@@ -191,29 +191,7 @@ const TokenSwap = (props) => {
   const maxSell = BigInt(max?.maxSell || 0);
 
   return (
-    <>
-      <div className="card " id="chart">
-        <div className="card-body p-2">
-          <div className="text-left font-bold text-sm">Chart</div>
-          <div className="h-[500px]">
-            <iframe
-              height="100%"
-              width="100%"
-              id="geckoterminal-embed"
-              title="GeckoTerminal Embed"
-              src={
-                "https://www.geckoterminal.com/xdc/pools/" +
-                poolAddress +
-                "?embed=1&info=0&swaps=0"
-              }
-              frameBorder="0"
-              allow="clipboard-write"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
-      <div className="divider my-1"></div>
+    <>    
       <div className="card " id="swap">
         <div className="card-body font-bold  p-2">
           <div className="grid grid-cols-2 gap-2">
