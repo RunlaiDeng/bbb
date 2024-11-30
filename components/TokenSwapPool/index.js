@@ -187,8 +187,9 @@ const TokenSwap = (props) => {
     showApprove = false;
   }
 
-  const maxBuy = max?.maxBuy;
-  const maxSell = max?.maxSell;
+  const maxBuy = BigInt(max?.maxBuy);
+  const maxSell = BigInt(max?.maxSell);
+  console.log(max)
   return (
     <>
       <div className="card " id="chart">
