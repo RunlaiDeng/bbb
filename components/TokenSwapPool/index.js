@@ -7,8 +7,11 @@ import { useAccount, useBalance, useReadContracts } from "wagmi";
 import SendButton from "@/components/SendButton";
 import { getBBBPrice, getPrice, getQuoteFromPool } from "../Utils";
 import WriteButton from "../WriteButton";
+import { setRequestMeta } from "next/dist/server/request-meta";
 const TokenSwap = (props) => {
-  const [data, setData] = useState({ state: "buy" });
+  const [data, setData] = useState({ buyRange: 0, sellRange: 0 });
+  const [type, setType] = useState("buy");
+  const [max, setMax] = useState({});
   const { poolAddress, isBBB, symbol, imageUrl, token, xdcPrice } = props;
 
   async function fetchData() {
@@ -42,6 +45,13 @@ const TokenSwap = (props) => {
 
   const refetch = () => {
     refetch0();
+    setData({
+      ...data,
+      buyAmount: 0n,
+      sellAmount: 0n,
+      buyRange: 0,
+      sellRange: 0,
+    });
   };
 
   const allowance = reads0?.[0]?.result || 0n;
@@ -49,15 +59,36 @@ const TokenSwap = (props) => {
   const xdcBalance = balance?.value || 0n;
 
   useEffect(() => {
+    async function fetchMax() {
+      if (tokenBalance || xdcBalance) {
+        const res0 = await getQuoteFromPool(
+          "0x0000000000000000000000000000000000000000",
+          token,
+          xdcBalance?.toString()
+        );
+
+        const res1 = await getQuoteFromPool(
+          token,
+          "0x0000000000000000000000000000000000000000",
+          tokenBalance?.toString()
+        );
+        setMax({ maxBuy: res0?.toAmount, maxSell: res1?.toAmount });
+      }
+    }
+
+    fetchMax();
+  }, [tokenBalance, xdcBalance]);
+
+  useEffect(() => {
     async function fetchQuote() {
-      if (data?.buyAmount) {
+      if (data?.buyAmount >= 0) {
         const res = await getQuoteFromPool(
           "0x0000000000000000000000000000000000000000",
           token,
           data?.buyAmount?.toString()
         );
 
-        setData({ ...data, buy: res });
+        setData({ ...data, buy: res, disabledBtn: false });
       }
     }
 
@@ -72,14 +103,14 @@ const TokenSwap = (props) => {
 
   useEffect(() => {
     async function fetchQuote() {
-      if (data?.sellAmount) {
+      if (data?.sellAmount >= 0) {
         const res = await getQuoteFromPool(
           token,
           "0x0000000000000000000000000000000000000000",
           data?.sellAmount?.toString()
         );
 
-        setData({ ...data, sell: res });
+        setData({ ...data, sell: res, disabledBtn: false });
       }
     }
 
@@ -103,11 +134,13 @@ const TokenSwap = (props) => {
   const usdBuyTo = Number(toBuyAmount) * poolPrice;
   const usdSellIn = Number(sellTx?.value) * xdcPrice;
   const usdSellTo = Number(toSellAmount) * poolPrice;
-  const disableBuy = !buyTx?.data || usdBuyIn * 0.4 > usdBuyTo;
-  const disableSell = !sellTx?.data || usdSellIn * 0.4 > usdSellTo;
+  const disableBuy =
+    data?.disabledBtn || !buyTx?.data || usdBuyIn * 0.4 > usdBuyTo;
+  const disableSell =
+    data?.disabledBtn || !sellTx?.data || usdSellIn * 0.4 > usdSellTo;
 
   const buy = {
-    buttonName: "Place Trade",
+    buttonName: "Buy " + symbol,
     disabled: disableBuy,
     data: buyTx,
     before: () => {
@@ -119,7 +152,7 @@ const TokenSwap = (props) => {
   };
 
   const sell = {
-    buttonName: "Place Trade",
+    buttonName: "Sell " + symbol,
     disabled: disableSell,
     data: sellTx,
     before: () => {
@@ -154,6 +187,8 @@ const TokenSwap = (props) => {
     showApprove = false;
   }
 
+  const maxBuy = max?.maxBuy;
+  const maxSell = max?.maxSell;
   return (
     <>
       <div className="card outline rounded-none outline-gray-200" id="chart">
@@ -182,25 +217,25 @@ const TokenSwap = (props) => {
         <div className="card-body font-bold  p-2">
           <div className="grid grid-cols-2 gap-2">
             <div
-              className={
-                "btn w-full " + (data?.state == "buy" && "btn-success")
-              }
+              className={"btn w-full " + (type == "buy" && "btn-success")}
               onClick={() => {
-                setData({ ...data, state: "buy" });
+                setType("buy");
+                refetch();
               }}
             >
               Buy
             </div>
             <div
-              className={"btn w-full " + (data?.state == "sell" && "btn-error")}
+              className={"btn w-full " + (type == "sell" && "btn-error")}
               onClick={() => {
-                setData({ ...data, state: "sell" });
+                setType("sell");
+                refetch();
               }}
             >
               Sell
             </div>
           </div>
-          {data?.state == "buy" && (
+          {type == "buy" && (
             <>
               <label className="input input-bordered flex items-center gap-2">
                 <input
@@ -217,14 +252,24 @@ const TokenSwap = (props) => {
                     if (!newValue) {
                       setData({
                         ...data,
+                        disabledBtn: true,
+                        buyRange: 0,
                         buyAmount: undefined,
                       });
                     }
 
                     if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                      let set = parseEther(newValue);
+                      const max = (xdcBalance * BigInt(99)) / BigInt(100);
+                      if (set > max) {
+                        set = max;
+                      }
+
                       setData({
                         ...data,
-                        buyAmount: parseEther(newValue),
+                        disabledBtn: true,
+                        buyRange: Number((100n * set) / xdcBalance),
+                        buyAmount: set,
                       });
                     }
                   }}
@@ -240,69 +285,32 @@ const TokenSwap = (props) => {
                   />
                 </div>
               </label>
-              <div role="tablist" className="tabs">
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      buyAmount: 0n,
-                    });
-                  }}
-                >
-                  0%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      buyAmount: (xdcBalance * BigInt(25)) / BigInt(100),
-                    });
-                  }}
-                >
-                  25%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      buyAmount: (xdcBalance * BigInt(50)) / BigInt(100),
-                    });
-                  }}
-                >
-                  50%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      buyAmount: (xdcBalance * BigInt(75)) / BigInt(100),
-                    });
-                  }}
-                >
-                  75%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      buyAmount: xdcBalance,
-                    });
-                  }}
-                >
-                  100%
-                </a>
+              <input
+                type="range"
+                min={0}
+                max="99"
+                className="range range-xs"
+                value={data?.buyRange}
+                step={1}
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    buyRange: e.target.value,
+                    buyAmount:
+                      (xdcBalance * BigInt(e.target.value)) / BigInt(100),
+                    disabledBtn: true,
+                  });
+                }}
+              />
+              <div className="flex w-full justify-between px-2 text-xs">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>99%</span>
               </div>
-              <label className="input input-bordered flex items-center gap-2">
+
+              {/* <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
                   className="grow"
@@ -320,18 +328,29 @@ const TokenSwap = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label>
-              <div className="text-right text-xs">
-                Avbl :{" "}
-                {xdcBalance >= 0
-                  ? Number(formatEther(xdcBalance))?.toLocaleString()
-                  : undefined}{" "}
-                {"XDC"}
+              </label> */}
+              <div className="flex justify-between text-xs">
+                Avbl
+                <div>
+                  {xdcBalance >= 0
+                    ? Number(formatEther(xdcBalance))?.toLocaleString()
+                    : undefined}{" "}
+                  {"XDC"}
+                </div>
+              </div>
+              <div className="flex justify-between text-xs">
+                Max Buy
+                <div>
+                  {maxBuy >= 0
+                    ? Number(formatEther(maxBuy))?.toLocaleString()
+                    : undefined}{" "}
+                  {symbol}
+                </div>
               </div>
               <SendButton className="btn btn-success" {...buy} />
             </>
           )}
-          {data?.state == "sell" && (
+          {type == "sell" && (
             <>
               <label className="input input-bordered flex items-center gap-2">
                 <input
@@ -349,13 +368,21 @@ const TokenSwap = (props) => {
                     if (!newValue) {
                       setData({
                         ...data,
+                        disabledBtn: true,
+                        sellRange: 0,
                         sellAmount: undefined,
                       });
                     }
                     if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                      let set = parseEther(newValue);
+                      if (set > tokenBalance) {
+                        set = tokenBalance;
+                      }
                       setData({
                         ...data,
-                        sellAmount: parseEther(newValue),
+                        disabledBtn: true,
+                        sellRange: Number((100n * set) / tokenBalance),
+                        sellAmount: set,
                       });
                     }
                   }}
@@ -371,65 +398,31 @@ const TokenSwap = (props) => {
                   />
                 </div>
               </label>
-              <div role="tablist" className="tabs">
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({ ...data, sellAmount: 0n });
-                  }}
-                >
-                  0%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      sellAmount: (tokenBalance * BigInt(25)) / BigInt(100),
-                    });
-                  }}
-                >
-                  25%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      sellAmount: (tokenBalance * BigInt(50)) / BigInt(100),
-                    });
-                  }}
-                >
-                  50%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      sellAmount: (tokenBalance * BigInt(75)) / BigInt(100),
-                    });
-                  }}
-                >
-                  75%
-                </a>
-                <a
-                  role="tab"
-                  className="tab btn btn-xs"
-                  onClick={() => {
-                    setData({
-                      ...data,
-                      sellAmount: tokenBalance,
-                    });
-                  }}
-                >
-                  100%
-                </a>
+              <input
+                type="range"
+                min={0}
+                max="100"
+                className="range range-xs"
+                step={1}
+                value={data?.sellRange}
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    sellRange: e.target.value,
+                    sellAmount:
+                      (tokenBalance * BigInt(e.target.value)) / BigInt(100),
+                    disabledBtn: true,
+                  });
+                }}
+              />
+              <div className="flex w-full justify-between px-2 text-xs">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
               </div>
+              {/* 
               <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
@@ -447,13 +440,24 @@ const TokenSwap = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label>
-              <div className="text-right text-xs">
-                Avbl :{" "}
-                {tokenBalance >= 0
-                  ? Number(formatEther(tokenBalance))?.toLocaleString()
-                  : undefined}{" "}
-                {symbol}
+              </label> */}
+              <div className="flex justify-between text-xs">
+                Avbl
+                <div>
+                  {tokenBalance >= 0
+                    ? Number(formatEther(tokenBalance))?.toLocaleString()
+                    : undefined}{" "}
+                  {symbol}
+                </div>
+              </div>
+              <div className="flex justify-between text-xs">
+                Max Sell
+                <div>
+                  {maxSell >= 0
+                    ? Number(formatEther(maxSell))?.toLocaleString()
+                    : undefined}{" "}
+                  XDC
+                </div>
               </div>
               {showApprove && (
                 <WriteButton {...approve} className="btn btn-primary" />
