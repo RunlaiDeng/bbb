@@ -27,7 +27,7 @@ const TokenHeadFun = (props) => {
     Number(formatEther(totalSupply || 0n) * formatEther(price || 0n) * 2);
 
   return (
-    <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
+    <div className="card sm:mx-2 py-1">
       <div className="card-body p-0">
         <div className="px-4 sm:flex gap-1 ">
           <div className="font-bold">

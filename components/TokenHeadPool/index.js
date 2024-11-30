@@ -4,7 +4,7 @@ const TokenHead = (props) => {
   const { name, symbol, deployer, createTime, poolCap } = props;
   const router = useRouter();
   return (
-    <div className="card outline rounded-none outline-gray-200 sm:mx-2 py-1">
+    <div className="card sm:mx-2 py-1">
       <div className="card-body p-0">
         <div className="px-4 sm:flex gap-1 ">
           <div className="font-bold">

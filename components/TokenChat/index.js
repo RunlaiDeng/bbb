@@ -36,10 +36,10 @@ const TokenChat = (props) => {
   }, [props]);
   return (
     <div
-      className="card outline rounded-none outline-gray-200 text-xs font-normal"
+      className="card text-xs"
       id="chat"
     >
-      <div className="card-body p-2">
+      <div className="card-body p-1">
         <div className="overflow-auto h-96" ref={scrollRef}>
           {msg?.map((item, index) => {
             return (
@@ -119,7 +119,7 @@ const TokenChat = (props) => {
           })}
         </div>
 
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-bordered flex items-center gap-2 input-sm mx-1">
           <input
             type="text"
             className="grow"

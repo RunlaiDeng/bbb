@@ -9,7 +9,7 @@ const TokenTradePool = (props) => {
   const [data, setData] = useState({ type: 1 });
 
   return (
-    <div className="card outline rounded-none outline-gray-200" id="chart">
+    <div className="card" id="chart">
       <div className="card-body p-2">
         <div className="font-bold text-sm flex gap-2">
           <div

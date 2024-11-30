@@ -217,13 +217,14 @@ const Swap = () => {
 
       <div className="m-auto grid md:grid-cols-5 sm:mx-2 gap-[1px]">
         {windowWidth > 768 && (
-          <div className="md:col-span-1 text-center  hidden md:block">
+          <div className="md:col-span-1 text-center hidden md:block h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
+            <div className="divider my-[0.5px]"></div>
             <TokenChat {...tChat} />
           </div>
         )}
 
-        <div className="md:col-span-3 font-bold text-2xl text-center">
+        <div className="md:col-span-3 font-bold text-2xl text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
           {graduate ? (
             <TokenSwapPool {...tSwapPool} />
           ) : (
@@ -231,7 +232,7 @@ const Swap = () => {
           )}
         </div>
         {windowWidth > 768 && (
-          <div className="md:col-span-1 text-center  hidden md:block">
+          <div className="md:col-span-1 text-center hidden md:block h-screen overflow-y-auto outline rounded-none outline-gray-200">
             {graduate ? (
               <TokenTradePool {...tTradePool} />
             ) : (

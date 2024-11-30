@@ -154,13 +154,14 @@ const TokenSwapFun = (props) => {
 
   return (
     <>
-      <div className="card outline rounded-none outline-gray-200" id="chart">
+      <div className="card" id="chart">
         <div className="card-body p-2">
           <div className="text-left font-bold text-sm">Chart</div>
           <LightChart {...trade} />
         </div>
       </div>
-      <div className="card outline rounded-none outline-gray-200" id="swap">
+      <div className="divider my-1"></div>
+      <div className="card" id="swap">
         <div className="card-body font-bold  p-2">
           <div className="grid grid-cols-2 gap-2">
             <div
