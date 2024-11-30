@@ -2,11 +2,13 @@ import { contracts } from "@/config";
 import { erc20Abi, formatEther } from "viem";
 import { useChainId, useReadContracts } from "wagmi";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const TokenHeadFun = (props) => {
   let { index, name, symbol, token, xdcPrice, createTime, deployer } = props;
   index = index?.toString();
   const chainId = useChainId();
+  const router = useRouter();
 
   const mbbb = contracts[chainId]?.mbbbv2;
   const tokenContract = { address: token, abi: erc20Abi };
