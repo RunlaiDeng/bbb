@@ -104,7 +104,7 @@ export const bbbInfo = {
   symbol: "BBB",
   imageUrl: "/bbb.jpg",
   description:
-    "The Benybadboy (BBB) token is a community-driven memecoin project developed on the XDC blockchain.",
+    "BBB was launched in June 2024, initially created as a joke. However, it gradually evolved into the BBBPump platform, where users can freely create tokens, ultimately benefiting BBB. The goal of BBBPump is to become the next-generation exchange, with BBB currently serving as the platform token for BBBPump.",
   x: "https://x.com/bbbpumpdotfun",
   cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
   coingecko:
