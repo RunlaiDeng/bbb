@@ -89,7 +89,7 @@ const TokenInfo = (props) => {
 
   return (
     <>
-      <div className="card h-[470px] lg:h-full overflow-y-auto" id="info">
+      <div className="card h-[470px] lg:h-max overflow-y-auto" id="info">
         <div className="card-body p-2">
           <div className="text-xl flex gap-2 items-center">
             {canUpdate && (
