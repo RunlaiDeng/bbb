@@ -56,7 +56,7 @@ const TokenTradeFun = (props) => {
           </div>
         </div>
         {data?.type == 1 && (
-          <div className="overflow-x-auto whitespace-nowrap">
+          <div className="overflow-x-auto whitespace-nowrap h-[470px] lg:h-full">
             <table className="table table-xs">
               <thead>
                 <tr>
@@ -174,7 +174,7 @@ const TokenTradeFun = (props) => {
           </div>
         )}
         {data?.type == 2 && (
-          <div className="overflow-x-auto whitespace-nowrap">
+          <div className="overflow-x-auto whitespace-nowrap  h-[470px] lg:h-full">
             <table className="table table-xs">
               <thead>
                 <tr>

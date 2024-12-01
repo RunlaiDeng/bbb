@@ -313,20 +313,24 @@ const Swap = () => {
           </div>
           {graduate && (
             <>
-              {type == "chart" && <TokenChartPool {...tChartPool} />}
-              {type == "info" && <TokenInfo {...tInfo} />}
-              {type == "chat" && <TokenChat {...tChat} />}
-              {type == "trades" && <TokenTradePool {...tTradePool} />}
+              <div className="h-[500px]">
+                {type == "chart" && <TokenChartPool {...tChartPool} />}
+                {type == "info" && <TokenInfo {...tInfo} />}
+                {type == "chat" && <TokenChat {...tChat} />}
+                {type == "trades" && <TokenTradePool {...tTradePool} />}
+              </div>
               <div className="divider my-1"></div>
               <TokenSwapPool {...tSwapPool} />
             </>
           )}
           {!graduate && (
             <>
-              {type == "chart" && <TokenChartFun {...tChartFun} />}
-              {type == "info" && <TokenInfo {...tInfo} />}
-              {type == "chat" && <TokenChat {...tChat} />}
-              {type == "trades" && <TokenTradeFun {...tTradeFun} />}
+              <div className="h-[500px]">
+                {type == "chart" && <TokenChartFun {...tChartFun} />}
+                {type == "info" && <TokenInfo {...tInfo} />}
+                {type == "chat" && <TokenChat {...tChat} />}
+                {type == "trades" && <TokenTradeFun {...tTradeFun} />}
+              </div>
               <div className="divider my-1"></div>
               <TokenSwapFun {...tSwapFun} />
             </>

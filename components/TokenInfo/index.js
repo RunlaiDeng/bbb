@@ -89,7 +89,7 @@ const TokenInfo = (props) => {
 
   return (
     <>
-      <div className="card" id="info">
+      <div className="card h-[470px] lg:h-full overflow-y-auto" id="info">
         <div className="card-body p-2">
           <div className="text-xl flex gap-2 items-center">
             {canUpdate && (
@@ -389,7 +389,7 @@ const TokenInfo = (props) => {
             </div>
           )}
           <div
-            className="font-bold text-left mt-2 flex items-center gap-2"
+            className="font-bold text-left flex items-center gap-2"
             id="holders"
           >
             Holder distribution{" "}
