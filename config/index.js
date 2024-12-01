@@ -104,7 +104,7 @@ export const bbbInfo = {
   symbol: "BBB",
   imageUrl: "/bbb.jpg",
   description:
-    "BBB was launched in June 2024, initially created as a joke. However, it gradually evolved into the BBBPump platform, where users can freely create tokens, ultimately benefiting BBB. The goal of BBBPump is to become the next-generation exchange, with BBB currently serving as the platform token for BBBPump.",
+    "$BBB isn’t just a meme; it’s the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we’re rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
   x: "https://x.com/bbbpumpdotfun",
   cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
   coingecko:
