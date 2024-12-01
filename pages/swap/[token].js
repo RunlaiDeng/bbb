@@ -14,6 +14,7 @@ import TokenTradeFun from "@/components/TokenTradeFun";
 import TokenHeadFun from "@/components/TokenHeadFun";
 import TokenChartPool from "@/components/TokenChartPool";
 import TokenChartFun from "@/components/TokenChartFun";
+import { erc20Abi } from "viem";
 
 const Swap = () => {
   const router = useRouter();
@@ -42,6 +43,11 @@ const Swap = () => {
     fetchData();
   }, []);
 
+  const tokenContract = {
+    address: token,
+    abi: erc20Abi,
+  };
+
   const { data: reads0 } = useReadContracts({
     contracts: [
       {
@@ -49,9 +55,12 @@ const Swap = () => {
         functionName: "getDropTokenByAddress",
         args: [token],
       },
+      { ...tokenContract, functionName: "totalSupply" },
     ],
   });
+
   const dropToken = reads0?.[0]?.result;
+  const totalSupply = reads0?.[1]?.result;
   let name;
   let symbol;
   let imageUrl;
@@ -165,6 +174,7 @@ const Swap = () => {
     xdcAmount,
     maxXdc,
     xdcPrice,
+    totalSupply,
   };
 
   const tChat = {
