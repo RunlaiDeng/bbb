@@ -125,8 +125,8 @@ const TokenSwap = (props) => {
 
   const sellTx = data?.sell?.tx || {};
   const buyTx = data?.buy?.tx || {};
-  sellTx.value = BigInt(sellTx?.value || 0);
-  buyTx.value = BigInt(buyTx?.value || 0);
+  sellTx.value = data.sellAmount;
+  buyTx.value = data.buyAmount;
   const toBuyAmount = BigInt(data?.buy?.toAmount || 0);
   const toSellAmount = BigInt(data?.sell?.toAmount || 0);
 
@@ -191,7 +191,7 @@ const TokenSwap = (props) => {
   const maxSell = BigInt(max?.maxSell || 0);
 
   return (
-    <>    
+    <>
       <div className="card " id="swap">
         <div className="card-body font-bold  p-2">
           <div className="grid grid-cols-2 gap-2">
