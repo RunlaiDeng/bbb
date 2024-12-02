@@ -134,10 +134,17 @@ const TokenSwap = (props) => {
   const usdBuyTo = Number(toBuyAmount) * poolPrice;
   const usdSellIn = Number(sellTx?.value) * xdcPrice;
   const usdSellTo = Number(toSellAmount) * poolPrice;
+  console.log(data.buyAmount, xdcBalance);
   const disableBuy =
-    data?.disabledBtn || !buyTx?.data || usdBuyIn * 0.4 > usdBuyTo;
+    data?.disabledBtn ||
+    !buyTx?.data ||
+    usdBuyIn * 0.4 > usdBuyTo ||
+    data.buyAmount > xdcBalance;
   const disableSell =
-    data?.disabledBtn || !sellTx?.data || usdSellIn * 0.4 > usdSellTo;
+    data?.disabledBtn ||
+    !sellTx?.data ||
+    usdSellIn * 0.4 > usdSellTo ||
+    data.sellAmount > tokenBalance;
 
   const buy = {
     buttonName: "Buy " + symbol,
@@ -232,22 +239,16 @@ const TokenSwap = (props) => {
                       setData({
                         ...data,
                         disabledBtn: true,
-                        buyRange: 0,
                         buyAmount: undefined,
                       });
                     }
 
                     if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
                       let set = parseEther(newValue);
-                      const max = (xdcBalance * BigInt(99)) / BigInt(100);
-                      if (set > max) {
-                        set = max;
-                      }
 
                       setData({
                         ...data,
                         disabledBtn: true,
-                        buyRange: Number((100n * set) / xdcBalance),
                         buyAmount: set,
                       });
                     }
@@ -289,7 +290,7 @@ const TokenSwap = (props) => {
                 <span>99%</span>
               </div>
 
-              {/* <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
                   className="grow"
@@ -307,7 +308,7 @@ const TokenSwap = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label> */}
+              </label>
               <div className="flex justify-between text-xs">
                 Avbl
                 <div>
@@ -348,19 +349,15 @@ const TokenSwap = (props) => {
                       setData({
                         ...data,
                         disabledBtn: true,
-                        sellRange: 0,
                         sellAmount: undefined,
                       });
                     }
                     if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
                       let set = parseEther(newValue);
-                      if (set > tokenBalance) {
-                        set = tokenBalance;
-                      }
+
                       setData({
                         ...data,
                         disabledBtn: true,
-                        sellRange: Number((100n * set) / tokenBalance),
                         sellAmount: set,
                       });
                     }
@@ -401,7 +398,7 @@ const TokenSwap = (props) => {
                 <span>75%</span>
                 <span>100%</span>
               </div>
-              {/* 
+
               <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
@@ -419,7 +416,7 @@ const TokenSwap = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label> */}
+              </label>
               <div className="flex justify-between text-xs">
                 Avbl
                 <div>

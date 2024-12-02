@@ -32,10 +32,15 @@ const TokenSwapFun = (props) => {
         functionName: "balanceOf",
         args: [address],
       },
+      {
+        ...tokenContract,
+        functionName: "totalSupply",
+      },
     ],
   });
 
   const tokenBalance = reads0?.[0]?.result || 0n;
+  const totalSupply = reads0?.[1]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
 
   const { data: reads1, refetch: refetch1 } = useReadContracts({
@@ -50,11 +55,31 @@ const TokenSwapFun = (props) => {
         functionName: "getSellAmount",
         args: [index, tokenBalance?.toString()],
       },
+      {
+        ...mbbb,
+        functionName: "getBuyAmount",
+        args: [index, data?.buyAmount?.toString()],
+      },
+      {
+        ...mbbb,
+        functionName: "getSellAmount",
+        args: [
+          index,
+          data?.sellAmount?.toString() > totalSupply
+            ? totalSupply?.toString()
+            : data?.sellAmount?.toString(),
+        ],
+      },
     ],
   });
 
   const maxBuy = reads1?.[0]?.result;
   const maxSell = reads1?.[1]?.result;
+  const buyTokenAmount = reads1?.[2]?.result;
+  const sellXDCAmount = reads1?.[3]?.result;
+
+  const disableBuy = !data?.buyAmount;
+  const disableSell = !data?.sellAmount;
 
   const refetch = () => {
     refetch0();
@@ -68,7 +93,7 @@ const TokenSwapFun = (props) => {
   };
   const buy = {
     buttonName: "Buy " + symbol,
-    disabled: !data?.buyAmount,
+    disabled: disableBuy,
     data: {
       ...mbbb,
       functionName: "buy",
@@ -85,7 +110,7 @@ const TokenSwapFun = (props) => {
 
   const sell = {
     buttonName: "Sell " + symbol,
-    disabled: !data?.sellAmount,
+    disabled: disableSell,
     data: {
       ...mbbb,
       functionName: "sell",
@@ -140,20 +165,15 @@ const TokenSwapFun = (props) => {
                     if (!newValue) {
                       setData({
                         ...data,
-                        buyRange: 0,
                         buyAmount: undefined,
                       });
                     }
 
                     if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
                       let set = parseEther(newValue);
-                      const max = (xdcBalance * BigInt(99)) / BigInt(100);
-                      if (set > max) {
-                        set = max;
-                      }
+
                       setData({
                         ...data,
-                        buyRange: Number((100n * set) / xdcBalance),
                         buyAmount: set,
                       });
                     }
@@ -194,7 +214,7 @@ const TokenSwapFun = (props) => {
                 <span>99%</span>
               </div>
 
-              {/* <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
                   className="grow"
@@ -212,7 +232,7 @@ const TokenSwapFun = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label> */}
+              </label>
               <div className="flex justify-between text-xs">
                 Avbl
                 <div>
@@ -252,17 +272,13 @@ const TokenSwapFun = (props) => {
                     if (!newValue) {
                       setData({
                         ...data,
-                        sellRange: 0,
                         sellAmount: undefined,
                       });
                     }
                     let set = parseEther(newValue);
-                    if (set > tokenBalance) {
-                      set = tokenBalance;
-                    }
+
                     setData({
                       ...data,
-                      sellRange: Number((100n * set) / tokenBalance),
                       sellAmount: set,
                     });
                   }}
@@ -302,7 +318,7 @@ const TokenSwapFun = (props) => {
                 <span>100%</span>
               </div>
 
-              {/* <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2">
                 <input
                   type="number"
                   className="grow"
@@ -319,7 +335,7 @@ const TokenSwapFun = (props) => {
                     className="object-cover w-full h-full"
                   />
                 </div>
-              </label> */}
+              </label>
               <div className="flex justify-between text-xs">
                 Avbl
                 <div>
