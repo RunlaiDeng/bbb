@@ -40,7 +40,7 @@ const TokenChat = (props) => {
       id="chat"
     >
       <div className="card-body p-1">
-        <div className="overflow-auto h-[470px]" ref={scrollRef}>
+        <div className="overflow-auto h-[450px]" ref={scrollRef}>
           {msg?.map((item, index) => {
             return (
               <div className="card rounded-none my-1" key={index}>
