@@ -15,11 +15,10 @@ const About = () => {
   }, []);
   const xdcPrice = data?.xdc?.price;
   const stats = data?.stats;
-  const fee =
-    100 * Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+  const fee = Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const volume =
-    100 * Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
-  const user = 133 * stats?.user;
+    Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+  const user = stats?.user;
   return (
     <>
       <div className="card">
