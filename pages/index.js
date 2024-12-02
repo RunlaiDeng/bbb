@@ -305,7 +305,7 @@ const Home = () => {
         >
           <div>
             <div className="text-center">
-              <div className="text-green-700 text-xl mx-4 sm:text-4xl font-bold">
+              <div className="text-green-700 text-xs mx-4 sm:text-4xl font-bold">
                 Launch a memecoin that is instantly tradable in one click
                 {/* <Image
                   src="/title.png"
@@ -318,7 +318,7 @@ const Home = () => {
               </div>
 
               <div
-                className="btn btn-success text-white btn-lg mt-8 mx-4 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
+                className="btn btn-success text-white sm:btn-lg mt-8 mx-4 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
                 onClick={() => {
                   if (!isConnected) {
                     openConnectModal();
