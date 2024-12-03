@@ -233,7 +233,7 @@ const Swap = () => {
     poolAddress,
   };
 
-  const tChartFun = { index, xdcPrice };
+  const tChartFun = { index, xdcPrice, token };
 
   const [type, setType] = useState("chart");
 

@@ -11,6 +11,10 @@ const getMsg = async (chainid, index) => {
   return send("getMsg", [chainid, index]);
 };
 
+const getKline = async (token) => {
+  return send("getKline", [token]);
+};
+
 const sendMsg = async (chainid, index, msg, address) => {
   return send("sendMsg", [chainid, index, msg, address]);
 };
@@ -94,4 +98,5 @@ module.exports = {
   startLive,
   stopLive,
   getLive,
+  getKline,
 };
