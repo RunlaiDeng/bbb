@@ -159,10 +159,7 @@ const Orders = () => {
                             </td>
                             <td>{formatEther(item?.deployFee || 0)} XDC</td>
                             <td>
-                              ≈ $
-                              {(
-                                formatEther(item?.deployFee || 0) * xdcPrice
-                              )?.toLocaleString()}{" "}
+                              ≈ ${Number(item?.totalInUsd)?.toLocaleString()}{" "}
                             </td>
                           </tr>
                         );
@@ -189,20 +186,7 @@ const Orders = () => {
                     <tbody>
                       {list?.map((item, index) => {
                         const drop = drops?.[index];
-                        const price = BigInt(
-                          Math.floor(
-                            (
-                             2* (Number(item?.close) || 0)) *
-                              xdcPrice
-                          )
-                        );
 
-                        const totalUSD = BigInt(
-                          Math.floor(
-                            (Number(item?.fee) || 0) +
-                              (Number(item?.xdcAmount) || 0) * xdcPrice
-                          )
-                        );
                         return (
                           <tr key={item?.tid} className="whitespace-nowrap">
                             <td>{getDateSpecifics(item?.time)}</td>
@@ -254,9 +238,7 @@ const Orders = () => {
                             >
                               {item?.tradeType}
                             </td>
-                            <td>
-                              ${Number(formatEther(price || 0))?.toFixed(6)}
-                            </td>
+                            <td>${Number(item?.priceInUsd)?.toFixed(6)}</td>
                             <td>
                               {Number(
                                 formatEther(item?.tokenAmount || 0)
@@ -264,14 +246,11 @@ const Orders = () => {
                             </td>
                             <td>
                               {Number(
-                                formatEther(BigInt(Number(item?.fee)||0))
+                                formatEther(BigInt(Number(item?.fee) || 0))
                               )?.toFixed(2)}{" "}
                               XDC
                             </td>
-                            <td>
-                              ≈ $
-                              {Number(formatEther(totalUSD || 0))?.toFixed(2)}{" "}
-                            </td>
+                            <td>≈ ${Number(item?.totalInUsd)?.toFixed(2)} </td>
                           </tr>
                         );
                       })}

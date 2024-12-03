@@ -80,12 +80,7 @@ const TokenTradeFun = (props) => {
                       }
                     >
                       <td>{getDateSpecifics(item?.time)}</td>
-                      <td>
-                        $
-                        {Number(
-                          2 * xdcPrice * formatEther(item?.close || 0)
-                        )?.toFixed(6)}
-                      </td>
+                      <td>${Number(item?.priceInUsd)?.toFixed(6)}</td>
                       <td>
                         {Number(
                           formatEther(item?.tokenAmount || 0)
@@ -94,9 +89,7 @@ const TokenTradeFun = (props) => {
                       <td>
                         $
                         {Number(
-                          Number(
-                            xdcPrice * formatEther(item?.xdcAmount || 0)
-                          )?.toFixed(6)
+                          Number(item?.totalInUsd)?.toFixed(6)
                         )?.toLocaleString()}
                       </td>
                       <td
@@ -108,7 +101,6 @@ const TokenTradeFun = (props) => {
                         {item?.account?.substr(36)}{" "}
                         <svg
                           t="1732778050219"
-                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +133,6 @@ const TokenTradeFun = (props) => {
                       >
                         <svg
                           t="1732778050219"
-                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -198,12 +189,7 @@ const TokenTradeFun = (props) => {
                       }
                     >
                       <td>{getDateSpecifics(item?.time)}</td>
-                      <td>
-                        $
-                        {Number(
-                          2 * xdcPrice * formatEther(item?.close || 0)
-                        )?.toFixed(6)}
-                      </td>
+                      <td>${Number(item?.priceInUsd)?.toFixed(6)}</td>
                       <td>
                         {Number(
                           formatEther(item?.tokenAmount || 0)
@@ -212,9 +198,7 @@ const TokenTradeFun = (props) => {
                       <td>
                         $
                         {Number(
-                          Number(
-                            2 * xdcPrice * formatEther(item?.xdcAmount || 0)
-                          )?.toFixed(6)
+                          Number(item?.totalInUsd)?.toFixed(6)
                         )?.toLocaleString()}
                       </td>
                       <td
@@ -226,7 +210,6 @@ const TokenTradeFun = (props) => {
                         {item?.account?.substr(36)}{" "}
                         <svg
                           t="1732778050219"
-                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -259,7 +242,6 @@ const TokenTradeFun = (props) => {
                       >
                         <svg
                           t="1732778050219"
-                          
                           viewBox="0 0 1024 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
