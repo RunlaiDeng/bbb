@@ -14,7 +14,6 @@ import {
   walletConnectWallet,
   coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import { rainbowWeb3AuthConnector } from "@/components/Web3Auth";
 import Head from "next/head";
 
 const xdc = /*#__PURE__*/ {
