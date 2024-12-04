@@ -315,7 +315,7 @@ const Referral = () => {
                 </thead>
                 <tbody>
                   {referralList?.map((item) => {
-                    const referralPrize = referrals[item];
+                    const referralPrize = referrals?.[item];
                     const shareFee = referralPrize?.shareFee;
                     const fee = referralPrize?.fee;
 

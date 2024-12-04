@@ -260,7 +260,7 @@ const Swap = () => {
           </div>
         )}
 
-        <div className="lg:col-span-3 font-bold text-2xl text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+        <div className="lg:col-span-3  text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
           <div className="card">
             <div className="card-body p-2">
               <div className="flex gap-2 items-center">
