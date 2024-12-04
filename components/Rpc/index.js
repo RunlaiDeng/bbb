@@ -11,8 +11,8 @@ const getMsg = async (chainid, index) => {
   return send("getMsg", [chainid, index]);
 };
 
-const getKline = async (token) => {
-  return send("getKline", [token]);
+const getKline = async (token, type) => {
+  return send("getKline", [token, type]);
 };
 
 const sendMsg = async (chainid, index, msg, address) => {

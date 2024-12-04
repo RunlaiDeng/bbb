@@ -7,22 +7,22 @@ import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 
 const TokenChartFun = (props) => {
-  let { index, token, xdcPrice } = props;
+  let { index, token, xdcPrice, symbol } = props;
   index = index?.toString();
   const chainId = useChainId();
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState({ type: 1 });
 
   async function fetchData() {
     if (token) {
-      const kline = await rpc.getKline(token);
+      const kline = await rpc.getKline(token, data?.type);
       setData({ ...data, kline });
     }
   }
 
   useEffect(() => {
     fetchData();
-  }, [token]);
+  }, [token, data?.type]);
   //   const mbbb = contracts[chainId]?.mbbbv2;
 
   //   const { data: reads0, refetch: refetch0 } = useReadContracts({
@@ -86,7 +86,27 @@ const TokenChartFun = (props) => {
   return (
     <>
       <div className="card" id="chart">
-        <div className="card-body p-2">
+        <div className="card-body p-2 pt-0">
+          {data?.type == 1 && (
+            <div
+              className="text-left btn w-max btn-sm"
+              onClick={() => {
+                setData({ ...data, type: 2 });
+              }}
+            >
+              {symbol} / USD
+            </div>
+          )}
+          {data?.type == 2 && (
+            <div
+              className="text-left btn w-max btn-sm"
+              onClick={() => {
+                setData({ ...data, type: 1 });
+              }}
+            >
+              {symbol} / XDC
+            </div>
+          )}
           <LightChart {...trade} />
         </div>
       </div>
