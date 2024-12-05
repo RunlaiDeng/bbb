@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { useNotification } from "../Context/notice";
 import { useAccount, useDisconnect } from "wagmi";
 import copy from "copy-to-clipboard";
+import { usePrivy } from "@privy-io/react-auth";
+import usePrivyLogin from "../Hook/usePrivyLogin";
 const Navbar = () => {
   const router = useRouter();
 
@@ -15,10 +16,15 @@ const Navbar = () => {
 
   const { address, isConnected } = useAccount();
 
-  const { openConnectModal } = useConnectModal();
 
   const { disconnect } = useDisconnect();
   const { success } = useNotification();
+
+  const privyLogin = usePrivyLogin();
+
+  const { login, logout, user } = usePrivy();
+
+  const connectorType = user?.wallet?.connectorType;
   return (
     <>
       <div className="bg-[url('/bg.png')] bg-center w-full h-18">
@@ -34,7 +40,7 @@ const Navbar = () => {
                 router.push("/");
               }}
             />
-            {/* <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 md:gap-0">
+            {/* <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 lg:gap-0">
               <div
                 className="hover:text-green-700 cursor-pointer"
                 onClick={() => {
@@ -69,7 +75,7 @@ const Navbar = () => {
               </div>
             </div> */}
 
-            <div className="ml-2 hidden md:flex items-center pt-1">
+            <div className="ml-2 hidden lg:flex items-center pt-1">
               <div className="dropdown dropdown-hover font-bold">
                 <div
                   tabIndex={0}
@@ -109,7 +115,7 @@ const Navbar = () => {
                 <div
                   className="btn btn-sm text-white flex items-center"
                   onClick={() => {
-                    router.push("/deposit")
+                    router.push("/deposit");
                   }}
                 >
                   <svg
@@ -130,7 +136,7 @@ const Navbar = () => {
                 </div>
                 <div
                   className={
-                    " dropdown dropdown-end hidden sm:block " +
+                    " dropdown dropdown-end hidden lg:block " +
                     (data?.showUserItems ? "dropdown-open" : "")
                   }
                   onMouseEnter={() => setData({ ...data, showUserItems: true })}
@@ -300,7 +306,11 @@ const Navbar = () => {
                       <div
                         className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
                         onClick={() => {
-                          disconnect();
+                          logout();
+                          if (connectorType == "injected") {
+                            disconnect();
+                          }
+
                           setData({ ...data, showUserItems: false });
                         }}
                       >
@@ -323,7 +333,7 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-                <div className="drawer drawer-end sm:hidden w-max">
+                <div className="drawer drawer-end lg:hidden w-max">
                   <input
                     id="userDrawer"
                     type="checkbox"
@@ -534,7 +544,10 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
                             onClick={() => {
-                              disconnect();
+                              logout();
+                              if (connectorType == "injected") {
+                                disconnect();
+                              }
                               setData({ ...data, showUserItems: false });
                             }}
                           >
@@ -564,15 +577,15 @@ const Navbar = () => {
             {!isConnected && (
               <div
                 className="btn btn-sm mr-1"
-                onClick={() => {
-                  openConnectModal();
+                onClick={async () => {
+                  privyLogin();
                 }}
               >
                 Log In
               </div>
             )}
 
-            <div className="drawer drawer-end md:hidden w-max">
+            <div className="drawer drawer-end lg:hidden w-max">
               <input
                 id="my-drawer"
                 type="checkbox"

@@ -5,8 +5,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { formatEther, parseEther } from "viem";
+import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 const Megadrop = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
@@ -171,7 +171,7 @@ const Megadrop = () => {
 
   const { isConnected } = useAccount();
 
-  const { openConnectModal } = useConnectModal();
+  const privyLogin = usePrivyLogin();
 
   return (
     <>
@@ -191,7 +191,7 @@ const Megadrop = () => {
               className="btn font-bold btn-lg mt-5 w-full btn-success m-auto"
               onClick={() => {
                 if (!isConnected) {
-                  openConnectModal();
+                  privyLogin();
                 } else {
                   document.getElementById("depositModal").showModal();
                 }
@@ -203,7 +203,7 @@ const Megadrop = () => {
               className="btn font-bold btn-lg mt-5 w-full m-auto"
               onClick={() => {
                 if (!isConnected) {
-                  openConnectModal();
+                  privyLogin();
                 } else {
                   document.getElementById("withdrawModal").showModal();
                 }

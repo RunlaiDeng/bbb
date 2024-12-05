@@ -199,9 +199,9 @@ const Address = () => {
 
   const total24hChangePercent = Math.abs(
     total24hChange / (totalBalance - total24hChange)
-  );
+  )||0;
 
-  const show = (mount && tokens) || data?.coins?.length == 0;
+  const show = (mount && data) ;
 
   return (
     <>

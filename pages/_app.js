@@ -3,18 +3,14 @@ import "../styles/globals.css";
 import React from "react";
 import Layout from "../components/Layout";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
 import { Analytics } from "@vercel/analytics/react";
-import {
-  metaMaskWallet,
-  walletConnectWallet,
-  coinbaseWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { WagmiProvider, createConfig } from "@privy-io/wagmi";
+import { http } from "wagmi";
 import Head from "next/head";
+import { PrivyProvider } from "@privy-io/react-auth";
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -58,18 +54,27 @@ const xdcParentNet = {
 
 const queryClient = new QueryClient();
 
-const config = getDefaultConfig({
-  appName: "BBBPump",
-  projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
-  chains: [xdc],
-  ssr: true, // If your dApp uses server side rendering (SSR)
-  wallets: [
-    {
-      groupName: "Recommended",
-      wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet],
-    },
-  ],
+const config = createConfig({
+  chains: [xdc], // Pass your required chains as an array
+  transports: {
+    [xdc.id]: http(),
+    // For each of your required chains, add an entry to `transports` with
+    // a key of the chain's `id` and a value of `http()`
+  },
 });
+
+// const config = getDefaultConfig({
+//   appName: "BBBPump",
+//   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
+//   chains: [xdc],
+//   ssr: true, // If your dApp uses server side rendering (SSR)
+//   wallets: [
+//     {
+//       groupName: "Recommended",
+//       wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet],
+//     },
+//   ],
+// });
 
 const MyApp = ({ Component, pageProps }) => {
   const { locale } = useRouter();
@@ -79,19 +84,42 @@ const MyApp = ({ Component, pageProps }) => {
         <title>BBBPump | The First Meme Launch Platform on XDC Network</title>
       </Head>
       <NotificationProvider>
-        <WagmiProvider config={config}>
+        <PrivyProvider
+          appId="cm3uezqn203md3kangodaq4u6"
+          config={{
+            appearance: {
+              accentColor: "#6A6FF5",
+              theme: "#FFFFFF",
+              showWalletLoginFirst: false,
+              logo: "https://bbbpump.fun/bbbpump-card.png",
+              walletChainType: "ethereum-only",
+            },
+            // loginMethods: ["wallet"],
+            loginMethods: ["wallet", "sms", "email", "google"],
+            fundingMethodConfig: {
+              moonpay: {
+                useSandbox: true,
+              },
+            },
+            defaultChain: xdc,
+            supportedChains: [xdc],
+            embeddedWallets: {
+              createOnLogin: "users-without-wallets",
+              requireUserPasswordOnCreate: false,
+            },
+            mfa: {
+              noPromptOnMfaRequired: false,
+            },
+          }}
+        >
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider
-              locale={locale}
-              showRecentTransactions={true}
-              modalSize="compact"
-            >
+            <WagmiProvider config={config}>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
-            </RainbowKitProvider>
+            </WagmiProvider>
           </QueryClientProvider>
-        </WagmiProvider>
+        </PrivyProvider>
       </NotificationProvider>
       <Analytics />
     </>

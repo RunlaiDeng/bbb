@@ -7,15 +7,11 @@ import {
 } from "wagmi";
 import { useEffect, useState } from "react";
 
-import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
-import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
-
 import { useNotification } from "../Context/notice";
+import { usePrivy } from "@privy-io/react-auth";
+import usePrivyLogin from "../Hook/usePrivyLogin";
 const WriteButton = (props) => {
   const { success, failure } = useNotification();
-  const { openConnectModal } = useConnectModal();
-  const addRecentTransaction = useAddRecentTransaction();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -75,17 +71,22 @@ const WriteButton = (props) => {
       }
     }
   }, [hash]);
-
+  const privyLogin = usePrivyLogin();
+  const { sendTransaction: sendTXPrivy, user } = usePrivy();
+  const connectorType = user?.wallet?.connectorType;
   return (
     mounted &&
     (isConnected ? (
       <div
         className={
           props.className +
-          (props?.disabled || !sendTransaction || isLoading ? " btn-disabled" : "")
+          (props?.disabled || !sendTransaction || isLoading
+            ? " btn-disabled"
+            : "")
         }
         disabled={
-          (props?.disabled || !sendTransaction || isLoading || isStarted) && !txSuccess
+          (props?.disabled || !sendTransaction || isLoading || isStarted) &&
+          !txSuccess
         }
         style={{ minWidth: 112 }}
         onClick={async () => {
@@ -93,14 +94,24 @@ const WriteButton = (props) => {
             alert("please connect wallet");
             return;
           }
-          const writeData = { ...props?.data };
+          const writeData = { ...props?.data, type: "legacy" };
 
           try {
-            const gas = await client.estimateGas({ ...props?.data });
+            const gas = await client.estimateGas({ ...writeData });
             writeData.gas = (gas * 12n) / 10n;
           } catch (e) {}
           props?.before?.();
-          sendTransaction?.(writeData);
+
+          if (connectorType == "embedded") {
+            writeData.type = 0;
+            try {
+              await sendTXPrivy(writeData);
+            } catch (e) {}
+
+            props?.callback?.(true);
+          } else {
+            sendTransaction?.(writeData);
+          }
         }}
       >
         {isLoading && "Waiting for approval"}
@@ -115,7 +126,7 @@ const WriteButton = (props) => {
       <div
         className={props.className}
         onClick={() => {
-          openConnectModal();
+          privyLogin();
         }}
       >
         Connect Wallet

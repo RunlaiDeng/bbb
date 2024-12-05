@@ -91,6 +91,45 @@ const TokenSwapFun = (props) => {
       sellRange: 0,
     });
   };
+
+  useEffect(() => {
+    async function fetchQuote() {
+      if (data?.sellRange >= 0) {
+        setData({
+          ...data,
+          sellAmount: (tokenBalance * BigInt(data?.sellRange)) / BigInt(100),
+        });
+      }
+    }
+
+    const handler = setTimeout(() => {
+      fetchQuote();
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [data?.sellRange]);
+
+  useEffect(() => {
+    async function fetchQuote() {
+      if (data?.buyRange >= 0) {
+        setData({
+          ...data,
+          buyAmount: (xdcBalance * BigInt(data?.buyRange)) / BigInt(100),
+        });
+      }
+    }
+
+    const handler = setTimeout(() => {
+      fetchQuote();
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [data?.buyRange]);
+
   const buy = {
     buttonName: "Buy " + symbol,
     disabled: disableBuy,
@@ -123,6 +162,9 @@ const TokenSwapFun = (props) => {
       refetch();
     },
   };
+
+  const showBuyAmount = (xdcBalance * BigInt(data?.buyRange)) / BigInt(100);
+  const showSellAmount = (tokenBalance * BigInt(data?.sellRange)) / BigInt(100);
 
   return (
     <>
@@ -202,7 +244,7 @@ const TokenSwapFun = (props) => {
                     ...data,
                     buyRange: e.target.value,
                     buyAmount:
-                      (xdcBalance * BigInt(e.target.value)) / BigInt(100),
+                      (xdcBalance * BigInt(data?.buyRange)) / BigInt(100),
                   });
                 }}
               />

@@ -14,6 +14,7 @@ import { contracts } from "@/config";
 import { formatEther } from "viem";
 import { useNotification } from "../Context/notice";
 import copy from "copy-to-clipboard";
+import usePrivyLogin from "../Hook/usePrivyLogin";
 const TokenInfo = (props) => {
   const {
     token,
@@ -86,6 +87,8 @@ const TokenInfo = (props) => {
   const { isConnected } = useAccount();
   const { watchAsset } = useWatchAsset();
   const { success } = useNotification();
+
+  const privyLogin = usePrivyLogin();
 
   return (
     <>
@@ -290,7 +293,7 @@ const TokenInfo = (props) => {
               data-tip="Add To MetaMask"
               onClick={() => {
                 if (!isConnected) {
-                  openConnectModal();
+                  privyLogin();
                 } else {
                   watchAsset({
                     type: "ERC20",

@@ -14,7 +14,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { buyXDCLink } from "@/config";
 import Image from "next/image";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import ImageUpload from "@/components/ImageUpload";
 import { parseEther, formatEther, decodeEventLog } from "viem";
@@ -34,6 +33,7 @@ import {
   getBBBPrice,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
+import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 
 const Home = () => {
   const chainId = useChainId();
@@ -277,7 +277,8 @@ const Home = () => {
   const bbbIsEnough = false;
 
   const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  
+  const privyLogin = usePrivyLogin();
 
   const imageUpload = {
     callback: (file) => {
@@ -321,7 +322,7 @@ const Home = () => {
                 className="btn btn-success text-white sm:btn-lg mt-8 mx-4 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
                 onClick={() => {
                   if (!isConnected) {
-                    openConnectModal();
+                    privyLogin();
                   } else {
                     document.getElementById("dropModal").showModal();
                   }

@@ -6,15 +6,12 @@ import {
 } from "wagmi";
 import { useEffect, useState } from "react";
 
-import { ConnectButton, useConnectModal } from "@rainbow-me/rainbowkit";
-import { useRouter } from "next/router";
-import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
-
 import { useNotification } from "../Context/notice";
+import { usePrivy } from "@privy-io/react-auth";
+import { encodeFunctionData } from "viem";
+import usePrivyLogin from "../Hook/usePrivyLogin";
 const WriteButton = (props) => {
   const { success, failure } = useNotification();
-  const { openConnectModal } = useConnectModal();
-  const addRecentTransaction = useAddRecentTransaction();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -75,6 +72,10 @@ const WriteButton = (props) => {
     }
   }, [hash]);
 
+  const { sendTransaction, user } = usePrivy();
+  const connectorType = user?.wallet?.connectorType;
+  
+  const privyLogin = usePrivyLogin();
   return (
     mounted &&
     (isConnected ? (
@@ -92,14 +93,28 @@ const WriteButton = (props) => {
             alert("please connect wallet");
             return;
           }
-          const writeData = { ...props?.data };
+          const writeData = { ...props?.data, type: "legacy" };
 
           try {
-            const gas = await client.estimateContractGas({ ...props?.data });
+            const gas = await client.estimateContractGas({ ...writeData });
             writeData.gas = (gas * 12n) / 10n;
           } catch (e) {}
           props?.before?.();
-          write?.(writeData);
+          if (connectorType == "embedded") {
+            const d = encodeFunctionData({
+              ...writeData,
+            });
+            writeData.data = d;
+            writeData.type = 0;
+            writeData.to = writeData?.address;
+            try {
+              await sendTransaction(writeData);
+            } catch (e) {}
+
+            props?.callback?.(true);
+          } else {
+            write?.(writeData);
+          }
         }}
       >
         {isLoading && "Waiting for approval"}
@@ -114,7 +129,7 @@ const WriteButton = (props) => {
       <div
         className={props.className}
         onClick={() => {
-          openConnectModal();
+          privyLogin();
         }}
       >
         Connect Wallet
