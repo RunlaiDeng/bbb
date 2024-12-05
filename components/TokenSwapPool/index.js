@@ -26,7 +26,7 @@ const TokenSwap = (props) => {
 
   const poolPrice = data?.pool?.price;
 
-  const { data: balance } = useBalance({ address: address });
+  const { data: balance, refetch: refetch1 } = useBalance({ address: address });
   const tokenContract = { address: token, abi: erc20Abi };
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
@@ -45,6 +45,7 @@ const TokenSwap = (props) => {
 
   const refetch = () => {
     refetch0();
+    refetch1();
     setData({
       ...data,
       buyAmount: 0n,
