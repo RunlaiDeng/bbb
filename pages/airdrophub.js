@@ -68,8 +68,8 @@ const AirdropHub = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Available</th>
-                <th>Operation</th>
+                <th className="text-right">Available</th>
+                <th className="text-right">Operation</th>
               </tr>
             </thead>
             <tbody>
@@ -96,8 +96,10 @@ const AirdropHub = () => {
                 return (
                   <tr key={index}>
                     <td>{item?.desc}</td>
-                    <td>{claimMax * item?.rewards} $BBB</td>
-                    <td>
+                    <td className="text-right">
+                      {claimMax * item?.rewards} $BBB
+                    </td>
+                    <td className="text-right">
                       <WriteButton
                         {...claimBtn}
                         className="btn btn-success btn-sm"
