@@ -74,7 +74,7 @@ const AirdropHub = () => {
             <tbody>
               <tr>
                 <td>Love and care for dexx</td>
-                <td>{dexxMax * 640}</td>
+                <td>{dexxMax * 640} $BBB</td>
                 <td>
                   <WriteButton
                     {...dexxClaim}
