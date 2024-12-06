@@ -59,6 +59,7 @@ const AirdropHub = () => {
   };
   return (
     <>
+      <div className="text-bold my-4 text-xl text-center">Airdrop Hub</div>
       <div>
         <div className="overflow-x-auto">
           <table className="table">
