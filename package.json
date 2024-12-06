@@ -21,6 +21,7 @@
     "cssnano": "^7.0.6",
     "daisyui": "^4.12.13",
     "lightweight-charts": "^4.2.0",
+    "merkletreejs": "^0.4.0",
     "nanoid": "^4.0.0",
     "next": "^14.2.14",
     "postcss": "^8.4.47",

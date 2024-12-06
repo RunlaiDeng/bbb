@@ -5,6 +5,7 @@ import mBBBABI from "../abi/mBBBABI.json";
 import mBBBV2ABI from "../abi/mBBBV2ABI.json";
 import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
 import PoolABI from "../abi/PoolABI.json";
+import ClaimRewardsABI from "../abi/ClaimRewardsABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -93,6 +94,10 @@ export const contracts = {
     pool: {
       address: "0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
       abi: PoolABI,
+    },
+    dexxRewards: {
+      address: "0x526Ed8D0dA1B460531267E2138b8a5C7c1c282FA",
+      abi: ClaimRewardsABI,
     },
   },
 };

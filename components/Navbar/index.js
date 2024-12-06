@@ -16,7 +16,6 @@ const Navbar = () => {
 
   const { address, isConnected } = useAccount();
 
-
   const { disconnect } = useDisconnect();
   const { success } = useNotification();
 
@@ -102,6 +101,14 @@ const Navbar = () => {
                       className="hover:text-green-700 hover:bg-inherit"
                     >
                       Farm
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={"/airdrophub"}
+                      className="hover:text-green-700 hover:bg-inherit"
+                    >
+                      Airdop Hub
                     </Link>
                   </li>
                 </ul>
@@ -705,6 +712,15 @@ const Navbar = () => {
                           }}
                         >
                           <div>Farm</div>
+                        </div>
+                        <div
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                          onClick={(e) => {
+                            router.push("/airdrophub");
+                            setData({ ...data, menuItemsOpen: false });
+                          }}
+                        >
+                          <div>Airdop Hub</div>
                         </div>
                       </div>
                     </div>

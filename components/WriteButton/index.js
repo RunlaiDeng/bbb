@@ -74,7 +74,7 @@ const WriteButton = (props) => {
 
   const { sendTransaction, user } = usePrivy();
   const connectorType = user?.wallet?.connectorType;
-  
+
   const privyLogin = usePrivyLogin();
   return (
     mounted &&
@@ -127,12 +127,12 @@ const WriteButton = (props) => {
       </div>
     ) : (
       <div
-        className={props.className}
+        className="btn btn-sm"
         onClick={() => {
           privyLogin();
         }}
       >
-        Connect Wallet
+        Log in
       </div>
     ))
   );
