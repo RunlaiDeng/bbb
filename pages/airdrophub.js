@@ -43,18 +43,18 @@ const AirdropHub = () => {
 
   const airdropList = [
     {
-      key: "dexx",
-      desc: "Love and care for dexx",
-      rewards: 640,
-      contract: dexxRewards,
-      dataList: dexx,
-    },
-    {
       key: "blhz",
       desc: "Gratitude to blhz",
       rewards: 6400,
       contract: blhzRewards,
       dataList: blhz,
+    },
+    {
+      key: "dexx",
+      desc: "Love and care for dexx",
+      rewards: 640,
+      contract: dexxRewards,
+      dataList: dexx,
     },
   ];
 
