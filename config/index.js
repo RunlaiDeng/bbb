@@ -95,6 +95,10 @@ export const contracts = {
       address: "0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
       abi: PoolABI,
     },
+    blhzRewards: {
+      address: "0x1168a6D36CDD2661c84e29045F05fA2058aF48B9",
+      abi: ClaimRewardsABI,
+    },
     dexxRewards: {
       address: "0x526Ed8D0dA1B460531267E2138b8a5C7c1c282FA",
       abi: ClaimRewardsABI,

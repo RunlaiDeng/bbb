@@ -1,5 +1,6 @@
 import WriteButton from "@/components/WriteButton";
 import dexx from "@/airdrop/dexx.json";
+import blhz from "@/airdrop/blhz.json";
 import { keccak256, encodePacked, getAddress } from "viem";
 import MerkleTree from "merkletreejs";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
@@ -36,27 +37,27 @@ const AirdropHub = () => {
   const { address } = useAccount();
 
   const chainId = useChainId();
+
   const dexxRewards = contracts[chainId]?.dexxRewards;
-  const dexxMax = dexx[address?.toLowerCase()] || 0;
-  const { proof: proof0, root: root0 } = getProof(dexx, {
-    address: address,
-    max: dexxMax,
-  });
+  const blhzRewards = contracts[chainId]?.blhzRewards;
 
-  // const { data: reads0, refetch: refetch0 } = useReadContracts({
-  //   contracts: [{ ...dexxRewards, functionName: "claimed", args: [address] }],
-  // });
-  // const dexxClaimed = reads0?.[0]?.result;
-  // console.log(reads0);
-
-  const dexxClaim = {
-    buttonName: "claim",
-    data: { ...dexxRewards, functionName: "claim", args: [dexxMax, proof0] },
-    callback: (confirm) => {
-      if (confirm) {
-      }
+  const airdropList = [
+    {
+      key: "dexx",
+      desc: "Love and care for dexx",
+      rewards: 640,
+      contract: dexxRewards,
+      dataList: dexx,
     },
-  };
+    {
+      key: "blhz",
+      desc: "Gratitude to blhz",
+      rewards: 6400,
+      contract: blhzRewards,
+      dataList: blhz,
+    },
+  ];
+
   return (
     <>
       <div className="text-bold my-4 text-xl text-center">Airdrop Hub</div>
@@ -72,16 +73,39 @@ const AirdropHub = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Love and care for dexx</td>
-                <td>{dexxMax * 640} $BBB</td>
-                <td>
-                  <WriteButton
-                    {...dexxClaim}
-                    className="btn btn-success btn-sm"
-                  />
-                </td>
-              </tr>
+              {airdropList.map((item, index) => {
+                const dataList = item?.dataList;
+                const claimMax = dataList[address?.toLowerCase()] || 0;
+                const { proof: proof0, root: root0 } = getProof(dataList, {
+                  address: address,
+                  max: claimMax,
+                });
+
+                const claimBtn = {
+                  buttonName: "claim",
+                  data: {
+                    ...item.contract,
+                    functionName: "claim",
+                    args: [claimMax, proof0],
+                  },
+                  callback: (confirm) => {
+                    if (confirm) {
+                    }
+                  },
+                };
+                return (
+                  <tr key={index}>
+                    <td>{item?.desc}</td>
+                    <td>{claimMax * item?.rewards} $BBB</td>
+                    <td>
+                      <WriteButton
+                        {...claimBtn}
+                        className="btn btn-success btn-sm"
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
