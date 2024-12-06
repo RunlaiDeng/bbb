@@ -83,6 +83,7 @@ const AirdropHub = () => {
 
                 const claimBtn = {
                   buttonName: "claim",
+                  disabled: claimMax == 0,
                   data: {
                     ...item.contract,
                     functionName: "claim",
