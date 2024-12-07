@@ -19,7 +19,7 @@ const TokenHead = (props) => {
 
   const price = data?.pool?.base_token_price_usd;
   const h24Change = data?.pool?.price_change_percentage?.h24;
-  const h24ChangeNum = price * h24Change;
+  const h24ChangeNum = price / (1 - h24Change) - price;
 
   const following = getFollowing();
   const isFollowed = following?.[index];
