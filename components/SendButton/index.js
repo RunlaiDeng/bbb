@@ -124,12 +124,12 @@ const WriteButton = (props) => {
       </div>
     ) : (
       <div
-        className={props.className}
+        className="btn"
         onClick={() => {
           privyLogin();
         }}
       >
-        Connect Wallet
+        Log In
       </div>
     ))
   );
