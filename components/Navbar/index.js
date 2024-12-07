@@ -87,7 +87,13 @@ const Navbar = () => {
                 href={"/"}
                 className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
               >
-                Market
+                Markets
+              </Link>
+              <Link
+                href={"/swap/bbb"}
+                className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+              >
+                Trade
               </Link>
               <div className="dropdown dropdown-hover font-bold">
                 <div
@@ -695,7 +701,29 @@ const Navbar = () => {
                           p-id="2839"
                         ></path>
                       </svg>
-                      <div>Market</div>
+                      <div>Markets</div>
+                    </div>
+                    <div
+                      className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                      onClick={(e) => {
+                        router.push("/swap/bbb");
+                        setData({ ...data, menuItemsOpen: false });
+                      }}
+                    >
+                      <svg
+                        viewBox="0 0 1036 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="2838"
+                        width="20"
+                        height="20"
+                      >
+                        <path
+                          d="M1014.628571 504L543.885714 33.6a36.491429 36.491429 0 0 0-51.657143 0L21.485714 504c-13.714286 13.714286-21.485714 32.342857-21.485714 51.771429 0 40.342857 32.8 73.142857 73.142857 73.142857h49.6V964.571429c0 20.228571 16.342857 36.571429 36.571429 36.571428H444.914286V745.142857h128v256h303.885714c20.228571 0 36.571429-16.342857 36.571429-36.571428V628.914286h49.6c19.428571 0 38.057143-7.657143 51.771428-21.485715 28.457143-28.571429 28.457143-74.857143-0.114286-103.428571z"
+                          p-id="2839"
+                        ></path>
+                      </svg>
+                      <div>Trade</div>
                     </div>
                     <div
                       tabIndex={0}

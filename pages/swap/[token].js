@@ -16,6 +16,7 @@ import TokenChartPool from "@/components/TokenChartPool";
 import TokenChartFun from "@/components/TokenChartFun";
 import { erc20Abi } from "viem";
 import rpc from "@/components/Rpc";
+import TokenMarkets from "@/components/TokenMarkets";
 
 const Swap = () => {
   const router = useRouter();
@@ -260,6 +261,11 @@ const Swap = () => {
 
   const tChartFun = { index, xdcPrice, token, symbol };
 
+  const tMarkets = {
+    xdcPrice,
+    xdcPriceChangeH24,
+  };
+
   const [type, setType] = useState("chart");
 
   useEffect(() => {
@@ -278,11 +284,16 @@ const Swap = () => {
         )}
       </div>
       <div className="m-auto grid lg:grid-cols-5 gap-[1px]">
-        {windowWidth > 1024 && (
+        {/* {windowWidth > 1024 && (
           <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
             <div className="divider my-[0.5px]"></div>
             <TokenChat {...tChat} />
+          </div>
+        )} */}
+        {windowWidth > 1024 && (
+          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+            <TokenMarkets {...tMarkets} />
           </div>
         )}
 
@@ -303,7 +314,7 @@ const Swap = () => {
                 </div>
                 <div
                   className={
-                    "font-bold text-sm cursor-pointer lg:hidden " +
+                    "font-bold text-sm cursor-pointer  " +
                     (type == "info" ? "text-green-700" : "")
                   }
                   onClick={() => {
@@ -314,7 +325,7 @@ const Swap = () => {
                 </div>
                 <div
                   className={
-                    "font-bold text-sm cursor-pointer lg:hidden " +
+                    "font-bold text-sm cursor-pointer " +
                     (type == "chat" ? "text-green-700" : "")
                   }
                   onClick={() => {
