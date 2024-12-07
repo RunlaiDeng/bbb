@@ -283,7 +283,7 @@ const Swap = () => {
           <TokenHeadFun {...tHeadFun} />
         )}
       </div>
-      <div className="m-auto grid lg:grid-cols-5 gap-[1px]  h-screen">
+      <div className="m-auto grid lg:grid-cols-5 gap-[1px] lg:h-screen">
         {/* {windowWidth > 1024 && (
           <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
@@ -297,7 +297,7 @@ const Swap = () => {
           </div>
         )}
 
-        <div className="lg:col-span-3  text-center  overflow-y-auto outline rounded-none outline-gray-200">
+        <div className="lg:col-span-3  text-center outline rounded-none outline-gray-200">
           <div className="card">
             <div className="card-body p-2">
               <div className="flex gap-2 items-center">
@@ -350,7 +350,7 @@ const Swap = () => {
           </div>
           {graduate && (
             <>
-              <div className="h-[500px]">
+              <div className="h-[500px] overflow-y-auto">
                 {type == "chart" && <TokenChartPool {...tChartPool} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
@@ -362,7 +362,7 @@ const Swap = () => {
           )}
           {!graduate && (
             <>
-              <div className="h-[500px]">
+              <div className="h-[500px] overflow-y-auto">
                 {type == "chart" && <TokenChartFun {...tChartFun} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
