@@ -229,7 +229,6 @@ const Home = () => {
 
   const router = useRouter();
 
-
   const [image, setImage] = useState("");
 
   const canDrop = data?.dName && data?.dSymbol && image && data?.dDesciption;
@@ -277,7 +276,7 @@ const Home = () => {
   const bbbIsEnough = false;
 
   const { isConnected } = useAccount();
-  
+
   const privyLogin = usePrivyLogin();
 
   const imageUpload = {
@@ -538,7 +537,7 @@ const Home = () => {
                 </div>
               )}
             </div>
-            {showList&&latestKing?.index > 0 && (
+            {showList && latestKing?.index > 0 && (
               <div className="px-4 w-full m-auto ">
                 <div
                   className={
@@ -764,26 +763,11 @@ const Home = () => {
                     {dropTokens?.map((item, index) => {
                       const cap = item?.xdcAmount?.toString();
                       const percent = (100 * cap) / item?.maxXdc?.toString();
-                      let volume24h =
-                        "$" +
-                        formatNumber(
-                          xdcPrice *
-                            formatEther(tokenList?.[index]?.volume24 || 0)
-                        );
-                      let priceChange24h = (
-                        ((1 + Number(xdcPriceChange24h || 0)) *
-                          (1 +
-                            Number(tokenList?.[index]?.priceChange24h || 0)) -
-                          1) *
-                        100
-                      )?.toFixed(2);
+                      const tokenFromServer = tokenList?.[index];
+                      const price = Number(tokenFromServer?.price) / 1e18 || 0;
+                      const priceChangeH24 =
+                        tokenFromServer?.priceChangeH24 || 0;
 
-                      if (tokenList?.[index]?.volume24 == undefined) {
-                        volume24h = "-";
-                      }
-                      if (tokenList?.[index]?.priceChange24h == undefined) {
-                        priceChange24h = "-";
-                      }
                       return (
                         <tr
                           key={item?.index}
@@ -811,19 +795,19 @@ const Home = () => {
                             </div>
                           </td>
                           <td className="text-right">
-                            {"$" + (xdcPrice * calculatePrice(cap))?.toFixed(6)}
+                            {"$" + (xdcPrice * price * 2)?.toFixed(6)}
                           </td>
                           <td
                             className={
                               "text-right " +
-                              (priceChange24h != "-" &&
-                                (priceChange24h >= 0
+                              (priceChangeH24 != "-" &&
+                                (priceChangeH24 >= 0
                                   ? "text-green-700"
                                   : "text-red-700"))
                             }
                           >
-                            {priceChange24h >= 0 ? "+" : "-"}
-                            {Math.abs(priceChange24h)}%
+                            {priceChangeH24 >= 0 ? "+" : "-"}
+                            {Math.abs(priceChangeH24)}%
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
                           <td>
@@ -1446,9 +1430,7 @@ const Home = () => {
                 {/* <div className="text-green-700">Free</div> */}
               </label>
             </div>
-            <div className="mt-1 text-xs">
-              Avbl {balance?.formatted} XDC
-            </div>
+            <div className="mt-1 text-xs">Avbl {balance?.formatted} XDC</div>
             {!bbbIsEnough && (
               <Link
                 className="underline text-xs"

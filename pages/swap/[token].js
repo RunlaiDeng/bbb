@@ -217,6 +217,9 @@ const Swap = () => {
     poolCap,
     createTime,
     deployer,
+    isBBB,
+    index,
+    token,
   };
 
   const tHeadFun = {
@@ -227,6 +230,9 @@ const Swap = () => {
     xdcPrice,
     createTime,
     deployer,
+    isBBB,
+    index,
+    token,
   };
 
   const tChartPool = {
@@ -245,13 +251,14 @@ const Swap = () => {
 
   return showData ? (
     <>
-      {graduate ? (
-        <TokenHeadPool {...tHeadPool} />
-      ) : (
-        <TokenHeadFun {...tHeadFun} />
-      )}
-
-      <div className="m-auto grid lg:grid-cols-5 sm:mx-2 gap-[1px]">
+      <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
+        {graduate ? (
+          <TokenHeadPool {...tHeadPool} />
+        ) : (
+          <TokenHeadFun {...tHeadFun} />
+        )}
+      </div>
+      <div className="m-auto grid lg:grid-cols-5 gap-[1px]">
         {windowWidth > 1024 && (
           <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
