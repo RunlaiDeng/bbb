@@ -768,7 +768,9 @@ const Home = () => {
                       let priceChangeH24 =
                         Number(tokenFromServer?.priceChangeH24) || 0;
                       priceChangeH24 =
-                        (1 + priceChangeH24) * (1 + xdcPriceChange24h);
+                        ((1 + priceChangeH24) * (1 + xdcPriceChange24h) - 1) *
+                        100;
+
                       return (
                         <tr
                           key={item?.index}
@@ -807,7 +809,7 @@ const Home = () => {
                             }
                           >
                             {priceChangeH24 >= 0 ? "+" : "-"}
-                            {priceChangeH24}%
+                            {priceChangeH24?.toFixed(2)}%
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
                           <td>
