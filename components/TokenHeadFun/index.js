@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { getFollowing, setFollowing } from "../Utils";
 import { useEffect, useState } from "react";
-import rpc from "@/components/Rpc";
+
 const TokenHeadFun = (props) => {
   let {
     index,
@@ -16,25 +16,14 @@ const TokenHeadFun = (props) => {
     createTime,
     deployer,
     xdcPriceChangeH24,
+    tokenInfo,
   } = props;
   index = index?.toString();
-  const chainId = useChainId();
-  const router = useRouter();
-  const [data, setData] = useState({});
 
-  useEffect(() => {
-    async function fetchData(params) {
-      const findToken = await rpc.getTokens(1, 1, 1, [token]);
-
-      setData({ ...data, tokenInfo: findToken?.list?.[0] });
-    }
-    fetchData();
-  }, [token]);
-
-  const price = (Number(data?.tokenInfo?.price || 0) * xdcPrice * 2) / 1e18;
+  const price = (Number(tokenInfo?.price || 0) * xdcPrice * 2) / 1e18;
 
   const h24Change =
-    (1 + xdcPriceChangeH24) * (1 + Number(data?.tokenInfo?.priceChangeH24)) - 1;
+    (1 + xdcPriceChangeH24) * (1 + Number(tokenInfo?.priceChangeH24)) - 1;
   const h24ChangeNum = price / (1 - h24Change) - price;
 
   const following = getFollowing();

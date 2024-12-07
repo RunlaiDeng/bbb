@@ -3,22 +3,10 @@ import { useRouter } from "next/router";
 import { getFollowing, getPool, getPrice, setFollowing } from "../Utils";
 import { useEffect, useState } from "react";
 const TokenHead = (props) => {
-  const { name, symbol, deployer, createTime, poolCap, isBBB, index, token } =
-    props;
-  const router = useRouter();
-  const [data, setData] = useState({});
+  const { name, symbol, isBBB, index, token, pool } = props;
 
-  useEffect(() => {
-    async function fetchData() {
-      const pool = await getPool(token);
-      console.log(pool);
-      setData({ ...data, pool });
-    }
-    fetchData();
-  }, [token]);
-
-  const price = data?.pool?.base_token_price_usd;
-  const h24Change = (data?.pool?.price_change_percentage?.h24 || 0) / 100;
+  const price = pool.price;
+  const h24Change = pool?.priceChangeH24;
   const h24ChangeNum = price / (1 - h24Change) - price;
 
   const following = getFollowing();
@@ -103,7 +91,7 @@ const TokenHead = (props) => {
               }
             >
               {Math.abs(h24ChangeNum)?.toFixed(6)} {h24Change >= 0 ? "+" : ""}
-              {h24Change * 100}%
+              {(h24Change * 100)?.toFixed(2)}%
             </div>
           </div>
         </div>

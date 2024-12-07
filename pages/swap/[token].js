@@ -15,6 +15,7 @@ import TokenHeadFun from "@/components/TokenHeadFun";
 import TokenChartPool from "@/components/TokenChartPool";
 import TokenChartFun from "@/components/TokenChartFun";
 import { erc20Abi } from "viem";
+import rpc from "@/components/Rpc";
 
 const Swap = () => {
   const router = useRouter();
@@ -33,6 +34,7 @@ const Swap = () => {
   async function fetchData() {
     setMount(false);
     const xdc = await getXDCPrice();
+
     setPrice({ ...price, xdc });
     setMount(true);
   }
@@ -119,13 +121,20 @@ const Swap = () => {
   const isBBB = token == bbbInfo.address;
   const canUpdate = address == deployer && !isBBB;
 
+  async function fetchNonGraduate() {
+    if (token) {
+      const findToken = await rpc.getTokens(1, 1, 1, [token]);
+      setData({ ...data, tokenInfo: findToken?.list?.[0] });
+    }
+  }
+
   async function fetchGraduate() {
     if (token) {
       const pool = await getPool(token);
       if (pool) {
         const poolInfo = {
           price: pool?.base_token_price_usd || 0,
-          priceChange24h: pool?.price_change_percentage?.h24 / 100 || 0,
+          priceChangeH24: pool?.price_change_percentage?.h24 / 100 || 0,
           cap: pool?.market_cap_usd || 0,
           volumeH24: pool?.volume_usd?.h24,
           address: pool?.address,
@@ -139,8 +148,13 @@ const Swap = () => {
   useEffect(() => {
     if (graduate) {
       fetchGraduate();
+    } else {
+      fetchNonGraduate();
     }
   }, [graduate, token]);
+
+  const tokenInfo = data?.tokenInfo;
+  const pool = data?.pool;
 
   let poolCap;
   let poolAddress;
@@ -222,6 +236,7 @@ const Swap = () => {
     isBBB,
     index,
     token,
+    pool,
   };
 
   const tHeadFun = {
@@ -235,7 +250,8 @@ const Swap = () => {
     isBBB,
     index,
     token,
-    xdcPriceChangeH24
+    tokenInfo,
+    xdcPriceChangeH24,
   };
 
   const tChartPool = {
