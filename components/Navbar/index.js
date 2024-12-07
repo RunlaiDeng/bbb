@@ -87,7 +87,7 @@ const Navbar = () => {
                   role="button"
                   className="btn m-1 btn-ghost hover:text-green-700 hover:bg-inherit"
                 >
-                  More
+                  Earn
                 </div>
                 <ul
                   tabIndex={0}
@@ -698,7 +698,7 @@ const Navbar = () => {
                             p-id="15540"
                           ></path>
                         </svg>{" "}
-                        More
+                        Earn
                       </div>
                       <div className="collapse-content">
                         <div
