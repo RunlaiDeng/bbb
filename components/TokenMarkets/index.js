@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 import { useRouter } from "next/router";
-import { getFollowing, setFollowing } from "../Utils";
+import { getFollowing, getPool, setFollowing } from "../Utils";
+import { bbbInfo } from "@/config";
 
 const TokenMarkets = (props) => {
   const { xdcPrice, xdcPriceChangeH24 } = props;
@@ -9,6 +10,12 @@ const TokenMarkets = (props) => {
   const [show, setShow] = useState(2);
   useEffect(() => {
     async function fetchData() {
+      const bbbPool = await getPool(bbbInfo.address);
+
+      const bbb = {
+        price: Number(bbbPool?.base_token_price_usd || 0)?.toFixed(4),
+        changeH24: bbbPool?.price_change_percentage?.h24 || 0,
+      };
       let findTokens = {};
       const following = getFollowing();
       if (show == 1) {
@@ -22,7 +29,7 @@ const TokenMarkets = (props) => {
         findTokens = await rpc.getTokens(1, 1, 9999);
       }
 
-      setData({ ...data, tokenList: findTokens?.list, following });
+      setData({ ...data, tokenList: findTokens?.list, following, bbb });
     }
     fetchData();
   }, [show, data?.refetch]);
@@ -30,6 +37,9 @@ const TokenMarkets = (props) => {
 
   const router = useRouter();
   const following = data?.following;
+
+  const bbbPrice = data?.bbb?.price;
+  const bbbPriceChange24h = data?.bbb?.changeH24;
 
   return (
     <>
@@ -130,6 +140,43 @@ const TokenMarkets = (props) => {
               </thead>
 
               <tbody>
+                {tokenList&&<>
+                    <tr
+                  className="hover cursor-pointer"
+                  onClick={() => {
+                    router.push("/swap/bbb");
+                  }}
+                >
+                  <td className="flex items-center gap-1">
+                    <svg
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="5267"
+                      width="16"
+                      height="16"
+                    >
+                      <path
+                        d="M785.352203 933.397493c-4.074805 0-8.151657-0.970094-11.833513-3.007497l-261.311471-142.488225L250.942821 930.388972c-8.343015 4.559852-18.527982 3.8814-26.28669-1.599428-7.760754-5.5279-11.640108-14.987343-10.088776-24.347524l47.578622-285.365306L72.563154 429.470355c-6.594185-6.547113-8.971325-16.295128-6.110161-25.122167 2.814092-8.850575 10.379395-15.397688 19.546172-16.949021l285.512662-47.577598 118.529557-236.989529c4.172019-8.391111 12.803607-13.701047 22.165836-13.701047 9.359158 0 17.992793 5.309936 22.163789 13.701047l118.529557 236.989529 285.511639 47.577598c9.217942 1.551332 16.73208 8.051373 19.593244 16.949021 2.813069 8.875135 0.48607 18.575054-6.109138 25.122167L762.264369 619.077737l47.577598 285.365306c1.50119 9.360182-2.37714 18.819624-10.087753 24.347524C795.487028 931.797042 790.394033 933.397493 785.352203 933.397493z"
+                        p-id="5268"
+                        fill="#0e932e"
+                      ></path>
+                    </svg>
+                    BBB
+                  </td>
+                  <td className="text-right">{bbbPrice}</td>
+                  <td
+                    className={
+                      "text-right " +
+                      (bbbPriceChange24h >= 0
+                        ? "text-green-700"
+                        : "text-red-700")
+                    }
+                  >
+                    {bbbPriceChange24h >= 0 ? "+" : ""}
+                    {bbbPriceChange24h}%
+                  </td>
+                </tr>
                 {tokenList?.map((item, index) => {
                   const isFollowed = following?.[item?.index];
                   const price = (
@@ -219,6 +266,8 @@ const TokenMarkets = (props) => {
                     </tr>
                   );
                 })}
+                </>}
+              
               </tbody>
             </table>
           </div>
