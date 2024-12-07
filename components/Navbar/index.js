@@ -84,7 +84,7 @@ const Navbar = () => {
                 Buy XDC
               </Link>
               <Link
-                href={"/"}
+                href={"/markets"}
                 className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
               >
                 Markets
@@ -684,7 +684,7 @@ const Navbar = () => {
                     <div
                       className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
-                        router.push("/");
+                        router.push("/markets");
                         setData({ ...data, menuItemsOpen: false });
                       }}
                     >
