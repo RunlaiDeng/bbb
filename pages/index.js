@@ -768,8 +768,8 @@ const Home = () => {
                       let priceChangeH24 =
                         Number(tokenFromServer?.priceChangeH24) || 0;
                       priceChangeH24 =
-                        ((1 + priceChangeH24) * (1 + xdcPriceChange24h) - 1) *
-                        100;
+                        100 *
+                        ((1 + priceChangeH24) * (1 + xdcPriceChange24h) - 1);
 
                       return (
                         <tr

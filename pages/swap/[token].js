@@ -39,6 +39,8 @@ const Swap = () => {
 
   const xdcPrice = price?.xdc?.price;
 
+  const xdcPriceChangeH24 = price?.xdc?.priceChange24h;
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -233,6 +235,7 @@ const Swap = () => {
     isBBB,
     index,
     token,
+    xdcPriceChangeH24
   };
 
   const tChartPool = {

@@ -7,7 +7,16 @@ import { getFollowing, setFollowing } from "../Utils";
 import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 const TokenHeadFun = (props) => {
-  let { index, name, symbol, token, xdcPrice, createTime, deployer } = props;
+  let {
+    index,
+    name,
+    symbol,
+    token,
+    xdcPrice,
+    createTime,
+    deployer,
+    xdcPriceChangeH24,
+  } = props;
   index = index?.toString();
   const chainId = useChainId();
   const router = useRouter();
@@ -23,8 +32,10 @@ const TokenHeadFun = (props) => {
   }, [token]);
 
   const price = (Number(data?.tokenInfo?.price || 0) * xdcPrice * 2) / 1e18;
-  const h24Change = data?.tokenInfo?.priceChangeH24;
-  const h24ChangeNum = price * h24Change;
+
+  const h24Change =
+    (1 + xdcPriceChangeH24) * (1 + Number(data?.tokenInfo?.priceChangeH24)) - 1;
+  const h24ChangeNum = price / (1 - h24Change) - price;
 
   const following = getFollowing();
   const isFollowed = following?.[index];
@@ -108,7 +119,7 @@ const TokenHeadFun = (props) => {
               }
             >
               {Math.abs(h24ChangeNum)?.toFixed(6)} {h24Change >= 0 ? "+" : ""}
-              {h24Change}%
+              {(h24Change * 100)?.toFixed(2)}%
             </div>
           </div>
         </div>
