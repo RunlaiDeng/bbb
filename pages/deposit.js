@@ -3,6 +3,8 @@ import { QRCodeSVG } from "qrcode.react";
 import copy from "copy-to-clipboard";
 import { useNotification } from "@/components/Context/notice";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { buyXDCLink } from "@/config";
 const Desposit = () => {
   const { address } = useAccount();
 
@@ -20,6 +22,7 @@ const Desposit = () => {
   const { success } = useNotification();
 
   const [data, setData] = useState({ type: 0 });
+  const router = useRouter();
   return (
     <>
       {data?.type == 0 && (
@@ -36,7 +39,7 @@ const Desposit = () => {
             <div
               className="btn h-28"
               onClick={() => {
-                setData({ ...data, type: 2 });
+                window.open(buyXDCLink);
               }}
             >
               Dont own crypto

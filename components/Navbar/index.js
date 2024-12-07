@@ -668,7 +668,7 @@ const Navbar = () => {
                     <div
                       className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
-                        router.push(buyXDCLink);
+                        window.open(buyXDCLink);
                         setData({ ...data, menuItemsOpen: false });
                       }}
                     >
