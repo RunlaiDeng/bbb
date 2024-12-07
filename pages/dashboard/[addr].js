@@ -61,7 +61,7 @@ const Address = () => {
 
         if (queryInfo) {
           queryInfo.priceChange24h =
-            (1 + Number(queryInfo.priceChange24h)) *
+            (1 + Number(queryInfo.priceChangeH24)) *
               (1 + Number(xdc.priceChange24h)) -
             1;
         }
