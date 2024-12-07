@@ -76,7 +76,7 @@ const TokenHead = (props) => {
                 (h24Change >= 0 ? "text-green-700" : "text-red-700")
               }
             >
-              ${Number(price)?.toFixed(6)}
+              {Number(price)?.toFixed(6)}
             </div>
             <div className="text-xs">${Number(price)?.toFixed(6)}</div>
           </div>
