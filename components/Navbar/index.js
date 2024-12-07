@@ -76,6 +76,12 @@ const Navbar = () => {
 
             <div className="ml-2 hidden lg:flex items-center pt-1">
               <Link
+                href={"#"}
+                className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+              >
+                Buy XDC
+              </Link>
+              <Link
                 href={"/"}
                 className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
               >
