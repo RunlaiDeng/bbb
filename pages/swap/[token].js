@@ -283,7 +283,7 @@ const Swap = () => {
           <TokenHeadFun {...tHeadFun} />
         )}
       </div>
-      <div className="m-auto grid lg:grid-cols-5 gap-[1px]">
+      <div className="m-auto grid lg:grid-cols-5 gap-[1px]  h-screen">
         {/* {windowWidth > 1024 && (
           <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />
@@ -292,12 +292,12 @@ const Swap = () => {
           </div>
         )} */}
         {windowWidth > 1024 && (
-          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+          <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
             <TokenMarkets {...tMarkets} />
           </div>
         )}
 
-        <div className="lg:col-span-3  text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+        <div className="lg:col-span-3  text-center  overflow-y-auto outline rounded-none outline-gray-200">
           <div className="card">
             <div className="card-body p-2">
               <div className="flex gap-2 items-center">
@@ -374,7 +374,7 @@ const Swap = () => {
           )}
         </div>
         {windowWidth > 1024 && (
-          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
+          <div className="text-center  overflow-y-auto outline rounded-none outline-gray-200">
             {graduate ? (
               <TokenTradePool {...tTradePool} />
             ) : (
