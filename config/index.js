@@ -17,7 +17,8 @@ export const chartLink =
 
 export const linktree = "https://linktr.ee/benybadboy";
 
-export const buyXDCLink = "https://docs.bbbpump.fun/how-to-play/how-to-buy-xdc";
+export const buyXDCLink =
+  "https://ramp.alchemypay.org?crypto=XDC&fiat=USD&amount=1000&alpha2=US&network=XDC&type=officialWebsite#/index";
 
 export const rpcUrl = "https://api.bbbpump.fun";
 

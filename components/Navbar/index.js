@@ -7,6 +7,7 @@ import { useAccount, useDisconnect } from "wagmi";
 import copy from "copy-to-clipboard";
 import { usePrivy } from "@privy-io/react-auth";
 import usePrivyLogin from "../Hook/usePrivyLogin";
+import { buyXDCLink } from "@/config";
 const Navbar = () => {
   const router = useRouter();
 
@@ -76,7 +77,8 @@ const Navbar = () => {
 
             <div className="ml-2 hidden lg:flex items-center pt-1">
               <Link
-                href={"#"}
+                href={buyXDCLink}
+                target="_blank"
                 className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
               >
                 Buy XDC
@@ -666,8 +668,8 @@ const Navbar = () => {
                     <div
                       className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
-                        // router.push("");
-                        // setData({ ...data, menuItemsOpen: false });
+                        router.push(buyXDCLink);
+                        setData({ ...data, menuItemsOpen: false });
                       }}
                     >
                       <Image src={"/xdc.png"} height={20} width={20} alt="" />
