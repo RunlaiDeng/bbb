@@ -75,6 +75,12 @@ const Navbar = () => {
             </div> */}
 
             <div className="ml-2 hidden lg:flex items-center pt-1">
+              <Link
+                href={"/"}
+                className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+              >
+                Market
+              </Link>
               <div className="dropdown dropdown-hover font-bold">
                 <div
                   tabIndex={0}
@@ -671,7 +677,7 @@ const Navbar = () => {
                           p-id="2839"
                         ></path>
                       </svg>
-                      <div>Home</div>
+                      <div>Market</div>
                     </div>
                     <div
                       tabIndex={0}
