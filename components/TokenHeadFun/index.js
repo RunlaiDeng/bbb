@@ -4,38 +4,32 @@ import { useChainId, useReadContracts } from "wagmi";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { getFollowing, setFollowing } from "../Utils";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import rpc from "@/components/Rpc";
 const TokenHeadFun = (props) => {
   let { index, name, symbol, token, xdcPrice, createTime, deployer } = props;
   index = index?.toString();
   const chainId = useChainId();
   const router = useRouter();
+  const [data, setData] = useState({});
 
-  const mbbb = contracts[chainId]?.mbbbv2;
-  const tokenContract = { address: token, abi: erc20Abi };
-  const { data: reads0 } = useReadContracts({
-    contracts: [
-      { ...tokenContract, functionName: "totalSupply" },
-      {
-        ...mbbb,
-        functionName: "price",
-        args: [index],
-      },
-    ],
-  });
-  const totalSupply = reads0?.[0]?.result;
-  const price = (xdcPrice * 2 * Number(reads0?.[1]?.result)) / 1e18;
-  const poolCap =
-    xdcPrice *
-    Number(formatEther(totalSupply || 0n) * formatEther(price || 0n) * 2);
+  useEffect(() => {
+    async function fetchData(params) {
+      const findToken = await rpc.getTokens(1, 1, 1, [token]);
+
+      setData({ ...data, tokenInfo: findToken?.list?.[0] });
+    }
+    fetchData();
+  }, [token]);
+
+  const price = (Number(data?.tokenInfo?.price || 0) * xdcPrice * 2) / 1e18;
+  const h24Change = data?.tokenInfo?.priceChangeH24;
+  const h24ChangeNum = price * h24Change;
 
   const following = getFollowing();
   const isFollowed = following?.[index];
   const [followed, setFollowed] = useState(isFollowed);
 
-  const h24Change = 0;
-  const h24ChangeNum = 0;
   return (
     <div className="card mx-2 py-1">
       <div className="card-body p-0">
