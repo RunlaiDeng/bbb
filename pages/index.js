@@ -765,9 +765,10 @@ const Home = () => {
                       const percent = (100 * cap) / item?.maxXdc?.toString();
                       const tokenFromServer = tokenList?.[index];
                       const price = Number(tokenFromServer?.price) / 1e18 || 0;
-                      const priceChangeH24 =
-                        tokenFromServer?.priceChangeH24 || 0;
-
+                      let priceChangeH24 =
+                        Number(tokenFromServer?.priceChangeH24) || 0;
+                      priceChangeH24 =
+                        (1 + priceChangeH24) * (1 + xdcPriceChange24h);
                       return (
                         <tr
                           key={item?.index}
@@ -800,14 +801,13 @@ const Home = () => {
                           <td
                             className={
                               "text-right " +
-                              (priceChangeH24 != "-" &&
-                                (priceChangeH24 >= 0
-                                  ? "text-green-700"
-                                  : "text-red-700"))
+                              (priceChangeH24 >= 0
+                                ? "text-green-700"
+                                : "text-red-700")
                             }
                           >
                             {priceChangeH24 >= 0 ? "+" : "-"}
-                            {Math.abs(priceChangeH24)}%
+                            {priceChangeH24}%
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
                           <td>
