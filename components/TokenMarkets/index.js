@@ -164,7 +164,7 @@ const TokenMarkets = (props) => {
                     </svg>
                     BBB
                   </td>
-                  <td className="text-right">{bbbPrice}</td>
+                  <td className="text-right">${bbbPrice}</td>
                   <td
                     className={
                       "text-right " +
@@ -253,7 +253,7 @@ const TokenMarkets = (props) => {
                         )}
                         {item?.symbol}
                       </td>
-                      <td className="text-right">{price}</td>
+                      <td className="text-right">${price}</td>
                       <td
                         className={
                           "text-right " +
