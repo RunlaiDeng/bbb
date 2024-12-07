@@ -2,7 +2,7 @@ const TokenChartPool = (props) => {
   const { poolAddress } = props;
   return (
     <div className="card " id="chart">
-      <div className="card-body p-2">
+      <div className="card-body p-0">
         <div className="h-[500px]">
           <iframe
             height="100%"
@@ -12,7 +12,7 @@ const TokenChartPool = (props) => {
             src={
               "https://www.geckoterminal.com/xdc/pools/" +
               poolAddress +
-              "?embed=1&info=0&swaps=0"
+              "?embed=1&info=0&swaps=0&light_chart=1"
             }
             frameBorder="0"
             allow="clipboard-write"

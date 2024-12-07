@@ -45,7 +45,7 @@ const TokenTradePool = (props) => {
               src={
                 "https://www.geckoterminal.com/xdc/pools/" +
                 poolAddress +
-                "?embed=1&info=0&swaps=1&chart=0"
+                "?embed=1&info=0&swaps=1&chart=0&light_swaps=1"
               }
               frameBorder="0"
               allow="clipboard-write"
