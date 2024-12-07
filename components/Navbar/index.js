@@ -666,6 +666,16 @@ const Navbar = () => {
                     <div
                       className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                       onClick={(e) => {
+                        // router.push("");
+                        // setData({ ...data, menuItemsOpen: false });
+                      }}
+                    >
+                      <Image src={"/xdc.png"} height={20} width={20} alt="" />
+                      <div>Buy XDC</div>
+                    </div>
+                    <div
+                      className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                      onClick={(e) => {
                         router.push("/");
                         setData({ ...data, menuItemsOpen: false });
                       }}
