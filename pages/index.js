@@ -55,8 +55,12 @@ const Home = () => {
       </div>
       <div className="card m-auto sm:w-3/4 min-h-screen">
         <div className="card-body">
-          <div className="text-green-700 font-bold text-5xl my-4 text-center">Backed by</div>
-          <Image src={"/xdcBrand.png"} height={200} width={200} alt="" />
+          <div className="text-green-700 font-bold text-5xl my-4 text-center">
+            Backed by
+          </div>
+          <div className="grid grid-cols-4">
+            <Image src={"/xdcBrand.png"} height={200} width={200} alt="" />
+          </div>
         </div>
       </div>
     </>
