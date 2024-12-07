@@ -6,7 +6,7 @@ const Home = () => {
   const router = useRouter();
   return (
     <>
-      <div className="card h-screen sm:w-3/4 m-auto">
+      <div className="card min-h-screen sm:w-3/4 m-auto">
         <div className="card-body">
           <div className="sm:flex items-center gap-2 sm:mt-8">
             <div className="text-center sm:text-left">
@@ -22,14 +22,22 @@ const Home = () => {
               >
                 Try Now
               </div>
+              <div className="mt-8"></div>
             </div>
-            <div className="mt-10 ">
-              <Image src={"/home0.png"} height={300} width={300} className="m-auto" />
+            <div className="mt-10">
+              <Image
+                src={"/home0.png"}
+                height={300}
+                width={300}
+                className="m-auto"
+              />
             </div>
           </div>
+          <div className="m-auto my-10 sm:mt-0"></div>
         </div>
       </div>
-      <div className="card sm:w-3/4 m-auto  h-screen">
+
+      <div className="card sm:w-3/4 m-auto min-h-screen">
         <div className="card-body text-center">
           <div className="text-green-700 font-bold text-5xl my-4">
             Trade with confidence
@@ -43,6 +51,12 @@ const Home = () => {
             width={1000}
             className="w-full my-4"
           />
+        </div>
+      </div>
+      <div className="card m-auto sm:w-3/4 min-h-screen">
+        <div className="card-body">
+          <div className="text-green-700 font-bold text-5xl my-4 text-center">Backed by</div>
+          <Image src={"/xdcBrand.png"} height={200} width={200} alt="" />
         </div>
       </div>
     </>
