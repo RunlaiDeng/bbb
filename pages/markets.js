@@ -809,7 +809,7 @@ const Home = () => {
                                 : "text-red-700")
                             }
                           >
-                            {priceChangeH24 >= 0 ? "+" : "-"}
+                            {priceChangeH24 >= 0 ? "+" : ""}
                             {priceChangeH24?.toFixed(2)}%
                           </td>
                           {/* <td className="text-right">{volume24h}</td> */}
