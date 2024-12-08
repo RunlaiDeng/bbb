@@ -268,6 +268,13 @@ const Swap = () => {
 
   const [type, setType] = useState("chart");
 
+  useEffect(() => {
+    if (windowWidth >= 1024) {
+      setType("chart");
+    }
+    setType("chart");
+  }, [windowWidth, token]);
+
   return showData ? (
     <>
       <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
