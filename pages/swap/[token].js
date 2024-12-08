@@ -345,6 +345,17 @@ const Swap = () => {
                 >
                   Trades
                 </div>
+                <div
+                  className={
+                    "font-bold text-sm cursor-pointer lg:hidden " +
+                    (type == "trades" ? "text-green-700" : "")
+                  }
+                  onClick={() => {
+                    setType("markets");
+                  }}
+                >
+                  Markets
+                </div>
               </div>
             </div>
           </div>
@@ -355,6 +366,7 @@ const Swap = () => {
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
                 {type == "trades" && <TokenTradePool {...tTradePool} />}
+                {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
               <TokenSwapPool {...tSwapPool} />
@@ -367,6 +379,7 @@ const Swap = () => {
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
                 {type == "trades" && <TokenTradeFun {...tTradeFun} />}
+                {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
               <TokenSwapFun {...tSwapFun} />
