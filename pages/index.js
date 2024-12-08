@@ -25,12 +25,14 @@ const Home = () => {
               <div className="mt-8"></div>
             </div>
             <div className="mt-10">
-              <Image
-                src={"/home0.png"}
-                height={300}
-                width={300}
-                className="m-auto"
-              />
+              <div className="mockup-browser border-green-700 border border-4">
+                <Image
+                  src={"/home0.png"}
+                  height={1000}
+                  width={1000}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
           <div className="m-auto my-10 sm:mt-0"></div>
@@ -45,12 +47,14 @@ const Home = () => {
           <div className="opacity-50 my-4">
             Get low fees, high speed transactions, powerful APIs, and more
           </div>
-          <Image
-            src={"/home1.png"}
-            height={1000}
-            width={1000}
-            className="w-full my-4"
-          />
+          <div className="mockup-browser border-green-700 border border-4  my-4">
+            <Image
+              src={"/home1.png"}
+              height={1000}
+              width={1000}
+              className="w-full"
+            />
+          </div>
         </div>
       </div>
       {/* <div className="card m-auto sm:w-3/4 min-h-screen">
