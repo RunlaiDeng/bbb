@@ -105,7 +105,7 @@ const Navbar = () => {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content menu bg-base-100 rounded-md z-[1] w-52 p-2 shadow"
+                  className="dropdown-content menu bg-base-100 rounded-md z-50 w-52 p-2 shadow"
                 >
                   <li>
                     <Link
@@ -121,6 +121,14 @@ const Navbar = () => {
                       className="hover:text-green-700 hover:bg-inherit"
                     >
                       Farm
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={"/activitycenter"}
+                      className="hover:text-green-700 hover:bg-inherit"
+                    >
+                      Activity Center
                     </Link>
                   </li>
                   <li>
@@ -189,7 +197,7 @@ const Navbar = () => {
                   <div
                     tabIndex={0}
                     className={
-                      "card dropdown-content menu bg-white rounded-md z-[1] w-72 shadow p-0 text-xs"
+                      "card dropdown-content menu bg-white rounded-md z-50 w-72 shadow p-0 text-xs"
                     }
                   >
                     <div className="card-body p-0 font-medium">
@@ -746,7 +754,7 @@ const Navbar = () => {
                         </svg>{" "}
                         Earn
                       </div>
-                      <div className="collapse-content">
+                      <div className="collapse-content z-50">
                         <div
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                           onClick={(e) => {
@@ -764,6 +772,15 @@ const Navbar = () => {
                           }}
                         >
                           <div>Farm</div>
+                        </div>
+                        <div
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                          onClick={(e) => {
+                            router.push("/activitycenter");
+                            setData({ ...data, menuItemsOpen: false });
+                          }}
+                        >
+                          <div>Activity Center</div>
                         </div>
                         <div
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
