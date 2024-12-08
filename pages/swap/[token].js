@@ -297,7 +297,7 @@ const Swap = () => {
           </div>
         )}
 
-        <div className="lg:col-span-3  text-center outline rounded-none outline-gray-200">
+        <div className="lg:col-span-3  overflow-x-auto text-center outline rounded-none outline-gray-200">
           <div className="card">
             <div className="card-body p-2">
               <div className="flex gap-2 items-center">
@@ -350,7 +350,7 @@ const Swap = () => {
           </div>
           {graduate && (
             <>
-              <div className="h-[500px] overflow-y-auto">
+              <div className="h-[500px]">
                 {type == "chart" && <TokenChartPool {...tChartPool} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
@@ -362,7 +362,7 @@ const Swap = () => {
           )}
           {!graduate && (
             <>
-              <div className="h-[500px] overflow-y-auto">
+              <div className="h-[500px]">
                 {type == "chart" && <TokenChartFun {...tChartFun} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
