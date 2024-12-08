@@ -13,7 +13,7 @@ export function useFollow() {
 }
 // 提供 Context 的 Provider 组件
 export function FollowProvider({ children }) {
-  const [follow, setFollowState] = useState(getFollowing());
+  const [follow, setFollowState] = useState(getFollowing()||[]);
   const setFollow = (index, isChecked) => {
     setFollowing(index, isChecked);
     setFollowState(getFollowing());
