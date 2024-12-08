@@ -1,10 +1,5 @@
-import { contracts } from "@/config";
-import { erc20Abi, formatEther } from "viem";
-import { useChainId, useReadContracts } from "wagmi";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { getFollowing, setFollowing } from "../Utils";
 import { useEffect, useState } from "react";
+import { useFollow } from "../Context/follow";
 
 const TokenHeadFun = (props) => {
   let {
@@ -26,9 +21,11 @@ const TokenHeadFun = (props) => {
     (1 + xdcPriceChangeH24) * (1 + Number(tokenInfo?.priceChangeH24)) - 1;
   const h24ChangeNum = price / (1 - h24Change) - price;
 
-  const following = getFollowing();
-  const isFollowed = following?.[index];
-  const [followed, setFollowed] = useState(isFollowed);
+  const { follow, setFollow } = useFollow();
+
+  const [data, setData] = useState({});
+
+  const isFollowed = follow?.[index];
 
   return (
     <div className="card mx-2 py-1">
@@ -40,9 +37,8 @@ const TokenHeadFun = (props) => {
               <input
                 type="checkbox"
                 checked={isFollowed}
-                onChange={(e) => {
-                  setFollowing(index, e.target.checked);
-                  setFollowed(e.target.checked);
+                onClick={(e) => {
+                  setFollow(index, e.target.checked);
                 }}
               />
 

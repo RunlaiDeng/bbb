@@ -268,12 +268,6 @@ const Swap = () => {
 
   const [type, setType] = useState("chart");
 
-  useEffect(() => {
-    if (windowWidth >= 1024) {
-      setType("chart");
-    }
-  }, [windowWidth]);
-
   return showData ? (
     <>
       <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
@@ -348,7 +342,7 @@ const Swap = () => {
                 <div
                   className={
                     "font-bold text-sm cursor-pointer lg:hidden " +
-                    (type == "trades" ? "text-green-700" : "")
+                    (type == "markets" ? "text-green-700" : "")
                   }
                   onClick={() => {
                     setType("markets");

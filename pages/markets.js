@@ -34,6 +34,7 @@ import {
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import { useFollow } from "@/components/Context/follow";
 
 const Home = () => {
   const chainId = useChainId();
@@ -55,8 +56,10 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem("type", type);
   }, [type]);
-  const following = getFollowing() || {};
-  const followList = Object.keys(following).filter((key) => following[key]);
+
+  const { follow, setFollow } = useFollow();
+
+  const followList = Object.keys(follow).filter((key) => follow[key]);
 
   const [data, setData] = useState({
     dName: "",

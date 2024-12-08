@@ -1,7 +1,5 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { getFollowing, getPool, getPrice, setFollowing } from "../Utils";
 import { useEffect, useState } from "react";
+import { useFollow } from "../Context/follow";
 const TokenHead = (props) => {
   const { name, symbol, isBBB, index, token, pool } = props;
 
@@ -9,9 +7,9 @@ const TokenHead = (props) => {
   const h24Change = pool?.priceChangeH24;
   const h24ChangeNum = price / (1 - h24Change) - price;
 
-  const following = getFollowing();
-  const isFollowed = following?.[index];
-  const [followed, setFollowed] = useState(isFollowed);
+  const { follow, setFollow } = useFollow();
+
+  const isFollowed = follow?.[index];
 
   return (
     <div className="card mx-2 py-1">
@@ -43,8 +41,7 @@ const TokenHead = (props) => {
                 type="checkbox"
                 checked={isFollowed}
                 onChange={(e) => {
-                  setFollowing(index, e.target.checked);
-                  setFollowed(e.target.checked);
+                  setFollow(index, e.target.checked);
                 }}
               />
 

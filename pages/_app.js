@@ -11,6 +11,7 @@ import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import { http } from "wagmi";
 import Head from "next/head";
 import { PrivyProvider } from "@privy-io/react-auth";
+import { FollowProvider } from "@/components/Context/follow";
 
 const xdc = /*#__PURE__*/ {
   id: 50,
@@ -84,42 +85,44 @@ const MyApp = ({ Component, pageProps }) => {
         <title>BBBPump | The First Meme Launch Platform on XDC Network</title>
       </Head>
       <NotificationProvider>
-        <PrivyProvider
-          appId="cm3uezqn203md3kangodaq4u6"
-          config={{
-            appearance: {
-              accentColor: "#6A6FF5",
-              theme: "#FFFFFF",
-              showWalletLoginFirst: false,
-              logo: "https://bbbpump.fun/bbbpump-card.png",
-              walletChainType: "ethereum-only",
-            },
-            // loginMethods: ["wallet"],
-            loginMethods: ["wallet", "sms", "email", "google"],
-            fundingMethodConfig: {
-              moonpay: {
-                useSandbox: true,
+        <FollowProvider>
+          <PrivyProvider
+            appId="cm3uezqn203md3kangodaq4u6"
+            config={{
+              appearance: {
+                accentColor: "#6A6FF5",
+                theme: "#FFFFFF",
+                showWalletLoginFirst: false,
+                logo: "https://bbbpump.fun/bbbpump-card.png",
+                walletChainType: "ethereum-only",
               },
-            },
-            defaultChain: xdc,
-            supportedChains: [xdc],
-            embeddedWallets: {
-              createOnLogin: "users-without-wallets",
-              requireUserPasswordOnCreate: false,
-            },
-            mfa: {
-              noPromptOnMfaRequired: false,
-            },
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <WagmiProvider config={config}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </WagmiProvider>
-          </QueryClientProvider>
-        </PrivyProvider>
+              // loginMethods: ["wallet"],
+              loginMethods: ["wallet", "sms", "email", "google"],
+              fundingMethodConfig: {
+                moonpay: {
+                  useSandbox: true,
+                },
+              },
+              defaultChain: xdc,
+              supportedChains: [xdc],
+              embeddedWallets: {
+                createOnLogin: "users-without-wallets",
+                requireUserPasswordOnCreate: false,
+              },
+              mfa: {
+                noPromptOnMfaRequired: false,
+              },
+            }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <WagmiProvider config={config}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </WagmiProvider>
+            </QueryClientProvider>
+          </PrivyProvider>
+        </FollowProvider>
       </NotificationProvider>
       <Analytics />
     </>
