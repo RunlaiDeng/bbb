@@ -39,7 +39,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="card sm:w-3/4 m-auto min-h-screen">
+      <div className="card sm:w-1/2 m-auto min-h-screen">
         <div className="card-body text-center">
           <div className="text-green-700 font-bold text-5xl my-4">
             Trade with confidence
@@ -47,7 +47,7 @@ const Home = () => {
           <div className="opacity-50 my-4">
             Get low fees, high speed transactions, powerful APIs, and more
           </div>
-          <div className="mockup-browser border-green-700 border border-4  my-4">
+          <div className="mockup-browser border-green-700 border border-4 my-4">
             <Image
               src={"/home1.png"}
               height={1000}
