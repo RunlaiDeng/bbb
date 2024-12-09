@@ -49,13 +49,13 @@ const AirdropHub = () => {
       contract: blhzRewards,
       dataList: blhz,
     },
-    {
-      key: "dexx",
-      desc: "Love and care for dexx",
-      rewards: 640,
-      contract: dexxRewards,
-      dataList: dexx,
-    },
+    // {
+    //   key: "dexx",
+    //   desc: "Love and care for dexx",
+    //   rewards: 640,
+    //   contract: dexxRewards,
+    //   dataList: dexx,
+    // },
   ];
 
   return (
