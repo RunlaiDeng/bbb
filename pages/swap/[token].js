@@ -281,7 +281,7 @@ const Swap = () => {
           <TokenHeadFun {...tHeadFun} />
         )}
       </div>
-      <div className="m-auto grid lg:grid-cols-5 gap-[1px] lg:h-screen">
+      <div className="m-auto grid lg:grid-cols-5 gap-[1px] lg:h-[960px]">
         {/* {windowWidth > 1024 && (
           <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
             <TokenInfo {...tInfo} />

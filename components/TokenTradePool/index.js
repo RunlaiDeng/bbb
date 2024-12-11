@@ -36,7 +36,7 @@ const TokenTradePool = (props) => {
           </div>
         </div>
         {data?.type == 1 && (
-          <div className="h-[470px] lg:h-screen">
+          <div className="h-[470px] lg:h-[920px]">
             <iframe
               height="100%"
               width="100%"
