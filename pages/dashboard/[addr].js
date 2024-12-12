@@ -379,7 +379,7 @@ const Address = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover cursor-pointer">
+                  <tr className="hover">
                     <td className="flex items-center gap-2">
                       <div className="h-6 w-6 overflow-hidden">
                         <Image
@@ -441,7 +441,7 @@ const Address = () => {
                       </svg>
                     </td>
                   </tr>
-                  <tr className="hover cursor-pointer">
+                  <tr className="hover">
                     <td className="flex items-center gap-2">
                       <div className="h-6 w-6 overflow-hidden">
                         <Image
@@ -504,7 +504,7 @@ const Address = () => {
                       <tr
                         key={index}
                         className={
-                          "hover cursor-pointer " +
+                          "hover " +
                           (item?.balance == 0 ? "hidden" : "")
                         }
                         onClick={() => {
