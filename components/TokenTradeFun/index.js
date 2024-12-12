@@ -78,38 +78,40 @@ const TradeRow = ({ item, symbol, router, onAccountClick }) => {
 };
 
 const TokenTradeFun = ({ token, symbol }) => {
-  const [data, setData] = useState({ type: TRADE_TYPES.MARKET });
+  const [tradeType, setTradeType] = useState(TRADE_TYPES.MARKET);
+  const [orders, setOrders] = useState(null);
+  const [myOrders, setMyOrders] = useState(null);
   const { address } = useAccount();
   const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {
-      if (data?.type === TRADE_TYPES.MARKET) {
-        const orders = await rpc.getOrders(1, 1, PAGE_SIZE, 2, undefined, token);
-        setData(prev => ({ ...prev, orders }));
-      } else if (data?.type === TRADE_TYPES.MY_TRADES) {
-        const myOrders = await rpc.getOrders(1, 1, PAGE_SIZE, 2, address, token);
-        setData(prev => ({ ...prev, myOrders }));
+      if (tradeType === TRADE_TYPES.MARKET) {
+        const result = await rpc.getOrders(1, 1, PAGE_SIZE, 2, undefined, token);
+        setOrders(result);
+      } else if (tradeType === TRADE_TYPES.MY_TRADES) {
+        const result = await rpc.getOrders(1, 1, PAGE_SIZE, 2, address, token);
+        setMyOrders(result);
       }
     } catch (error) {
       console.error('Error fetching trade data:', error);
     }
-  }, [token, address, data?.type]);
+  }, [token, address, tradeType]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, tradeType]);
 
   const handleAccountClick = useCallback((account) => {
     router.push(`/dashboard/${account}`);
   }, [router]);
 
   const currentList = useMemo(() => 
-    data?.type === TRADE_TYPES.MARKET ? data?.orders?.list : data?.myOrders?.list
-  , [data?.type, data?.orders?.list, data?.myOrders?.list]);
+    tradeType === TRADE_TYPES.MARKET ? orders?.list : myOrders?.list
+  , [tradeType, orders?.list, myOrders?.list]);
 
   const handleTypeChange = useCallback((type) => {
-    setData(prev => ({ ...prev, type }));
+    setTradeType(type);
   }, []);
 
   return (
@@ -118,7 +120,7 @@ const TokenTradeFun = ({ token, symbol }) => {
         <div className="font-bold text-sm flex gap-2">
           <div
             className={`hover:text-green-700 cursor-pointer ${
-              data?.type === TRADE_TYPES.MARKET ? "text-green-700" : ""
+              tradeType === TRADE_TYPES.MARKET ? "text-green-700" : ""
             }`}
             onClick={() => handleTypeChange(TRADE_TYPES.MARKET)}
           >
@@ -126,7 +128,7 @@ const TokenTradeFun = ({ token, symbol }) => {
           </div>
           <div
             className={`hover:text-green-700 cursor-pointer ${
-              data?.type === TRADE_TYPES.MY_TRADES ? "text-green-700" : ""
+              tradeType === TRADE_TYPES.MY_TRADES ? "text-green-700" : ""
             }`}
             onClick={() => handleTypeChange(TRADE_TYPES.MY_TRADES)}
           >
