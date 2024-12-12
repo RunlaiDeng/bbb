@@ -115,7 +115,7 @@ const Referral = () => {
             <div className="font-bold">Rewards</div>
             <div className="font-bold text-green-700 flex items-center gap-2">
               <div className="text-4xl">
-                {Number(formatEther(totalPrize || 0))?.toFixed(6)} XDC
+                {Number(formatEther(totalPrize || 0))?.toLocaleString()} XDC
               </div>
 
               <WriteButton
@@ -150,13 +150,13 @@ const Referral = () => {
             <div className="stats stats-horizontal shadow text-green-700 text-xs">
               <div className="stat">
                 <div className="stat-title">Friends</div>
-                <div className="stat-value">{userShare?.toString() || 0}%</div>
+                <div className="stat-value">{userShare?.toLocaleString() || 0}%</div>
               </div>
 
               <div className="stat">
                 <div className="stat-title">Mine</div>
                 <div className="stat-value">
-                  {maxShare - (userShare?.toString() || 0)}%
+                  {maxShare - (userShare?.toLocaleString() || 0)}%
                 </div>
               </div>
             </div>
@@ -295,7 +295,7 @@ const Referral = () => {
                         <td>{leaderConfig?.[1]?.toString() || 0}%</td>
 
                         <td>
-                          {Number(formatEther(leaderPrize || 0))?.toFixed(6)}{" "}
+                          {Number(formatEther(leaderPrize || 0))?.toLocaleString()}{" "}
                           XDC
                         </td>
                       </tr>
@@ -330,9 +330,9 @@ const Referral = () => {
                           />
                           {item}
                         </td>
-                        <td>{Number(formatEther(fee || 0))?.toFixed(6)} XDC</td>
+                        <td>{Number(formatEther(fee || 0))?.toLocaleString()} XDC</td>
                         <td>
-                          {Number(formatEther(shareFee || 0))?.toFixed(6)} XDC
+                          {Number(formatEther(shareFee || 0))?.toLocaleString()} XDC
                         </td>
                       </tr>
                     );
