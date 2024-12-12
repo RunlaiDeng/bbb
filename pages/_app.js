@@ -1,6 +1,6 @@
 import "../styles/globals.css";
-
 import React from "react";
+import PropTypes from 'prop-types';
 import Layout from "../components/Layout";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -12,107 +12,63 @@ import { http } from "wagmi";
 import Head from "next/head";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { FollowProvider } from "@/components/Context/follow";
+import { xdc } from "../config/chains";
 
-const xdc = /*#__PURE__*/ {
-  id: 50,
-  name: "XinFin Network",
-  nativeCurrency: {
-    decimals: 18,
-    name: "XDC",
-    symbol: "XDC",
-  },
-  rpcUrls: {
-    default: { http: ["https://bbbrpc.xinfin.network/"] },
-  },
-  blockExplorers: {
-    default: {
-      name: "xdcscan",
-      url: "https://xdcscan.com",
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
     },
-  },
-  contracts: {
-    multicall3: {
-      address: "0x0B1795ccA8E4eC4df02346a082df54D437F8D9aF",
-      blockCreated: 75884020,
-    },
-  },
-};
-
-const xdcParentNet = {
-  id: 551,
-  name: "XDC Devnet",
-  network: "XDC Devnet",
-  nativeCurrency: {
-    decimals: 18,
-    name: "XDC",
-    symbol: "XDC",
-  },
-  rpcUrls: {
-    default: { http: ["https://devnetstats.apothem.network/devnet"] },
-  },
-  iconUrl: "/bbb.jpg",
-};
-
-const queryClient = new QueryClient();
-
-const config = createConfig({
-  chains: [xdc], // Pass your required chains as an array
-  transports: {
-    [xdc.id]: http(),
-    // For each of your required chains, add an entry to `transports` with
-    // a key of the chain's `id` and a value of `http()`
   },
 });
 
-// const config = getDefaultConfig({
-//   appName: "BBBPump",
-//   projectId: "2a612b9a18e81ce3fda2f82787eb6a4a",
-//   chains: [xdc],
-//   ssr: true, // If your dApp uses server side rendering (SSR)
-//   wallets: [
-//     {
-//       groupName: "Recommended",
-//       wallets: [metaMaskWallet, walletConnectWallet, coinbaseWallet],
-//     },
-//   ],
-// });
+const config = createConfig({
+  chains: [xdc],
+  transports: {
+    [xdc.id]: http(),
+  },
+});
+
+const privyConfig = {
+  appearance: {
+    accentColor: "#6A6FF5",
+    theme: "#FFFFFF",
+    showWalletLoginFirst: false,
+    logo: "https://bbbpump.fun/bbbpump-card.png",
+    walletChainType: "ethereum-only",
+  },
+  loginMethods: ["wallet", "sms", "email", "google"],
+  fundingMethodConfig: {
+    moonpay: {
+      useSandbox: true,
+    },
+  },
+  defaultChain: xdc,
+  supportedChains: [xdc],
+  embeddedWallets: {
+    createOnLogin: "users-without-wallets",
+    requireUserPasswordOnCreate: false,
+  },
+  mfa: {
+    noPromptOnMfaRequired: false,
+  },
+};
 
 const MyApp = ({ Component, pageProps }) => {
   const { locale } = useRouter();
+  
   return (
     <>
       <Head>
         <title>BBBPump | The First Meme Launch Platform on XDC Network</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <NotificationProvider>
         <FollowProvider>
           <PrivyProvider
             appId="cm3uezqn203md3kangodaq4u6"
-            config={{
-              appearance: {
-                accentColor: "#6A6FF5",
-                theme: "#FFFFFF",
-                showWalletLoginFirst: false,
-                logo: "https://bbbpump.fun/bbbpump-card.png",
-                walletChainType: "ethereum-only",
-              },
-              // loginMethods: ["wallet"],
-              loginMethods: ["wallet", "sms", "email", "google"],
-              fundingMethodConfig: {
-                moonpay: {
-                  useSandbox: true,
-                },
-              },
-              defaultChain: xdc,
-              supportedChains: [xdc],
-              embeddedWallets: {
-                createOnLogin: "users-without-wallets",
-                requireUserPasswordOnCreate: false,
-              },
-              mfa: {
-                noPromptOnMfaRequired: false,
-              },
-            }}
+            config={privyConfig}
           >
             <QueryClientProvider client={queryClient}>
               <WagmiProvider config={config}>
@@ -127,6 +83,11 @@ const MyApp = ({ Component, pageProps }) => {
       <Analytics />
     </>
   );
+};
+
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
 };
 
 export default MyApp;

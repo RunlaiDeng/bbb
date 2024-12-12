@@ -138,9 +138,9 @@ const Address = () => {
   let totalBalance = 0;
   let total24hChange = 0;
 
-  const referralBonus = referralInfo?.totalPrize / 1e18;
-  const referralUsdBonus = (referralInfo?.totalPrize / 1e18) * xdcPrice;
-  const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
+  const referralBonus = referralInfo?.totalPrize / 1e18 || 0;
+  const referralUsdBonus = (referralInfo?.totalPrize / 1e18) * xdcPrice || 0;
+  const xdcUsdBalance = referralUsdBonus + xdcBalance?.formatted * xdcPrice;
 
   totalBalance += xdcUsdBalance;
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
@@ -418,9 +418,12 @@ const Address = () => {
                       {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                     </td>
                     <td className="text-right hidden sm:table-cell">
-                      <div className="underline text-green-700 cursor-pointer" onClick={()=>{
-                        router.push("/referral")
-                      }}>
+                      <div
+                        className="underline text-green-700 cursor-pointer"
+                        onClick={() => {
+                          router.push("/referral");
+                        }}
+                      >
                         Claim
                       </div>
                     </td>
@@ -504,8 +507,7 @@ const Address = () => {
                       <tr
                         key={index}
                         className={
-                          "hover " +
-                          (item?.balance == 0 ? "hidden" : "")
+                          "hover " + (item?.balance == 0 ? "hidden" : "")
                         }
                         onClick={() => {
                           if (item?.tradeLink) {
