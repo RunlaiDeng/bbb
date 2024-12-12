@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
 import rpc from "@/components/Rpc";
@@ -11,6 +11,7 @@ import {
 } from "@/components/Utils";
 import { formatEther } from "viem";
 import { contracts } from "@/config";
+
 const Orders = () => {
   const router = useRouter();
   const { addr } = router.query;
@@ -25,7 +26,8 @@ const Orders = () => {
   const { address } = useAccount();
 
   const [mount, setMount] = useState(false);
-  async function fetchData() {
+
+  const fetchData = useCallback(async () => {
     setMount(false);
     const xdc = await getXDCPrice();
     const ordersResult = await rpc.getOrders(
@@ -38,36 +40,39 @@ const Orders = () => {
     setData({ ...data, xdc });
     setOrders(ordersResult);
     setMount(true);
-  }
+  }, [orders?.sort, orders?.pageNumber, orders?.size, data?.type, addr]);
 
   useEffect(() => {
     fetchData();
-  }, [address, orders?.sort, orders?.pageNumber, data?.type]);
+  }, [address, orders?.sort, orders?.pageNumber, data?.type, fetchData]);
 
-  const searchDropTokens = [];
-
-  const list = orders?.list;
-
-  list?.forEach((order) => {
-    searchDropTokens.push({
-      ...mbbb,
-      functionName: "getDropTokenByAddress",
-      args: [order?.token],
+  const searchDropTokens = useMemo(() => {
+    const tokens = [];
+    orders?.list?.forEach((order) => {
+      tokens.push({
+        ...mbbb,
+        functionName: "getDropTokenByAddress",
+        args: [order?.token],
+      });
     });
-  });
+    return tokens;
+  }, [orders?.list, mbbb]);
 
   const { data: reads0 } = useReadContracts({ contracts: searchDropTokens });
   const drops = reads0?.map((item) => item?.result);
 
-  const xdcPrice = data?.xdc?.price;
+  const pages = useMemo(() => {
+    const pageArray = [];
+    const pageOnChain =
+      Math.floor(drops?.length || 0 / orders?.size) +
+      (drops?.length || 0 % orders?.size > 0 ? 1 : 0);
+    for (let i = 1; i <= (orders?.totalPage || pageOnChain); i++) {
+      pageArray.push(i);
+    }
+    return pageArray;
+  }, [drops?.length, orders?.size, orders?.totalPage]);
 
-  const pages = [];
-  const pageOnChain =
-    Math.floor(drops?.length || 0 / orders?.size) +
-    (drops?.length || 0 % orders?.size > 0 ? 1 : 0);
-  for (let i = 1; i <= (orders?.totalPage || pageOnChain); i++) {
-    pages.push(i);
-  }
+  const xdcPrice = data?.xdc?.price;
 
   return (
     <>
@@ -112,20 +117,22 @@ const Orders = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {list?.map((item, index) => {
+                      {orders?.list?.map((item, index) => {
                         const drop = drops?.[index];
 
                         return (
                           <tr key={item?.index} className="whitespace-nowrap">
                             <td>{getDateSpecifics(item?.createTime)}</td>
                             <td className="flex gap-2 items-center">
-                              <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
+                              <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
                                 <Image
                                   height={400}
                                   width={400}
                                   src={handleSrc(drop?.imageUrl)}
                                   alt={""}
                                   className="object-cover w-full h-full"
+                                  loading="lazy"
+                                  priority={false}
                                 />
                               </div>
 
@@ -184,7 +191,7 @@ const Orders = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {list?.map((item, index) => {
+                      {orders?.list?.map((item, index) => {
                         const drop = drops?.[index];
 
                         return (
@@ -198,6 +205,8 @@ const Orders = () => {
                                   src={handleSrc(drop?.imageUrl)}
                                   alt={""}
                                   className="object-cover w-full h-full"
+                                  loading="lazy"
+                                  priority={false}
                                 />
                               </div>
 
@@ -258,7 +267,7 @@ const Orders = () => {
                   </table>
                 </div>
               )}
-              {list.length > 0 && (
+              {orders?.list?.length > 0 && (
                 <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
                   <li
                     className={orders.pageNumber == 1 ? "disabled" : ""}

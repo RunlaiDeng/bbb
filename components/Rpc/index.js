@@ -23,6 +23,22 @@ class RPCError extends Error {
 const cache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
+// Request controller for cancellation
+const controller = new AbortController();
+
+// Debounce function
+const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
 /**
  * Sends an RPC request with retries and timeout
  * @param {string} method - RPC method name
@@ -32,106 +48,73 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
  */
 const send = async (method, params, options = {}) => {
   const {
-    timeout = 30000, // 30 seconds
+    timeout = 30000,
     retries = 3,
     useCache = false,
     cacheTTL = CACHE_TTL,
+    signal = controller.signal,
+    debounceMs = 0
   } = options;
 
-  // Generate cache key if caching is enabled
   const cacheKey = useCache ? `${method}:${JSON.stringify(params)}` : null;
-  
-  // Check cache
-  if (useCache && cache.has(cacheKey)) {
-    const { data, timestamp } = cache.get(cacheKey);
-    if (Date.now() - timestamp < cacheTTL) {
-      return data;
+
+  const sendRequest = async () => {
+    // Cache check logic
+    if (useCache && cache.has(cacheKey)) {
+      const { data, timestamp } = cache.get(cacheKey);
+      if (Date.now() - timestamp < cacheTTL) {
+        return data;
+      }
+      cache.delete(cacheKey);
     }
-    cache.delete(cacheKey);
-  }
 
-  let lastError;
-  
-  for (let i = 0; i < retries; i++) {
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeout);
-
       const response = await fetch(rpcUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           jsonrpc: '2.0',
           id: Date.now(),
           method,
-          params: params || [],
+          params
         }),
-        signal: controller.signal,
+        signal,
+        timeout
       });
 
-      clearTimeout(timeoutId);
-
       if (!response.ok) {
-        return { 
-          error: {
-            code: response.status,
-            message: `HTTP error ${response.status}`,
-            data: { status: response.status }
-          }
-        };
+        throw new RPCError('Network response was not ok', 'NETWORK_ERROR', { status: response.status });
       }
 
       const result = await response.json();
-
-      // If there's an error in the result, return the entire result
+      
       if (result.error) {
-        return result;
+        throw new RPCError(result.error.message, result.error.code, result.error.data);
       }
 
-      // Cache successful response if caching is enabled
+      // Cache successful response
       if (useCache) {
         cache.set(cacheKey, {
           data: result.result,
-          timestamp: Date.now(),
+          timestamp: Date.now()
         });
       }
 
       return result.result;
     } catch (error) {
-      lastError = error;
       if (error.name === 'AbortError') {
-        return { 
-          error: {
-            code: 'TIMEOUT',
-            message: 'Request timeout',
-            data: null
-          }
-        };
+        throw new RPCError('Request was cancelled', 'REQUEST_CANCELLED');
       }
-      // Only retry on network errors or 5xx server errors
-      if (i === retries - 1 || (!error.status || error.status < 500)) {
-        return { 
-          error: {
-            code: 'NETWORK_ERROR',
-            message: error.message,
-            data: error
-          }
-        };
-      }
-      // Exponential backoff
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
-    }
-  }
-
-  return { 
-    error: {
-      code: 'MAX_RETRIES',
-      message: 'Maximum retries exceeded',
-      data: lastError
+      throw error;
     }
   };
+
+  // Apply debouncing if specified
+  if (debounceMs > 0) {
+    return debounce(sendRequest, debounceMs)();
+  }
+
+  return sendRequest();
 };
 
 /**
