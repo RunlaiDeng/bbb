@@ -27,7 +27,7 @@ const Address = () => {
     if (addr) {
       setMount(false);
       const setPrice = {};
-
+      const referralInfo = await rpc.getReferralInfo(addr);
       const xdc = await getXDCPrice();
       const bbb = await getBBBPrice();
       if (xdc.price != 0) {
@@ -70,12 +70,13 @@ const Address = () => {
         return item;
       });
 
-      setData({ ...data, ...setPrice, coins: coins });
+      setData({ ...data, ...setPrice, coins: coins, referralInfo });
       setMount(true);
     }
   };
 
   const mbbb = contracts[chainId]?.mbbbv2;
+  const referralInfo = data?.referralInfo;
 
   useEffect(() => {
     fetchData(addr);
@@ -136,7 +137,11 @@ const Address = () => {
   }, {});
   let totalBalance = 0;
   let total24hChange = 0;
+  console.log(referralInfo)
+  const referralBonus = referralInfo?.totalPrize / 1e18;
+  const referralUsdBonus = (referralInfo?.totalPrize / 1e18) * xdcPrice;
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
+
   totalBalance += xdcUsdBalance;
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
 
@@ -197,11 +202,10 @@ const Address = () => {
   const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
 
-  const total24hChangePercent = Math.abs(
-    total24hChange / (totalBalance - total24hChange)
-  )||0;
+  const total24hChangePercent =
+    Math.abs(total24hChange / (totalBalance - total24hChange)) || 0;
 
-  const show = (mount && data) ;
+  const show = mount && data;
 
   return (
     <>
@@ -375,6 +379,64 @@ const Address = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  <tr className="hover cursor-pointer">
+                    <td className="flex items-center gap-2">
+                      <div className="h-6 w-6 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src="/xdc.png"
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                      <div>
+                        <div>XDC (Referral Bonus)</div>
+                        <div className="text-xs opacity-50 whitespace-nowrap">
+                          XDC Network
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                      <div>
+                        {Number(referralBonus)?.toLocaleString() || 0}
+                      </div>
+                      <div className="text-xs opacity-50">
+                        ${referralUsdBonus?.toLocaleString() || 0}
+                      </div>
+                    </td>
+                    <td className="text-right hidden sm:table-cell">
+                      ${Number(xdcPrice || 0)?.toFixed(6)}
+                    </td>
+                    <td
+                      className={
+                        "text-right hidden sm:table-cell " +
+                        (xdcPriceChange24h >= 0
+                          ? "text-green-700"
+                          : "text-red-700")
+                      }
+                    >
+                      {xdcPriceChange24h >= 0 ? "+" : "-"}
+                      {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
+                    </td>
+                    <td className="text-right hidden sm:table-cell"></td>
+                    <td className="text-right sm:hidden px-0">
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        p-id="12307"
+                        width="16"
+                        height="16"
+                      >
+                        <path
+                          d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
+                          fill="#444444"
+                          p-id="12308"
+                        ></path>
+                      </svg>
+                    </td>
+                  </tr>
                   <tr className="hover cursor-pointer">
                     <td className="flex items-center gap-2">
                       <div className="h-6 w-6 overflow-hidden">
