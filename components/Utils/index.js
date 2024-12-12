@@ -1,231 +1,235 @@
 function formatNumber(num) {
-  num = Number(num || 0);
-  if (Math.abs(num) >= 1e12) {
-    return (num / 1e12).toFixed(2) + "T";
-  } else if (Math.abs(num) >= 1e9) {
-    return (num / 1e9).toFixed(2) + "B";
-  } else if (Math.abs(num) >= 1e6) {
-    return (num / 1e6).toFixed(2) + "M";
-  } else if (Math.abs(num) >= 1e3) {
-    return (num / 1e3).toFixed(2) + "K";
-  } else {
-    return num?.toFixed(2);
+  if (!num && num !== 0) return '0.00';
+  num = Number(num);
+  const absNum = Math.abs(num);
+  const formats = [
+    { threshold: 1e12, suffix: 'T', divisor: 1e12 },
+    { threshold: 1e9, suffix: 'B', divisor: 1e9 },
+    { threshold: 1e6, suffix: 'M', divisor: 1e6 },
+    { threshold: 1e3, suffix: 'K', divisor: 1e3 }
+  ];
+
+  for (const { threshold, suffix, divisor } of formats) {
+    if (absNum >= threshold) {
+      return `${(num / divisor).toFixed(2)}${suffix}`;
+    }
   }
+  return num.toFixed(2);
 }
 
 const calculatePrice = (xdcAmount) => {
-  return (Math.sqrt(xdcAmount / 2e7) / 1e9).toFixed(6) * 2;
+  if (!xdcAmount) return 0;
+  const BASE = 2e7;
+  const PRECISION = 1e9;
+  return (Math.sqrt(xdcAmount / BASE) / PRECISION * 2).toFixed(6);
 };
 
 const calculateXdcAmount = (supply) => {
-  return (supply ** 2 / 2e7).toFixed(6);
+  if (!supply) return 0;
+  const BASE = 2e7;
+  return (supply ** 2 / BASE).toFixed(6);
 };
 
 const calculateSupply = (xdcAmount) => {
-  return Math.sqrt(xdcAmount * 2e7).toFixed();
+  if (!xdcAmount) return 0;
+  const BASE = 2e7;
+  return Math.sqrt(xdcAmount * BASE).toFixed();
 };
 
 const getDateSpecifics = (timestamp) => {
+  if (!timestamp) return '';
   const date = new Date(timestamp * 1000);
-
+  const pad = (num) => String(num).padStart(2, '0');
+  
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
 
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-  return formattedDate;
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
 const getDate = (timestamp) => {
+  if (!timestamp) return '';
   const date = new Date(Number(timestamp) * 1000);
+  const pad = (num) => String(num).padStart(2, '0');
 
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1);
   const year = String(date.getFullYear()).slice(-2);
 
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
+  return `${day}/${month}/${year}`;
 };
 
 const deleteSame = (list) => {
-  const result = [];
-
-  const timeMap = {};
-
-  list?.forEach((item) => {
+  if (!Array.isArray(list) || !list.length) return [];
+  
+  return Object.values(list.reduce((acc, item) => {
     const { time, close } = item;
-
-    if (timeMap[time]) {
-      timeMap[time].close = close;
-    } else {
-      timeMap[time] = item;
+    if (time) {
+      acc[time] = { ...acc[time], ...item, close };
     }
-  });
-
-  for (const key in timeMap) {
-    result.push(timeMap[key]);
-  }
-  return result;
+    return acc;
+  }, {}));
 };
 
-async function setFollowing(index, isChecked) {
-  if (typeof window !== "undefined" && index) {
-    let following = localStorage.getItem("following");
-    if (!following) {
-      following = {};
-    } else {
-      following = JSON.parse(following);
-    }
-
+const setFollowing = async (index, isChecked) => {
+  if (typeof window === 'undefined' || !index) return;
+  
+  try {
+    const following = JSON.parse(localStorage.getItem('following') || '{}');
     following[index] = isChecked;
-    localStorage.setItem("following", JSON.stringify(following));
+    localStorage.setItem('following', JSON.stringify(following));
+  } catch (error) {
+    console.error('Error setting following:', error);
   }
-}
+};
 
-function getFollowing() {
-  if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem("following")) || {};
+const getFollowing = () => {
+  if (typeof window === 'undefined') return {};
+  
+  try {
+    return JSON.parse(localStorage.getItem('following')) || {};
+  } catch (error) {
+    console.error('Error getting following:', error);
+    return {};
   }
-}
+};
 
-function getBytesLength(str) {
+const getBytesLength = (str) => {
+  if (typeof str !== 'string') return 0;
   return new TextEncoder().encode(str).length;
-}
+};
 
-function handleSrc(src) {
-  const regex = /^https:\/\/benybadboy\.b-cdn\.net\/.*$/;
-  return regex.test(src) ? src : "/didntupload.png";
-}
+const handleSrc = (src) => {
+  if (!src) return '/didntupload.png';
+  const CDN_REGEX = /^https:\/\/benybadboy\.b-cdn\.net\/.*$/;
+  return CDN_REGEX.test(src) ? src : '/didntupload.png';
+};
 
-function customToFixed(num) {
-  let numStr = num.toLocaleString("fullwide", { useGrouping: false });
-  let [intPart] = numStr.split(".");
-
-  return intPart;
-}
-
-function sqrtPriceX96ToPrice(sqrtPriceX96) {
-  const Q96 = BigInt(2) ** BigInt(96);
-
-  const sqrtRatioX96Float = Number(sqrtPriceX96) / Number(Q96);
-
-  const price = sqrtRatioX96Float ** 2;
-
-  return 1 / price;
-}
-
-async function getPool(token) {
+const customToFixed = (num) => {
+  if (!num) return '0';
   try {
-    const json = await send(
-      "https://api.geckoterminal.com/api/v2/networks/xdc/tokens/" +
-        token +
-        "/pools?page=1"
-    );
-    const pool = json?.data?.[0]?.attributes;
-    return pool;
-  } catch (e) {
+    return num.toLocaleString('fullwide', { useGrouping: false }).split('.')[0];
+  } catch (error) {
+    console.error('Error in customToFixed:', error);
+    return '0';
+  }
+};
+
+const sqrtPriceX96ToPrice = (sqrtPriceX96) => {
+  if (!sqrtPriceX96) return 0;
+  try {
+    const Q96 = BigInt(2) ** BigInt(96);
+    const sqrtRatioX96Float = Number(sqrtPriceX96) / Number(Q96);
+    return 1 / (sqrtRatioX96Float ** 2);
+  } catch (error) {
+    console.error('Error in sqrtPriceX96ToPrice:', error);
+    return 0;
+  }
+};
+
+const API_ENDPOINTS = {
+  GECKOTERMINAL: 'https://api.geckoterminal.com/api/v2',
+  XDCSCAN: 'https://api.xdcscan.io',
+  ICECREAMSWAP: 'https://aggregator.icecreamswap.com/50'
+};
+
+const send = async (url, params = {}) => {
+  const defaultHeaders = {
+    Accept: 'application/json;version=20230302',
+  };
+
+  try {
+    const response = await fetch(url, {
+      ...params,
+      headers: { ...defaultHeaders, ...params.headers },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`API request failed: ${url}`, error);
+    throw error;
+  }
+};
+
+const getPool = async (token) => {
+  if (!token) return {};
+  try {
+    const json = await send(`${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/tokens/${token}/pools?page=1`);
+    return json?.data?.[0]?.attributes || {};
+  } catch (error) {
+    console.error('Error getting pool:', error);
     return {};
   }
-}
+};
 
-async function getERC20List(address) {
+const getERC20List = async (address) => {
+  if (!address) return {};
   try {
-    const json = await send(
-      "https://api.xdcscan.io/addresses/" + address + "/tokens?type=ERC-20"
-    );
-    return json;
-  } catch (e) {
+    return await send(`${API_ENDPOINTS.XDCSCAN}/addresses/${address}/tokens?type=ERC-20`);
+  } catch (error) {
+    console.error('Error getting ERC20 list:', error);
     return {};
   }
-}
+};
 
-async function getXDCPrice() {
-  return getPrice("0xfcabba53dac7b6b19714c7d741a46f6dad260107");
-}
+const getXDCPrice = async () => getPrice('0xfcabba53dac7b6b19714c7d741a46f6dad260107');
 
-async function getQuoteFromPool(src, dst, amount) {
+const getQuoteFromPool = async (src, dst, amount) => {
+  if (!src || !dst || !amount) return {};
   try {
-    const json = await send(
-      "https://aggregator.icecreamswap.com/50?src=" +
-        src +
-        "&dst=" +
-        dst +
-        "&amount=" +
-        amount +
-        "&slippage=10"
+    return await send(
+      `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=10`
     );
-    return json;
-  } catch (e) {
+  } catch (error) {
+    console.error('Error getting quote from pool:', error);
     return {};
   }
-}
+};
 
-async function getKline(pool) {
+const getKline = async (pool) => {
+  if (!pool) return [];
   try {
     const json = await send(
-      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
-        pool +
-        "/ohlcv/day?aggregate=1&limit=1000"
+      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/pools/${pool}/ohlcv/day?aggregate=1&limit=1000`
     );
-
-    return json?.data?.attributes?.ohlcv_list;
-  } catch (e) {
+    return json?.data?.attributes?.ohlcv_list || [];
+  } catch (error) {
+    console.error('Error getting kline:', error);
     return [];
   }
-}
+};
 
-async function getPrice(pool) {
+const getPrice = async (pool) => {
+  if (!pool) return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   try {
     const json = await send(
-      "https://api.geckoterminal.com/api/v2/networks/xdc/pools/" +
-        pool +
-        "?include=dex"
+      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/pools/${pool}?include=dex`
     );
-
     const item = json?.data?.attributes;
-
     return {
       price: item?.base_token_price_usd || 0,
-      priceChange24h: item?.price_change_percentage?.h24 / 100 || 0,
+      priceChange24h: (item?.price_change_percentage?.h24 || 0) / 100,
       cap: item?.market_cap_usd || 0,
-      volumeH24: item?.volume_usd?.h24,
+      volumeH24: item?.volume_usd?.h24 || 0,
     };
-  } catch (e) {
+  } catch (error) {
+    console.error('Error getting price:', error);
     return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   }
-}
+};
 
-async function getBBBPrice() {
-  return getPrice("0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e");
-}
+const getBBBPrice = async () => getPrice('0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e');
 
-function aggregateTo5MinuteCandles(rawData) {
+const aggregateTo5MinuteCandles = (rawData) => {
   return rawData;
-}
-
-const send = async (
-  url,
-  params = {
-    headers: {
-      Accept: "application/json;version=20230302",
-    },
-  }
-) => {
-  let res;
-  try {
-    res = await fetch(url, params);
-  } catch (e) {
-    throw e;
-  }
-
-  const json = await res?.json();
-  return json;
 };
 
 module.exports = {
