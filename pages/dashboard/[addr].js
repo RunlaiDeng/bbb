@@ -137,7 +137,7 @@ const Address = () => {
   }, {});
   let totalBalance = 0;
   let total24hChange = 0;
-  console.log(referralInfo)
+
   const referralBonus = referralInfo?.totalPrize / 1e18;
   const referralUsdBonus = (referralInfo?.totalPrize / 1e18) * xdcPrice;
   const xdcUsdBalance = xdcBalance?.formatted * xdcPrice;
@@ -374,8 +374,8 @@ const Address = () => {
                     <th className="text-right hidden sm:table-cell">
                       24H Change
                     </th>
-                    <th className="text-right hidden sm:table-cell">Trade</th>
-                    <th className="text-right sm:hidden  px-0"></th>
+                    <th className="text-right hidden sm:table-cell">Operate</th>
+                    <th className="text-right sm:hidden px-0"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -398,9 +398,7 @@ const Address = () => {
                       </div>
                     </td>
                     <td className="text-right">
-                      <div>
-                        {Number(referralBonus)?.toLocaleString() || 0}
-                      </div>
+                      <div>{Number(referralBonus)?.toLocaleString() || 0}</div>
                       <div className="text-xs opacity-50">
                         ${referralUsdBonus?.toLocaleString() || 0}
                       </div>
@@ -419,7 +417,13 @@ const Address = () => {
                       {xdcPriceChange24h >= 0 ? "+" : "-"}
                       {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                     </td>
-                    <td className="text-right hidden sm:table-cell"></td>
+                    <td className="text-right hidden sm:table-cell">
+                      <div className="underline text-green-700 cursor-pointer" onClick={()=>{
+                        router.push("/referral")
+                      }}>
+                        Claim
+                      </div>
+                    </td>
                     <td className="text-right sm:hidden px-0">
                       <svg
                         viewBox="0 0 1024 1024"
