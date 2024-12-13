@@ -51,74 +51,9 @@ const Megadrop = () => {
   const mbbbBalance = reads0?.[1]?.result;
   const bbbBalance = reads0?.[2]?.result;
 
-  const { data: reads7 } = useReadContracts({
-    contracts: [
-      {
-        ...mbbbv2,
-        functionName: "getDropTokenLength",
-        args: [],
-      },
-    ],
-  });
-
-  const dropTokenLengthV2 = reads7?.[0]?.result;
-
-  const searchDropTokensV2 = [];
-
-  for (let i = 0; i < dropTokenLengthV2; i++) {
-    searchDropTokensV2.push({
-      ...mbbbv2,
-      functionName: "getDropToken",
-      args: [i + 1],
-    });
-  }
-
-  const { data: reads4, refetch: refetch1 } = useReadContracts({
-    contracts: searchDropTokensV2,
-  });
-
-  let dropTokensV2 = reads4?.filter((item) => item?.result?.removed == 1n);
-
-  dropTokensV2 = dropTokensV2?.map((item) => item?.result);
-
-  const searchClaimAmtV2 = [];
-
-  for (let i = 0; i < dropTokenLengthV2; i++) {
-    searchClaimAmtV2.push({
-      ...mbbbv2,
-      functionName: "getClaimAmt",
-      args: [i + 1, address],
-    });
-  }
-
-  const { data: reads5 } = useReadContracts({
-    contracts: searchClaimAmtV2,
-    multicallAddress: mutilCall?.address,
-  });
-
-  const claimAmtsV2 = reads5?.map((item) => item?.result);
-
-  const searchClaimedV2 = [];
-
-  for (let i = 0; i < dropTokenLengthV2; i++) {
-    searchClaimedV2.push({
-      ...mbbbv2,
-      functionName: "claimed",
-      args: [address, i + 1],
-    });
-  }
-
-  const { data: reads6 } = useReadContracts({
-    contracts: searchClaimedV2,
-    multicallAddress: mutilCall?.address,
-  });
-
   const refetch = () => {
     refetch0();
-    refetch1();
   };
-
-  const claimedV2 = reads6?.map((item) => item?.result);
 
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
@@ -172,6 +107,10 @@ const Megadrop = () => {
   const { isConnected } = useAccount();
 
   const privyLogin = usePrivyLogin();
+
+  const dropTokensV2 = [];
+
+  const showList = dropTokensV2?.length > 0;
 
   return (
     <>
@@ -245,59 +184,70 @@ const Megadrop = () => {
                 </tr>
               </thead>
               <tbody>
-                {dropTokensV2?.map((item, index) => {
-                  const claim = {
-                    buttonName: "Claim",
-                    data: {
-                      ...mbbbv2,
-                      functionName: "claim",
-                      args: [index + 1, address],
-                    },
-                    callback: () => {
-                      refetch();
-                    },
-                  };
+                {showList &&
+                  dropTokensV2?.map((item, index) => {
+                    const claim = {
+                      buttonName: "Claim",
+                      data: {
+                        ...mbbbv2,
+                        functionName: "claim",
+                        args: [index + 1, address],
+                      },
+                      callback: () => {
+                        refetch();
+                      },
+                    };
 
-                  const amtsv2 = claimAmtsV2?.[index];
+                    const amtsv2 = claimAmtsV2?.[index];
 
-                  const airdropAmount = amtsv2?.[0];
-                  const totalAirdropAmount = amtsv2?.[1];
-                  const stakeMbbbAmount = amtsv2?.[2];
-                  const totalStakeMbbbAmount = amtsv2?.[3];
-                  const stakePercent =
-                    (100 * stakeMbbbAmount?.toString() || 0) /
-                      totalStakeMbbbAmount?.toString() || 0;
+                    const airdropAmount = amtsv2?.[0];
+                    const totalAirdropAmount = amtsv2?.[1];
+                    const stakeMbbbAmount = amtsv2?.[2];
+                    const totalStakeMbbbAmount = amtsv2?.[3];
+                    const stakePercent =
+                      (100 * stakeMbbbAmount?.toString() || 0) /
+                        totalStakeMbbbAmount?.toString() || 0;
 
-                  return (
-                    <tr key={item?.index} className="text-center">
-                      <td>
-                        <div
-                          className={`cursor-pointer tooltip ${
-                            isCopied ? "tooltip-success" : ""
-                          }`}
-                          data-tip={tooltipText}
-                          onClick={() => {
-                            handleCopyClick(item?.token);
-                          }}
-                        >
-                          {item?.symbol}
-                        </div>
-                      </td>
-                      <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
-                      <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
-                      <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
-                      <td>{stakePercent?.toString() || 0} %</td>
-                      <td>{airdropAmount?.toString() / 1e18 || 0}</td>
-                      <td>
-                        {!amtsv2 || airdropAmount?.toString() == 0 ? (
-                          <>Unavailable</>
-                        ) : (
-                          <WriteButton {...claim} className="btn btn-success" />
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                    return (
+                      <tr key={item?.index} className="text-center">
+                        <td>
+                          <div
+                            className={`cursor-pointer tooltip ${
+                              isCopied ? "tooltip-success" : ""
+                            }`}
+                            data-tip={tooltipText}
+                            onClick={() => {
+                              handleCopyClick(item?.token);
+                            }}
+                          >
+                            {item?.symbol}
+                          </div>
+                        </td>
+                        <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
+                        <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                        <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
+                        <td>{stakePercent?.toString() || 0} %</td>
+                        <td>{airdropAmount?.toString() / 1e18 || 0}</td>
+                        <td>
+                          {!amtsv2 || airdropAmount?.toString() == 0 ? (
+                            <>Unavailable</>
+                          ) : (
+                            <WriteButton
+                              {...claim}
+                              className="btn btn-success"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                {!showList && (
+                  <tr>
+                    <td colSpan="7" className="text-center py-4 text-gray-500">
+                      No data available
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

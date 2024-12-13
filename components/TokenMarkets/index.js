@@ -41,6 +41,8 @@ const TokenMarkets = (props) => {
   const bbbPrice = data?.bbb?.price;
   const bbbPriceChange24h = data?.bbb?.changeH24;
 
+  const showList = tokenList?.length > 0;
+
   return (
     <>
       <div className="card">
@@ -141,7 +143,7 @@ const TokenMarkets = (props) => {
               </thead>
 
               <tbody>
-                {tokenList ? (
+                {showList ? (
                   <>
                     <tr
                       className="hover cursor-pointer"

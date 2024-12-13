@@ -130,6 +130,8 @@ const TokenTradeFun = ({ token, symbol }) => {
     setTradeType(type);
   }, []);
 
+  const showList = currentList?.length > 0;
+
   return (
     <div className="card" id="chart">
       <div className="card-body p-2">
@@ -164,8 +166,8 @@ const TokenTradeFun = ({ token, symbol }) => {
               </tr>
             </thead>
             <tbody>
-              {currentList?.length > 0 ? (
-                currentList.map((item) => (
+              {showList ? (
+                currentList?.map((item) => (
                   <TradeRow
                     key={item?.tid}
                     item={item}
