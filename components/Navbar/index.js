@@ -158,8 +158,8 @@ const Navbar = () => {
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
                     p-id="2583"
-                    width="16"
-                    height="16"
+                    width="20"
+                    height="20"
                   >
                     <path
                       d="M881.778 446.578L510.52 813.909l-83.058-82.716-285.24-282.34 83.626-82.716L451.186 589.71V0h118.613v589.767l227.783-225.963 84.196 82.774z m-1.138 460.06H142.222V1024H880.64V906.638z"
@@ -279,8 +279,8 @@ const Navbar = () => {
                           className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="20"
+                          height="20"
                         >
                           <path
                             fillRule="evenodd"
@@ -303,8 +303,8 @@ const Navbar = () => {
                           size="24"
                           className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
-                          width="16"
-                          height="16"
+                          width="20"
+                          height="20"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
@@ -326,8 +326,8 @@ const Navbar = () => {
                           className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="20"
+                          height="20"
                         >
                           <path
                             fillRule="evenodd"
@@ -354,8 +354,8 @@ const Navbar = () => {
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
                           p-id="7250"
-                          width="16"
-                          height="16"
+                          width="20"
+                          height="20"
                         >
                           <path
                             d="M972.8 512l-307.2-256 0 153.6-358.4 0 0 204.8 358.4 0 0 153.6 307.2-256zM153.6 153.6l409.6 0 0-102.4-409.6 0c-56.32 0-102.4 46.08-102.4 102.4l0 716.8c0 56.32 46.08 102.4 102.4 102.4l409.6 0 0-102.4-409.6 0 0-716.8z"
@@ -514,8 +514,8 @@ const Navbar = () => {
                               className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                               viewBox="0 0 24 24"
                               xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
+                              width="20"
+                              height="20"
                             >
                               <path
                                 fillRule="evenodd"
@@ -540,8 +540,8 @@ const Navbar = () => {
                               size="24"
                               className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                               viewBox="0 0 24 24"
-                              width="16"
-                              height="16"
+                              width="20"
+                              height="20"
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
@@ -564,8 +564,8 @@ const Navbar = () => {
                               className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                               viewBox="0 0 24 24"
                               xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
+                              width="20"
+                              height="20"
                             >
                               <path
                                 fillRule="evenodd"
@@ -591,8 +591,8 @@ const Navbar = () => {
                               version="1.1"
                               xmlns="http://www.w3.org/2000/svg"
                               p-id="7250"
-                              width="16"
-                              height="16"
+                              width="20"
+                              height="20"
                             >
                               <path
                                 d="M972.8 512l-307.2-256 0 153.6-358.4 0 0 204.8 358.4 0 0 153.6 307.2-256zM153.6 153.6l409.6 0 0-102.4-409.6 0c-56.32 0-102.4 46.08-102.4 102.4l0 716.8c0 56.32 46.08 102.4 102.4 102.4l409.6 0 0-102.4-409.6 0 0-716.8z"
@@ -697,16 +697,16 @@ const Navbar = () => {
                       }}
                     >
                       <svg
-                        viewBox="0 0 1036 1024"
+                        viewBox="0 0 1024 1024"
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
-                        p-id="2838"
+                        p-id="10337"
                         width="20"
                         height="20"
                       >
                         <path
-                          d="M1014.628571 504L543.885714 33.6a36.491429 36.491429 0 0 0-51.657143 0L21.485714 504c-13.714286 13.714286-21.485714 32.342857-21.485714 51.771429 0 40.342857 32.8 73.142857 73.142857 73.142857h49.6V964.571429c0 20.228571 16.342857 36.571429 36.571429 36.571428H444.914286V745.142857h128v256h303.885714c20.228571 0 36.571429-16.342857 36.571429-36.571428V628.914286h49.6c19.428571 0 38.057143-7.657143 51.771428-21.485715 28.457143-28.571429 28.457143-74.857143-0.114286-103.428571z"
-                          p-id="2839"
+                          d="M173.9776 765.6448h148.8384a18.2272 18.2272 0 0 0 18.688-17.7664V301.056a18.2272 18.2272 0 0 0-18.688-17.7664H173.9776a18.2272 18.2272 0 0 0-18.688 17.7664v446.8224c0 9.8304 8.3456 17.7664 18.688 17.7664z m268.3392 0h148.8896a18.2272 18.2272 0 0 0 18.6368-17.7664V120.1664A18.2272 18.2272 0 0 0 591.2064 102.4H442.3168a18.2272 18.2272 0 0 0-18.688 17.7664v627.712c-0.1024 9.8304 8.3968 17.7664 18.688 17.7664z m268.288 0h148.7872a18.2272 18.2272 0 0 0 18.688-17.7664V481.9456a18.2272 18.2272 0 0 0-18.688-17.7664h-148.8384a18.2272 18.2272 0 0 0-18.688 17.7664v265.9328c0 9.8304 8.3968 17.7664 18.688 17.7664z m192.4096 77.9776H121.088a18.2272 18.2272 0 0 0-18.688 17.8176v42.3936c0 9.8304 8.3456 17.7664 18.688 17.7664h781.824a18.2272 18.2272 0 0 0 18.688-17.7664v-42.2912a18.176 18.176 0 0 0-18.5856-17.92z"
+                          p-id="10338"
                         ></path>
                       </svg>
                       <div>Markets</div>
