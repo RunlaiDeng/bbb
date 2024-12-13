@@ -116,12 +116,6 @@ const Home = () => {
   useEffect(() => {
     fetchData();
     setMount(true);
-
-    // const interval = setInterval(() => {
-    //   fetchData();
-    // }, 10000);
-
-    // return () => clearInterval(interval);
   }, [mount, tokens?.pageNumber, tokens?.sort]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
@@ -151,23 +145,6 @@ const Home = () => {
     ],
     multicallAddress: mutilCall?.address,
   });
-
-  const refetch = () => {
-    setData({
-      ...data,
-      dFile: "",
-      dName: "",
-      dSymbol: "",
-      dDesciption: "",
-      dWebiste: "",
-      dTelegram: "",
-      dTwitter: "",
-      clean: !data?.clean,
-    });
-    fetchData();
-    refetch0();
-    refetch1();
-  };
 
   const price = reads0?.[0]?.result;
   const latestTradePro = reads0?.[1]?.result;
