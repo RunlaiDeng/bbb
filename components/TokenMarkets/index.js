@@ -14,6 +14,7 @@ const TokenMarkets = (props) => {
     searchBar = true,
     showBar = true,
     pageSize = 99999,
+    tableSize = "xs",
   } = props;
 
   const [data, setData] = useState({});
@@ -165,7 +166,7 @@ const TokenMarkets = (props) => {
           )}
 
           <div className="overflow-auto ">
-            <table className="table table-xs">
+            <table className={"table table-" + tableSize}>
               <thead>
                 <tr>
                   <th>Coin</th>

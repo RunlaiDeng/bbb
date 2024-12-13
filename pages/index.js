@@ -48,14 +48,15 @@ const HomeContent = memo(() => {
     xdcPrice,
     xdcPriceChangeH24,
     showLogo: true,
+    tableSize: "lg",
   };
 
   return (
     <>
       <div className="card min-h-screen sm:w-3/4 m-auto">
         <div className="card-body">
-          <div className="sm:flex items-center gap-4 mt-24 sm:mt-48">
-            <div className="text-center sm:text-left">
+          <div className="sm:flex items-center gap-4 mt-12">
+            <div className="text-center sm:text-left sm:pt-24">
               <h1 className="text-green-700 font-bold sm:text-5xl">
                 {address
                   ? "Discuss Everything Crypto On BBBPump.fun"
@@ -93,7 +94,7 @@ const HomeContent = memo(() => {
         </div>
       </div>
 
-      <div className="card sm:w-1/2 m-auto min-h-screen">
+      <div className="card sm:w-3/4 m-auto min-h-screen">
         <div className="card-body text-center">
           <h2 className="text-green-700 font-bold text-5xl my-4">
             Trade with confidence
