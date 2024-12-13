@@ -35,6 +35,7 @@ import {
 import { useNotification } from "@/components/Context/notice";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 import { useFollow } from "@/components/Context/follow";
+import Loading from "@/components/Loading";
 
 const Home = () => {
   const chainId = useChainId();
@@ -582,11 +583,7 @@ const Home = () => {
                 </div>
               </div>
             )}
-            {!showList && (
-              <div className="flex justify-center items-center mt-48">
-                <div className="loading loading-bars loading-lg text-success"></div>
-              </div>
-            )}
+            {!showList && <Loading />}
             {showList && (
               <div className="p-4 flex items-center gap-2">
                 <label className=" w-full flex items-center input input-bordered gap-2 input-sm">

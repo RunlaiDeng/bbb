@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { getPool } from "../Utils";
 import { bbbInfo } from "@/config";
 import { useFollow } from "../Context/follow";
+import Loading from "../Loading";
 
 const TokenMarkets = (props) => {
   const { xdcPrice, xdcPriceChangeH24 } = props;
@@ -128,18 +129,20 @@ const TokenMarkets = (props) => {
               </a>
             </div>
           </div>
-          <div className="overflow-auto ">
-            <table className="table table-xs">
-              <thead>
-                <tr>
-                  <th>Coin</th>
-                  <th className="text-right">Price</th>
-                  <th className="text-right">24h change</th>
-                </tr>
-              </thead>
+          {!tokenList && <Loading />}
 
-              <tbody>
-                {tokenList && (
+          {tokenList && (
+            <div className="overflow-auto ">
+              <table className="table table-xs">
+                <thead>
+                  <tr>
+                    <th>Coin</th>
+                    <th className="text-right">Price</th>
+                    <th className="text-right">24h change</th>
+                  </tr>
+                </thead>
+
+                <tbody>
                   <>
                     <tr
                       className="hover cursor-pointer"
@@ -268,10 +271,10 @@ const TokenMarkets = (props) => {
                       );
                     })}
                   </>
-                )}
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </>

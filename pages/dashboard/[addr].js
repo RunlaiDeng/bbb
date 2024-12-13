@@ -13,6 +13,7 @@ import { contracts, dashboardConfig } from "@/config";
 import { useNotification } from "@/components/Context/notice";
 import rpc from "@/components/Rpc";
 import copy from "copy-to-clipboard";
+import Loading from "@/components/Loading";
 const Address = () => {
   const router = useRouter();
   const { addr } = router.query;
@@ -315,11 +316,7 @@ const Address = () => {
               </div>
             )}
           </div>
-          {!show && (
-            <div className="flex justify-center items-center mt-4">
-              <div className="loading loading-bars loading-lg text-success"></div>
-            </div>
-          )}
+          {!show && <Loading />}
           {show && (
             <>
               <div className="text-2xl sm:text-4xl">
@@ -373,7 +370,9 @@ const Address = () => {
                 </div>
               ) : error ? (
                 <div className="alert alert-error">
-                  <span>{error.message || 'An error occurred while loading data'}</span>
+                  <span>
+                    {error.message || "An error occurred while loading data"}
+                  </span>
                 </div>
               ) : (
                 <table className="table">
@@ -388,7 +387,9 @@ const Address = () => {
                       <th className="text-right hidden sm:table-cell">
                         24H Change
                       </th>
-                      <th className="text-right hidden sm:table-cell">Operate</th>
+                      <th className="text-right hidden sm:table-cell">
+                        Operate
+                      </th>
                       <th className="text-right sm:hidden px-0"></th>
                     </tr>
                   </thead>
@@ -413,7 +414,9 @@ const Address = () => {
                         </div>
                       </td>
                       <td className="text-right">
-                        <div>{Number(referralBonus)?.toLocaleString() || 0}</div>
+                        <div>
+                          {Number(referralBonus)?.toLocaleString() || 0}
+                        </div>
                         <div className="text-xs opacity-50">
                           ${referralUsdBonus?.toLocaleString() || 0}
                         </div>
@@ -559,7 +562,9 @@ const Address = () => {
                           <td className="text-right">
                             <div>
                               {formatEther(item?.balance) >= 1000
-                                ? Number(formatEther(item?.balance))?.toLocaleString() || 0
+                                ? Number(
+                                    formatEther(item?.balance)
+                                  )?.toLocaleString() || 0
                                 : formatEther(item?.balance)}
                             </div>
                             <div className="text-xs opacity-50">
@@ -611,6 +616,7 @@ const Address = () => {
               )}
             </div>
           )}
+          {!show && <Loading />}
         </div>
       </div>
     </>

@@ -17,6 +17,7 @@ import TokenChartFun from "@/components/TokenChartFun";
 import { erc20Abi } from "viem";
 import rpc from "@/components/Rpc";
 import TokenMarkets from "@/components/TokenMarkets";
+import Loading from "@/components/Loading";
 
 const Swap = () => {
   const router = useRouter();
@@ -397,9 +398,7 @@ const Swap = () => {
     </>
   ) : (
     <>
-      <div className="flex justify-center items-center mt-48">
-        <div className="loading loading-bars loading-lg text-success"></div>
-      </div>
+      <Loading />
       <div className="text-center mt-10">Searching for {token}</div>
     </>
   );
