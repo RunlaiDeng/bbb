@@ -3,14 +3,12 @@ import {
   useChainId,
   useAccount,
   useBalance,
-  useWatchContractEvent,
   useClient,
   usePublicClient,
-  useConfig,
 } from "wagmi";
 import { bbbInfo, contracts, dexLink } from "@/config";
 import WriteButton from "@/components/WriteButton";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { buyXDCLink } from "@/config";
 import Image from "next/image";
@@ -20,15 +18,12 @@ import { parseEther, formatEther, decodeEventLog } from "viem";
 import rpc from "@/components/Rpc";
 import { track } from "@vercel/analytics";
 import {
-  formatNumber,
   getDate,
   calculatePrice,
-  getFollowing,
   getBytesLength,
   handleSrc,
   calculateSupply,
   calculateXdcAmount,
-  sqrtPriceX96ToPrice,
   getXDCPrice,
   getBBBPrice,
 } from "@/components/Utils";
@@ -42,13 +37,6 @@ const Home = () => {
 
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
-  const [show, setShow] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("show") || "2" : "2"
-  );
-
-  useEffect(() => {
-    localStorage.setItem("show", show);
-  }, [show]);
 
   const [type, setType] = useState(() =>
     typeof window !== "undefined" ? localStorage.getItem("type") || "1" : "1"
@@ -59,8 +47,6 @@ const Home = () => {
   }, [type]);
 
   const { follow, setFollow } = useFollow();
-
-  const followList = Object.keys(follow).filter((key) => follow[key]);
 
   const [data, setData] = useState({
     dName: "",
@@ -157,40 +143,28 @@ const Home = () => {
 
   let searchDropTokens = [];
 
-  if (show == 1) {
-    for (let i = followList.length?.toString() - 1; i >= 0; i--) {
+  if (tokenList) {
+    for (let i = 0; i < tokenList?.length; i++) {
       searchDropTokens.push({
         ...mbbb,
         functionName: "getDropToken",
-        args: [followList?.[i]?.toString()],
+        args: [tokenList?.[i]?.index?.toString()],
       });
     }
-  }
+  } else {
+    const start =
+      dropTokenLength?.toString() - (tokens?.pageNumber - 1) * tokens?.size;
+    let stop = start - tokens?.size;
+    if (stop < 0) {
+      stop = 0;
+    }
 
-  if (show == 2) {
-    if (tokenList) {
-      for (let i = 0; i < tokenList?.length; i++) {
-        searchDropTokens.push({
-          ...mbbb,
-          functionName: "getDropToken",
-          args: [tokenList?.[i]?.index?.toString()],
-        });
-      }
-    } else {
-      const start =
-        dropTokenLength?.toString() - (tokens?.pageNumber - 1) * tokens?.size;
-      let stop = start - tokens?.size;
-      if (stop < 0) {
-        stop = 0;
-      }
-
-      for (let i = start; i > stop; i--) {
-        searchDropTokens.push({
-          ...mbbb,
-          functionName: "getDropToken",
-          args: [i?.toString()],
-        });
-      }
+    for (let i = start; i > stop; i--) {
+      searchDropTokens.push({
+        ...mbbb,
+        functionName: "getDropToken",
+        args: [i?.toString()],
+      });
     }
   }
 
@@ -591,25 +565,21 @@ const Home = () => {
                       <th
                         className="cursor-pointer flex items-center w-1/8 justify-end"
                         onClick={() => {
-                          if (show == 2) {
-                            let setSort;
-                            if (!tokens?.sort) {
-                              setSort = 1;
-                            }
-                            if (tokens?.sort == 1) {
-                              setSort = 2;
-                            }
+                          let setSort;
 
-                            if (tokens?.sort == 2) {
-                              setSort = undefined;
-                            }
-
-                            setTokens({ ...tokens, sort: setSort });
+                          if (tokens?.sort == 1) {
+                            setSort = 2;
                           }
+
+                          if (tokens?.sort == 2) {
+                            setSort = 1;
+                          }
+
+                          setTokens({ ...tokens, sort: setSort });
                         }}
                       >
                         Cap{" "}
-                        {show == 2 && (
+                        {
                           <div>
                             <svg
                               viewBox="0 -450 1024 1024"
@@ -640,7 +610,7 @@ const Home = () => {
                               ></path>
                             </svg>
                           </div>
-                        )}
+                        }
                       </th>
                     </tr>
                   </thead>
@@ -905,7 +875,7 @@ const Home = () => {
               </div>
             )}
 
-            {dropTokens?.length > 0 && show == 2 && (
+            {dropTokens?.length > 0 && (
               <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
                 <li
                   className={tokens.pageNumber == 1 ? "disabled" : ""}
