@@ -150,7 +150,9 @@ const Referral = () => {
             <div className="stats stats-horizontal shadow text-green-700 text-xs">
               <div className="stat">
                 <div className="stat-title">Friends</div>
-                <div className="stat-value">{userShare?.toLocaleString() || 0}%</div>
+                <div className="stat-value">
+                  {userShare?.toLocaleString() || 0}%
+                </div>
               </div>
 
               <div className="stat">
@@ -295,7 +297,9 @@ const Referral = () => {
                         <td>{leaderConfig?.[1]?.toString() || 0}%</td>
 
                         <td>
-                          {Number(formatEther(leaderPrize || 0))?.toLocaleString()}{" "}
+                          {Number(
+                            formatEther(leaderPrize || 0)
+                          )?.toLocaleString()}{" "}
                           XDC
                         </td>
                       </tr>
@@ -330,9 +334,12 @@ const Referral = () => {
                           />
                           {item}
                         </td>
-                        <td>{Number(formatEther(fee || 0))?.toLocaleString()} XDC</td>
                         <td>
-                          {Number(formatEther(shareFee || 0))?.toLocaleString()} XDC
+                          {Number(formatEther(fee || 0))?.toLocaleString()} XDC
+                        </td>
+                        <td>
+                          {Number(formatEther(shareFee || 0))?.toLocaleString()}{" "}
+                          XDC
                         </td>
                       </tr>
                     );

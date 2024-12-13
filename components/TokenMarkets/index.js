@@ -23,8 +23,9 @@ const TokenMarkets = (props) => {
       let findTokens = {};
       if (show == 1) {
         const followList = Object.keys(follow).filter((key) => follow[key]);
-
-        findTokens = await rpc.getTokens(1, 1, 9999, followList);
+        if (followList?.length > 0) {
+          findTokens = await rpc.getTokens(1, 1, 9999, followList);
+        }
       }
       if (show == 2) {
         findTokens = await rpc.getTokens(1, 1, 9999);
