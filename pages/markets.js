@@ -3,12 +3,11 @@ import {
   useChainId,
   useAccount,
   useBalance,
-  useClient,
   usePublicClient,
 } from "wagmi";
 import { bbbInfo, contracts, dexLink } from "@/config";
 import WriteButton from "@/components/WriteButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { buyXDCLink } from "@/config";
 import Image from "next/image";
@@ -29,7 +28,6 @@ import {
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
-import { useFollow } from "@/components/Context/follow";
 import Loading from "@/components/Loading";
 
 const Home = () => {
@@ -38,71 +36,76 @@ const Home = () => {
   const { address } = useAccount();
   const { data: balance } = useBalance({ address: address });
 
-  const [type, setType] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("type") || "1" : "1"
-  );
+  const [marketState, setMarketState] = useState({
+    mount: false,
+    tokens: {},
+    priceItems: {},
+    image: "",
+  });
 
-  useEffect(() => {
-    localStorage.setItem("type", type);
-  }, [type]);
-
-  const { follow, setFollow } = useFollow();
-
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     dName: "",
     dSymbol: "",
     dMaxXdcCap: parseEther("1000000"),
     dMaxSymbolCap: parseEther(calculateSupply("1000000")),
     maxSymbol: "XDC",
     buySymbol: "XDC",
+    showOptions: false,
+    dDesciption: "",
+    dWebiste: "",
+    dTelegram: "",
+    dTwitter: "",
+    dBuy: undefined,
+    dBuySymbol: undefined,
+    search: "",
   });
+
+  const [type, setType] = useState(() =>
+    typeof window !== "undefined" ? localStorage.getItem("type") || "1" : "1"
+  );
+
+  const { mount, tokens, priceItems } = marketState;
+  const xdcPrice = priceItems?.xdc?.price;
+  const tokenList = tokens?.list;
 
   const pool = contracts[chainId]?.pool;
   const mbbb = contracts[chainId]?.mbbbv2;
   const mutilCall = contracts[chainId]?.multicallAddress;
 
-  const [mount, setMount] = useState(false);
-  const [tokens, setTokens] = useState({});
+  const { info } = useNotification();
 
-  const { info, failure } = useNotification();
-
-  const [priceItems, setPriceItems] = useState({});
-
-  const xdcPrice = priceItems?.xdc?.price;
   const xdcPriceChange24h = priceItems?.xdc?.priceChange24h;
   const bbbPrice = priceItems?.bbb?.price;
   const bbbPriceChange24h = priceItems?.bbb?.priceChange24h;
   const bbbCap = priceItems?.bbb?.cap;
 
   async function fetchData() {
-    let tokensResult = await rpc.getTokens(
-      tokens?.sort,
-      tokens?.pageNumber,
-      tokens?.size
-    );
-    if (tokensResult == undefined) {
-      tokensResult = { size: 10, pageNumber: tokens?.pageNumber || 1 };
-    }
+    try {
+      let tokensResult = (await rpc.getTokens(
+        tokens?.sort,
+        tokens?.pageNumber,
+        tokens?.size
+      )) || { size: 10, pageNumber: tokens?.pageNumber || 1 };
 
-    setTokens(tokensResult);
-    const setPrice = {};
-    const xdc = await getXDCPrice();
-    const bbb = await getBBBPrice();
-    if (xdc.price != 0) {
-      setPrice.xdc = xdc;
-    }
+      const [xdc, bbb] = await Promise.all([getXDCPrice(), getBBBPrice()]);
 
-    if (bbb.price != 0) {
-      setPrice.bbb = bbb;
+      const newPriceItems = {};
+      if (xdc.price !== 0) newPriceItems.xdc = xdc;
+      if (bbb.price !== 0) newPriceItems.bbb = bbb;
+
+      setMarketState((prev) => ({
+        ...prev,
+        tokens: tokensResult,
+        priceItems: { ...prev.priceItems, ...newPriceItems },
+      }));
+    } catch (error) {
+      console.error("Error fetching market data:", error);
     }
-    setPriceItems({ ...priceItems, ...setPrice });
   }
-
-  const tokenList = tokens?.list;
 
   useEffect(() => {
     fetchData();
-    setMount(true);
+    setMarketState((prev) => ({ ...prev, mount: true }));
   }, [mount, tokens?.pageNumber, tokens?.sort]);
 
   const { data: reads0, refetch: refetch0 } = useReadContracts({
@@ -173,7 +176,9 @@ const Home = () => {
     multicallAddress: mutilCall?.address,
   });
 
-  let dropTokens = reads1?.map((item) => item?.result);
+  const dropTokens = useMemo(() => {
+    return reads1?.map((item) => item?.result);
+  }, [reads1]);
 
   useEffect(() => {
     if (dropTokens?.length > 0 && dropTokens?.[0] == undefined) {
@@ -184,11 +189,13 @@ const Home = () => {
 
   const router = useRouter();
 
-  const [image, setImage] = useState("");
+  const canDrop =
+    formData?.dName &&
+    formData?.dSymbol &&
+    marketState?.image &&
+    formData?.dDesciption;
 
-  const canDrop = data?.dName && data?.dSymbol && image && data?.dDesciption;
-
-  const totalCost = (price || 0n) + (data?.dBuy || 0n);
+  const totalCost = (price || 0n) + (formData?.dBuy || 0n);
 
   const client = usePublicClient();
 
@@ -199,14 +206,14 @@ const Home = () => {
       ...mbbb,
       functionName: "drop",
       args: [
-        data?.dName,
-        data?.dSymbol,
-        image,
-        data?.dDesciption,
-        data?.dWebiste,
-        data?.dTelegram,
-        data?.dTwitter,
-        data?.dMaxXdcCap,
+        formData?.dName,
+        formData?.dSymbol,
+        marketState?.image,
+        formData?.dDesciption,
+        formData?.dWebiste,
+        formData?.dTelegram,
+        formData?.dTwitter,
+        formData?.dMaxXdcCap,
       ],
       value: totalCost,
     },
@@ -228,17 +235,14 @@ const Home = () => {
     },
   };
 
-  const bbbIsEnough = false;
-
   const { isConnected } = useAccount();
 
   const privyLogin = usePrivyLogin();
 
   const imageUpload = {
     callback: (file) => {
-      setImage(file);
+      setMarketState((prev) => ({ ...prev, image: file }));
     },
-    clean: data?.clean,
   };
 
   const pages = [];
@@ -532,7 +536,7 @@ const Home = () => {
                     className="w-full"
                     placeholder="0x or bbb"
                     onChange={(e) => {
-                      setData({ ...data, search: e.target.value });
+                      setFormData({ ...formData, search: e.target.value });
                     }}
                   />
                 </label>
@@ -540,8 +544,8 @@ const Home = () => {
                 <div
                   className="btn btn-sm cursor-pointer"
                   onClick={() => {
-                    if (data?.search) {
-                      router.push("/swap/" + data?.search);
+                    if (formData?.search) {
+                      router.push("/swap/" + formData?.search);
                     } else {
                       info("please submit token address");
                     }
@@ -575,7 +579,10 @@ const Home = () => {
                             setSort = 1;
                           }
 
-                          setTokens({ ...tokens, sort: setSort });
+                          setMarketState((prev) => ({
+                            ...prev,
+                            tokens: { ...prev.tokens, sort: setSort },
+                          }));
                         }}
                       >
                         Cap{" "}
@@ -881,7 +888,13 @@ const Home = () => {
                   className={tokens.pageNumber == 1 ? "disabled" : ""}
                   key={0}
                   onClick={() => {
-                    setTokens({ ...tokens, pageNumber: tokens.pageNumber - 1 });
+                    setMarketState((prev) => ({
+                      ...prev,
+                      tokens: {
+                        ...prev.tokens,
+                        pageNumber: prev.tokens.pageNumber - 1,
+                      },
+                    }));
                   }}
                 >
                   <a style={{ background: "transparent" }}>{"<"}</a>
@@ -923,7 +936,10 @@ const Home = () => {
                       {showPageItems && (
                         <li
                           onClick={() => {
-                            setTokens({ ...tokens, pageNumber: item });
+                            setMarketState((prev) => ({
+                              ...prev,
+                              tokens: { ...prev.tokens, pageNumber: item },
+                            }));
                           }}
                         >
                           <a
@@ -951,7 +967,13 @@ const Home = () => {
                     tokens.pageNumber == tokens.totalPage ? "disabled" : ""
                   }
                   onClick={() => {
-                    setTokens({ ...tokens, pageNumber: tokens.pageNumber + 1 });
+                    setMarketState((prev) => ({
+                      ...prev,
+                      tokens: {
+                        ...prev.tokens,
+                        pageNumber: prev.tokens.pageNumber + 1,
+                      },
+                    }));
                   }}
                   key={-3}
                 >
@@ -987,17 +1009,17 @@ const Home = () => {
                     Name <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
-                    {getBytesLength(data?.dName)}/20
+                    {getBytesLength(formData?.dName)}/20
                   </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full "
-                  value={data?.dName}
+                  value={formData?.dName}
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (getBytesLength(newValue) <= 20) {
-                      setData({ ...data, dName: newValue });
+                      setFormData({ ...formData, dName: newValue });
                     }
                   }}
                 />
@@ -1008,26 +1030,26 @@ const Home = () => {
                     Symbol <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
-                    {getBytesLength(data?.dSymbol)}/10
+                    {getBytesLength(formData?.dSymbol)}/10
                   </span>
                 </div>
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  value={data?.dSymbol}
+                  value={formData?.dSymbol}
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (getBytesLength(newValue) <= 10) {
                       let change = { dSymbol: newValue };
-                      if (data?.maxSymbol != "XDC") {
+                      if (formData?.maxSymbol != "XDC") {
                         change = { ...change, maxSymbol: newValue };
                       }
-                      if (data?.buySymbol != "XDC") {
+                      if (formData?.buySymbol != "XDC") {
                         change = { ...change, buySymbol: newValue };
                       }
 
-                      setData({
-                        ...data,
+                      setFormData({
+                        ...formData,
                         ...change,
                       });
                     }
@@ -1041,16 +1063,16 @@ const Home = () => {
                     Token Decription <span className="text-green-700">*</span>
                   </span>
                   <span className="text-right">
-                    {getBytesLength(data?.dDesciption)}/256
+                    {getBytesLength(formData?.dDesciption)}/256
                   </span>
                 </div>
                 <textarea
                   className="textarea textarea-bordered h-20"
-                  value={data?.dDesciption}
+                  value={formData?.dDesciption}
                   onChange={(e) => {
                     const newValue = e.target.value;
                     if (getBytesLength(newValue) <= 256) {
-                      setData({ ...data, dDesciption: newValue });
+                      setFormData({ ...formData, dDesciption: newValue });
                     }
                   }}
                 ></textarea>
@@ -1059,23 +1081,23 @@ const Home = () => {
               <div className="collapse">
                 <input
                   type="checkbox"
-                  value={data?.showOptions}
+                  value={formData?.showOptions}
                   onClick={(e) => {
-                    setData({
-                      ...data,
+                    setFormData({
+                      ...formData,
                       showOptions: e.target.checked,
                     });
                   }}
                 />
                 <div className="collapse-title text-left pl-0 text-green-700">
-                  Show more options {data?.showOptions ? "↑" : "↓"}
+                  Show more options {formData?.showOptions ? "↑" : "↓"}
                 </div>
                 <div className="collapse-content p-0 w-72 sm:w-full">
                   <label className="form-control">
                     <div className="label">
                       <span className="label-text">Website</span>
                       <span className="text-right">
-                        {getBytesLength(data?.dWebiste)}/64
+                        {getBytesLength(formData?.dWebiste)}/64
                       </span>
                     </div>
                     <label className="input input-bordered flex items-center gap-2 ">
@@ -1084,11 +1106,11 @@ const Home = () => {
                         type="text"
                         className="grow"
                         placeholder="Optional"
-                        value={data?.dWebiste}
+                        value={formData?.dWebiste}
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (getBytesLength(newValue) <= 64) {
-                            setData({ ...data, dWebiste: newValue });
+                            setFormData({ ...formData, dWebiste: newValue });
                           }
                         }}
                       />
@@ -1098,7 +1120,7 @@ const Home = () => {
                     <div className="label">
                       <span className="label-text">Telegram</span>
                       <span className="text-right">
-                        {getBytesLength(data?.dTelegram)}/64
+                        {getBytesLength(formData?.dTelegram)}/64
                       </span>
                     </div>
                     <label className="input input-bordered flex items-center gap-2">
@@ -1107,11 +1129,11 @@ const Home = () => {
                         type="text"
                         className="grow"
                         placeholder="Optional"
-                        value={data?.dTelegram}
+                        value={formData?.dTelegram}
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (getBytesLength(newValue) <= 64) {
-                            setData({ ...data, dTelegram: newValue });
+                            setFormData({ ...formData, dTelegram: newValue });
                           }
                         }}
                       />
@@ -1121,7 +1143,7 @@ const Home = () => {
                     <div className="label">
                       <span className="label-text">Twitter</span>
                       <span className="text-right">
-                        {getBytesLength(data?.dTwitter)}/64
+                        {getBytesLength(formData?.dTwitter)}/64
                       </span>
                     </div>
 
@@ -1131,11 +1153,11 @@ const Home = () => {
                         type="text"
                         className="grow"
                         placeholder="Optional"
-                        value={data?.dTwitter}
+                        value={formData?.dTwitter}
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (getBytesLength(newValue) <= 64) {
-                            setData({ ...data, dTwitter: newValue });
+                            setFormData({ ...formData, dTwitter: newValue });
                           }
                         }}
                       />
@@ -1146,34 +1168,37 @@ const Home = () => {
                     <div
                       className="btn btn-xs ml-auto"
                       onClick={() => {
-                        if (data.maxSymbol == "XDC") {
-                          setData({ ...data, maxSymbol: data?.dSymbol });
+                        if (formData.maxSymbol == "XDC") {
+                          setFormData({
+                            ...formData,
+                            maxSymbol: formData?.dSymbol,
+                          });
                         } else {
-                          setData({ ...data, maxSymbol: "XDC" });
+                          setFormData({ ...formData, maxSymbol: "XDC" });
                         }
                       }}
                     >
                       switch to{" "}
-                      {data?.maxSymbol == "XDC" ? data?.dSymbol : "XDC"}
+                      {formData?.maxSymbol == "XDC" ? formData?.dSymbol : "XDC"}
                     </div>
                   </div>
 
-                  {data?.maxSymbol == "XDC" && (
+                  {formData?.maxSymbol == "XDC" && (
                     <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                       <input
                         type="text"
                         className="grow"
                         placeholder="0.00"
                         value={
-                          data?.dMaxXdcCap >= 0
-                            ? formatEther(data?.dMaxXdcCap)
+                          formData?.dMaxXdcCap >= 0
+                            ? formatEther(formData?.dMaxXdcCap)
                             : undefined
                         }
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (!newValue) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dMaxXdcCap: undefined,
                               dMaxSymbolCap: undefined,
                             });
@@ -1181,8 +1206,8 @@ const Home = () => {
                           if (
                             /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
                           ) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dMaxXdcCap: parseEther(newValue),
                               dMaxSymbolCap: parseEther(
                                 calculateSupply(newValue)
@@ -1194,22 +1219,22 @@ const Home = () => {
                       <div className="font-bold">XDC</div>
                     </label>
                   )}
-                  {data?.dSymbol == data?.maxSymbol && (
+                  {formData?.dSymbol == formData?.maxSymbol && (
                     <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                       <input
                         type="text"
                         className="grow"
                         placeholder="0.00"
                         value={
-                          data?.dMaxSymbolCap >= 0
-                            ? formatEther(data?.dMaxSymbolCap)
+                          formData?.dMaxSymbolCap >= 0
+                            ? formatEther(formData?.dMaxSymbolCap)
                             : undefined
                         }
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (!newValue) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dMaxXdcCap: undefined,
                               dMaxSymbolCap: undefined,
                             });
@@ -1217,8 +1242,8 @@ const Home = () => {
                           if (
                             /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
                           ) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dMaxXdcCap: parseEther(
                                 calculateXdcAmount(newValue)
                               ),
@@ -1227,7 +1252,7 @@ const Home = () => {
                           }
                         }}
                       />
-                      <div className="font-bold">{data?.dSymbol}</div>
+                      <div className="font-bold">{formData?.dSymbol}</div>
                     </label>
                   )}
 
@@ -1236,31 +1261,36 @@ const Home = () => {
                     <div
                       className="btn btn-xs ml-auto"
                       onClick={() => {
-                        if (data.buySymbol == "XDC") {
-                          setData({ ...data, buySymbol: data?.dSymbol });
+                        if (formData.buySymbol == "XDC") {
+                          setFormData({
+                            ...formData,
+                            buySymbol: formData?.dSymbol,
+                          });
                         } else {
-                          setData({ ...data, buySymbol: "XDC" });
+                          setFormData({ ...formData, buySymbol: "XDC" });
                         }
                       }}
                     >
                       switch to{" "}
-                      {data?.buySymbol == "XDC" ? data?.dSymbol : "XDC"}
+                      {formData?.buySymbol == "XDC" ? formData?.dSymbol : "XDC"}
                     </div>
                   </div>
-                  {data?.buySymbol == "XDC" && (
+                  {formData?.buySymbol == "XDC" && (
                     <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                       <input
                         type="text"
                         className="grow"
                         placeholder="0.00"
                         value={
-                          data?.dBuy >= 0 ? formatEther(data?.dBuy) : undefined
+                          formData?.dBuy >= 0
+                            ? formatEther(formData?.dBuy)
+                            : undefined
                         }
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (!newValue) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dBuy: undefined,
                               dBuySymbol: undefined,
                             });
@@ -1269,8 +1299,8 @@ const Home = () => {
                           if (
                             /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
                           ) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dBuySymbol: parseEther(calculateSupply(newValue)),
                               dBuy: parseEther(newValue),
                             });
@@ -1280,22 +1310,22 @@ const Home = () => {
                       <div className="font-bold">XDC</div>
                     </label>
                   )}
-                  {data?.buySymbol == data?.dSymbol && (
+                  {formData?.buySymbol == formData?.dSymbol && (
                     <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
                       <input
                         type="text"
                         className="grow"
                         placeholder="0.00"
                         value={
-                          data?.dBuySymbol >= 0
-                            ? formatEther(data?.dBuySymbol)
+                          formData?.dBuySymbol >= 0
+                            ? formatEther(formData?.dBuySymbol)
                             : undefined
                         }
                         onChange={(e) => {
                           const newValue = e.target.value;
                           if (!newValue) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dBuy: undefined,
                               dBuySymbol: undefined,
                             });
@@ -1304,15 +1334,15 @@ const Home = () => {
                           if (
                             /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
                           ) {
-                            setData({
-                              ...data,
+                            setFormData({
+                              ...formData,
                               dBuySymbol: parseEther(newValue),
                               dBuy: parseEther(calculateXdcAmount(newValue)),
                             });
                           }
                         }}
                       />
-                      <div className="font-bold">{data?.dSymbol}</div>
+                      <div className="font-bold">{formData?.dSymbol}</div>
                     </label>
                   )}
                 </div>
@@ -1335,15 +1365,13 @@ const Home = () => {
               </label>
             </div>
             <div className="mt-1 text-xs">Avbl {balance?.formatted} XDC</div>
-            {!bbbIsEnough && (
-              <Link
-                className="underline text-xs"
-                href={buyXDCLink}
-                target="_blank"
-              >
-                XDC is not enough ?
-              </Link>
-            )}
+            <Link
+              className="underline text-xs"
+              href={buyXDCLink}
+              target="_blank"
+            >
+              XDC is not enough ?
+            </Link>
             {!canDrop && (
               <div className="text-red-700">
                 image, name, symbol, token description are required
