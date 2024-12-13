@@ -180,7 +180,7 @@ const TokenMarkets = (props) => {
                       }
                     >
                       {bbbPriceChange24h >= 0 ? "+" : ""}
-                      {bbbPriceChange24h}%
+                      {Number(bbbPriceChange24h)?.toFixed(2)}%
                     </td>
                   </tr>
                 )}
