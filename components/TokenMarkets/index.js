@@ -129,20 +129,19 @@ const TokenMarkets = (props) => {
               </a>
             </div>
           </div>
-          {!tokenList && <Loading />}
 
-          {tokenList && (
-            <div className="overflow-auto ">
-              <table className="table table-xs">
-                <thead>
-                  <tr>
-                    <th>Coin</th>
-                    <th className="text-right">Price</th>
-                    <th className="text-right">24h change</th>
-                  </tr>
-                </thead>
+          <div className="overflow-auto ">
+            <table className="table table-xs">
+              <thead>
+                <tr>
+                  <th>Coin</th>
+                  <th className="text-right">Price</th>
+                  <th className="text-right">24h change</th>
+                </tr>
+              </thead>
 
-                <tbody>
+              <tbody>
+                {tokenList ? (
                   <>
                     <tr
                       className="hover cursor-pointer"
@@ -271,10 +270,16 @@ const TokenMarkets = (props) => {
                       );
                     })}
                   </>
-                </tbody>
-              </table>
-            </div>
-          )}
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="text-center py-4 text-gray-500">
+                      No data available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
