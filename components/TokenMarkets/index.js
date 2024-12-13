@@ -7,7 +7,7 @@ import { useFollow } from "../Context/follow";
 
 const TokenMarkets = (props) => {
   const { xdcPrice, xdcPriceChangeH24 } = props;
-  const [data, setData] = useState({ tokenList: [], bbb: {}, search: '' });
+  const [data, setData] = useState({ tokenList: [], bbb: {}, search: "" });
   const [show, setShow] = useState(2);
   const router = useRouter();
 
@@ -17,9 +17,14 @@ const TokenMarkets = (props) => {
     try {
       const [bbbPool, findTokens] = await Promise.all([
         getPool(bbbInfo.address),
-        show === 1 
-          ? rpc.getTokens(1, 1, 9999, Object.keys(follow).filter(key => follow[key]))
-          : rpc.getTokens(1, 1, 9999)
+        show === 1
+          ? rpc.getTokens(
+              1,
+              1,
+              9999,
+              Object.keys(follow).filter((key) => follow[key])
+            )
+          : rpc.getTokens(1, 1, 9999),
       ]);
 
       const bbb = {
@@ -27,9 +32,9 @@ const TokenMarkets = (props) => {
         changeH24: bbbPool?.price_change_percentage?.h24 || 0,
       };
 
-      setData(prev => ({ ...prev, tokenList: findTokens?.list || [], bbb }));
+      setData((prev) => ({ ...prev, tokenList: findTokens?.list || [], bbb }));
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   }, [show, follow]);
 
@@ -44,35 +49,45 @@ const TokenMarkets = (props) => {
   }, [data.search, router]);
 
   const handleSearchChange = useCallback((e) => {
-    setData(prev => ({ ...prev, search: e.target.value }));
+    setData((prev) => ({ ...prev, search: e.target.value }));
   }, []);
 
   const handleShowChange = useCallback((value) => {
     setShow(value);
   }, []);
 
-  const handleFollowToggle = useCallback((index, checked, e) => {
-    e.stopPropagation();
-    setFollow(index, checked);
-  }, [setFollow]);
+  const handleFollowToggle = useCallback(
+    (index, checked, e) => {
+      e.stopPropagation();
+      setFollow(index, checked);
+    },
+    [setFollow]
+  );
 
   const { tokenList, bbb } = data;
   const bbbPrice = bbb?.price;
   const bbbPriceChange24h = bbb?.changeH24;
 
-  const memoizedTokenList = useMemo(() => 
-    tokenList?.map((item, index) => {
-      const isFollowed = follow?.[item?.index];
-      const price = ((xdcPrice * Number(item?.price || 0) * 2) / 1e18)?.toFixed(4);
-      const changeH24 = (100 * ((1 + xdcPriceChangeH24) * (1 + Number(item?.priceChangeH24)) - 1))?.toFixed(2);
-      
-      return {
-        ...item,
-        isFollowed,
-        price,
-        changeH24,
-      };
-    }),
+  const memoizedTokenList = useMemo(
+    () =>
+      tokenList?.map((item, index) => {
+        const isFollowed = follow?.[item?.index];
+        const price = (
+          (xdcPrice * Number(item?.price || 0) * 2) /
+          1e18
+        )?.toFixed(4);
+        const changeH24 = (
+          100 *
+          ((1 + xdcPriceChangeH24) * (1 + Number(item?.priceChangeH24)) - 1)
+        )?.toFixed(2);
+
+        return {
+          ...item,
+          isFollowed,
+          price,
+          changeH24,
+        };
+      }),
     [tokenList, follow, xdcPrice, xdcPriceChangeH24]
   );
 
@@ -159,7 +174,7 @@ const TokenMarkets = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {memoizedTokenList && (
+                {memoizedTokenList && bbbPrice && (
                   <>
                     <tr
                       className="hover cursor-pointer"
@@ -203,11 +218,20 @@ const TokenMarkets = (props) => {
                       >
                         <td className="flex items-center gap-1">
                           {typeof window !== "undefined" && (
-                            <label className="swap" onClick={(e) => e.stopPropagation()}>
+                            <label
+                              className="swap"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <input
                                 type="checkbox"
                                 checked={item.isFollowed}
-                                onClick={(e) => handleFollowToggle(item?.index, e.target.checked, e)}
+                                onClick={(e) =>
+                                  handleFollowToggle(
+                                    item?.index,
+                                    e.target.checked,
+                                    e
+                                  )
+                                }
                               />
                               <div className="swap-off swap-rotate">
                                 <svg
@@ -249,7 +273,9 @@ const TokenMarkets = (props) => {
                         <td
                           className={
                             "text-right " +
-                            (item.changeH24 >= 0 ? "text-green-700" : "text-red-700")
+                            (item.changeH24 >= 0
+                              ? "text-green-700"
+                              : "text-red-700")
                           }
                         >
                           {item.changeH24 >= 0 ? "+" : ""}

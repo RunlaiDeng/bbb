@@ -43,13 +43,15 @@ const ExternalLinkIcon = ({ className = "" }) => (
 );
 
 const TradeRow = ({ item, symbol, router, onAccountClick }) => {
-  const formattedAmount = useMemo(() => 
-    Number(formatEther(item?.tokenAmount || 0))?.toLocaleString()
-  , [item?.tokenAmount]);
+  const formattedAmount = useMemo(
+    () => Number(formatEther(item?.tokenAmount || 0))?.toLocaleString(),
+    [item?.tokenAmount]
+  );
 
-  const formattedTotal = useMemo(() => 
-    Number(Number(item?.totalInUsd)?.toFixed(6))?.toLocaleString()
-  , [item?.totalInUsd]);
+  const formattedTotal = useMemo(
+    () => Number(Number(item?.totalInUsd)?.toFixed(6))?.toLocaleString(),
+    [item?.totalInUsd]
+  );
 
   return (
     <tr
@@ -64,8 +66,7 @@ const TradeRow = ({ item, symbol, router, onAccountClick }) => {
         className="hover:underline cursor-pointer flex items-center gap-1"
         onClick={() => onAccountClick(item?.account)}
       >
-        {item?.account?.substr(36)}{" "}
-        <ExternalLinkIcon />
+        {item?.account?.substr(36)} <ExternalLinkIcon />
       </td>
       <td
         className="hover:underline cursor-pointer"
@@ -87,14 +88,25 @@ const TokenTradeFun = ({ token, symbol }) => {
   const fetchData = useCallback(async () => {
     try {
       if (tradeType === TRADE_TYPES.MARKET) {
-        const result = await rpc.getOrders(1, 1, PAGE_SIZE, 2, undefined, token);
+        const result = await rpc.getOrders(
+          1,
+          1,
+          PAGE_SIZE,
+          2,
+          undefined,
+          token
+        );
         setOrders(result);
       } else if (tradeType === TRADE_TYPES.MY_TRADES) {
-        const result = await rpc.getOrders(1, 1, PAGE_SIZE, 2, address, token);
+        let result = {};
+        if (address) {
+          result = await rpc.getOrders(1, 1, PAGE_SIZE, 2, address, token);
+        }
+
         setMyOrders(result);
       }
     } catch (error) {
-      console.error('Error fetching trade data:', error);
+      console.error("Error fetching trade data:", error);
     }
   }, [token, address, tradeType]);
 
@@ -102,13 +114,17 @@ const TokenTradeFun = ({ token, symbol }) => {
     fetchData();
   }, [fetchData, tradeType]);
 
-  const handleAccountClick = useCallback((account) => {
-    router.push(`/dashboard/${account}`);
-  }, [router]);
+  const handleAccountClick = useCallback(
+    (account) => {
+      router.push(`/dashboard/${account}`);
+    },
+    [router]
+  );
 
-  const currentList = useMemo(() => 
-    tradeType === TRADE_TYPES.MARKET ? orders?.list : myOrders?.list
-  , [tradeType, orders?.list, myOrders?.list]);
+  const currentList = useMemo(
+    () => (tradeType === TRADE_TYPES.MARKET ? orders?.list : myOrders?.list),
+    [tradeType, orders?.list, myOrders?.list]
+  );
 
   const handleTypeChange = useCallback((type) => {
     setTradeType(type);
