@@ -407,9 +407,9 @@ const Address = () => {
                           />
                         </div>
                         <div>
-                          <div>XDC (Referral Bonus)</div>
+                          <div>bXDC</div>
                           <div className="text-xs opacity-50 whitespace-nowrap">
-                            XDC Network
+                             Bonus XDC
                           </div>
                         </div>
                       </td>
