@@ -70,9 +70,9 @@ const TokenChat = (props) => {
   }, [fetchMessages]);
 
   return (
-    <div className="card text-xs" id="chat">
+    <div className="card  text-xs h-full overflow-y-auto" id="chat">
       <div className="card-body p-1">
-        <div className="overflow-auto h-[450px]" ref={scrollRef}>
+        <div className="overflow-auto" ref={scrollRef}>
           {messages?.map((item, index) => (
             <div className="card rounded-none my-1" key={index}>
               <div className="card-body p-1">

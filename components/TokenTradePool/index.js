@@ -9,7 +9,7 @@ const TokenTradePool = (props) => {
   const [data, setData] = useState({ type: 1 });
 
   return (
-    <div className="card" id="chart">
+    <div className="card h-full overflow-y-auto" id="chart">
       <div className="card-body p-2">
         <div className="font-bold text-sm flex gap-2">
           <div
@@ -36,7 +36,7 @@ const TokenTradePool = (props) => {
           </div>
         </div>
         {data?.type == 1 && (
-          <div className="h-[470px] lg:h-[920px]">
+          <div className="h-full">
             <iframe
               height="100%"
               width="100%"

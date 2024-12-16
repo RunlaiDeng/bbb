@@ -82,35 +82,34 @@ const TokenChartFun = (props) => {
   const trade = {
     trade: data?.kline,
     volume: data?.kline,
+    height: 250,
   };
   return (
-    <>
-      <div className="card" id="chart">
-        <div className="card-body p-2 pt-0">
-          {data?.type == 1 && (
-            <div
-              className="text-left btn w-max btn-sm"
-              onClick={() => {
-                setData({ ...data, type: 2 });
-              }}
-            >
-              {symbol} / USD
-            </div>
-          )}
-          {data?.type == 2 && (
-            <div
-              className="text-left btn w-max btn-sm"
-              onClick={() => {
-                setData({ ...data, type: 1 });
-              }}
-            >
-              {symbol} / XDC
-            </div>
-          )}
-          <LightChart {...trade} />
-        </div>
+    <div className="card h-full overflow-y-auto" id="chart">
+      <div className="card-body p-2 pt-0">
+        {data?.type == 1 && (
+          <div
+            className="text-left btn w-max btn-sm"
+            onClick={() => {
+              setData({ ...data, type: 2 });
+            }}
+          >
+            {symbol} / USD
+          </div>
+        )}
+        {data?.type == 2 && (
+          <div
+            className="text-left btn w-max btn-sm"
+            onClick={() => {
+              setData({ ...data, type: 1 });
+            }}
+          >
+            {symbol} / XDC
+          </div>
+        )}
+        <LightChart {...trade} />
       </div>
-    </>
+    </div>
   );
 };
 

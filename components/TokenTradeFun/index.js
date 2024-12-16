@@ -154,7 +154,7 @@ const TokenTradeFun = ({ token, symbol }) => {
   const showList = currentList?.length > 0;
 
   return (
-    <div className="card" id="chart">
+    <div className="card h-full overflow-y-auto" id="chart">
       <div className="card-body p-2">
         <div className="font-bold text-sm flex gap-2">
           <div
@@ -174,7 +174,7 @@ const TokenTradeFun = ({ token, symbol }) => {
             My Trades
           </div>
         </div>
-        <div className="overflow-x-auto whitespace-nowrap h-[470px] lg:h-full">
+        <div className="overflow-x-auto whitespace-nowrap">
           <table className="table table-xs">
             <thead>
               <tr>

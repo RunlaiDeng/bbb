@@ -1,9 +1,9 @@
 const TokenChartPool = (props) => {
   const { poolAddress } = props;
   return (
-    <div className="card " id="chart">
+    <div className="card h-full overflow-y-auto" id="chart">
       <div className="card-body p-0">
-        <div className="h-[500px]">
+        <div className="h-full">
           <iframe
             height="100%"
             width="100%"
