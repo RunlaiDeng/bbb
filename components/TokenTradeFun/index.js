@@ -46,7 +46,6 @@ const TradeRow = ({ item, symbol, router, onAccountClick }) => {
           p-id="8441"
           width="16"
           height="16"
-          
         >
           <path
             d="M780.672 964.8H193.856A129.92 129.92 0 0 1 64 835.008V248.064a130.048 130.048 0 0 1 129.856-129.856h224.768a43.968 43.968 0 1 1 0 88H193.856a41.856 41.856 0 0 0-41.856 41.856v586.944c0 23.104 18.752 41.856 41.856 41.856h586.816a41.856 41.856 0 0 0 41.856-41.856V596.608a43.968 43.968 0 1 1 87.936 0v238.464a129.92 129.92 0 0 1-129.792 129.728z"
@@ -76,7 +75,6 @@ const TradeRow = ({ item, symbol, router, onAccountClick }) => {
           p-id="8441"
           width="16"
           height="16"
-          
         >
           <path
             d="M780.672 964.8H193.856A129.92 129.92 0 0 1 64 835.008V248.064a130.048 130.048 0 0 1 129.856-129.856h224.768a43.968 43.968 0 1 1 0 88H193.856a41.856 41.856 0 0 0-41.856 41.856v586.944c0 23.104 18.752 41.856 41.856 41.856h586.816a41.856 41.856 0 0 0 41.856-41.856V596.608a43.968 43.968 0 1 1 87.936 0v238.464a129.92 129.92 0 0 1-129.792 129.728z"
@@ -155,28 +153,44 @@ const TokenTradeFun = ({ token, symbol }) => {
 
   return (
     <div className="card h-full overflow-y-auto" id="chart">
-      <div className="card-body p-2">
-        <div className="font-bold text-sm flex gap-2">
-          <div
-            className={`hover:text-green-700 cursor-pointer ${
-              tradeType === TRADE_TYPES.MARKET ? "text-green-700" : ""
-            }`}
-            onClick={() => handleTypeChange(TRADE_TYPES.MARKET)}
-          >
-            Market Trades
-          </div>
-          <div
-            className={`hover:text-green-700 cursor-pointer ${
-              tradeType === TRADE_TYPES.MY_TRADES ? "text-green-700" : ""
-            }`}
-            onClick={() => handleTypeChange(TRADE_TYPES.MY_TRADES)}
-          >
-            My Trades
+      <div className="sticky top-0 bg-base-100 z-10">
+        <div className="flex gap-2 text-gray-500 font-bold">
+          <div role="tablist" className="tabs tabs-bordered w-full">
+            <a
+              role="tab"
+              className={
+                "tab " +
+                (tradeType === TRADE_TYPES.MARKET
+                  ? "tab-active text-green-700"
+                  : "")
+              }
+              onClick={() => {
+                handleTypeChange(TRADE_TYPES.MARKET);
+              }}
+            >
+              Market Trades
+            </a>
+            <a
+              role="tab"
+              className={
+                "tab " +
+                (tradeType === TRADE_TYPES.MY_TRADES
+                  ? "tab-active text-green-700"
+                  : "")
+              }
+              onClick={() => {
+                handleTypeChange(TRADE_TYPES.MY_TRADES);
+              }}
+            >
+              My Trades
+            </a>
           </div>
         </div>
+      </div>
+      <div className="card-body p-0 overflow-auto">
         <div className="overflow-x-auto whitespace-nowrap">
           <table className="table table-xs">
-            <thead>
+            <thead className="sticky top-0 bg-base-100 z-10">
               <tr>
                 <th>Type</th>
                 <th>Price</th>

@@ -74,8 +74,8 @@ const TokenMarkets = (props) => {
 
   return (
     <>
-      <div className="card h-full overflow-y-auto">
-        <div className="card-body p-0">
+      <div className="card h-full flex flex-col">
+        <div className="sticky top-0 bg-base-100 z-10">
           {searchBar && (
             <div className="p-2 flex items-center gap-2">
               <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
@@ -164,10 +164,11 @@ const TokenMarkets = (props) => {
               </div>
             </div>
           )}
-
+        </div>
+        <div className="card-body p-0 overflow-auto">
           <div className="overflow-auto">
             <table className={"table table-" + tableSize}>
-              <thead>
+              <thead className="sticky top-0 bg-base-100 z-10">
                 <tr>
                   <th>Coin</th>
                   <th className="text-right">Price</th>

@@ -299,61 +299,68 @@ const Swap = () => {
         <div className="lg:col-span-3  overflow-x-auto text-center outline rounded-none outline-gray-200">
           <div className="card">
             <div className="card-body p-2">
-              <div className="flex gap-2 items-center">
-                <div
-                  className={
-                    "font-bold text-sm cursor-pointer " +
-                    (type == "chart" ? "text-green-700" : "")
-                  }
-                  onClick={() => {
-                    setType("chart");
-                  }}
-                >
-                  Chart
-                </div>
-                <div
-                  className={
-                    "font-bold text-sm cursor-pointer  " +
-                    (type == "info" ? "text-green-700" : "")
-                  }
-                  onClick={() => {
-                    setType("info");
-                  }}
-                >
-                  Info
-                </div>
-                <div
-                  className={
-                    "font-bold text-sm cursor-pointer " +
-                    (type == "chat" ? "text-green-700" : "")
-                  }
-                  onClick={() => {
-                    setType("chat");
-                  }}
-                >
-                  Chat
-                </div>
-                <div
-                  className={
-                    "font-bold text-sm cursor-pointer lg:hidden " +
-                    (type == "trades" ? "text-green-700" : "")
-                  }
-                  onClick={() => {
-                    setType("trades");
-                  }}
-                >
-                  Trades
-                </div>
-                <div
-                  className={
-                    "font-bold text-sm cursor-pointer lg:hidden " +
-                    (type == "markets" ? "text-green-700" : "")
-                  }
-                  onClick={() => {
-                    setType("markets");
-                  }}
-                >
-                  Markets
+              <div className="flex gap-2 text-gray-500 font-bold">
+                <div role="tablist" className="tabs tabs-bordered w-full">
+                  <a
+                    role="tab"
+                    className={
+                      "tab " +
+                      (type === "chart" ? "tab-active text-green-700" : "")
+                    }
+                    onClick={() => {
+                      setType("chart");
+                    }}
+                  >
+                    Chart
+                  </a>
+                  <a
+                    role="tab"
+                    className={
+                      "tab " +
+                      (type === "info" ? "tab-active text-green-700" : "")
+                    }
+                    onClick={() => {
+                      setType("info");
+                    }}
+                  >
+                    Info
+                  </a>
+                  <a
+                    role="tab"
+                    className={
+                      "tab " +
+                      (type === "chat" ? "tab-active text-green-700" : "")
+                    }
+                    onClick={() => {
+                      setType("chat");
+                    }}
+                  >
+                    Chat
+                  </a>
+                  <a
+                    role="tab"
+                    className={
+                      "tab lg:hidden " +
+                      (type === "trades" ? "tab-active text-green-700" : "")
+                    }
+                    onClick={() => {
+                      setType("trades");
+                    }}
+                  >
+                    Trades
+                  </a>
+                  <a
+                    role="tab"
+                    className={
+                      "tab lg:hidden " +
+                      (type === "markets" ? "tab-active text-green-700" : "")
+                    }
+                    onClick={() => {
+                      setType("markets");
+                    }}
+                  >
+                    Markets
+                  </a>
                 </div>
               </div>
             </div>
