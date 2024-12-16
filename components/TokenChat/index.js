@@ -70,9 +70,9 @@ const TokenChat = (props) => {
   }, [fetchMessages]);
 
   return (
-    <div className="card  text-xs h-full overflow-y-auto" id="chat">
-      <div className="card-body p-1">
-        <div className="overflow-auto" ref={scrollRef}>
+    <div className="card text-xs h-full flex flex-col" id="chat">
+      <div className="card-body p-1 flex flex-col h-full">
+        <div className="overflow-auto flex-1" ref={scrollRef}>
           {messages?.map((item, index) => (
             <div className="card rounded-none my-1" key={index}>
               <div className="card-body p-1">
@@ -142,22 +142,24 @@ const TokenChat = (props) => {
           ))}
         </div>
 
-        <label className="input input-bordered flex items-center gap-2 input-sm mx-1">
-          <input
-            type="text"
-            className="grow"
-            value={tokenInfo?.sendMsgContent}
-            placeholder="Type Here"
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-          />
-          <kbd
-            className="kbd kbd-sm cursor-pointer"
-            onClick={handleSendMessage}
-          >
-            ↑
-          </kbd>
-        </label>
+        <div className="sticky bottom-0 bg-base-100 pt-2">
+          <label className="input input-bordered flex items-center gap-2 input-sm mx-1">
+            <input
+              type="text"
+              className="grow"
+              value={tokenInfo?.sendMsgContent}
+              placeholder="Type Here"
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+            />
+            <kbd
+              className="kbd kbd-sm cursor-pointer"
+              onClick={handleSendMessage}
+            >
+              ↑
+            </kbd>
+          </label>
+        </div>
       </div>
     </div>
   );

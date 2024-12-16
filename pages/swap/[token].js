@@ -360,7 +360,7 @@ const Swap = () => {
           </div>
           {graduate && (
             <>
-              <div className="h-[400px] lg:h-[500px]">
+              <div className="h-[350px] lg:h-[500px]">
                 {type == "chart" && <TokenChartPool {...tChartPool} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
@@ -373,7 +373,7 @@ const Swap = () => {
           )}
           {!graduate && (
             <>
-              <div className="h-[400px] lg:h-[500px]">
+              <div className="h-[350px] lg:h-[500px]">
                 {type == "chart" && <TokenChartFun {...tChartFun} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}

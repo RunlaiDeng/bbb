@@ -81,8 +81,7 @@ const TokenChartFun = (props) => {
 
   const trade = {
     trade: data?.kline,
-    volume: data?.kline,
-    height: 250,
+    volume: data?.kline
   };
   return (
     <div className="card h-full overflow-y-auto" id="chart">

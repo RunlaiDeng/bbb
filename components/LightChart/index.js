@@ -1,62 +1,73 @@
 import React, { useEffect, useRef, useMemo, useState } from "react";
 import { createChart, ColorType } from "lightweight-charts";
 
-const LightChart = ({ 
-  trade = [], 
-  height = 470,
+const LightChart = ({
+  trade = [],
   colors = {
-    backgroundColor: 'white',
-    lineColor: '#2962FF',
-    textColor: 'black',
-    areaTopColor: '#2962FF',
-    areaBottomColor: 'rgba(41, 98, 255, 0.28)',
-  }
+    backgroundColor: "white",
+    lineColor: "#2962FF",
+    textColor: "black",
+    areaTopColor: "#2962FF",
+    areaBottomColor: "rgba(41, 98, 255, 0.28)",
+  },
 }) => {
   const chartContainerRef = useRef();
   const chartRef = useRef();
   const resizeObserverRef = useRef();
   const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
 
-  const chartOptions = useMemo(() => ({
-    layout: {
-      background: { type: ColorType.Solid, color: colors.backgroundColor },
-      textColor: colors.textColor,
-    },
-    width: containerWidth,
-    height: height,
-    grid: {
-      vertLines: { color: 'rgba(197, 203, 206, 0.5)' },
-      horzLines: { color: 'rgba(197, 203, 206, 0.5)' },
-    },
-    crosshair: {
-      mode: 0,
-    },
-    rightPriceScale: {
-      borderColor: 'rgba(197, 203, 206, 0.8)',
-      mode: 1,
-    },
-    timeScale: {
-      borderColor: 'rgba(197, 203, 206, 0.8)',
-      timeVisible: true,
-      secondsVisible: false,
-    },
-  }), [height, colors, containerWidth]);
+  const chartOptions = useMemo(
+    () => ({
+      layout: {
+        background: { type: ColorType.Solid, color: colors.backgroundColor },
+        textColor: colors.textColor,
+      },
+      width: containerWidth,
+      height: containerHeight,
+      grid: {
+        vertLines: { color: "rgba(197, 203, 206, 0.5)" },
+        horzLines: { color: "rgba(197, 203, 206, 0.5)" },
+      },
+      crosshair: {
+        mode: 0,
+      },
+      rightPriceScale: {
+        borderColor: "rgba(197, 203, 206, 0.8)",
+        mode: 1,
+      },
+      timeScale: {
+        borderColor: "rgba(197, 203, 206, 0.8)",
+        timeVisible: true,
+        secondsVisible: false,
+      },
+    }),
+    [colors, containerWidth, containerHeight]
+  );
 
-  // 初始化容器宽度
+  // 初始化容器尺寸
   useEffect(() => {
     if (chartContainerRef.current) {
       setContainerWidth(chartContainerRef.current.clientWidth);
+      setContainerHeight(chartContainerRef.current.clientHeight);
     }
   }, []);
 
   useEffect(() => {
-    if (!chartContainerRef.current || !containerWidth) return;
+    if (!chartContainerRef.current || !containerWidth || !containerHeight) return;
 
     const handleResize = () => {
       const newWidth = chartContainerRef.current?.clientWidth;
+      const newHeight = chartContainerRef.current?.clientHeight;
+      
       if (newWidth && newWidth !== containerWidth) {
         setContainerWidth(newWidth);
         chartRef.current?.applyOptions({ width: newWidth });
+      }
+      
+      if (newHeight && newHeight !== containerHeight) {
+        setContainerHeight(newHeight);
+        chartRef.current?.applyOptions({ height: newHeight });
       }
     };
 
@@ -64,13 +75,13 @@ const LightChart = ({
     chartRef.current = chart;
 
     const candleSeries = chart.addCandlestickSeries({
-      upColor: '#26a69a',
-      downColor: '#ef5350',
+      upColor: "#26a69a",
+      downColor: "#ef5350",
       borderVisible: false,
-      wickUpColor: '#26a69a',
-      wickDownColor: '#ef5350',
+      wickUpColor: "#26a69a",
+      wickDownColor: "#ef5350",
       priceFormat: {
-        type: 'price',
+        type: "price",
         precision: 6,
         minMove: 0.000001,
       },
@@ -79,7 +90,7 @@ const LightChart = ({
     try {
       candleSeries.setData(trade);
     } catch (error) {
-      console.error('Error setting chart data:', error);
+      console.error("Error setting chart data:", error);
     }
 
     resizeObserverRef.current = new ResizeObserver(handleResize);
@@ -89,15 +100,15 @@ const LightChart = ({
       resizeObserverRef.current?.disconnect();
       chart.remove();
     };
-  }, [trade, chartOptions, containerWidth]);
+  }, [trade, chartOptions, containerWidth, containerHeight]);
 
   return (
-    <div className="relative w-full">
-      <div 
-        ref={chartContainerRef} 
-        className="w-full"
+    <div className="h-full">
+      <div
+        ref={chartContainerRef}
+        className="w-full h-full"
         style={{
-          visibility: trade.length ? 'visible' : 'hidden'
+          visibility: trade.length ? "visible" : "hidden",
         }}
       />
       {!trade.length && (
