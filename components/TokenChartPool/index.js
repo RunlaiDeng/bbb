@@ -1,9 +1,9 @@
 const TokenChartPool = (props) => {
   const { poolAddress } = props;
   return (
-    <div className="card h-full overflow-y-auto" id="chart">
+    <div className="card h-full overflow-y-auto rounded-none" id="chart">
       <div className="card-body p-0">
-        <div className="h-full">
+        <div className="h-full ">
           <iframe
             height="100%"
             width="100%"
@@ -14,9 +14,9 @@ const TokenChartPool = (props) => {
               poolAddress +
               "?embed=1&info=0&swaps=0&light_chart=1"
             }
-            frameBorder="0"
+            frameborder="0"
             allow="clipboard-write"
-            allowFullScreen
+            allowfullscreen
           ></iframe>
         </div>
       </div>
