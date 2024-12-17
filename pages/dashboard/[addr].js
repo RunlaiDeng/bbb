@@ -17,8 +17,9 @@ import Loading from "@/components/Loading";
 const Address = () => {
   const router = useRouter();
   const { addr } = router.query;
-  const { data: xdcBalance } = useBalance({ address: addr });
+  const { data: xdcBalanceData } = useBalance({ address: addr });
   const [data, setData] = useState({});
+  const xdcBalance = xdcBalanceData?.formatted;
 
   const { address } = useAccount();
 
@@ -150,8 +151,9 @@ const Address = () => {
   let total24hChange = 0;
 
   const referralBonus = referralInfo?.totalPrize / 1e18 || 0;
-  const referralUsdBonus = (referralInfo?.totalPrize / 1e18) * xdcPrice || 0;
-  const xdcUsdBalance = referralUsdBonus + xdcBalance?.formatted * xdcPrice;
+ 
+  const referralUsdBonus = referralBonus * xdcPrice || 0;
+  const xdcUsdBalance = referralUsdBonus + xdcBalance * xdcPrice;
 
   totalBalance += xdcUsdBalance;
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
@@ -409,7 +411,7 @@ const Address = () => {
                         <div>
                           <div>bXDC</div>
                           <div className="text-xs opacity-50 whitespace-nowrap">
-                             Bonus XDC
+                            Bonus XDC
                           </div>
                         </div>
                       </td>
@@ -482,9 +484,7 @@ const Address = () => {
                         </div>
                       </td>
                       <td className="text-right">
-                        <div>
-                          {Number(xdcBalance?.formatted)?.toLocaleString() || 0}
-                        </div>
+                        <div>{Number(xdcBalance)?.toLocaleString() || 0}</div>
                         <div className="text-xs opacity-50">
                           ${xdcUsdBalance?.toLocaleString() || 0}
                         </div>
