@@ -14,8 +14,8 @@ const TradeEvent = () => {
   const handleWaitlistSubmit = async () => {
     setIsSubmitting(true);
     try {
-      // TODO: Implement waitlist submission logic
       await rpc.addTradeEvent(address);
+      await fetchData();
     } finally {
       setIsSubmitting(false);
     }
