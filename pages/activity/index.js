@@ -12,7 +12,7 @@ const Quests = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="transform transition-all duration-300 hover:scale-105">
             <Image
-              src={"/tradeevent.png"}
+              src={"/tradeevent.jpg"}
               height={300}
               width={300}
               className="w-full h-auto object-cover rounded-xl shadow-lg cursor-pointer hover:shadow-xl"
