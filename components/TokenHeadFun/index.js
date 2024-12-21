@@ -82,7 +82,7 @@ const TokenHeadFun = (props) => {
           )}
           <div>
             <div className="text-xs lg:text-xl items-center flex h-6">
-              {symbol}
+              {symbol} / USD
             </div>
             <div className="text-xs opacity-50">price</div>
           </div>
