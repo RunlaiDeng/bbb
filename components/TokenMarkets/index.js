@@ -201,7 +201,7 @@ const TokenMarkets = (props) => {
                           ></path>
                         </svg>
                       )}
-                      <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
+                      <div className="w-6 h-6 flex items-center justify-center overflow-hidden ">
                         <Image
                           height={400}
                           width={400}
@@ -304,7 +304,7 @@ const TokenMarkets = (props) => {
                             </label>
                           )}
                           {
-                            <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
+                            <div className="w-6 h-6 flex items-center justify-center overflow-hidden ">
                               <Image
                                 height={400}
                                 width={400}
