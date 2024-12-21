@@ -111,8 +111,27 @@ const TokenHeadFun = (props) => {
               {(h24Change * 100)?.toFixed(2)}%
             </div>
           </div>
+          <div className="text-left text-xs hidden lg:block">
+            <div className="flex gap-2 h-6 items-center">
+              <span className="opacity-50">RLD Curve Progress: </span>
+              <span className="opacity-50">
+                (
+                {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(
+                  2
+                )}
+                %)
+              </span>
+            </div>
+            <div>
+              <progress
+                className="progress progress-success max-w-lg w-full"
+                value={xdcAmount?.toString()}
+                max={maxXdc?.toString()}
+              ></progress>
+            </div>
+          </div>
         </div>
-        <div className="text-left text-xs">
+        <div className="text-left text-xs lg:hidden">
           <div className="flex gap-2">
             <span className="opacity-50">RLD Curve Progress: </span>
             <span className="opacity-50">
