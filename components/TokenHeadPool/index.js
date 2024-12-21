@@ -5,6 +5,7 @@ import { handleSrc } from "../Utils";
 import copy from "copy-to-clipboard";
 import { useAccount, useWatchAsset } from "wagmi";
 import usePrivyLogin from "../Hook/usePrivyLogin";
+import { useNotification } from "../Context/notice";
 const TokenHead = (props) => {
   const {
     name,
@@ -21,6 +22,8 @@ const TokenHead = (props) => {
   const { isConnected } = useAccount();
   const { watchAsset } = useWatchAsset();
   const privyLogin = usePrivyLogin();
+  
+  const { success } = useNotification();
   const price = pool.price;
   const h24Change = pool?.priceChangeH24;
   const h24ChangeNum = price / (1 - h24Change) - price;
