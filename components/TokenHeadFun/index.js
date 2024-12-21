@@ -12,6 +12,8 @@ const TokenHeadFun = (props) => {
     deployer,
     xdcPriceChangeH24,
     tokenInfo,
+    xdcAmount,
+    maxXdc,
   } = props;
   index = index?.toString();
 
@@ -29,7 +31,7 @@ const TokenHeadFun = (props) => {
 
   return (
     <div className="card mx-2 py-1">
-      <div className="card-body p-0">
+      <div className="card-body p-0 whitespace-nowrap">
         <div className="flex gap-4 text-left items-center font-bold">
           {typeof window !== "undefined" && (
             <label className="swap btn btn-xs">
@@ -79,7 +81,9 @@ const TokenHeadFun = (props) => {
             </label>
           )}
           <div>
-            <div className="text-xl items-center flex h-6">{symbol} / USD</div>
+            <div className="text-xs lg:text-xl items-center flex h-6">
+              {symbol}
+            </div>
             <div className="text-xs opacity-50">price</div>
           </div>
           <div>
@@ -106,6 +110,23 @@ const TokenHeadFun = (props) => {
               {Math.abs(h24ChangeNum)?.toFixed(6)} {h24Change >= 0 ? "+" : ""}
               {(h24Change * 100)?.toFixed(2)}%
             </div>
+          </div>
+        </div>
+        <div className="text-left">
+          <div className="flex gap-2">
+            <span className="opacity-50">RLD Curve Progress: </span>
+            <span className="opacity-50">
+              (
+              {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(2)}
+              %)
+            </span>
+          </div>
+          <div>
+            <progress
+              className="progress progress-success max-w-lg w-full"
+              value={xdcAmount?.toString()}
+              max={maxXdc?.toString()}
+            ></progress>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@
     "lightweight-charts": "^4.2.0",
     "merkletreejs": "^0.4.0",
     "nanoid": "^4.0.0",
-    "next": "^14.2.14",
+    "next": "^15.1.2",
     "postcss": "^8.4.47",
     "qrcode.react": "^4.1.0",
     "react": "^18.2.0",

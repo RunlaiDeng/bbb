@@ -254,6 +254,8 @@ const Swap = () => {
     token,
     tokenInfo,
     xdcPriceChangeH24,
+    xdcAmount,
+    maxXdc,
   };
 
   const tChartPool = {

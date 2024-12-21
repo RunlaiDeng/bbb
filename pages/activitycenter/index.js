@@ -7,6 +7,7 @@ const Quests = () => {
   const connectorType = user?.wallet?.connectorType;
   console.log(connectorType);
   const { info } = useNotification();
+
   return (
     <>
       <div className="text-center font-bold text-xl">Activity Center</div>
@@ -19,6 +20,7 @@ const Quests = () => {
           onClick={() => {
             info("Coming soon");
           }}
+          alt=""
         />
       </div>
     </>

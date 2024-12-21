@@ -93,7 +93,6 @@ const HomeContent = memo(() => {
           <div className="m-auto my-10 sm:mt-0" />
         </div>
       </div>
-
       <div className="card sm:w-3/4 m-auto min-h-screen">
         <div className="card-body text-center">
           <h2 className="text-green-700 font-bold text-5xl my-4">
