@@ -69,6 +69,13 @@ const TradeEvent = () => {
                 Trade at least $50 worth of tokens (excluding BBB tokens)
               </span>
             </div>
+            <div className="flex items-start">
+              <span className="mr-2">•</span>
+              <span>
+                Maintain a total asset value greater than $50
+              </span>
+            </div>
+            
           </div>
           <div className="divider"></div>
           <div className="space-y-2 text-sm">
