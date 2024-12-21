@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mux/mux-player-react": "^3.1.0",
     "@privy-io/react-auth": "^1.95.3",
     "@privy-io/wagmi": "^0.2.12",
     "@rainbow-me/rainbowkit": "2",
@@ -23,7 +22,7 @@
     "lightweight-charts": "^4.2.0",
     "merkletreejs": "^0.4.0",
     "nanoid": "^4.0.0",
-    "next": "^15.1.2",
+    "next": "^14.2.14",
     "postcss": "^8.4.47",
     "qrcode.react": "^4.1.0",
     "react": "^18.2.0",
