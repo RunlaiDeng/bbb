@@ -141,7 +141,7 @@ const Navbar = () => {
                         href={"/airdrophub"}
                         className="hover:text-green-700 hover:bg-inherit"
                       >
-                        Airdop Hub
+                        Airdrop Hub
                       </Link>
                     </li>
                   </ul>
@@ -807,7 +807,7 @@ const Navbar = () => {
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Airdop Hub</div>
+                            <div>Airdrop Hub</div>
                           </div>
                         </div>
                       </div>
