@@ -13,7 +13,7 @@ import { rpcUrl } from "@/config";
 class RPCError extends Error {
   constructor(message, code, data) {
     super(message);
-    this.name = 'RPCError';
+    this.name = "RPCError";
     this.code = code;
     this.data = data;
   }
@@ -53,7 +53,7 @@ const send = async (method, params, options = {}) => {
     useCache = false,
     cacheTTL = CACHE_TTL,
     signal = controller.signal,
-    debounceMs = 0
+    debounceMs = 0,
   } = options;
 
   const cacheKey = useCache ? `${method}:${JSON.stringify(params)}` : null;
@@ -70,40 +70,46 @@ const send = async (method, params, options = {}) => {
 
     try {
       const response = await fetch(rpcUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          jsonrpc: '2.0',
+          jsonrpc: "2.0",
           id: Date.now(),
           method,
-          params
+          params,
         }),
         signal,
-        timeout
+        timeout,
       });
 
       if (!response.ok) {
-        throw new RPCError('Network response was not ok', 'NETWORK_ERROR', { status: response.status });
+        throw new RPCError("Network response was not ok", "NETWORK_ERROR", {
+          status: response.status,
+        });
       }
 
       const result = await response.json();
-      
+
       if (result.error) {
-        throw new RPCError(result.error.message, result.error.code, result.error.data);
+        throw new RPCError(
+          result.error.message,
+          result.error.code,
+          result.error.data
+        );
       }
 
       // Cache successful response
       if (useCache) {
         cache.set(cacheKey, {
           data: result.result,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         });
       }
 
       return result.result;
     } catch (error) {
-      if (error.name === 'AbortError') {
-        throw new RPCError('Request was cancelled', 'REQUEST_CANCELLED');
+      if (error.name === "AbortError") {
+        throw new RPCError("Request was cancelled", "REQUEST_CANCELLED");
       }
       throw error;
     }
@@ -123,7 +129,7 @@ const send = async (method, params, options = {}) => {
  * @returns {Promise<Object>} Trade data
  */
 const getTrade = async (index) => {
-  return send('getTrade', [index], { useCache: true });
+  return send("getTrade", [index], { useCache: true });
 };
 
 /**
@@ -132,7 +138,7 @@ const getTrade = async (index) => {
  * @returns {Promise<Array>} Holders data
  */
 const getHolders = async (token) => {
-  return send('getHolders', [token], { useCache: true });
+  return send("getHolders", [token], { useCache: true });
 };
 
 /**
@@ -142,7 +148,7 @@ const getHolders = async (token) => {
  * @returns {Promise<Object>} Message data
  */
 const getMsg = async (chainid, index) => {
-  return send('getMsg', [chainid, index]);
+  return send("getMsg", [chainid, index]);
 };
 
 /**
@@ -152,7 +158,7 @@ const getMsg = async (chainid, index) => {
  * @returns {Promise<Array>} Kline data
  */
 const getKline = async (token, type) => {
-  return send('getKline', [token, type], { useCache: true });
+  return send("getKline", [token, type], { useCache: true });
 };
 
 /**
@@ -164,7 +170,7 @@ const getKline = async (token, type) => {
  * @returns {Promise<Object>} Response data
  */
 const sendMsg = async (chainid, index, msg, address) => {
-  return send('sendMsg', [chainid, index, msg, address]);
+  return send("sendMsg", [chainid, index, msg, address]);
 };
 
 /**
@@ -181,7 +187,7 @@ const getTokens = async (
   pageSize = 10,
   queryList
 ) => {
-  return send('getTokens', [sort, pageNumber, pageSize, queryList], {
+  return send("getTokens", [sort, pageNumber, pageSize, queryList], {
     useCache: true,
     cacheTTL: 60000, // 1 minute cache for tokens
   });
@@ -193,7 +199,7 @@ const getTokens = async (
  * @returns {Promise<Object>} Referral data
  */
 const getReferralInfo = async (account) => {
-  return send('getReferralInfo', [account]);
+  return send("getReferralInfo", [account]);
 };
 
 /**
@@ -214,7 +220,7 @@ const getOrders = async (
   account,
   token
 ) => {
-  return send('getOrders', [sort, pageNumber, pageSize, type, account, token]);
+  return send("getOrders", [sort, pageNumber, pageSize, type, account, token]);
 };
 
 /**
@@ -222,34 +228,15 @@ const getOrders = async (
  * @returns {Promise<Object>} Statistics data
  */
 const getStats = async () => {
-  return send('getStats', [], { useCache: true });
+  return send("getStats", [], { useCache: true });
 };
 
-/**
- * Start live data stream
- * @param {number} index - Stream index
- * @returns {Promise<Object>} Stream start response
- */
-const startLive = async (index) => {
-  return send('startLive', [index]);
+const getTradeEvent = async (account) => {
+  return send("getTradeEvent", [account]);
 };
 
-/**
- * Stop live data stream
- * @param {number} index - Stream index
- * @returns {Promise<Object>} Stream stop response
- */
-const stopLive = async (index) => {
-  return send('stopLive', [index]);
-};
-
-/**
- * Get live data
- * @param {number} index - Stream index
- * @returns {Promise<Object>} Live data
- */
-const getLive = async (index) => {
-  return send('getLive', [index]);
+const addTradeEvent = async (account) => {
+  return send("addTradeEvent", [account]);
 };
 
 // Clear expired cache entries periodically
@@ -272,7 +259,6 @@ module.exports = {
   getReferralInfo,
   getOrders,
   getStats,
-  startLive,
-  stopLive,
-  getLive,
+  getTradeEvent,
+  addTradeEvent,
 };

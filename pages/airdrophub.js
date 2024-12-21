@@ -35,7 +35,6 @@ const getProof = (list, data) => {
 
 const AirdropHub = () => {
   const { address } = useAccount();
-
   const chainId = useChainId();
 
   const dexxRewards = contracts[chainId]?.dexxRewards;
@@ -44,27 +43,21 @@ const AirdropHub = () => {
   const airdropList = [
     {
       key: "blhz",
-      desc: "Gratitude to blhz",
+      desc: "BLHZ OG",
       rewards: 6400,
       contract: blhzRewards,
       dataList: blhz,
     },
-    // {
-    //   key: "dexx",
-    //   desc: "Love and care for dexx",
-    //   rewards: 640,
-    //   contract: dexxRewards,
-    //   dataList: dexx,
-    // },
   ];
 
   return (
-    <>
-      <div className="text-bold my-4 text-xl text-center">Airdrop Hub</div>
-      <div>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-center mb-8 text-green-700">
+        Airdrop Hub
+      </h1>
+      <div className="bg-base-200 rounded-2xl shadow-xl p-6 font-bold">
         <div className="overflow-x-auto">
           <table className="table">
-            {/* head */}
             <thead>
               <tr>
                 <th>Name</th>
@@ -94,16 +87,22 @@ const AirdropHub = () => {
                     }
                   },
                 };
+
                 return (
-                  <tr key={index}>
-                    <td>{item?.desc}</td>
-                    <td className="text-right">
-                      {claimMax * item?.rewards} $BBB
+                  <tr
+                    key={index}
+                    className="hover:bg-base-300 transition-colors duration-200"
+                  >
+                    <td className="py-4 text-lg">{item?.desc}</td>
+                    <td className="text-right py-4">
+                      <span className="text-lg font-medium text-green-700">
+                        {claimMax * item?.rewards} $BBB
+                      </span>
                     </td>
-                    <td className="text-right">
+                    <td className="text-right py-4">
                       <WriteButton
                         {...claimBtn}
-                        className="btn btn-success btn-sm"
+                        className="btn btn-xs btn-green-700 w-max"
                       />
                     </td>
                   </tr>
@@ -113,7 +112,7 @@ const AirdropHub = () => {
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

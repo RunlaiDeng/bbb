@@ -130,10 +130,10 @@ const Navbar = () => {
                     </li>
                     <li>
                       <Link
-                        href={"/activitycenter"}
+                        href={"/activity"}
                         className="hover:text-green-700 hover:bg-inherit"
                       >
-                        Activity Center
+                        Activity
                       </Link>
                     </li>
                     <li>
@@ -787,11 +787,11 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={(e) => {
-                              router.push("/activitycenter");
+                              router.push("/activity");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Activity Center</div>
+                            <div>Activity</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
