@@ -243,7 +243,7 @@ const TokenInfo = (props) => {
             </div>
             <div
               className={"cursor-pointer tooltip"}
-              data-tip="Add To MetaMask"
+              data-tip="Add To Wallet"
               onClick={() => {
                 if (!isConnected) {
                   privyLogin();

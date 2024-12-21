@@ -239,6 +239,10 @@ const Swap = () => {
     index,
     token,
     pool,
+    imageUrl,
+    website,
+    telegram,
+    twitter,
   };
 
   const tHeadFun = {
@@ -256,6 +260,10 @@ const Swap = () => {
     xdcPriceChangeH24,
     xdcAmount,
     maxXdc,
+    imageUrl,
+    website,
+    telegram,
+    twitter,
   };
 
   const tChartPool = {

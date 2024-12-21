@@ -1,12 +1,12 @@
 function formatNumber(num) {
-  if (!num && num !== 0) return '0.00';
+  if (!num && num !== 0) return "0.00";
   num = Number(num);
   const absNum = Math.abs(num);
   const formats = [
-    { threshold: 1e12, suffix: 'T', divisor: 1e12 },
-    { threshold: 1e9, suffix: 'B', divisor: 1e9 },
-    { threshold: 1e6, suffix: 'M', divisor: 1e6 },
-    { threshold: 1e3, suffix: 'K', divisor: 1e3 }
+    { threshold: 1e12, suffix: "T", divisor: 1e12 },
+    { threshold: 1e9, suffix: "B", divisor: 1e9 },
+    { threshold: 1e6, suffix: "M", divisor: 1e6 },
+    { threshold: 1e3, suffix: "K", divisor: 1e3 },
   ];
 
   for (const { threshold, suffix, divisor } of formats) {
@@ -21,7 +21,7 @@ const calculatePrice = (xdcAmount) => {
   if (!xdcAmount) return 0;
   const BASE = 2e7;
   const PRECISION = 1e9;
-  return (Math.sqrt(xdcAmount / BASE) / PRECISION * 2).toFixed(6);
+  return ((Math.sqrt(xdcAmount / BASE) / PRECISION) * 2).toFixed(6);
 };
 
 const calculateXdcAmount = (supply) => {
@@ -37,10 +37,10 @@ const calculateSupply = (xdcAmount) => {
 };
 
 const getDateSpecifics = (timestamp) => {
-  if (!timestamp) return '';
+  if (!timestamp) return "";
   const date = new Date(timestamp * 1000);
-  const pad = (num) => String(num).padStart(2, '0');
-  
+  const pad = (num) => String(num).padStart(2, "0");
+
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1);
   const day = pad(date.getDate());
@@ -52,9 +52,9 @@ const getDateSpecifics = (timestamp) => {
 };
 
 const getDate = (timestamp) => {
-  if (!timestamp) return '';
+  if (!timestamp) return "";
   const date = new Date(Number(timestamp) * 1000);
-  const pad = (num) => String(num).padStart(2, '0');
+  const pad = (num) => String(num).padStart(2, "0");
 
   const day = pad(date.getDate());
   const month = pad(date.getMonth() + 1);
@@ -65,57 +65,59 @@ const getDate = (timestamp) => {
 
 const deleteSame = (list) => {
   if (!Array.isArray(list) || !list.length) return [];
-  
-  return Object.values(list.reduce((acc, item) => {
-    const { time, close } = item;
-    if (time) {
-      acc[time] = { ...acc[time], ...item, close };
-    }
-    return acc;
-  }, {}));
+
+  return Object.values(
+    list.reduce((acc, item) => {
+      const { time, close } = item;
+      if (time) {
+        acc[time] = { ...acc[time], ...item, close };
+      }
+      return acc;
+    }, {})
+  );
 };
 
 const setFollowing = async (index, isChecked) => {
-  if (typeof window === 'undefined' || !index) return;
-  
+  if (typeof window === "undefined" || !index) return;
+
   try {
-    const following = JSON.parse(localStorage.getItem('following') || '{}');
+    const following = JSON.parse(localStorage.getItem("following") || "{}");
     following[index] = isChecked;
-    localStorage.setItem('following', JSON.stringify(following));
+    localStorage.setItem("following", JSON.stringify(following));
   } catch (error) {
-    console.error('Error setting following:', error);
+    console.error("Error setting following:", error);
   }
 };
 
 const getFollowing = () => {
-  if (typeof window === 'undefined') return {};
-  
+  if (typeof window === "undefined") return {};
+
   try {
-    return JSON.parse(localStorage.getItem('following')) || {};
+    return JSON.parse(localStorage.getItem("following")) || {};
   } catch (error) {
-    console.error('Error getting following:', error);
+    console.error("Error getting following:", error);
     return {};
   }
 };
 
 const getBytesLength = (str) => {
-  if (typeof str !== 'string') return 0;
+  if (typeof str !== "string") return 0;
   return new TextEncoder().encode(str).length;
 };
 
 const handleSrc = (src) => {
-  if (!src) return '/didntupload.png';
+  if (!src) return "/didntupload.png";
   const CDN_REGEX = /^https:\/\/benybadboy\.b-cdn\.net\/.*$/;
-  return CDN_REGEX.test(src) ? src : '/didntupload.png';
+  return CDN_REGEX.test(src) || src == "/bbb.jpg" ? src : "/didntupload.png";
 };
 
 const customToFixed = (num) => {
-  if (!num) return '0';
+  if (!num) return "0";
   try {
-    return num.toLocaleString('fullwide', { useGrouping: false }).split('.')[0];
+    return num.toLocaleString("fullwide", { useGrouping: false }).split(".")[0];
   } catch (error) {
-    console.error('Error in customToFixed:', error);
-    return '0';
+    console.error("Error in customToFixed:", error);
+    return "0";
   }
 };
 
@@ -124,22 +126,22 @@ const sqrtPriceX96ToPrice = (sqrtPriceX96) => {
   try {
     const Q96 = BigInt(2) ** BigInt(96);
     const sqrtRatioX96Float = Number(sqrtPriceX96) / Number(Q96);
-    return 1 / (sqrtRatioX96Float ** 2);
+    return 1 / sqrtRatioX96Float ** 2;
   } catch (error) {
-    console.error('Error in sqrtPriceX96ToPrice:', error);
+    console.error("Error in sqrtPriceX96ToPrice:", error);
     return 0;
   }
 };
 
 const API_ENDPOINTS = {
-  GECKOTERMINAL: 'https://api.geckoterminal.com/api/v2',
-  XDCSCAN: 'https://api.xdcscan.io',
-  ICECREAMSWAP: 'https://aggregator.icecreamswap.com/50'
+  GECKOTERMINAL: "https://api.geckoterminal.com/api/v2",
+  XDCSCAN: "https://api.xdcscan.io",
+  ICECREAMSWAP: "https://aggregator.icecreamswap.com/50",
 };
 
 const send = async (url, params = {}) => {
   const defaultHeaders = {
-    Accept: 'application/json;version=20230302',
+    Accept: "application/json;version=20230302",
   };
 
   try {
@@ -147,11 +149,11 @@ const send = async (url, params = {}) => {
       ...params,
       headers: { ...defaultHeaders, ...params.headers },
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error(`API request failed: ${url}`, error);
@@ -162,10 +164,12 @@ const send = async (url, params = {}) => {
 const getPool = async (token) => {
   if (!token) return {};
   try {
-    const json = await send(`${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/tokens/${token}/pools?page=1`);
+    const json = await send(
+      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/tokens/${token}/pools?page=1`
+    );
     return json?.data?.[0]?.attributes || {};
   } catch (error) {
-    console.error('Error getting pool:', error);
+    console.error("Error getting pool:", error);
     return {};
   }
 };
@@ -173,14 +177,17 @@ const getPool = async (token) => {
 const getERC20List = async (address) => {
   if (!address) return {};
   try {
-    return await send(`${API_ENDPOINTS.XDCSCAN}/addresses/${address}/tokens?type=ERC-20`);
+    return await send(
+      `${API_ENDPOINTS.XDCSCAN}/addresses/${address}/tokens?type=ERC-20`
+    );
   } catch (error) {
-    console.error('Error getting ERC20 list:', error);
+    console.error("Error getting ERC20 list:", error);
     return {};
   }
 };
 
-const getXDCPrice = async () => getPrice('0xfcabba53dac7b6b19714c7d741a46f6dad260107');
+const getXDCPrice = async () =>
+  getPrice("0xfcabba53dac7b6b19714c7d741a46f6dad260107");
 
 const getQuoteFromPool = async (src, dst, amount) => {
   if (!src || !dst || !amount) return {};
@@ -189,7 +196,7 @@ const getQuoteFromPool = async (src, dst, amount) => {
       `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=10`
     );
   } catch (error) {
-    console.error('Error getting quote from pool:', error);
+    console.error("Error getting quote from pool:", error);
     return {};
   }
 };
@@ -202,7 +209,7 @@ const getKline = async (pool) => {
     );
     return json?.data?.attributes?.ohlcv_list || [];
   } catch (error) {
-    console.error('Error getting kline:', error);
+    console.error("Error getting kline:", error);
     return [];
   }
 };
@@ -221,12 +228,13 @@ const getPrice = async (pool) => {
       volumeH24: item?.volume_usd?.h24 || 0,
     };
   } catch (error) {
-    console.error('Error getting price:', error);
+    console.error("Error getting price:", error);
     return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   }
 };
 
-const getBBBPrice = async () => getPrice('0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e');
+const getBBBPrice = async () =>
+  getPrice("0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e");
 
 const aggregateTo5MinuteCandles = (rawData) => {
   return rawData;
