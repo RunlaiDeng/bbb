@@ -57,15 +57,15 @@ const TokenMarkets = (props) => {
   const mbbb = contracts[chainId]?.mbbbv2;
   const showBBB = bbbPrice && bbbPriceChange24h;
   let searchTokens = [];
-  if (!showBar) {
-    searchTokens = tokenList?.map((item) => {
-      return {
-        ...mbbb,
-        functionName: "getDropTokenByAddress",
-        args: [item?.token],
-      };
-    });
-  }
+
+  searchTokens = tokenList?.map((item) => {
+    return {
+      ...mbbb,
+      functionName: "getDropTokenByAddress",
+      args: [item?.token],
+    };
+  });
+
   const { data: reads0 } = useReadContracts({
     contracts: searchTokens,
   });
@@ -185,7 +185,7 @@ const TokenMarkets = (props) => {
                     }}
                   >
                     <td className="flex items-center gap-1">
-                      {showBar ? (
+                      {showBar && (
                         <svg
                           viewBox="0 0 1024 1024"
                           version="1.1"
@@ -200,19 +200,18 @@ const TokenMarkets = (props) => {
                             fill="#0e932e"
                           ></path>
                         </svg>
-                      ) : (
-                        <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
-                          <Image
-                            height={400}
-                            width={400}
-                            src={"/bbb.jpg"}
-                            alt={""}
-                            className="object-cover w-full h-full"
-                            loading="lazy"
-                            priority={false}
-                          />
-                        </div>
                       )}
+                      <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
+                        <Image
+                          height={400}
+                          width={400}
+                          src={"/bbb.jpg"}
+                          alt={""}
+                          className="object-cover w-full h-full"
+                          loading="lazy"
+                          priority={false}
+                        />
+                      </div>
                       BBB
                     </td>
                     <td className="text-right">${bbbPrice}</td>
@@ -304,7 +303,7 @@ const TokenMarkets = (props) => {
                               </div>
                             </label>
                           )}
-                          {!showBar && (
+                          {
                             <div className="w-8 h-8 flex items-center justify-center overflow-hidden ">
                               <Image
                                 height={400}
@@ -316,7 +315,7 @@ const TokenMarkets = (props) => {
                                 priority={false}
                               />
                             </div>
-                          )}
+                          }
                           {item?.symbol}
                         </td>
                         <td className="text-right">${price}</td>
