@@ -112,7 +112,7 @@ const TokenHeadFun = (props) => {
             </div>
           </div>
         </div>
-        <div className="text-left">
+        <div className="text-left text-xs">
           <div className="flex gap-2">
             <span className="opacity-50">RLD Curve Progress: </span>
             <span className="opacity-50">
