@@ -22,7 +22,7 @@ const TokenTradePool = ({ poolAddress }) => {
   );
 
   return (
-    <div className="card h-full overflow-y-auto" id="chart">
+    <div className="card h-full overflow-y-auto whitespace-nowrap" id="chart">
       <div className="card-body p-2">
         <div className="flex gap-2 text-gray-500 font-bold">
           <div role="tablist" className="tabs tabs-bordered w-full">
