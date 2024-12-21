@@ -13,7 +13,7 @@ const TokenHead = (props) => {
 
   return (
     <div className="card mx-2 py-1">
-      <div className="card-body p-0">
+      <div className="card-body p-0 whitespace-nowrap">
         <div className="px-4 flex gap-4 text-left items-center font-bold">
           {typeof window !== "undefined" && isBBB && (
             <label className="btn btn-xs">
@@ -82,7 +82,7 @@ const TokenHead = (props) => {
             </label>
           )}
           <div>
-            <div className="text-xl items-center flex h-6">{symbol} / USD</div>
+            <div className="text-xs lg:text-xl items-center flex h-6">{symbol} / USD</div>
             <div className="text-xs opacity-50">price</div>
           </div>
           <div>
