@@ -126,14 +126,14 @@ const TokenSwap = (props) => {
 
   const sellTx = data?.sell?.tx || {};
   const buyTx = data?.buy?.tx || {};
-  sellTx.value = data.sellAmount;
   buyTx.value = data.buyAmount;
+  delete sellTx.from;
   const toBuyAmount = BigInt(data?.buy?.toAmount || 0);
   const toSellAmount = BigInt(data?.sell?.toAmount || 0);
 
   const usdBuyIn = Number(buyTx?.value) * xdcPrice;
   const usdBuyTo = Number(toBuyAmount) * poolPrice;
-  const usdSellIn = Number(sellTx?.value) * poolPrice;
+  const usdSellIn = Number(data?.sellAmount) * poolPrice;
   const usdSellTo = Number(toSellAmount) * xdcPrice;
   const disableBuy =
     data?.disabledBtn ||
