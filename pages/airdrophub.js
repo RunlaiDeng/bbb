@@ -1,11 +1,11 @@
 import WriteButton from "@/components/WriteButton";
-import dexx from "@/airdrop/dexx.json";
+import ccr from "@/airdrop/ccr.json";
 import blhz from "@/airdrop/blhz.json";
 import { keccak256, encodePacked, getAddress } from "viem";
 import MerkleTree from "merkletreejs";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
 import { contracts } from "@/config";
-
+import Image from "next/image";
 const hash = (msgSender, max) => {
   try {
     return keccak256(encodePacked(["address", "uint256"], [msgSender, max]));
@@ -37,7 +37,7 @@ const AirdropHub = () => {
   const { address } = useAccount();
   const chainId = useChainId();
 
-  const dexxRewards = contracts[chainId]?.dexxRewards;
+  const ccrRewards = contracts[chainId]?.ccrRewards;
   const blhzRewards = contracts[chainId]?.blhzRewards;
 
   const airdropList = [
@@ -47,6 +47,15 @@ const AirdropHub = () => {
       rewards: 6400,
       contract: blhzRewards,
       dataList: blhz,
+      logo: "/blhz.png",
+    },
+    {
+      key: "ccr",
+      desc: "CCR OG",
+      rewards: 6400,
+      contract: ccrRewards,
+      dataList: ccr,
+      logo: "/ccr.png",
     },
   ];
 
@@ -93,7 +102,18 @@ const AirdropHub = () => {
                     key={index}
                     className="hover:bg-base-300 transition-colors duration-200"
                   >
-                    <td className="py-4 text-lg">{item?.desc}</td>
+                    <td className="py-4 text-lg flex items-center gap-1">
+                      <div className="h-8 w-8 overflow-hidden">
+                        <Image
+                          height={400}
+                          width={400}
+                          src={item?.logo}
+                          alt={""}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                      {item?.desc}
+                    </td>
                     <td className="text-right py-4">
                       <span className="text-lg font-medium text-green-700">
                         {claimMax * item?.rewards} $BBB

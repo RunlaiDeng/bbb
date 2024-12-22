@@ -100,7 +100,7 @@ export const contracts = {
       address: "0x1168a6D36CDD2661c84e29045F05fA2058aF48B9",
       abi: ClaimRewardsABI,
     },
-    dexxRewards: {
+    ccrRewards: {
       address: "0x526Ed8D0dA1B460531267E2138b8a5C7c1c282FA",
       abi: ClaimRewardsABI,
     },
