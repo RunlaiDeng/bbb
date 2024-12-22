@@ -1,0 +1,13 @@
+{
+  "appId": "fun.bbbpump.app",
+  "appName": "bbbpump",
+  "webDir": "out",
+  "bundledWebRuntime": false,
+  "ios": {
+    "contentInset": "automatic",
+    "statusBar": {
+      "style": "dark",
+      "overlay": true
+    }
+  }
+}

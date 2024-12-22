@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
+const isMobile = process.env.NEXT_PUBLIC_IS_MOBILE === "true";
+
 const nextConfig = {
+  ...(isMobile ? { output: "export" } : {}),
   reactStrictMode: false,
   swcMinify: true,
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
   images: {
     remotePatterns: [
       {
@@ -13,6 +12,7 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+    unoptimized: true,
   },
   webpack: (config) => {
     // ...

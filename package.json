@@ -1,14 +1,22 @@
 {
-  "name": "nft-5",
+  "name": "bbbpump",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "static": "NEXT_PUBLIC_IS_MOBILE=true next build",
+    "cap:add": "npx cap add ios && npx cap add android",
+    "cap:sync": "yarn static && npx cap sync",
+    "ios": "npx cap open ios",
+    "android": "npx cap open android"
   },
   "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
     "@privy-io/react-auth": "1.98.4",
     "@privy-io/wagmi": "0.2.13",
     "@rainbow-me/rainbowkit": "2",
@@ -32,6 +40,7 @@
     "wagmi": "2.14.3"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
     "eslint": "8",
     "eslint-config-next": "^14.2.14"
   }

@@ -105,6 +105,7 @@ const WriteButton = (props) => {
           if (connectorType == "embedded") {
             writeData.type = 0;
             try {
+              console.log(writeData)
               await sendTXPrivy(writeData);
             } catch (e) {}
 
