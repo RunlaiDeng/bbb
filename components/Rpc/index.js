@@ -91,11 +91,7 @@ const send = async (method, params, options = {}) => {
       const result = await response.json();
 
       if (result.error) {
-        throw new RPCError(
-          result.error.message,
-          result.error.code,
-          result.error.data
-        );
+        return { error: result.error };
       }
 
       // Cache successful response

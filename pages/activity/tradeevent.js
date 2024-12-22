@@ -14,8 +14,9 @@ const TradeEvent = () => {
   const handleWaitlistSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await rpc.addTradeEvent(address);
-      await fetchData();
+      const error = await rpc.addTradeEvent(address);
+      console.log(error);
+      setData({ ...data, error });
     } finally {
       setIsSubmitting(false);
     }
@@ -28,9 +29,12 @@ const TradeEvent = () => {
 
   useEffect(() => {
     fetchData();
-  }, [address]);
+  }, [address, isSubmitting]);
 
   const user = data?.user;
+  const error = data?.error;
+
+  console.log(error);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -71,11 +75,8 @@ const TradeEvent = () => {
             </div>
             <div className="flex items-start">
               <span className="mr-2">•</span>
-              <span>
-                Maintain a total asset value greater than $50
-              </span>
+              <span>Maintain a total asset value greater than $50</span>
             </div>
-            
           </div>
           <div className="divider"></div>
           <div className="space-y-2 text-sm">
@@ -98,6 +99,7 @@ const TradeEvent = () => {
       </div>
 
       <div className="text-center mt-8">
+        {error && <div className="text-red-700">{error?.error}</div>}
         {isConnected && !user?.join && (
           <button
             className={`btn btn-success ${isSubmitting ? "loading" : ""}`}
