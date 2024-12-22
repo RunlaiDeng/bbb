@@ -6,6 +6,7 @@ import copy from "copy-to-clipboard";
 import { useNotification } from "../Context/notice";
 import { useAccount, useWatchAsset } from "wagmi";
 import usePrivyLogin from "../Hook/usePrivyLogin";
+import { formatEther } from "viem";
 const TokenHeadFun = (props) => {
   let {
     index,
@@ -274,11 +275,10 @@ const TokenHeadFun = (props) => {
             <div className="flex gap-2 h-6 items-center">
               <span className="opacity-50">RLD Curve Progress: </span>
               <span className="opacity-50">
-                (
                 {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(
                   2
                 )}
-                %)
+                %
               </span>
             </div>
             <div>
@@ -321,12 +321,12 @@ const TokenHeadFun = (props) => {
           <div className="text-left text-xs">
             <div className="flex gap-2 h-6 items-center">
               <span className="opacity-50">RLD Curve Progress: </span>
+
               <span className="opacity-50">
-                (
                 {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(
                   2
                 )}
-                %)
+                %
               </span>
             </div>
             <div>
