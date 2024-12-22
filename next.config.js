@@ -12,7 +12,7 @@ const nextConfig = {
         hostname: "**",
       },
     ],
-    unoptimized: true,
+    ...(isMobile ? { unoptimized: true } : {}),
   },
   webpack: (config) => {
     // ...
