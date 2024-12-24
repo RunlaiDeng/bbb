@@ -1077,7 +1077,90 @@ const Home = () => {
                   }}
                 ></textarea>
               </label>
+              <div className="flex items-center mt-2">
+                Max Curve(minimum 1m xdc)
+                <div
+                  className="btn btn-xs ml-auto"
+                  onClick={() => {
+                    if (formData.maxSymbol == "XDC") {
+                      setFormData({
+                        ...formData,
+                        maxSymbol: formData?.dSymbol,
+                      });
+                    } else {
+                      setFormData({ ...formData, maxSymbol: "XDC" });
+                    }
+                  }}
+                >
+                  switch to{" "}
+                  {formData?.maxSymbol == "XDC" ? formData?.dSymbol : "XDC"}
+                </div>
+              </div>
 
+              {formData?.maxSymbol == "XDC" && (
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={
+                      formData?.dMaxXdcCap >= 0
+                        ? formatEther(formData?.dMaxXdcCap)
+                        : undefined
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (!newValue) {
+                        setFormData({
+                          ...formData,
+                          dMaxXdcCap: undefined,
+                          dMaxSymbolCap: undefined,
+                        });
+                      }
+                      if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                        setFormData({
+                          ...formData,
+                          dMaxXdcCap: parseEther(newValue),
+                          dMaxSymbolCap: parseEther(calculateSupply(newValue)),
+                        });
+                      }
+                    }}
+                  />
+                  <div className="font-bold">XDC</div>
+                </label>
+              )}
+              {formData?.dSymbol == formData?.maxSymbol && (
+                <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="0.00"
+                    value={
+                      formData?.dMaxSymbolCap >= 0
+                        ? formatEther(formData?.dMaxSymbolCap)
+                        : undefined
+                    }
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (!newValue) {
+                        setFormData({
+                          ...formData,
+                          dMaxXdcCap: undefined,
+                          dMaxSymbolCap: undefined,
+                        });
+                      }
+                      if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                        setFormData({
+                          ...formData,
+                          dMaxXdcCap: parseEther(calculateXdcAmount(newValue)),
+                          dMaxSymbolCap: parseEther(newValue),
+                        });
+                      }
+                    }}
+                  />
+                  <div className="font-bold">{formData?.dSymbol}</div>
+                </label>
+              )}
               <div className="collapse">
                 <input
                   type="checkbox"
@@ -1163,98 +1246,6 @@ const Home = () => {
                       />
                     </label>
                   </label>
-                  <div className="flex items-center mt-2">
-                    Max Curve(minimum 1m xdc)
-                    <div
-                      className="btn btn-xs ml-auto"
-                      onClick={() => {
-                        if (formData.maxSymbol == "XDC") {
-                          setFormData({
-                            ...formData,
-                            maxSymbol: formData?.dSymbol,
-                          });
-                        } else {
-                          setFormData({ ...formData, maxSymbol: "XDC" });
-                        }
-                      }}
-                    >
-                      switch to{" "}
-                      {formData?.maxSymbol == "XDC" ? formData?.dSymbol : "XDC"}
-                    </div>
-                  </div>
-
-                  {formData?.maxSymbol == "XDC" && (
-                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                      <input
-                        type="text"
-                        className="grow"
-                        placeholder="0.00"
-                        value={
-                          formData?.dMaxXdcCap >= 0
-                            ? formatEther(formData?.dMaxXdcCap)
-                            : undefined
-                        }
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          if (!newValue) {
-                            setFormData({
-                              ...formData,
-                              dMaxXdcCap: undefined,
-                              dMaxSymbolCap: undefined,
-                            });
-                          }
-                          if (
-                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
-                          ) {
-                            setFormData({
-                              ...formData,
-                              dMaxXdcCap: parseEther(newValue),
-                              dMaxSymbolCap: parseEther(
-                                calculateSupply(newValue)
-                              ),
-                            });
-                          }
-                        }}
-                      />
-                      <div className="font-bold">XDC</div>
-                    </label>
-                  )}
-                  {formData?.dSymbol == formData?.maxSymbol && (
-                    <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                      <input
-                        type="text"
-                        className="grow"
-                        placeholder="0.00"
-                        value={
-                          formData?.dMaxSymbolCap >= 0
-                            ? formatEther(formData?.dMaxSymbolCap)
-                            : undefined
-                        }
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          if (!newValue) {
-                            setFormData({
-                              ...formData,
-                              dMaxXdcCap: undefined,
-                              dMaxSymbolCap: undefined,
-                            });
-                          }
-                          if (
-                            /^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)
-                          ) {
-                            setFormData({
-                              ...formData,
-                              dMaxXdcCap: parseEther(
-                                calculateXdcAmount(newValue)
-                              ),
-                              dMaxSymbolCap: parseEther(newValue),
-                            });
-                          }
-                        }}
-                      />
-                      <div className="font-bold">{formData?.dSymbol}</div>
-                    </label>
-                  )}
 
                   <div className="flex items-center mt-2">
                     How many you want buy
