@@ -151,11 +151,11 @@ const Address = () => {
   let total24hChange = 0;
 
   const referralBonus = referralInfo?.totalPrize / 1e18 || 0;
- 
-  const referralUsdBonus = referralBonus * xdcPrice || 0;
-  const xdcUsdBalance = referralUsdBonus + xdcBalance * xdcPrice;
 
-  totalBalance += xdcUsdBalance;
+  const referralUsdBonus = referralBonus * xdcPrice || 0;
+  const xdcUsdBalance = xdcBalance * xdcPrice;
+
+  totalBalance += xdcUsdBalance + referralUsdBonus;
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
 
   let tokens = reads0?.map((item, index) => {
