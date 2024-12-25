@@ -528,11 +528,6 @@ const Address = () => {
                           className={
                             "hover " + (item?.balance == 0 ? "hidden" : "")
                           }
-                          onClick={() => {
-                            if (item?.tradeLink) {
-                              router.push(item?.tradeLink);
-                            }
-                          }}
                         >
                           <td className="flex items-center gap-2">
                             <div className="h-6 w-6 overflow-hidden ">
@@ -587,7 +582,14 @@ const Address = () => {
                           </td>
                           <td className="text-right hidden sm:table-cell">
                             {item?.tradeLink && (
-                              <div className="underline text-green-700 cursor-pointer">
+                              <div
+                                className="underline text-green-700 cursor-pointer"
+                                onClick={() => {
+                                  if (item?.tradeLink) {
+                                    router.push(item?.tradeLink);
+                                  }
+                                }}
+                              >
                                 Trade
                               </div>
                             )}
