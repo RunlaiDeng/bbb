@@ -310,7 +310,7 @@ const Address = () => {
                 <div
                   className="btn btn-sm"
                   onClick={() => {
-                    info("coming soon");
+                    router.push("/withdraw");
                   }}
                 >
                   Withdraw
@@ -349,7 +349,7 @@ const Address = () => {
                   <div
                     className="btn btn-sm"
                     onClick={() => {
-                      info("coming soon");
+                      router.push("/withdraw");
                     }}
                   >
                     Withdraw
