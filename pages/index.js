@@ -27,6 +27,7 @@ const HomeContent = memo(() => {
   const xdcPriceChangeH24 = price?.xdc?.priceChange24h;
 
   useEffect(() => {
+    router.push("/markets");
     fetchData();
   }, []);
 
