@@ -107,7 +107,7 @@ const TokenHeadFun = (props) => {
           </div>
           <div>
             <div className="text-xs lg:text-xl items-center flex h-6">
-              {symbol} / USD
+              {symbol}
             </div>
             <div className="text-xs flex gap-1 items-center">
               <div className="flex gap-1 items-center">
