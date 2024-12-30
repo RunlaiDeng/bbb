@@ -35,6 +35,7 @@ const getProof = (list, data) => {
 
 const AirdropHub = () => {
   const { address } = useAccount();
+
   const chainId = useChainId();
 
   const ccrRewards = contracts[chainId]?.ccrRewards;
@@ -77,7 +78,7 @@ const AirdropHub = () => {
             <tbody>
               {airdropList.map((item, index) => {
                 const dataList = item?.dataList;
-                const claimMax = dataList[address?.toLowerCase()] || 0;
+                const claimMax = dataList[address] || 0;
                 const { proof: proof0, root: root0 } = getProof(dataList, {
                   address: address,
                   max: claimMax,
