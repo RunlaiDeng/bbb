@@ -101,7 +101,7 @@ export const contracts = {
       abi: ClaimRewardsABI,
     },
     ccrRewards: {
-      address: "0x526Ed8D0dA1B460531267E2138b8a5C7c1c282FA",
+      address: "0xeF7dfC1BcA77c46F1C02E5D13fe7C10BE405cE59",
       abi: ClaimRewardsABI,
     },
   },

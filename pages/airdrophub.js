@@ -83,6 +83,8 @@ const AirdropHub = () => {
                   max: claimMax,
                 });
 
+                console.log(item?.key, root0);
+
                 const claimBtn = {
                   buttonName: "claim",
                   disabled: claimMax == 0,
