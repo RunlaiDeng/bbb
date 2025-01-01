@@ -34,7 +34,7 @@ const Withdraw = () => {
       <label className="w-full max-w-xs mb-2">Address</label>
       <input
         type="text"
-        placeholder="Paste here"
+        placeholder="0x..."
         value={data?.to}
         onChange={(e) => setData({ ...data, to: e.target.value })}
         className="input input-bordered w-full max-w-xs mb-2"
