@@ -68,38 +68,41 @@ const Earn = () => {
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
       {/* Total Points Display */}
-      <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-lg p-8 mb-6 text-white text-center">
-        <h1 className="text-3xl font-bold mb-2">
+      <div className="bg-gradient-to-br from-indigo-600 via-blue-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
           {puser?.weekId} Total Points
         </h1>
+        <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+          🎯 All points earned will be counted towards BBB airdrop in Q3-Q4 2025
+        </div>
         {tradeEventJoined ? (
           <>
-            <div className="text-4xl font-bold mb-2">
+            <div className="text-5xl font-bold mb-4 drop-shadow-lg">
               {Number(puser?.totalPoint || 0)?.toLocaleString()}
             </div>
-            <div className="text-sm opacity-80 mb-2">
+            <div className="text-lg opacity-90 mb-2">
               Earn more points by trading tokens
             </div>
-            <div className="text-sm opacity-70 italic">
+            <div className="text-sm opacity-80 italic mb-3">
               (Points are updated every 5 minutes)
             </div>
             {completedTasks?.length === tasks?.length && tasks?.length > 0 && (
-              <div className="bg-green-500 text-white px-4 py-2 rounded-lg mt-2">
+              <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-xl mt-3 shadow-lg">
                 🌟 1.5x Points Multiplier Active!
               </div>
             )}
           </>
         ) : (
-          <div className="mt-4">
-            {error && <div className="text-red-300 mb-2">{error}</div>}
+          <div className="mt-6">
+            {error && <div className="text-red-300 mb-3">{error}</div>}
             <button
               onClick={handleJoinTradeEvent}
               disabled={isSubmitting || !address}
-              className="bg-white text-blue-500 px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 transition-all disabled:opacity-50"
+              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
             >
               {isSubmitting ? "Joining..." : "Join Trade Event"}
             </button>
-            <div className="text-sm opacity-80 mt-4">
+            <div className="text-sm opacity-90 mt-4">
               Join the trade event to start earning points
             </div>
           </div>
@@ -107,26 +110,26 @@ const Earn = () => {
       </div>
 
       {/* Trade to earn points */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
+      <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
             {puser?.weekId} Trade to Earn Points
           </h2>
           <Link
             href="/markets"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
           >
             Go to Trade
           </Link>
         </div>
-        <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-gray-600">Current Points from Trading</p>
-            <p className="text-2xl font-bold">
+        <div className="space-y-6">
+          <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl border border-gray-100">
+            <p className="text-gray-600 mb-2">Current Points from Trading</p>
+            <p className="text-3xl font-bold text-blue-600">
               {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
             </p>
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 leading-relaxed">
             * Only trading non-BBB and non-graduated tokens will earn points.
             Higher trading volume earns more points. Trading amount greater than
             1 XDC will be counted for points.
@@ -135,16 +138,18 @@ const Earn = () => {
       </div>
 
       {/* Twitter Tasks */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">{puser?.weekId} Twitter Tasks</h2>
-          <div className="text-blue-500 font-bold">Bonus: 10,000 pts</div>
+      <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            {puser?.weekId} Twitter Tasks
+          </h2>
+          <div className="text-blue-600 font-bold text-lg">Bonus: 10,000 pts</div>
         </div>
-        <div className="space-y-4">
-          <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="space-y-6">
+          <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium">Link X Account</p>
+                <p className="font-medium text-gray-800 mb-1">Link X Account</p>
                 {linkedTwitter && (
                   <p className="text-sm text-gray-500">
                     @{user?.twitter?.username}
@@ -156,12 +161,12 @@ const Earn = () => {
                   linkTwitter();
                 }}
                 disabled={linkedTwitter || !tradeEventJoined}
-                className={`px-4 py-2 rounded ${
+                className={`px-6 py-3 rounded-xl transition-all duration-300 ${
                   linkedTwitter
-                    ? "bg-green-500 text-white"
+                    ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white"
                     : !tradeEventJoined
                     ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-lg transform hover:-translate-y-1"
                 } ${
                   linkedTwitter || !tradeEventJoined
                     ? "opacity-50 cursor-not-allowed"
@@ -214,7 +219,7 @@ const Earn = () => {
               );
             })}
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 leading-relaxed">
             * Complete all Twitter tasks to get 10,000 bonus points and 1.5x
             points multiplier!
           </p>
@@ -222,32 +227,41 @@ const Earn = () => {
       </div>
 
       {/* Points Leaderboard */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">
+      <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
             {puser?.weekId} Points Leaderboard
           </h2>
         </div>
-        <div className="space-y-3">
+        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-yellow-200 rounded-xl p-6 mb-6">
+          <div className="flex items-center">
+            <span className="text-amber-500 text-2xl mr-3">🏆</span>
+            <span className="font-semibold text-lg text-amber-700">Weekly Rewards</span>
+          </div>
+          <p className="text-amber-600 mt-2 leading-relaxed">
+            Top 10 participants each week will receive special airdrop rewards!
+          </p>
+        </div>
+        <div className="space-y-4">
           {address && rank && (
-            <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 border border-blue-200 mb-2">
-              <div className="flex items-center space-x-3">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 mb-3 transform hover:scale-[1.02] transition-all duration-300">
+              <div className="flex items-center space-x-4">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
                     rank == 1
-                      ? "bg-yellow-400"
+                      ? "bg-gradient-to-br from-yellow-400 to-amber-500"
                       : rank == 2
-                      ? "bg-gray-300"
+                      ? "bg-gradient-to-br from-gray-300 to-gray-400"
                       : rank == 3
-                      ? "bg-amber-600"
-                      : "bg-gray-200"
-                  } text-white font-bold`}
+                      ? "bg-gradient-to-br from-amber-600 to-amber-700"
+                      : "bg-gradient-to-br from-gray-200 to-gray-300"
+                  } text-white font-bold text-lg`}
                 >
                   {rank}
                 </div>
-                <div className="font-medium">{formatAddress(address)}</div>
+                <div className="font-medium text-gray-700">{formatAddress(address)}</div>
               </div>
-              <div className="font-bold text-lg">
+              <div className="font-bold text-xl text-blue-600">
                 {Number(puser?.totalPoint)?.toLocaleString()} pts
               </div>
             </div>
