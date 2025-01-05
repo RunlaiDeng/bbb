@@ -235,6 +235,18 @@ const addTradeEvent = async (account) => {
   return send("addTradeEvent", [account]);
 };
 
+const getEarn = async (account) => {
+  return send("getEarn", [account]);
+};
+
+const finishTwitterTasks = async (account, index) => {
+  return send("finishTwitterTasks", [account, index]);
+};
+
+const getEarnLeaderboard = async (pageNumber = 1, pageSize = 9999) => {
+  return send("getEarnLeaderboard", [pageNumber, pageSize]);
+};
+
 // Clear expired cache entries periodically
 setInterval(() => {
   const now = Date.now();
@@ -257,4 +269,7 @@ module.exports = {
   getStats,
   getTradeEvent,
   addTradeEvent,
+  getEarn,
+  finishTwitterTasks,
+  getEarnLeaderboard,
 };

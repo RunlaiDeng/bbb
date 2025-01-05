@@ -100,13 +100,19 @@ const Navbar = () => {
                 >
                   Trade
                 </Link>
+                <Link
+                  href={"/earn"}
+                  className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+                >
+                  Earn
+                </Link>
                 <div className="dropdown dropdown-hover font-bold">
                   <div
                     tabIndex={0}
                     role="button"
                     className="btn m-1 btn-ghost hover:text-green-700 hover:bg-inherit"
                   >
-                    Earn
+                    More
                   </div>
                   <ul
                     tabIndex={0}
@@ -114,10 +120,10 @@ const Navbar = () => {
                   >
                     <li>
                       <Link
-                        href={"/megadrop"}
+                        href={"/stake"}
                         className="hover:text-green-700 hover:bg-inherit"
                       >
-                        Megadrop
+                        Stake
                       </Link>
                     </li>
                     <li>
@@ -776,11 +782,11 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
                             onClick={(e) => {
-                              router.push("/megadrop");
+                              router.push("/stake");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Megadrop</div>
+                            <div>Stake</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"

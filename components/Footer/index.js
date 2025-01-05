@@ -82,8 +82,8 @@ const Footer = () => {
           <Link className="link link-hover" href={"/"}>
             Exchange
           </Link>
-          <Link className="link link-hover" href={"/megadrop"}>
-            Megadrop
+          <Link className="link link-hover" href={"/stake"}>
+            Stake
           </Link>
           <Link className="link link-hover" href={"/farm"}>
             Farm

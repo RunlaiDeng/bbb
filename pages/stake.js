@@ -7,7 +7,7 @@ import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { formatEther, parseEther } from "viem";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
-const Megadrop = () => {
+const Stake = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
 
   const handleCopyClick = (msg) => {
@@ -115,7 +115,7 @@ const Megadrop = () => {
   return (
     <>
       <div className="m-auto md:w-3/4 w-96 py-1">
-        <div className="text-center font-bold mt-2">MEGADROP</div>
+        <div className="text-center font-bold mt-2">Stake</div>
       </div>
 
       <div className="card m-auto md:w-3/4 w-96 ">
@@ -374,4 +374,4 @@ const Megadrop = () => {
   );
 };
 
-export default Megadrop;
+export default Stake;
