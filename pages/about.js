@@ -1,213 +1,298 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 import { getKline, getXDCPrice } from "@/components/Utils";
+
 const About = () => {
   const [data, setData] = useState({});
+
   async function fetchData(params) {
     const xdc = await getXDCPrice();
     const stats = await rpc.getStats();
-
     setData({ ...data, xdc, stats });
   }
+
   useEffect(() => {
     fetchData();
   }, []);
+
   const xdcPrice = data?.xdc?.price;
   const stats = data?.stats;
   const fee = Number(BigInt(stats?.feeInXDC || 0) / BigInt(1e18)) * xdcPrice;
-  const volume =
-    Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
+  const volume = Number(BigInt(stats?.volumeInXDC || 0) / BigInt(1e18)) * xdcPrice;
   const user = stats?.user;
+
   return (
-    <>
-      <div className="card">
-        <div className="card-body">
-          <div className="sm:flex font-bold items-center gap-4 mt-10">
-            <div>
-              <div className="text-5xl">Welcome to BBBPump</div>
-
-              <div className="opacity-50 mt-8">
-                At BBBPump, we believe that everyone should have the freedom to
-                earn, hold, spend, share and give their money - no matter who
-                you are or where you come from.
-              </div>
-            </div>
-            <div>
-              <Image src={"/logo.png"} height={1000} width={1000} alt="" />
-            </div>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
+          <div className="flex-1">
+            <h1 className="text-6xl font-bold text-gray-900 mb-6">Welcome to BBBPump</h1>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              At BBBPump, we believe that everyone should have the freedom to earn, hold, spend, share and give their money - no matter who you are or where you come from.
+            </p>
           </div>
-          <div className="grid sm:grid-cols-3 font-bold mt-8 gap-4 ">
-            <div className="flex gap-4 items-center">
-              <div>
-                <svg
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="14662"
-                  width="64"
-                  height="64"
-                >
-                  <path
-                    d="M512 74.666667C270.933333 74.666667 74.666667 270.933333 74.666667 512S270.933333 949.333333 512 949.333333 949.333333 753.066667 949.333333 512 753.066667 74.666667 512 74.666667zM288 810.666667c0-123.733333 100.266667-224 224-224S736 686.933333 736 810.666667c-61.866667 46.933333-140.8 74.666667-224 74.666666s-162.133333-27.733333-224-74.666666z m128-384c0-53.333333 42.666667-96 96-96s96 42.666667 96 96-42.666667 96-96 96-96-42.666667-96-96z m377.6 328.533333c-19.2-96-85.333333-174.933333-174.933333-211.2 32-29.866667 51.2-70.4 51.2-117.333333 0-87.466667-72.533333-160-160-160s-160 72.533333-160 160c0 46.933333 19.2 87.466667 51.2 117.333333-89.6 36.266667-155.733333 115.2-174.933334 211.2-55.466667-66.133333-91.733333-149.333333-91.733333-243.2 0-204.8 168.533333-373.333333 373.333333-373.333333S885.333333 307.2 885.333333 512c0 93.866667-34.133333 177.066667-91.733333 243.2z"
-                    fill="#bfbfbf"
-                    p-id="14663"
-                  ></path>
-                </svg>
-              </div>
-              <div>
-                <div>{user?.toLocaleString()}</div>
-                <div className="text-xs opacity-50">Total users</div>
-              </div>
-            </div>
-            <div className="flex gap-4 items-center">
-              <div>
-                <svg
-                  viewBox="0 0 1080 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="10464"
-                  width="64"
-                  height="64"
-                >
-                  <path
-                    d="M1038.051556 631.694222l-105.415112-119.978666-105.130666 120.433777h59.448889a364.544 364.544 0 0 1-131.640889 176.753778 357.262222 357.262222 0 0 1-208.327111 67.128889 357.262222 357.262222 0 0 1-208.213334-67.128889 364.544 364.544 0 0 1-131.697777-176.753778H112.924444A456.419556 456.419556 0 0 0 274.204444 873.813333 446.691556 446.691556 0 0 0 547.100444 967.111111a446.691556 446.691556 0 0 0 272.896-93.297778 456.419556 456.419556 0 0 0 161.28-241.664l56.775112-0.455111zM267.662222 391.281778H56.888889l105.187555 120.433778 105.585778-120.433778z m279.893334-244.508445a357.262222 357.262222 0 0 1 207.985777 67.640889 364.544 364.544 0 0 1 131.185778 176.924445h94.549333a456.419556 456.419556 0 0 0-161.336888-241.322667A446.748444 446.748444 0 0 0 547.214222 56.888889a446.691556 446.691556 0 0 0-272.668444 93.127111 456.476444 456.476444 0 0 0-161.393778 241.265778h94.378667A364.600889 364.600889 0 0 1 339.057778 214.129778 357.262222 357.262222 0 0 1 547.555556 146.773333z"
-                    fill="#bfbfbf"
-                    p-id="10465"
-                  ></path>
-                  <path
-                    d="M547.612444 671.402667L392.419556 514.048l155.192888-156.956444 155.192889 156.956444-155.192889 157.354667z"
-                    fill="#bfbfbf"
-                    p-id="10466"
-                  ></path>
-                </svg>
-              </div>
-              <div>
-                <div>${volume?.toLocaleString()}</div>
-                <div className="text-xs opacity-50">Total volume</div>
-              </div>
-            </div>
-            <div className="flex gap-4 items-center">
-              <div>
-                <svg
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="13400"
-                  width="64"
-                  height="64"
-                >
-                  <path
-                    d="M836.632381 411.794286h75.946667c8.094476 32.280381 12.385524 66.023619 12.385523 100.790857 0 228.498286-185.246476 413.744762-413.744761 413.744762l-7.850667-0.097524a412.452571 412.452571 0 0 1-289.01181-125.488762v119.637333h-73.142857V682.666667h212.601905v73.142857l-64.414476 0.048762c53.784381 57.148952 127.609905 89.429333 223.280762 97.304381l4.681143-0.048762 4.778666-0.121905 5.632-0.219429 1.340953-0.073142 1.462857-0.073143 1.560381-0.097524 1.267809-0.073143-0.950857 0.048762 1.584762-0.097524c5.534476-0.365714 11.044571-0.853333 16.505905-1.462857l0.560762-0.073143 0.243809-0.048762 0.560762-0.097524 0.877714-0.097523 4.071619-0.487619-0.243809 0.024381 0.316952-0.024381 1.292191-0.219429 0.292571-0.048762 1.682286-0.195048 3.559619-0.53638-0.731429 0.121904 1.536-0.26819 4.047238-0.658286-1.682285 0.292572 0.902095-0.146286 4.047238-0.707048 3.486476-0.633905 1.950476-0.414476-1.511619 0.341334 3.584-0.731429 3.291429-0.682667 2.31619-0.512 1.365334-0.292571 0.804571-0.195048 2.706286-0.609524 3.315809-0.804571-3.388952 0.804571 3.900952-0.926476 1.316572-0.341333-1.26781 0.316952 1.292191-0.316952 1.706666-0.438857 1.77981-0.463238 1.584762-0.438857 0.902095-0.24381 0.609524-0.170667 2.340571-0.633904 2.413715-0.707048 1.536-0.438857 1.584762-0.487619 1.706666-0.487619 1.487238-0.487619 1.852953-0.560762 3.657143-1.170286 3.364571-1.145905 3.169524-1.097143 0.682666-0.243809 3.023239-1.097143 2.194285-0.828952 2.145524-0.804572 1.609143-0.609524 0.999619-0.390095 1.926095-0.755809 1.682286-0.682667 2.048-0.853333 0.243809-0.097524 1.804191-0.75581 0.463238-0.195047 3.486476-1.487238 1.511619-0.658286 2.243048-0.999619 1.097143-0.487619 0.414476-0.195048 2.438095-1.121524 0.24381-0.121904 2.194285-1.024 3.267048-1.584762 0.487619-0.24381 2.80381-1.365333 1.584762-0.804572 2.657523-1.389714 0.585143-0.292571a339.69981 339.69981 0 0 0 11.946667-6.509715l-1.731048 0.926477 1.828572-0.999619 2.291809-1.365334-1.316571 0.75581 1.682285-0.975238 0.926477-0.487619 5.753904-3.486477-2.267428 1.340953 4.87619-2.974476 3.218286-2.072381 4.754286-3.120762 1.389714-0.926476 2.438095-1.682286 1.706667-1.219048 1.219048-0.804571 0.463238-0.341333 1.048381-0.75581 1.340952-0.950857 2.852571-2.072381 0.487619-0.365714 2.194286-1.633524 0.316953-0.24381 2.974476-2.243047 0.316952-0.268191 1.584762-1.243428 3.803429-2.998858 5.607619-4.63238 2.730666-2.29181 1.536-1.365333 0.536381-0.487619 0.438857-0.365715c3.486476-3.023238 6.777905-6.022095 9.996191-9.069714l4.486095-4.339809 4.388572-4.388572 2.048-2.121143 2.048-2.121143 2.413714-2.56 2.462476-2.706285 1.316571-1.462857 0.780191-0.853334 0.365714-0.414476 0.512-0.609524 1.804191-2.048 1.926095-2.218666 0.292571-0.341334 1.755429-2.096762 0.438857-0.487619 0.512-0.609524 2.169905-2.706285-0.633905 0.828952 0.804572-0.999619 1.609142-1.950476 2.364953-2.974476 0.024381-0.097524 0.877714-1.121524 0.804571-0.975238-1.706666 2.194286c2.82819-3.632762 5.607619-7.314286 8.289524-11.044572l1.365333-1.950476 0.755809-1.024 2.096762-2.998857-1.072762 1.487238 5.266286-7.728762a340.845714 340.845714 0 0 0 10.727619-17.408l1.121524-2.072381 2.438095-4.339809a339.675429 339.675429 0 0 0 17.383619-36.985905l2.023619-5.168762a338.578286 338.578286 0 0 0 10.48381-32.572952l1.609143-6.192762a338.70019 338.70019 0 0 0 9.923047-81.993143l-0.073143-7.631238a340.065524 340.065524 0 0 0-15.091809-93.208381zM559.299048 341.333333l51.736381 51.712-47.299048 47.274667H633.904762v73.142857h-85.333333v48.761905H633.904762v73.142857h-85.333333v73.142857h-73.142858v-73.142857H390.095238v-73.142857h85.333333v-48.761905H390.095238v-73.142857h70.192762l-47.299048-47.274667L464.725333 341.333333 512 388.632381 559.299048 341.333333zM865.792 97.52381v237.714285h-212.553143v-73.142857h72.752762c-51.151238-50.712381-119.393524-80.286476-206.116571-89.136762l-10.069334-0.926476-5.778285 0.073143-5.924572 0.170667-2.998857 0.121904-1.828571 0.097524-1.877334 0.097524-3.754666 0.243809-4.461715 0.316953-3.632762 0.316952-3.486476 0.341334-2.925714 0.316952-7.875048 0.975238-7.801904 1.145905-3.584 0.585143 1.438476-0.24381-3.218286 0.536381-1.194667 0.219429-1.999238 0.365714-6.046476 1.170286-7.143619 1.536-1.828571 0.438857-5.510096 1.316571a338.017524 338.017524 0 0 0-9.118476 2.438095l0.950857-0.292571-2.048 0.585143-2.925714 0.853333-3.657143 1.072762-0.633905 0.195048-0.78019 0.243809-3.413333 1.072762-5.729524 1.901714a337.968762 337.968762 0 0 0-19.846095 7.484953l-0.804572 0.316952-0.609524 0.24381-0.414476 0.195047-1.80419 0.731429-0.804572 0.390095-1.80419 0.804572-1.609143 0.707047-2.633143 1.170286-0.536381 0.243809-2.438095 1.121524-3.486476 1.633524-3.340191 1.633524-1.024 0.487619-1.80419 0.926476-1.414096 0.707048-2.218666 1.145904-1.438476 0.731429-1.219048 0.682667-0.975238 0.487619-0.585143 0.316952-0.804571 0.438857-0.950858 0.536381a340.163048 340.163048 0 0 0-15.457523 8.94781l-0.512 0.316952-2.194286 1.365333-2.681905 1.706667a341.089524 341.089524 0 0 0-6.436571 4.242286l-0.438857 0.292571-2.56 1.706667-1.804191 1.267809 1.26781-0.853333-5.193143 3.657143-0.438857 0.316952-2.243048 1.633524-2.657524 1.974857-0.292571 0.219429-0.633905 0.487619-1.926095 1.438476 1.926095-1.462857-5.36381 4.144762a342.211048 342.211048 0 0 0-7.363047 5.973333l-1.292191 1.072762-2.438095 2.096762-0.78019 0.633905-7.070477 6.290286a342.674286 342.674286 0 0 0-21.577142 21.504l-6.656 7.460571c-1.121524 1.26781-2.194286 2.56-3.31581 3.876571l-0.487619 0.585143-2.194286 2.681905-2.218666 2.681905-1.243429 1.584762-1.340952 1.682285-2.072381 2.681905-1.536 2.048-0.170667 0.24381-0.316952 0.365714-1.389715 1.877333-0.390095 0.536381-2.291809 3.145143-1.121524 1.560381-0.950857 1.316571-0.536381 0.804572-1.536 2.194286-1.024 1.462857-0.950857 1.438476-0.365715 0.536381-1.414095 2.121143-0.341333 0.560762-1.560381 2.389333-0.975238 1.511619-0.170667 0.24381-4.169143 6.753523-5.071238 8.679619-4.827428 8.850286-2.462477 4.778667-0.438857 0.828952-1.316571 2.657524 1.267809-2.535619-3.096381 6.339048a338.895238 338.895238 0 0 0-3.413333 7.411809l-0.487619 1.121524-0.219429 0.438857-0.292571 0.682667a338.383238 338.383238 0 0 0-23.332571 77.043809l-1.121524 6.704762A340.528762 340.528762 0 0 0 170.666667 512.609524c0 34.913524 5.266286 68.608 15.018666 100.352H109.787429A414.622476 414.622476 0 0 1 97.52381 512.585143c0-27.794286 2.730667-54.930286 7.94819-81.188572 37.717333-189.610667 205.04381-332.55619 405.77219-332.55619 108.690286 0 207.60381 41.935238 281.429334 110.494476V97.52381h73.142857z"
-                    p-id="13401"
-                    fill="#bfbfbf"
-                  ></path>
-                </svg>
-              </div>
-              <div>
-                <div>${fee?.toLocaleString()}</div>
-                <div className="text-xs opacity-50">Total fee</div>
-              </div>
-            </div>
-          </div>
-          <div className="sm:flex font-bold items-center gap-4 mt-24">
-            <div>
-              <Image src={"/vision.png"} height={1000} width={1000} alt="" />
-            </div>
-            <div>
-              <div className="text-5xl">Our Vision</div>
+          <div className="flex-1">
+            <svg viewBox="0 0 200 200" className="w-full max-w-[500px] mx-auto" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="carrotBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#4ade80', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#22c55e', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="carrotLeaves" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#86efac', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#4ade80', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              
+              {/* Carrot Body */}
+              <path d="M100,60 L120,90 Q130,150 100,180 Q70,150 80,90 Z" 
+                    fill="url(#carrotBody)" 
+                    stroke="#22c55e" 
+                    strokeWidth="2">
+                <animate attributeName="d" 
+                         values="M100,60 L120,90 Q130,150 100,180 Q70,150 80,90 Z;
+                                M100,60 L125,90 Q135,150 100,185 Q65,150 75,90 Z;
+                                M100,60 L120,90 Q130,150 100,180 Q70,150 80,90 Z"
+                         dur="2s"
+                         repeatCount="indefinite" />
+              </path>
+              
+              {/* Carrot Texture Lines */}
+              <path d="M90,100 Q100,110 110,100" 
+                    fill="none" 
+                    stroke="#22c55e" 
+                    strokeWidth="2" 
+                    opacity="0.5">
+                <animate attributeName="d" 
+                         values="M90,100 Q100,110 110,100;
+                                M88,100 Q100,115 112,100;
+                                M90,100 Q100,110 110,100"
+                         dur="2s"
+                         repeatCount="indefinite" />
+              </path>
+              <path d="M88,120 Q100,130 112,120" 
+                    fill="none" 
+                    stroke="#22c55e" 
+                    strokeWidth="2" 
+                    opacity="0.5">
+                <animate attributeName="d" 
+                         values="M88,120 Q100,130 112,120;
+                                M86,120 Q100,135 114,120;
+                                M88,120 Q100,130 112,120"
+                         dur="2s"
+                         repeatCount="indefinite" />
+              </path>
+              
+              {/* Leaves */}
+              <g>
+                <path d="M95,50 Q85,30 95,20" 
+                      stroke="url(#carrotLeaves)" 
+                      strokeWidth="4" 
+                      fill="none">
+                  <animateTransform attributeName="transform"
+                                  type="rotate"
+                                  values="-5 100 60;5 100 60;-5 100 60"
+                                  dur="3s"
+                                  repeatCount="indefinite"/>
+                </path>
+                <path d="M100,50 Q100,25 110,20" 
+                      stroke="url(#carrotLeaves)" 
+                      strokeWidth="4" 
+                      fill="none">
+                  <animateTransform attributeName="transform"
+                                  type="rotate"
+                                  values="5 100 60;-5 100 60;5 100 60"
+                                  dur="2.5s"
+                                  repeatCount="indefinite"/>
+                </path>
+                <path d="M105,50 Q115,30 105,15" 
+                      stroke="url(#carrotLeaves)" 
+                      strokeWidth="4" 
+                      fill="none">
+                  <animateTransform attributeName="transform"
+                                  type="rotate"
+                                  values="-3 100 60;7 100 60;-3 100 60"
+                                  dur="3.5s"
+                                  repeatCount="indefinite"/>
+                </path>
+              </g>
 
-              <div className="opacity-50 mt-8">
-                Our vision is to increase the freedom of money globally. We
-                believe that by spreading this freedom, we can significantly
-                improve lives around the world.
+              {/* BBB Text */}
+              <text x="100" y="130" 
+                    textAnchor="middle" 
+                    fill="#ffffff" 
+                    fontSize="24" 
+                    fontWeight="bold">
+                BBB
+                <animate attributeName="opacity"
+                         values="0.8;1;0.8"
+                         dur="2s"
+                         repeatCount="indefinite"/>
+              </text>
+
+              {/* Shine Effect */}
+              <circle cx="85" cy="85" r="3" fill="#ffffff" opacity="0.8">
+                <animate attributeName="opacity"
+                         values="0.8;0.3;0.8"
+                         dur="2s"
+                         repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="bg-green-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <svg viewBox="0 0 100 100" width="32" height="32">
+                    <circle cx="50" cy="50" r="20" fill="#4ade80">
+                      <animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    <path d="M50,20 C70,20 80,35 80,50 C80,65 70,80 50,80 C30,80 20,65 20,50 C20,35 30,20 50,20" 
+                          fill="none" stroke="#4ade80" strokeWidth="4">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 50 50"
+                        to="360 50 50"
+                        dur="4s"
+                        repeatCount="indefinite"
+                      />
+                    </path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{user?.toLocaleString()}</div>
+                  <div className="text-sm text-gray-500">Total Users</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="font-bold items-center gap-4 mt-24">
-            <div>
-              <div className="text-5xl">Our Ecosystem</div>
-              <div className="opacity-50 mt-8">
-                Our platform is trusted by millions worldwide, and features an
-                unmatched portfolio of financial product offerings.
-              </div>
-              <div className="grid grid-cols-3 mt-8">
-                <div className="card outline w-96 h-48">
-                  <div className="card-body">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      class="w-8 h-8"
-                    >
-                      <path
-                        d="M21.5 8.5a6 6 0 11-12 0 6 6 0 0112 0z"
-                        fill="#76808F"
-                      ></path>
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M8.5 9.5a6 6 0 110 12 6 6 0 010-12zm0 8.5L6 15.5 8.5 13l2.5 2.5L8.5 18z"
-                        fill="url(#spot-g_svg__paint0_linear)"
-                      ></path>
-                      <path
-                        d="M9 3H3v6l6-6z"
-                        fill="url(#spot-g_svg__paint1_linear)"
-                      ></path>
-                      <path
-                        d="M15 21h6v-6l-6 6z"
-                        fill="url(#spot-g_svg__paint2_linear)"
-                      ></path>
-                      <defs>
-                        <linearGradient
-                          id="spot-g_svg__paint0_linear"
-                          x1="8.5"
-                          y1="21.5"
-                          x2="8.5"
-                          y2="9.5"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop stop-color="#e86f2b"></stop>
-                          <stop offset="1" stop-color="#e86f2b"></stop>
-                        </linearGradient>
-                        <linearGradient
-                          id="spot-g_svg__paint1_linear"
-                          x1="6"
-                          y1="9"
-                          x2="6"
-                          y2="3"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop stop-color="#e86f2b"></stop>
-                          <stop offset="1" stop-color="#e86f2b"></stop>
-                        </linearGradient>
-                        <linearGradient
-                          id="spot-g_svg__paint2_linear"
-                          x1="18"
-                          y1="21"
-                          x2="18"
-                          y2="15"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop stop-color="#e86f2b"></stop>
-                          <stop offset="1" stop-color="#e86f2b"></stop>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="text-xl">BBBPump Exchange</div>
 
-                    <div className="opacity-50">
-                      BBBPump Exchange is the largest crypto exchange by trade
-                      volume on xdc network.
-                    </div>
-                  </div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <svg viewBox="0 0 100 100" width="32" height="32">
+                    <path d="M20,80 L50,20 L80,80" fill="none" stroke="#4ade80" strokeWidth="4" strokeLinecap="round">
+                      <animate attributeName="stroke-dasharray" values="0,1000;180,0" dur="2s" />
+                    </path>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#4ade80" strokeWidth="4">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 50 50"
+                        to="360 50 50"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">${volume?.toLocaleString()}</div>
+                  <div className="text-sm text-gray-500">Total Volume</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <svg viewBox="0 0 100 100" width="32" height="32">
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="#4ade80" strokeWidth="4" strokeDasharray="188.5">
+                      <animate attributeName="stroke-dashoffset" from="188.5" to="0" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    <path d="M40,50 L47,57 L60,43" stroke="#4ade80" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <animate attributeName="stroke-dasharray" values="0,1000;50,0" dur="2s" />
+                    </path>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">${fee?.toLocaleString()}</div>
+                  <div className="text-sm text-gray-500">Total Fee</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+
+      {/* Vision Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="flex flex-col lg:flex-row items-center gap-12">
+          <div className="flex-1">
+            <svg viewBox="0 0 1024 1024" className="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+              <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z" fill="#4ade80"/>
+              <path d="M512 140c-205.4 0-372 166.6-372 372s166.6 372 372 372 372-166.6 372-372-166.6-372-372-372zm0 682c-171.4 0-310-138.6-310-310s138.6-310 310-310 310 138.6 310 310-138.6 310-310 310z" fill="#bbf7d0"/>
+              <path d="M512 298c-118.8 0-214 95.2-214 214s95.2 214 214 214 214-95.2 214-214-95.2-214-214-214zm0 366c-83.8 0-152-68.2-152-152s68.2-152 152-152 152 68.2 152 152-68.2 152-152 152z" fill="#86efac"/>
+              <path d="M512 404c-59.4 0-108 48.6-108 108s48.6 108 108 108 108-48.6 108-108-48.6-108-108-108zm0 164c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z" fill="#4ade80"/>
+              <path d="M512 468c-24.3 0-44 19.7-44 44s19.7 44 44 44 44-19.7 44-44-19.7-44-44-44zm0 64c-11 0-20-9-20-20s9-20 20-20 20 9 20 20-9 20-20 20z" fill="#22c55e"/>
+              <path d="M842 512c0 182.2-147.8 330-330 330S182 694.2 182 512s147.8-330 330-330v-42c-205.4 0-372 166.6-372 372s166.6 372 372 372 372-166.6 372-372h-42z" fill="#4ade80">
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 512 512"
+                  to="360 512 512"
+                  dur="30s"
+                  repeatCount="indefinite"
+                />
+              </path>
+              <path d="M512 280v464" stroke="#4ade80" strokeWidth="4" strokeDasharray="8,8">
+                <animate
+                  attributeName="stroke-dashoffset"
+                  values="16;0"
+                  dur="1s"
+                  repeatCount="indefinite"
+                />
+              </path>
+              <path d="M280 512h464" stroke="#4ade80" strokeWidth="4" strokeDasharray="8,8">
+                <animate
+                  attributeName="stroke-dashoffset"
+                  values="16;0"
+                  dur="1s"
+                  repeatCount="indefinite"
+                />
+              </path>
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Vision</h2>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              Our vision is to increase the freedom of money globally. We believe that by spreading this freedom, we can significantly improve lives around the world.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Ecosystem Section */}
+      <div className="bg-green-50 py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Ecosystem</h2>
+          <p className="text-xl text-gray-600 mb-12">
+            Our platform is trusted by millions worldwide, and features an unmatched portfolio of financial product offerings.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-4 bg-green-100 rounded-xl inline-block mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="w-8 h-8">
+                  <path d="M21.5 8.5a6 6 0 11-12 0 6 6 0 0112 0z" fill="#4ade80"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 9.5a6 6 0 110 12 6 6 0 010-12zm0 8.5L6 15.5 8.5 13l2.5 2.5L8.5 18z" fill="#4ade80"/>
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">BBBPump Exchange</h3>
+              <p className="text-gray-600">
+                BBBPump Exchange is the largest crypto exchange by trade volume on xdc network.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
