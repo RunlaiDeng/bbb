@@ -285,30 +285,23 @@ const Swap = () => {
 
   return showData ? (
     <>
-      <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
+      <div className="bg-white rounded-2xl shadow-lg p-6 m-2">
         {graduate ? (
           <TokenHeadPool {...tHeadPool} />
         ) : (
           <TokenHeadFun {...tHeadFun} />
         )}
       </div>
-      <div className="m-auto grid lg:grid-cols-5 gap-[1px] lg:h-[960px]">
-        {/* {windowWidth > 1024 && (
-          <div className="text-center h-screen overflow-y-auto outline rounded-none outline-gray-200">
-            <TokenInfo {...tInfo} />
-            <div className="divider my-[0.5px]"></div>
-            <TokenChat {...tChat} />
-          </div>
-        )} */}
+      <div className="m-auto grid lg:grid-cols-5 gap-4 lg:h-[960px] p-2">
         {windowWidth > 1024 && (
-          <div className="text-center overflow-y-auto outline rounded-none outline-gray-200">
+          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
             <TokenMarkets {...tMarkets} />
           </div>
         )}
 
-        <div className="lg:col-span-3  overflow-x-auto text-center outline rounded-none outline-gray-200">
+        <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg overflow-x-auto text-center">
           <div className="card">
-            <div className="card-body p-2">
+            <div className="card-body p-4">
               <div className="flex gap-2 text-gray-500 font-bold">
                 <div role="tablist" className="tabs tabs-bordered w-full">
                   <a
@@ -377,7 +370,7 @@ const Swap = () => {
           </div>
           {graduate && (
             <>
-              <div className="h-[350px] lg:h-[500px]">
+              <div className="h-[300px] lg:h-[450px]">
                 {type == "chart" && <TokenChartPool {...tChartPool} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
@@ -385,12 +378,14 @@ const Swap = () => {
                 {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
-              <TokenSwapPool {...tSwapPool} />
+              <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+                <TokenSwapPool {...tSwapPool} />
+              </div>
             </>
           )}
           {!graduate && (
             <>
-              <div className="h-[350px] lg:h-[500px]">
+              <div className="h-[300px] lg:h-[450px]">
                 {type == "chart" && <TokenChartFun {...tChartFun} />}
                 {type == "info" && <TokenInfo {...tInfo} />}
                 {type == "chat" && <TokenChat {...tChat} />}
@@ -398,12 +393,14 @@ const Swap = () => {
                 {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
-              <TokenSwapFun {...tSwapFun} />
+              <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+                <TokenSwapFun {...tSwapFun} />
+              </div>
             </>
           )}
         </div>
         {windowWidth > 1024 && (
-          <div className="text-center  overflow-y-auto outline rounded-none outline-gray-200">
+          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
             {graduate ? (
               <TokenTradePool {...tTradePool} />
             ) : (
@@ -416,7 +413,7 @@ const Swap = () => {
   ) : (
     <>
       <Loading />
-      <div className="text-center mt-10">Searching for {token}</div>
+      <div className="text-center mt-10 text-gray-600">Searching for {token}</div>
     </>
   );
 };
