@@ -579,7 +579,7 @@ const Home = () => {
                                 : "text-red-600 font-medium"
                             }
                           >
-                            {bbbPriceChange24h >= 0 ? "+" : ""}
+                            {bbbPriceChange24h >= 0 ? "+" : "-"}
                             {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
                           </span>
                         </td>
