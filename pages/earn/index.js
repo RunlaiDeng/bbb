@@ -64,13 +64,13 @@ const Earn = () => {
   const rank = puser?.rank;
   const pleaderboard = data?.leaderboard?.list;
 
-  console.log(pleaderboard);
-
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
       {/* Total Points Display */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg shadow-lg p-8 mb-6 text-white text-center">
-        <h1 className="text-3xl font-bold mb-2">Total Points</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          {puser?.weekId} Total Points
+        </h1>
         {tradeEventJoined ? (
           <>
             <div className="text-4xl font-bold mb-2">
@@ -215,7 +215,6 @@ const Earn = () => {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Points Leaderboard</h2>
-       
         </div>
         <div className="space-y-3">
           {address && rank && (
