@@ -1,7 +1,9 @@
 const Loading = () => {
   return (
     <div className="flex justify-center items-center my-24">
-      <div className="loading loading-bars loading-lg text-success"></div>
+      <div className="animate-spin" style={{ width: '48px', height: '48px' }}>
+        <img src="/favicon.ico" alt="Loading..." className="w-full h-full" />
+      </div>
     </div>
   );
 };
