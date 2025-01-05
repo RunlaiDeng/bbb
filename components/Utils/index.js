@@ -106,9 +106,9 @@ const getBytesLength = (str) => {
 };
 
 const handleSrc = (src) => {
-  if (!src) return "/didntupload.png";
+  if (!src) return "/loading.svg";
   const CDN_REGEX = /^https:\/\/benybadboy\.b-cdn\.net\/.*$/;
-  return CDN_REGEX.test(src) || src == "/bbb.jpg" ? src : "/didntupload.png";
+  return CDN_REGEX.test(src) || src == "/bbb.jpg" ? src : "/loading.svg";
 };
 
 const customToFixed = (num) => {

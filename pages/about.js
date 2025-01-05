@@ -279,9 +279,92 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
               <div className="p-4 bg-green-100 rounded-xl inline-block mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" className="w-8 h-8">
-                  <path d="M21.5 8.5a6 6 0 11-12 0 6 6 0 0112 0z" fill="#4ade80"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 9.5a6 6 0 110 12 6 6 0 010-12zm0 8.5L6 15.5 8.5 13l2.5 2.5L8.5 18z" fill="#4ade80"/>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8">
+                  <defs>
+                    <linearGradient id="exchangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: '#4ade80', stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: '#22c55e', stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Outer Circle */}
+                  <circle cx="12" cy="12" r="10" 
+                          fill="none" 
+                          stroke="url(#exchangeGradient)" 
+                          strokeWidth="1.5">
+                    <animate attributeName="r"
+                             values="10;11;10"
+                             dur="2s"
+                             repeatCount="indefinite"/>
+                    <animate attributeName="opacity"
+                             values="0.8;1;0.8"
+                             dur="2s"
+                             repeatCount="indefinite"/>
+                  </circle>
+
+                  {/* Exchange Arrows */}
+                  <g transform="translate(12,12)">
+                    <animateTransform attributeName="transform"
+                                    attributeType="XML"
+                                    type="rotate"
+                                    from="0 0 0"
+                                    to="360 0 0"
+                                    dur="10s"
+                                    repeatCount="indefinite"/>
+                    
+                    {/* Up Arrow */}
+                    <path d="M-4,-2 L0,-6 L4,-2" 
+                          stroke="url(#exchangeGradient)" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round">
+                      <animate attributeName="stroke-width"
+                               values="1.5;2;1.5"
+                               dur="2s"
+                               repeatCount="indefinite"/>
+                    </path>
+                    <line x1="0" y1="-6" x2="0" y2="0" 
+                          stroke="url(#exchangeGradient)" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round">
+                      <animate attributeName="stroke-width"
+                               values="1.5;2;1.5"
+                               dur="2s"
+                               repeatCount="indefinite"/>
+                    </line>
+
+                    {/* Down Arrow */}
+                    <path d="M-4,2 L0,6 L4,2" 
+                          stroke="url(#exchangeGradient)" 
+                          strokeWidth="1.5" 
+                          fill="none" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round">
+                      <animate attributeName="stroke-width"
+                               values="1.5;2;1.5"
+                               dur="2s"
+                               repeatCount="indefinite"/>
+                    </path>
+                    <line x1="0" y1="6" x2="0" y2="0" 
+                          stroke="url(#exchangeGradient)" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round">
+                      <animate attributeName="stroke-width"
+                               values="1.5;2;1.5"
+                               dur="2s"
+                               repeatCount="indefinite"/>
+                    </line>
+                  </g>
+
+                  {/* Center Dot */}
+                  <circle cx="12" cy="12" r="1.5" 
+                          fill="url(#exchangeGradient)">
+                    <animate attributeName="r"
+                             values="1.5;2;1.5"
+                             dur="2s"
+                             repeatCount="indefinite"/>
+                  </circle>
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">BBBPump Exchange</h3>
