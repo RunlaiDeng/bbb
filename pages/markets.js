@@ -697,10 +697,10 @@ const Home = () => {
                                 />
                               </div>
                               <div>
-                                <div className="font-semibold">
+                                <div className="font-semibold whitespace-nowrap">
                                   {item?.symbol}
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-gray-500 whitespace-nowrap">
                                   {item?.name}
                                 </div>
                               </div>
