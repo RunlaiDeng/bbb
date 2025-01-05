@@ -152,12 +152,14 @@ const Earn = () => {
                 onClick={() => {
                   linkTwitter();
                 }}
-                disabled={linkedTwitter}
+                disabled={linkedTwitter || !tradeEventJoined}
                 className={`px-4 py-2 rounded ${
                   linkedTwitter
                     ? "bg-green-500 text-white"
+                    : !tradeEventJoined
+                    ? "bg-gray-400 text-white cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600"
-                } ${linkedTwitter ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${linkedTwitter || !tradeEventJoined ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 {linkedTwitter ? "Completed" : "Complete"}
               </button>
@@ -182,16 +184,17 @@ const Earn = () => {
                 >
                   <p className="font-medium">{showType}</p>
                   <div
-                    disabled={completed}
+                    disabled={completed || !tradeEventJoined}
                     href={item}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 py-2 rounded ${
-                      completed
+                      completed || !tradeEventJoined
                         ? "bg-green-500 text-white opacity-50 cursor-not-allowed"
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
                     onClick={async () => {
+                      if (!tradeEventJoined) return;
                       setIsSubmitting(true);
                       await rpc.finishTwitterTasks(address, index);
                       window.open(item);
