@@ -108,7 +108,7 @@ const Earn = () => {
       {/* Trade to earn points */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Trade to Earn Points</h2>
+          <h2 className="text-xl font-bold">{puser?.weekId} Trade to Earn Points</h2>
           <Link
             href="/markets"
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
@@ -134,7 +134,7 @@ const Earn = () => {
       {/* Twitter Tasks */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Twitter Tasks</h2>
+          <h2 className="text-xl font-bold">{puser?.weekId} Twitter Tasks</h2>
           <div className="text-blue-500 font-bold">Bonus: 10,000 pts</div>
         </div>
         <div className="space-y-4">
@@ -214,7 +214,7 @@ const Earn = () => {
       {/* Points Leaderboard */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Points Leaderboard</h2>
+          <h2 className="text-xl font-bold">{puser?.weekId} Points Leaderboard</h2>
         </div>
         <div className="space-y-3">
           {address && rank && (
