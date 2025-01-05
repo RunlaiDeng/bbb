@@ -389,17 +389,17 @@ const Home = () => {
                         </div>
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 rounded-full overflow-hidden">
+                            <div className="w-10 h-10 overflow-hidden rounded">
                               <Image
-                                height={400}
-                                width={400}
+                                height={40}
+                                width={40}
                                 src={
                                   latestKing?.imageUrl
                                     ? latestKing?.imageUrl
                                     : "/didntupload.png"
                                 }
                                 alt={latestKing?.name}
-                                className="object-cover w-full h-full"
+                                className="object-cover w-10 h-10"
                               />
                             </div>
                             <div>
@@ -443,7 +443,7 @@ const Home = () => {
                 </div>
               )}
             </div>
-            <div className="flex gap-2 text-slate-500 mx-4">
+            {/* <div className="flex gap-2 text-slate-500 mx-4">
               <div className="ml-auto">
                 <ul className="menu menu-horizontal bg-gray-100 rounded-xl">
                   <li
@@ -514,7 +514,7 @@ const Home = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
             {showList && (
               <div className="p-4">
                 <div className="flex items-center gap-2">
@@ -624,13 +624,13 @@ const Home = () => {
                     >
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full overflow-hidden">
+                          <div className="w-10 h-10 overflow-hidden flex-shrink-0 rounded">
                             <Image
-                              height={400}
-                              width={400}
+                              height={40}
+                              width={40}
                               src="/bbb.jpg"
                               alt=""
-                              className="object-cover w-full h-full"
+                              className="object-cover w-10 h-10"
                             />
                           </div>
                           <div>
@@ -687,13 +687,13 @@ const Home = () => {
                         >
                           <td className="p-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full overflow-hidden">
+                              <div className="w-10 h-10 overflow-hidden flex-shrink-0 rounded">
                                 <Image
-                                  height={400}
-                                  width={400}
+                                  height={40}
+                                  width={40}
                                   src={handleSrc(item?.imageUrl)}
                                   alt={item?.name}
-                                  className="object-cover w-full h-full"
+                                  className="object-cover w-10 h-10"
                                 />
                               </div>
                               <div>
@@ -907,7 +907,7 @@ const Home = () => {
 
             {dropTokens?.length > 0 && (
               <div className="flex justify-center p-4">
-                <ul className="flex items-center gap-2">
+                <ul className="flex items-center gap-1 text-sm">
                   <li
                     className={`${
                       tokens.pageNumber == 1
@@ -926,18 +926,18 @@ const Home = () => {
                       }
                     }}
                   >
-                    <a className="px-4 py-2 block">{"<"}</a>
+                    <a className="px-2 py-1 block">{"<"}</a>
                   </li>
 
                   {pages?.map((item) => {
                     const showPageItems =
                       item == 1 ||
                       item == tokens.totalPage ||
-                      Math.abs(tokens.pageNumber - item) <= 2;
-                    const showPassFront = item == 1 && tokens.pageNumber >= 5;
+                      Math.abs(tokens.pageNumber - item) <= 1;
+                    const showPassFront = item == 1 && tokens.pageNumber >= 4;
                     const showPassBack =
                       item == tokens?.totalPage &&
-                      tokens.totalPage - tokens.pageNumber >= 4;
+                      tokens.totalPage - tokens.pageNumber >= 3;
 
                     if (!showPageItems && !showPassFront && !showPassBack) {
                       return null;
@@ -946,12 +946,12 @@ const Home = () => {
                     return (
                       <li key={item}>
                         {showPassBack && item === tokens.totalPage && (
-                          <span className="px-2 py-2">...</span>
+                          <span className="px-1 py-1">...</span>
                         )}
 
                         {showPageItems && (
                           <button
-                            className={`min-w-[40px] px-4 py-2 rounded-lg ${
+                            className={`min-w-[32px] px-2 py-1 rounded-lg ${
                               item == tokens?.pageNumber
                                 ? "bg-green-500 text-white"
                                 : "hover:bg-green-50 text-gray-700"
@@ -968,7 +968,7 @@ const Home = () => {
                         )}
 
                         {showPassFront && item === 1 && (
-                          <span className="px-2 py-2">...</span>
+                          <span className="px-1 py-1">...</span>
                         )}
                       </li>
                     );
@@ -992,7 +992,7 @@ const Home = () => {
                       }
                     }}
                   >
-                    <a className="px-4 py-2 block">{">"}</a>
+                    <a className="px-2 py-1 block">{">"}</a>
                   </li>
                 </ul>
               </div>
