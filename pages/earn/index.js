@@ -74,7 +74,7 @@ const Earn = () => {
         {tradeEventJoined ? (
           <>
             <div className="text-4xl font-bold mb-2">
-              {Number(puser?.totalPoint)?.toLocaleString()}
+              {Number(puser?.totalPoint||0)?.toLocaleString()}
             </div>
             <div className="text-sm opacity-80 mb-2">
               Earn more points by trading tokens
@@ -120,7 +120,7 @@ const Earn = () => {
           <div className="bg-gray-50 p-4 rounded-lg">
             <p className="text-gray-600">Current Points from Trading</p>
             <p className="text-2xl font-bold">
-              {Number(puser?.tradePoint)?.toLocaleString()} pts
+              {Number(puser?.tradePoint||0)?.toLocaleString()} pts
             </p>
           </div>
           <p className="text-sm text-gray-500">
