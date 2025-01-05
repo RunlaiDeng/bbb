@@ -200,10 +200,10 @@ const Earn = () => {
                     href={item}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`px-4 py-2 rounded ${
+                    className={`px-6 py-3 rounded-xl transition-all duration-300 ${
                       completed || !tradeEventJoined
-                        ? "bg-green-500 text-white opacity-50 cursor-not-allowed"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                        ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white opacity-50 cursor-not-allowed"
+                        : "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-lg transform hover:-translate-y-1"
                     }`}
                     onClick={async () => {
                       if (!tradeEventJoined) return;
