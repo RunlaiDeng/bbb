@@ -134,30 +134,41 @@ const FarmCard = (props) => {
   let burnTokenIsEnough = false;
 
   return (
-    <>
-      <div className="card m-auto md:w-3/4 w-96 mt-2 rounded-none">
-        <div className="card-body font-bold">
-          <div className="grid lg:grid-cols-3 gap-2">
-            <div className="grid grid-cols-2 gap-2">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+      <div className="p-6">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Farmer Info Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
               <Image
                 src={farmerImg}
-                alt=""
-                height={200}
-                width={200}
-                className="mask mask-squircle m-auto"
+                alt={farmerName}
+                height={80}
+                width={80}
+                className="rounded-xl"
               />
-              <div className="text-5xl font-bold text-center mt-28">
-                X {data.value}
+              <div>
+                <h3 className="text-xl font-bold text-gray-800">{farmerName}</h3>
+                <p className="text-sm text-gray-600">Stake {burnTokenName} to earn rewards</p>
               </div>
             </div>
-            <div>
-              <div>Buy {farmerName}</div>
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100">
+              <div className="text-center">
+                <p className="text-4xl font-bold text-green-600">X {data.value}</p>
+                <p className="text-sm text-gray-600 mt-1">Multiplier</p>
+              </div>
+            </div>
+          </div>
 
-              <div className="mt-8 grid grid-cols-7 gap-2">
+          {/* Buy Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-800">Buy {farmerName}</h3>
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100">
+              <div className="flex items-center gap-2 mb-4">
                 <input
                   type="text"
                   placeholder="0"
-                  className="input input-bordered col-span-5"
+                  className="input input-bordered w-full bg-white"
                   value={data.value * 257000 + " " + burnTokenName}
                   onChange={(e) => {
                     const newValue = e.target.value;
@@ -167,8 +178,8 @@ const FarmCard = (props) => {
                   }}
                   disabled
                 />
-                <div
-                  className="btn  btn-square m-auto"
+                <button
+                  className="btn btn-circle btn-sm bg-white hover:bg-gray-100"
                   onClick={() => {
                     if (data.value >= 1) {
                       setData({ ...data, value: data.value - 1 });
@@ -184,9 +195,9 @@ const FarmCard = (props) => {
                   onTouchMove={release}
                 >
                   -
-                </div>
-                <div
-                  className="btn btn-success btn-square m-auto"
+                </button>
+                <button
+                  className="btn btn-circle btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md"
                   onClick={() => {
                     setData({ ...data, value: data.value + 1 });
                   }}
@@ -198,88 +209,92 @@ const FarmCard = (props) => {
                   onTouchMove={release}
                 >
                   +
-                </div>
+                </button>
               </div>
-              {!showApprove && (
-                <WriteButton
-                  {...buy}
-                  className="btn font-bold btn-lg mt-5 w-full btn-success"
-                />
-              )}
-              {showApprove && (
+
+              {showApprove ? (
                 <WriteButton
                   {...approve}
-                  className="btn font-bold btn-lg mt-5 w-full btn-success"
+                  className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                />
+              ) : (
+                <WriteButton
+                  {...buy}
+                  className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 />
               )}
-              <div className="text-xs">
-                Purchase at least one to unlock the referral bonus.
-              </div>
-              <div className="mt-1 text-xs">
-                Avbl{" "}
-                {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()}{" "}
-                {burnTokenName}
-              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-500">
+                Available: {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()} {burnTokenName}
+              </p>
+              <p className="text-sm text-gray-500">
+                Purchase at least one to unlock the referral bonus
+              </p>
               {!burnTokenIsEnough && (
-                <Link className="underline text-xs" href={dexLink}>
-                  {burnTokenName} is not enough ?
+                <Link 
+                  className="text-sm text-green-600 hover:text-green-700" 
+                  href={dexLink}
+                >
+                  Need more {burnTokenName}?
                 </Link>
               )}
             </div>
+          </div>
 
-            <div>
-              <div>Workshop</div>
-              <div className="mt-6 grid grid-cols-2 gap-2">
-                <div
-                  className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
-                  data-tip={tooltipText}
-                  onClick={() => {
-                    handleCopyClick(farmer?.address);
-                  }}
-                >
-                  <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
-                    <Image
-                      src={farmerImg}
-                      alt=""
-                      height={50}
-                      width={50}
-                      className="mask mask-squircle m-auto"
-                    />{" "}
-                    <div className="font-bold mt-4">
-                      X{stake?.toString() || 0}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className={`tooltip ${isCopied ? "tooltip-success" : ""}`}
-                  data-tip={tooltipText}
-                  onClick={() => {
-                    handleCopyClick(pointToken);
-                  }}
-                >
-                  <div className="grid grid-cols-2 rounded-2xl border p-1 cursor-pointer">
-                    <Image
-                      src={rewardsTokenImg}
-                      alt=""
-                      height={50}
-                      width={50}
-                      className="mask mask-squircle m-auto"
-                    />{" "}
-                    <div className="font-bold mt-4">
-                      X{pendingPoint?.toString() || 0}
-                    </div>
-                  </div>
+          {/* Workshop Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-gray-800">Workshop</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div 
+                className={`bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100 cursor-pointer hover:shadow-md transition-all duration-300 ${
+                  isCopied ? "border-green-500" : ""
+                }`}
+                onClick={() => handleCopyClick(farmer?.address)}
+                data-tip={tooltipText}
+              >
+                <div className="flex flex-col items-center">
+                  <Image
+                    src={farmerImg}
+                    alt=""
+                    height={40}
+                    width={40}
+                    className="rounded-full mb-2"
+                  />
+                  <p className="font-bold text-gray-800">X{stake?.toString() || 0}</p>
+                  <p className="text-xs text-gray-600">Staked</p>
                 </div>
               </div>
-              <WriteButton
-                {...collect}
-                className="btn font-bold btn-lg mt-4 w-full btn-success"
-              />
+
+              <div 
+                className={`bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100 cursor-pointer hover:shadow-md transition-all duration-300 ${
+                  isCopied ? "border-green-500" : ""
+                }`}
+                onClick={() => handleCopyClick(pointToken)}
+                data-tip={tooltipText}
+              >
+                <div className="flex flex-col items-center">
+                  <Image
+                    src={rewardsTokenImg}
+                    alt=""
+                    height={40}
+                    width={40}
+                    className="rounded-full mb-2"
+                  />
+                  <p className="font-bold text-gray-800">X{pendingPoint?.toString() || 0}</p>
+                  <p className="text-xs text-gray-600">Pending</p>
+                </div>
+              </div>
             </div>
+
+            <WriteButton
+              {...collect}
+              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

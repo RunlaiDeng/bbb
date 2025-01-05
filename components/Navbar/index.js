@@ -32,7 +32,7 @@ const Navbar = () => {
   return (
     mount && (
       <>
-        <div className="bg-[url('/bg.png')] bg-center w-full h-18">
+        <div className="w-full h-18">
           <div className="navbar items-center font-bold">
             <div className="navbar-start">
               <Image
@@ -40,69 +40,35 @@ const Navbar = () => {
                 height={150}
                 width={150}
                 alt=""
-                className=" cursor-pointer"
+                className="cursor-pointer transform hover:scale-105 transition-all duration-300"
                 onClick={() => {
                   router.push("/");
                 }}
               />
-              {/* <div className="grid grid-cols-2 text-xs ml-2 whitespace-nowrap gap-2 lg:gap-0">
-              <div
-                className="hover:text-green-700 cursor-pointer"
-                onClick={() => {
-                  window.open("https://x.com/bbbpumpdotfun");
-                }}
-              >
-                [twitter]
-              </div>
-              <div
-                className="hover:text-green-700 cursor-pointer"
-                onClick={() => {
-                  window.open("https://t.me/bbbsking");
-                }}
-              >
-                [support]
-              </div>
-              <div
-                className="hover:text-green-700 cursor-pointer"
-                onClick={() => {
-                  window.open("https://t.me/bbbpump");
-                }}
-              >
-                [telegram]
-              </div>
-              <div
-                className="hover:text-green-700 cursor-pointer"
-                onClick={() =>
-                  document.getElementById("howisworks").showModal()
-                }
-              >
-                [how it works]
-              </div>
-            </div> */}
 
-              <div className="ml-2 hidden lg:flex items-center pt-1">
+              <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
                 <Link
                   href={buyXDCLink}
                   target="_blank"
-                  className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
                   Buy XDC
                 </Link>
                 <Link
                   href={"/markets"}
-                  className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
                   Markets
                 </Link>
                 <Link
                   href={"/swap/bbb"}
-                  className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
                   Trade
                 </Link>
                 <Link
                   href={"/earn"}
-                  className="btn btn-ghost hover:text-green-700 hover:bg-inherit"
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
                   Earn
                 </Link>
@@ -110,42 +76,42 @@ const Navbar = () => {
                   <div
                     tabIndex={0}
                     role="button"
-                    className="btn m-1 btn-ghost hover:text-green-700 hover:bg-inherit"
+                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
                   >
                     More
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-md z-50 w-52 p-2 shadow"
+                    className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50"
                   >
-                    <li>
+                    <li className="rounded-lg">
                       <Link
                         href={"/stake"}
-                        className="hover:text-green-700 hover:bg-inherit"
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                       >
                         Stake
                       </Link>
                     </li>
-                    <li>
+                    <li className="rounded-lg">
                       <Link
                         href={"/farm"}
-                        className="hover:text-green-700 hover:bg-inherit"
+                        className="hover:text-green-600 hover:bg-green-50  rounded-lg "
                       >
                         Farm
                       </Link>
                     </li>
-                    <li>
+                    <li className="rounded-lg">
                       <Link
                         href={"/activity"}
-                        className="hover:text-green-700 hover:bg-inherit"
+                        className="hover:text-green-600 hover:bg-green-50  rounded-lg "
                       >
                         Activity
                       </Link>
                     </li>
-                    <li>
+                    <li className="rounded-lg">
                       <Link
                         href={"/airdrophub"}
-                        className="hover:text-green-700 hover:bg-inherit"
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg"
                       >
                         Airdrop Hub
                       </Link>
@@ -157,9 +123,9 @@ const Navbar = () => {
             <div className="navbar-center hidden xl:flex"></div>
             <div className="navbar-end">
               {isConnected && (
-                <div className="flex items-center gap-2 btn-success ">
+                <div className="flex items-center gap-2">
                   <div
-                    className="btn btn-sm text-white flex items-center"
+                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                     onClick={() => {
                       router.push("/deposit");
                     }}
@@ -209,9 +175,7 @@ const Navbar = () => {
                     </svg>
                     <div
                       tabIndex={0}
-                      className={
-                        "card dropdown-content menu bg-white rounded-md z-50 w-72 shadow p-0 text-xs"
-                      }
+                      className="card dropdown-content menu bg-white rounded-xl z-50 w-72 shadow-lg border border-green-100 p-0 text-xs"
                     >
                       <div className="card-body p-0 font-medium">
                         <div className="flex items-center gap-1 p-4 text-xl">
@@ -287,7 +251,7 @@ const Navbar = () => {
                         </div>
 
                         <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={() => {
                             router.push("/dashboard/" + address);
                           }}
@@ -311,7 +275,7 @@ const Navbar = () => {
                           <div>Dashboard</div>
                         </div>
                         <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={(e) => {
                             e.stopPropagation();
                             router.push("/orders/" + address);
@@ -321,9 +285,9 @@ const Navbar = () => {
                             size="24"
                             className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                             viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"
-                            xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
                               fillRule="evenodd"
@@ -335,7 +299,7 @@ const Navbar = () => {
                           <div>Orders</div>
                         </div>
                         <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={() => {
                             router.push("/referral");
                           }}
@@ -357,7 +321,7 @@ const Navbar = () => {
                           <div>Refferal</div>
                         </div>
                         <div
-                          className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
+                          className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                           onClick={async () => {
                             await logout();
                             if (connectorType == "injected") {
@@ -520,7 +484,7 @@ const Navbar = () => {
                             </div>
 
                             <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={() => {
                                 router.push("/dashboard/" + address);
                                 setData({ ...data, userItemsOpen: false });
@@ -545,7 +509,7 @@ const Navbar = () => {
                               <div>Dashboard</div>
                             </div>
                             <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {
                                 e.stopPropagation();
 
@@ -557,9 +521,9 @@ const Navbar = () => {
                                 size="24"
                                 className="bn-svg icon-normal left-icon-pc sidebar-icon-size shrink-0"
                                 viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
                                 width="20"
                                 height="20"
-                                xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
                                   fillRule="evenodd"
@@ -571,7 +535,7 @@ const Navbar = () => {
                               <div>Orders</div>
                             </div>
                             <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={() => {
                                 router.push("/referral");
                                 setData({ ...data, userItemsOpen: false });
@@ -594,7 +558,7 @@ const Navbar = () => {
                               <div>Refferal</div>
                             </div>
                             <div
-                              className="flex items-center gap-2 hover:bg-gray-100 p-4 cursor-pointer"
+                              className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                               onClick={async () => {
                                 await logout();
                                 if (connectorType == "injected") {
@@ -628,7 +592,7 @@ const Navbar = () => {
               )}
               {!isConnected && (
                 <div
-                  className="btn btn-sm mr-1"
+                  className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                   onClick={async () => {
                     privyLogin();
                   }}
@@ -697,7 +661,7 @@ const Navbar = () => {
                         </div>
                       </div>
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={(e) => {
                           window.open(buyXDCLink);
                           setData({ ...data, menuItemsOpen: false });
@@ -707,7 +671,7 @@ const Navbar = () => {
                         <div>Buy XDC</div>
                       </div>
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={(e) => {
                           router.push("/markets");
                           setData({ ...data, menuItemsOpen: false });
@@ -729,14 +693,13 @@ const Navbar = () => {
                         <div>Markets</div>
                       </div>
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={(e) => {
                           router.push("/swap/bbb");
                           setData({ ...data, menuItemsOpen: false });
                         }}
                       >
                         <svg
-                    
                           viewBox="0 0 1080 1024"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
@@ -780,7 +743,7 @@ const Navbar = () => {
                         </div>
                         <div className="collapse-content z-50">
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
                               router.push("/stake");
                               setData({ ...data, menuItemsOpen: false });
@@ -789,7 +752,7 @@ const Navbar = () => {
                             <div>Stake</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
                               router.push("/farm");
                               setData({ ...data, menuItemsOpen: false });
@@ -798,7 +761,7 @@ const Navbar = () => {
                             <div>Farm</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
                               router.push("/activity");
                               setData({ ...data, menuItemsOpen: false });
@@ -807,7 +770,7 @@ const Navbar = () => {
                             <div>Activity</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
                               router.push("/airdrophub");
                               setData({ ...data, menuItemsOpen: false });
@@ -819,7 +782,7 @@ const Navbar = () => {
                       </div>
 
                       <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-gray-100"
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={() => {
                           window.open("https://t.me/bbbsking");
                         }}
@@ -847,12 +810,14 @@ const Navbar = () => {
           </div>
         </div>
         <dialog id="howisworks" className="modal text-center">
-          <div className="modal-box">
-            <h1 className="text-xl font-bold">How is works</h1>
-            <div className="font-bold my-4">
+          <div className="modal-box bg-white rounded-2xl shadow-lg">
+            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
+              How it works
+            </h1>
+            <div className="font-bold my-4 text-gray-700">
               Pump prevents rugs by making sure that all created tokens are
               safe. Each coin on pump is a{" "}
-              <span className="text-green-700">fair-launch</span> with{" "}
+              <span className="text-green-600">fair-launch</span> with{" "}
               <span className="text-blue-500">no presale</span> and{" "}
               <span className="text-orange-500">no team allocation.</span>
             </div>
@@ -876,8 +841,9 @@ const Navbar = () => {
 
             <div className="modal-action flex justify-center items-center">
               <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn">{"I'm ready to pump"}</button>
+                <button className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
+                  {"I'm ready to pump"}
+                </button>
               </form>
             </div>
           </div>

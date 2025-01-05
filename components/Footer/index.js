@@ -5,13 +5,7 @@ const Footer = () => {
   return (
     <>
       {" "}
-      <Image
-        src="/layer.png"
-        height={1}
-        width={100000}
-        alt="full"
-        className="w-full h-10"
-      />
+
       <footer className="footer p-10">
         <nav>
           <h6 className="footer-title">Community</h6>

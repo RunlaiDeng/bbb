@@ -114,73 +114,70 @@ const Stake = () => {
 
   return (
     <>
-      <div className="m-auto md:w-3/4 w-96 py-1">
-        <div className="text-center font-bold mt-2">Stake</div>
-      </div>
-
-      <div className="card m-auto md:w-3/4 w-96 ">
-        <div className="card-body font-bold">
-          <div className="font-bold">Your Supplies</div>
-          <div className="font-bold text-xl   text-green-700">
-            {((mbbbBalance?.toString() || 0) / 1e18)?.toFixed(6)} mBBB
+      <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
+        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+          <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+            BBB Staking
+          </h1>
+          <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+            🔒 Stake BBB to earn rewards and participate in airdrops
           </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <label
-              className="btn font-bold btn-lg mt-5 w-full btn-success m-auto"
-              onClick={() => {
-                if (!isConnected) {
-                  privyLogin();
-                } else {
-                  document.getElementById("depositModal").showModal();
-                }
-              }}
-            >
-              Stake
-            </label>
-            <label
-              className="btn font-bold btn-lg mt-5 w-full m-auto"
-              onClick={() => {
-                if (!isConnected) {
-                  privyLogin();
-                } else {
-                  document.getElementById("withdrawModal").showModal();
-                }
-              }}
-            >
-              Unstake
-            </label>
+          
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 text-gray-700">
+            <div className="mb-6">
+              <p className="text-sm font-medium mb-2">Your Staked Balance</p>
+              <p className="text-3xl font-bold text-green-600">
+                {((mbbbBalance?.toString() || 0) / 1e18)?.toFixed(6)} mBBB
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                onClick={() => {
+                  if (!isConnected) {
+                    privyLogin();
+                  } else {
+                    document.getElementById("depositModal").showModal();
+                  }
+                }}
+              >
+                Stake BBB
+              </button>
+              <button
+                className="btn bg-white border-2 border-green-500 text-green-600 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                onClick={() => {
+                  if (!isConnected) {
+                    privyLogin();
+                  } else {
+                    document.getElementById("withdrawModal").showModal();
+                  }
+                }}
+              >
+                Unstake BBB
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* <div className="text-center mt-5">
-        <div
-          className="btn btn-success w-max"
-          onClick={() => {
-            document.getElementById("dropModal").showModal();
-          }}
-        >
-          Start a new token
-        </div>
-      </div> */}
-      <div className="card m-auto md:w-3/4 w-96">
-        <div className="card-body font-bold">
-          <div className="grid grid-cols-2">
-            <div className="">Drop History</div>
+
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+              Drop History
+            </h2>
           </div>
 
-          <div className="overflow-x-auto  rounded-none">
+          <div className="overflow-x-auto">
             <table className="table">
-              {/* head */}
-              <thead className="text-center">
-                <tr>
+              <thead>
+                <tr className="text-gray-600">
                   <th>Coin</th>
-                  <th>Total Airdrop Amount</th>
-                  <th>My Staked BBB Amount</th>
-                  <th>Total Staked BBB</th>
-                  <th>My Staked BBB Percentage</th>
-                  <th>My Airdrop Amount</th>
-                  <th>Operation</th>
+                  <th>Total Airdrop</th>
+                  <th>My Staked BBB</th>
+                  <th>Total Staked</th>
+                  <th>My Stake %</th>
+                  <th>My Airdrop</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -199,7 +196,6 @@ const Stake = () => {
                     };
 
                     const amtsv2 = claimAmtsV2?.[index];
-
                     const airdropAmount = amtsv2?.[0];
                     const totalAirdropAmount = amtsv2?.[1];
                     const stakeMbbbAmount = amtsv2?.[2];
@@ -209,7 +205,7 @@ const Stake = () => {
                         totalStakeMbbbAmount?.toString() || 0;
 
                     return (
-                      <tr key={item?.index} className="text-center">
+                      <tr key={item?.index} className="text-center hover:bg-green-50 transition-colors">
                         <td>
                           <div
                             className={`cursor-pointer tooltip ${
@@ -226,15 +222,15 @@ const Stake = () => {
                         <td>{totalAirdropAmount?.toString() / 1e18 || 0}</td>
                         <td>{stakeMbbbAmount?.toString() / 1e18 || 0}</td>
                         <td>{totalStakeMbbbAmount?.toString() / 1e18 || 0}</td>
-                        <td>{stakePercent?.toString() || 0} %</td>
+                        <td>{stakePercent?.toString() || 0}%</td>
                         <td>{airdropAmount?.toString() / 1e18 || 0}</td>
                         <td>
                           {!amtsv2 || airdropAmount?.toString() == 0 ? (
-                            <>Unavailable</>
+                            <span className="text-gray-400">Unavailable</span>
                           ) : (
                             <WriteButton
                               {...claim}
-                              className="btn btn-success"
+                              className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
                             />
                           )}
                         </td>
@@ -243,8 +239,8 @@ const Stake = () => {
                   })}
                 {!showList && (
                   <tr>
-                    <td colSpan="7" className="text-center py-4 text-gray-500">
-                      No data available
+                    <td colSpan="7" className="text-center py-8 text-gray-400">
+                      No drop history available
                     </td>
                   </tr>
                 )}
@@ -253,17 +249,20 @@ const Stake = () => {
           </div>
         </div>
       </div>
-      <dialog id="depositModal" className="modal font-bold">
-        <div className="modal-box">
-          <div className="grid grid-cols-3">
+
+      <dialog id="depositModal" className="modal">
+        <div className="modal-box bg-white rounded-2xl">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+              Stake BBB
+            </h3>
             <form method="dialog">
-              <button className="btn">X</button>
+              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Stake BBB</h3>
           </div>
 
-          <div className="text-center mt-5">
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto">
+          <div className="space-y-4">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50">
               <input
                 type="number"
                 className="grow"
@@ -286,9 +285,9 @@ const Stake = () => {
                   }
                 }}
               />
-              <div className="font-bold">BBB</div>
+              <div className="font-medium">BBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer font-bold"
+                className="kbd kbd-sm cursor-pointer hover:bg-green-50"
                 onClick={() => {
                   setData({
                     ...data,
@@ -299,40 +298,54 @@ const Stake = () => {
                 max
               </kbd>
             </label>
+            
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Available</span>
+              <span>{(bbbBalance?.toString() || 0) / 1e18} BBB</span>
+            </div>
+
+            {!bbbIsEnough && (
+              <Link 
+                className="text-sm text-green-600 hover:text-green-700 block" 
+                href={dexLink}
+              >
+                Need more BBB?
+              </Link>
+            )}
+
+            {showApprove ? (
+              <WriteButton 
+                {...approve} 
+                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" 
+              />
+            ) : (
+              <WriteButton 
+                {...stake} 
+                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" 
+              />
+            )}
           </div>
-          <div className="text-xs mt-1">
-            Avbl {(bbbBalance?.toString() || 0) / 1e18} BBB
-          </div>
-          {!bbbIsEnough && (
-            <Link className="underline text-xs" href={dexLink}>
-              BBB is not enough ?
-            </Link>
-          )}
-          {showApprove && (
-            <WriteButton {...approve} className="btn mt-5 w-full btn-success" />
-          )}
-          {!showApprove && (
-            <WriteButton {...stake} className="btn mt-5 w-full btn-success" />
-          )}
         </div>
       </dialog>
-      <dialog id="withdrawModal" className="modal font-bold">
-        <div className="modal-box">
-          <div className="grid grid-cols-3">
+
+      <dialog id="withdrawModal" className="modal">
+        <div className="modal-box bg-white rounded-2xl">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+              Unstake BBB
+            </h3>
             <form method="dialog">
-              <button className="btn">X</button>
+              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
             </form>
-            <h3 className="font-bold text-lg text-center mt-2">Unstake BBB</h3>
           </div>
-          <div className="text-center mt-5">
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto">
+
+          <div className="space-y-4">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50">
               <input
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={
-                  data?.mValue >= 0 ? formatEther(data?.mValue) : undefined
-                }
+                value={data?.mValue >= 0 ? formatEther(data?.mValue) : undefined}
                 onChange={(e) => {
                   const newValue = e.target.value;
                   if (!newValue) {
@@ -350,9 +363,9 @@ const Stake = () => {
                   }
                 }}
               />
-              <div className="font-bold">mBBB</div>
+              <div className="font-medium">mBBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer font-bold"
+                className="kbd kbd-sm cursor-pointer hover:bg-green-50"
                 onClick={() => {
                   setData({
                     ...data,
@@ -363,11 +376,17 @@ const Stake = () => {
                 max
               </kbd>
             </label>
+
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Available</span>
+              <span>{(mbbbBalance?.toString() || 0) / 1e18} mBBB</span>
+            </div>
+
+            <WriteButton 
+              {...unStake} 
+              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" 
+            />
           </div>
-          <div className="text-xs mt-1">
-            Avbl {(mbbbBalance?.toString() || 0) / 1e18} mBBB
-          </div>
-          <WriteButton {...unStake} className="btn mt-5 w-full btn-success" />
         </div>
       </dialog>
     </>

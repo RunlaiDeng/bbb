@@ -200,55 +200,259 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div
-          className="bg-[url('/bg.png')]  bg-center w-full"
-          style={{ backgroundPosition: "center calc(50% - 4rem)" }}
-        >
-          <div>
-            <div className="text-center">
-              <div className="text-green-700 text-xs mx-4 sm:text-4xl font-bold">
-                Launch a memecoin that is instantly tradable in one click
-                {/* <Image
-                  src="/title.png"
-                  height={100}
-                  width={300}
-                  alt=""
-                  className="m-auto"
-                  style={{ width: "auto", height: "auto" }}
-                /> */}
-              </div>
-
-              <div
-                className="btn btn-success text-white sm:btn-lg mt-8 mx-4 sm:w-96 hover:bg-white hover:text-green-700 outline outline-2"
-                onClick={() => {
-                  router.push("/launch");
-                }}
-              >
-                Launch Token {">"}
-              </div>
+        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 p-8 rounded-2xl shadow-xl m-4 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+          <div className="text-center">
+            <div className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+              Launch a memecoin that is instantly tradable in one click
             </div>
-          </div>
 
-          <Image
-            src="/banner.png"
-            height="10"
-            width="10000"
-            className="w-full h-20"
-            alt=""
-          />
+            <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+              🚀 Create your own token and start trading immediately
+            </div>
+
+            <button
+              className="btn bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg transform hover:-translate-y-1"
+              onClick={() => {
+                router.push("/launch");
+              }}
+            >
+              Launch Token {">"}
+            </button>
+          </div>
         </div>
 
-        <div className="card m-auto w-full">
-          <div className="card-body p-2">
-            <div className="flex gap-2 text-slate-500 ml-4">
+        <div className="card ">
+          <div className="card-body p-0">
+            <div className="font-bold text-xs gap-2 flex flex-col md:flex-row items-stretch  whitespace-nowrap ">
+              {latestTrade?.index > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                  <div className="card bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100">
+                    <div className="card-body p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 text-green-600"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          Latest Trade
+                        </h3>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Image
+                          height={16}
+                          width={16}
+                          src="/bbb.jpg"
+                          alt={""}
+                          className="rounded-full"
+                        />
+                        <span
+                          className="hover:text-green-600 cursor-pointer transition-colors"
+                          onClick={() => {
+                            router.push("/dashboard/" + latestTrade?.account);
+                          }}
+                        >
+                          {latestTrade?.account?.substr(36)}
+                        </span>
+                        <span
+                          className={
+                            latestTrade?.tradeType === "buy"
+                              ? "text-green-600 font-medium"
+                              : "text-red-600 font-medium"
+                          }
+                        >
+                          {latestTrade?.tradeType === "buy" ? "bought" : "sold"}
+                        </span>
+                        <span className="font-medium">
+                          {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(
+                            2
+                          )}{" "}
+                          XDC
+                        </span>
+                        <span>of</span>
+                        <div
+                          className="hover:text-green-600 cursor-pointer transition-colors flex items-center gap-1"
+                          onClick={() => {
+                            router.push("/swap/" + latestTrade?.token);
+                          }}
+                        >
+                          {latestTradePro?.[1]}
+                          <div className="h-4 w-4 overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src={latestTradePro?.[3]}
+                              alt={""}
+                              className="object-cover w-full h-full rounded-full"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {latestDrop?.index > 0 && (
+                    <div className="card bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100">
+                      <div className="card-body p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-green-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            Latest Creation
+                          </h3>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <Image
+                            height={16}
+                            width={16}
+                            src="/bbb.jpg"
+                            alt={""}
+                            className="rounded-full"
+                          />
+                          <span
+                            className="hover:text-green-600 cursor-pointer transition-colors"
+                            onClick={() => {
+                              router.push("/dashboard/" + latestDrop?.deployer);
+                            }}
+                          >
+                            {latestDrop?.deployer?.substr(36)}
+                          </span>
+                          <span>created</span>
+                          <div
+                            className="hover:text-green-600 cursor-pointer transition-colors flex items-center gap-1"
+                            onClick={() => {
+                              router.push("/swap/" + latestDrop?.token);
+                            }}
+                          >
+                            {latestDrop?.symbol}
+                            <div className="h-4 w-4 overflow-hidden">
+                              <Image
+                                height={400}
+                                width={400}
+                                src={latestDrop?.imageUrl}
+                                alt={""}
+                                className="object-cover w-full h-full rounded-full"
+                              />
+                            </div>
+                          </div>
+                          <span>
+                            on {getDate(latestDrop?.createTime?.toString())}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {showList && latestKing?.index > 0 && (
+                    <div
+                      className="card bg-white cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100"
+                      onClick={() => {
+                        router.push("/swap/" + latestKing?.token);
+                      }}
+                    >
+                      <div className="card-body p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-green-600"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            Market King
+                          </h3>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-10 h-10 rounded-full overflow-hidden">
+                              <Image
+                                height={400}
+                                width={400}
+                                src={
+                                  latestKing?.imageUrl
+                                    ? latestKing?.imageUrl
+                                    : "/didntupload.png"
+                                }
+                                alt={latestKing?.name}
+                                className="object-cover w-full h-full"
+                              />
+                            </div>
+                            <div>
+                              <div className="font-semibold">
+                                {latestKing?.name}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                ${latestKing?.symbol}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-sm">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-gray-500">Market Cap</span>
+                              <span className="font-medium">
+                                $
+                                {(
+                                  (2 *
+                                    xdcPrice *
+                                    latestKing?.xdcAmount?.toString()) /
+                                  1e18
+                                )?.toLocaleString()}
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                              <div
+                                className="bg-green-500 h-1.5 rounded-full"
+                                style={{
+                                  width: `${(
+                                    (100 * latestKing?.xdcAmount?.toString()) /
+                                    latestKing?.maxXdc?.toString()
+                                  )?.toFixed(2)}%`,
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="flex gap-2 text-slate-500 mx-4">
               <div className="ml-auto">
-                <ul className="menu menu-horizontal bg-base-200 rounded-box">
+                <ul className="menu menu-horizontal bg-gray-100 rounded-xl">
                   <li
                     onClick={() => {
-                      setType(1);
+                      setType("1");
+                      localStorage.setItem("type", "1");
                     }}
                   >
-                    <a className={type == 1 ? "focus" : ""}>
+                    <a className={type == 1 ? "bg-green-500 text-white" : ""}>
                       <svg
                         t="1729317230835"
                         viewBox="0 0 1024 1024"
@@ -287,10 +491,11 @@ const Home = () => {
                   </li>
                   <li
                     onClick={() => {
-                      setType(2);
+                      setType("2");
+                      localStorage.setItem("type", "2");
                     }}
                   >
-                    <a className={type == 2 ? "focus" : ""}>
+                    <a className={type == 2 ? "bg-green-500 text-white" : ""}>
                       <svg
                         t="1729317279715"
                         viewBox="0 0 1024 1024"
@@ -310,299 +515,153 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-
-            <div className="font-bold text-xs gap-2 flex flex-col md:flex-row items-stretch px-4 whitespace-nowrap ">
-              {latestTrade?.index > 0 && (
-                <div
-                  role="alert"
-                  className="alert  border-green-700  bg-transparent border-2 w-full p-2 flex items-center "
-                >
-                  <span className="flex gap-2 items-center overflow-auto">
-                    <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                    <span
-                      className="hover:underline cursor-pointer"
-                      onClick={() => {
-                        router.push("/dashboard/" + latestTrade?.account);
-                      }}
-                    >
-                      {latestTrade?.account?.substr(36)}
-                    </span>{" "}
-                    {latestTrade?.tradeType === "buy" && "bought"}
-                    {latestTrade?.tradeType === "sell" && "sold"}{" "}
-                    {(latestTrade?.xdcAmount?.toString() / 1e18)?.toFixed(2)}{" "}
-                    XDC of{" "}
-                    <div
-                      className="hover:underline cursor-pointer"
-                      onClick={() => {
-                        router.push("/swap/" + latestTrade?.token);
-                      }}
-                    >
-                      {latestTradePro?.[1]}
-                    </div>
-                    <div className="h-4 w-4 overflow-hidden">
-                      <Image
-                        height={400}
-                        width={400}
-                        src={latestTradePro?.[3]}
-                        alt={""}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  </span>
-                </div>
-              )}
-              {latestDrop?.index > 0 && (
-                <div
-                  role="alert"
-                  className="alert  border-green-700 bg-transparent border-2 w-full p-2 flex items-center "
-                >
-                  <span className="flex gap-2 items-center overflow-auto">
-                    <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                    <span
-                      className="hover:underline cursor-pointer"
-                      onClick={() => {
-                        router.push("/dashboard/" + latestDrop?.deployer);
-                      }}
-                    >
-                      {latestDrop?.deployer?.substr(36)}
-                    </span>{" "}
-                    created
-                    <div
-                      className="hover:underline cursor-pointer"
-                      onClick={() => {
-                        router.push("/swap/" + latestDrop?.token);
-                      }}
-                    >
-                      {latestDrop?.symbol}
-                    </div>
-                    <div className="h-4 w-4 overflow-hidden">
-                      <Image
-                        height={400}
-                        width={400}
-                        src={latestDrop?.imageUrl}
-                        alt={""}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    on {getDate(latestDrop?.createTime?.toString())}
-                  </span>
-                </div>
-              )}
-            </div>
-            {showList && latestKing?.index > 0 && (
-              <div className="px-4 w-full m-auto ">
-                <div
-                  className={
-                    "card cursor-pointer hover:outline-4 outline outline-green-700 bg-slate-100 card-side m-auto w-full h-24 rainbow-outline mt-2 "
-                  }
-                  onClick={() => {
-                    router.push("/swap/" + latestKing?.token);
-                  }}
-                >
-                  <figure className="w-24 overflow-hidden">
-                    <Image
-                      height={400}
-                      width={400}
-                      src={
-                        latestKing?.imageUrl
-                          ? latestKing?.imageUrl
-                          : "/didntupload.png"
-                      }
-                      alt={latestKing?.name}
-                      className="object-cover w-full h-full"
-                    />
-                  </figure>
-
-                  <div className="card-body text-xs p-2 whitespace-nowrap   overflow-x-auto">
-                    <div className="flex gap-2">
-                      <div className="opacity-50">Created</div>
-
-                      <span
-                        className="hover:underline"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push("/dashboard/" + latestKing?.deployer);
-                        }}
-                      >
-                        {latestKing?.deployer?.substr(36)}
-                      </span>
-                      <span>{getDate(latestKing?.createTime?.toString())}</span>
-                    </div>
-                    <div className=" h-10 font-bold mt-2">
-                      {latestKing?.name} (${latestKing?.symbol})
-                    </div>
-                    <div className="flex gap-2 mt-2">
-                      <span className="opacity-50">Cap</span>
-                      <span>
-                        $
-                        {(
-                          (2 * xdcPrice * latestKing?.xdcAmount?.toString()) /
-                          1e18
-                        )?.toLocaleString()}
-                      </span>
-                      <div className="opacity-50">
-                        (
-                        {(
-                          (100 * latestKing?.xdcAmount?.toString()) /
-                          latestKing?.maxXdc?.toString()
-                        )?.toFixed(2)}
-                        %)
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {!showList && <Loading />}
             {showList && (
-              <div className="p-4 flex items-center gap-2">
-                <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="h-4 w-4 opacity-70"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                      clipRule="evenodd"
+              <div className="p-4">
+                <div className="flex items-center gap-2">
+                  <label className="w-full flex items-center input input-bordered gap-2 input-sm bg-gray-50 rounded-xl focus-within:ring-2 focus-within:ring-green-500 transition-all duration-300">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      className="h-4 w-4 text-gray-400"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <input
+                      type="text"
+                      className="w-full bg-transparent focus:outline-none"
+                      placeholder="Search by address or token symbol"
+                      onChange={(e) => {
+                        setFormData({ ...formData, search: e.target.value });
+                      }}
                     />
-                  </svg>
-                  <input
-                    type="text"
-                    className="w-full"
-                    placeholder="0x or bbb"
-                    onChange={(e) => {
-                      setFormData({ ...formData, search: e.target.value });
-                    }}
-                  />
-                </label>
+                  </label>
 
-                <div
-                  className="btn btn-sm cursor-pointer"
-                  onClick={() => {
-                    if (formData?.search) {
-                      router.push("/swap/" + formData?.search);
-                    } else {
-                      info("please submit token address");
-                    }
-                  }}
-                >
-                  Search
+                  <button
+                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
+                    onClick={() => {
+                      if (formData?.search) {
+                        router.push("/swap/" + formData?.search);
+                      } else {
+                        info("Please enter a token address or symbol");
+                      }
+                    }}
+                  >
+                    Search
+                  </button>
                 </div>
               </div>
             )}
 
             {type == 1 && dropTokens && (
-              <div className="overflow-x-auto">
-                <table className="table">
-                  {/* head */}
+              <div className="overflow-x-auto p-4">
+                <table className="table w-full">
                   <thead>
-                    <tr>
-                      <th className="w-4/8">Coin</th>
-                      <th className="w-1/8 text-right">Price</th>
-                      <th className="w-1/8 text-right">24H Change</th>
-                      {/* <th className="w-1/8 text-right">24h Volume</th> */}
+                    <tr className="bg-gray-50">
+                      <th className="w-4/8 text-gray-600 font-semibold p-4">
+                        Coin
+                      </th>
+                      <th className="w-1/8 text-right text-gray-600 font-semibold p-4">
+                        Price
+                      </th>
+                      <th className="w-1/8 text-right text-gray-600 font-semibold p-4">
+                        24H Change
+                      </th>
                       <th
-                        className="cursor-pointer flex items-center w-1/8 justify-end"
+                        className="cursor-pointer flex items-center w-1/8 justify-end text-gray-600 font-semibold p-4"
                         onClick={() => {
-                          let setSort;
-
-                          if (tokens?.sort == 1) {
-                            setSort = 2;
-                          }
-
-                          if (tokens?.sort == 2) {
-                            setSort = 1;
-                          }
-
+                          let setSort = tokens?.sort == 1 ? 2 : 1;
                           setMarketState((prev) => ({
                             ...prev,
                             tokens: { ...prev.tokens, sort: setSort },
                           }));
                         }}
                       >
-                        Cap{" "}
-                        {
-                          <div>
-                            <svg
-                              viewBox="0 -450 1024 1024"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              p-id="9979"
-                              width="8"
-                              height="8"
-                            >
-                              <path
-                                d="M804.571429 402.285714q0 14.857143-10.857143 25.714286t-25.714286 10.857143H256q-14.857143 0-25.714286-10.857143t-10.857143-25.714286 10.857143-25.714285l256-256q10.857143-10.857143 25.714286-10.857143t25.714286 10.857143l256 256q10.857143 10.857143 10.857143 25.714285z"
-                                p-id="9980"
-                                fill={tokens?.sort == 2 ? "#0e932e" : ""}
-                              ></path>
-                            </svg>
-                            <svg
-                              viewBox="0 450 1024 1024"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              p-id="11004"
-                              width="8"
-                              height="8"
-                            >
-                              <path
-                                d="M804.571429 621.714286q0 14.857143-10.857143 25.714286l-256 256q-10.857143 10.857143-25.714286 10.857143t-25.714286-10.857143l-256-256q-10.857143-10.857143-10.857143-25.714286t10.857143-25.714286 25.714286-10.857143l512 0q14.857143 0 25.714286 10.857143t10.857143 25.714286z"
-                                p-id="11005"
-                                fill={tokens?.sort == 1 ? "#0e932e" : ""}
-                              ></path>
-                            </svg>
-                          </div>
-                        }
+                        Market Cap{" "}
+                        <div className="ml-1">
+                          <svg
+                            viewBox="0 -450 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="8"
+                            height="8"
+                            className={
+                              tokens?.sort == 2
+                                ? "fill-green-600"
+                                : "fill-gray-400"
+                            }
+                          >
+                            <path d="M804.571429 402.285714q0 14.857143-10.857143 25.714286t-25.714286 10.857143H256q-14.857143 0-25.714286-10.857143t-10.857143-25.714286 10.857143-25.714285l256-256q10.857143-10.857143 25.714286-10.857143t25.714286 10.857143l256 256q10.857143 10.857143 10.857143 25.714285z" />
+                          </svg>
+                          <svg
+                            viewBox="0 450 1024 1024"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="8"
+                            height="8"
+                            className={
+                              tokens?.sort == 1
+                                ? "fill-green-600"
+                                : "fill-gray-400"
+                            }
+                          >
+                            <path d="M804.571429 621.714286q0 14.857143-10.857143 25.714286l-256 256q-10.857143 10.857143-25.714286 10.857143t-25.714286-10.857143l-256-256q-10.857143-10.857143-10.857143-25.714286t10.857143-25.714286 25.714286-10.857143l512 0q14.857143 0 25.714286 10.857143t10.857143 25.714286z" />
+                          </svg>
+                        </div>
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
-                      className={"cursor-pointer hover "}
+                      className="hover:bg-green-50 transition-colors duration-200 cursor-pointer border-b"
                       onClick={() => {
                         router.push(dexLink);
                       }}
                     >
-                      <td className="flex gap-2 items-center">
-                        <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
-                          <Image
-                            height={400}
-                            width={400}
-                            src={"/bbb.jpg"}
-                            alt={""}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-
-                        <div className="sm:flex gap-2 items-center ">
-                          <div className="">BBB</div>
-                          <div className="opacity-50 text-xs whitespace-nowrap">
-                            Beny Bad Boy
+                      <td className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full overflow-hidden">
+                            <Image
+                              height={400}
+                              width={400}
+                              src="/bbb.jpg"
+                              alt=""
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                          <div>
+                            <div className="font-semibold">BBB</div>
+                            <div className="text-sm text-gray-500">
+                              Beny Bad Boy
+                            </div>
                           </div>
                         </div>
                       </td>
-                      <td className="text-right">
+                      <td className="text-right p-4 font-medium">
                         ${Number(bbbPrice)?.toFixed(6)}
                       </td>
-                      {/* <td className="text-right">-</td> */}
-                      <td
-                        className={
-                          "text-right " +
-                          (bbbPriceChange24h >= 0
-                            ? "text-green-700"
-                            : "text-red-700")
-                        }
-                      >
-                        {bbbPriceChange24h >= 0 ? "+" : "-"}
-                        {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
+                      <td className="text-right p-4">
+                        <span
+                          className={
+                            bbbPriceChange24h >= 0
+                              ? "text-green-600 font-medium"
+                              : "text-red-600 font-medium"
+                          }
+                        >
+                          {bbbPriceChange24h >= 0 ? "+" : ""}
+                          {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
+                        </span>
                       </td>
-                      <td>
+                      <td className="text-right p-4">
                         <div className="flex gap-2 justify-end items-center">
-                          <div>${Number(bbbCap)?.toLocaleString()}</div>
-                          <div className="opacity-50"> (100.00%)</div>
+                          <div className="font-medium">
+                            ${Number(bbbCap)?.toLocaleString()}
+                          </div>
+                          <div className="text-gray-500">(100.00%)</div>
                         </div>
                       </td>
                     </tr>
@@ -621,54 +680,57 @@ const Home = () => {
                       return (
                         <tr
                           key={item?.index}
-                          className={"cursor-pointer hover"}
+                          className="hover:bg-green-50 transition-colors duration-200 cursor-pointer border-b"
                           onClick={() => {
                             router.push("/swap/" + item?.token);
                           }}
                         >
-                          <td className="flex gap-2 items-center">
-                            <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
-                              <Image
-                                height={400}
-                                width={400}
-                                src={handleSrc(item?.imageUrl)}
-                                alt={item?.name}
-                                className="object-cover w-full h-full"
-                              />
-                            </div>
-
-                            <div className="sm:flex gap-2 items-center ">
-                              <div className="">{item?.symbol}</div>
-                              <div className="opacity-50 text-xs whitespace-nowrap">
-                                {item?.name}
+                          <td className="p-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full overflow-hidden">
+                                <Image
+                                  height={400}
+                                  width={400}
+                                  src={handleSrc(item?.imageUrl)}
+                                  alt={item?.name}
+                                  className="object-cover w-full h-full"
+                                />
+                              </div>
+                              <div>
+                                <div className="font-semibold">
+                                  {item?.symbol}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {item?.name}
+                                </div>
                               </div>
                             </div>
                           </td>
-                          <td className="text-right">
-                            {"$" + (xdcPrice * price * 2)?.toFixed(6)}
+                          <td className="text-right p-4 font-medium">
+                            ${(xdcPrice * price * 2)?.toFixed(6)}
                           </td>
-                          <td
-                            className={
-                              "text-right " +
-                              (priceChangeH24 >= 0
-                                ? "text-green-700"
-                                : "text-red-700")
-                            }
-                          >
-                            {priceChangeH24 >= 0 ? "+" : ""}
-                            {priceChangeH24?.toFixed(2)}%
+                          <td className="text-right p-4">
+                            <span
+                              className={
+                                priceChangeH24 >= 0
+                                  ? "text-green-600 font-medium"
+                                  : "text-red-600 font-medium"
+                              }
+                            >
+                              {priceChangeH24 >= 0 ? "+" : ""}
+                              {priceChangeH24?.toFixed(2)}%
+                            </span>
                           </td>
-                          {/* <td className="text-right">{volume24h}</td> */}
-                          <td>
+                          <td className="text-right p-4">
                             <div className="flex gap-2 justify-end items-center">
-                              <div className="whitespace-nowrap">
-                                {"$" +
-                                  (
-                                    (2 * (xdcPrice * cap)) /
-                                    1e18
-                                  )?.toLocaleString()}{" "}
+                              <div className="font-medium">
+                                $
+                                {(
+                                  (2 * (xdcPrice * cap)) /
+                                  1e18
+                                )?.toLocaleString()}
                               </div>
-                              <div className="opacity-50">
+                              <div className="text-gray-500">
                                 ({percent?.toFixed(2)}%)
                               </div>
                             </div>
@@ -680,31 +742,29 @@ const Home = () => {
                 </table>
               </div>
             )}
+
             {type == 2 && dropTokens && (
-              <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 overflow-auto p-4">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
                 <div
-                  className={
-                    "card cursor-pointer hover:outline-4 hover:outline outline-green-700 bg-slate-100 w-full m-auto sm:m-0 "
-                  }
+                  className="card bg-white hover:shadow-lg transition-all duration-300 rounded-2xl cursor-pointer overflow-hidden border border-gray-100"
                   onClick={() => {
                     router.push(dexLink);
                   }}
                 >
-                  <figure className="overflow-hidden h-80 sm:h-72">
+                  <figure className="aspect-square overflow-hidden">
                     <Image
                       height={400}
                       width={400}
-                      src={"/bbb.jpg"}
-                      alt={""}
-                      className="object-cover w-full h-full"
+                      src="/bbb.jpg"
+                      alt=""
+                      className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
                     />
                   </figure>
-                  <div className="card-body text-xs p-2">
-                    <div className="flex gap-2">
-                      <div className="opacity-50">Created</div>
-
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                      <span>Created by</span>
                       <span
-                        className="hover:underline"
+                        className="hover:text-green-600 cursor-pointer transition-colors"
                         onClick={(e) => {
                           e.stopPropagation();
                           router.push("/dashboard/" + bbbInfo.deployer);
@@ -712,67 +772,83 @@ const Home = () => {
                       >
                         {bbbInfo.deployer?.substr(36)}
                       </span>
-                      <span>{bbbInfo.createTime}</span>
                     </div>
-                    <div className="overflow-auto w-full h-20">
-                      <span className="font-bold">
-                        {bbbInfo.name} (${bbbInfo.symbol}){" "}
-                      </span>
-
-                      <span className="opacity-50">{bbbInfo.description}</span>
+                    <div className="font-bold text-lg mb-2">BBB</div>
+                    <div className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      Beny Bad Boy
                     </div>
-
-                    <div className="flex gap-1 items-center">
-                      <div className="opacity-50">Price</div>
-                      <div className="">
-                        ${Number(bbbPrice)?.toFixed(6)} XDC
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500">Price</span>
+                        <span className="font-medium">
+                          ${Number(bbbPrice)?.toFixed(6)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500">Market Cap</span>
+                        <span className="font-medium">
+                          ${Number(bbbCap)?.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500">24h Change</span>
+                        <span
+                          className={
+                            bbbPriceChange24h >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }
+                        >
+                          {bbbPriceChange24h >= 0 ? "+" : ""}
+                          {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
+                        </span>
                       </div>
                     </div>
-
-                    <div className="flex gap-1 items-center">
-                      <div className="opacity-50">Cap </div>
-                      <div className="">
-                        ${Number(bbbCap)?.toLocaleString()} (100.00%)
+                    <div className="mt-4">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-green-600 h-2 rounded-full"
+                          style={{ width: "100%" }}
+                        ></div>
                       </div>
                     </div>
-
-                    <progress
-                      className="progress progress-success w-full"
-                      value={100}
-                      max="100"
-                    ></progress>
                   </div>
                 </div>
+
                 {dropTokens?.map((item, index) => {
                   const xdcAmount = item?.xdcAmount;
                   const percent =
                     (100 * xdcAmount?.toString()) / item?.maxXdc?.toString();
                   const cap = xdcAmount?.toString();
+                  const tokenFromServer = tokenList?.[index];
+                  const price = Number(tokenFromServer?.price) / 1e18 || 0;
+                  let priceChangeH24 =
+                    Number(tokenFromServer?.priceChangeH24) || 0;
+                  priceChangeH24 =
+                    100 * ((1 + priceChangeH24) * (1 + xdcPriceChange24h) - 1);
+
                   return (
                     <div
-                      className={
-                        "card cursor-pointer hover:outline-4 hover:outline outline-green-700 bg-slate-100 w-full m-auto sm:m-0 "
-                      }
+                      key={item?.index}
+                      className="card bg-white hover:shadow-lg transition-all duration-300 rounded-2xl cursor-pointer overflow-hidden border border-gray-100"
                       onClick={() => {
                         router.push("/swap/" + item?.token);
                       }}
-                      key={item?.index}
                     >
-                      <figure className="overflow-hidden h-80 sm:h-72">
+                      <figure className="aspect-square overflow-hidden">
                         <Image
                           height={400}
                           width={400}
                           src={handleSrc(item?.imageUrl)}
                           alt={item?.name}
-                          className="object-cover w-full h-full"
+                          className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
                         />
                       </figure>
-                      <div className="card-body text-xs p-2">
-                        <div className="flex gap-2">
-                          <div className="opacity-50">Created</div>
-
+                      <div className="p-4">
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                          <span>Created by</span>
                           <span
-                            className="hover:underline"
+                            className="hover:text-green-600 cursor-pointer transition-colors"
                             onClick={(e) => {
                               e.stopPropagation();
                               router.push("/dashboard/" + item?.deployer);
@@ -780,39 +856,48 @@ const Home = () => {
                           >
                             {item?.deployer?.substr(36)}
                           </span>
-                          <span>{getDate(item?.createTime?.toString())}</span>
                         </div>
-                        <div className="overflow-auto w-full h-20">
-                          <span className="font-bold">
-                            {item?.name} (${item?.symbol}){" "}
-                          </span>
-
-                          <span className="opacity-50">
-                            {item?.description}
-                          </span>
+                        <div className="font-bold text-lg mb-2">
+                          {item?.symbol}
                         </div>
-
-                        <div className="flex gap-1 items-center">
-                          <div className="opacity-50">Price</div>
-                          <div className="">
-                            ${(xdcPrice * calculatePrice(cap))?.toFixed(6)}
+                        <div className="text-sm text-gray-600 mb-4 line-clamp-2">
+                          {item?.name}
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-500">Price</span>
+                            <span className="font-medium">
+                              ${(xdcPrice * price * 2)?.toFixed(6)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-500">Market Cap</span>
+                            <span className="font-medium">
+                              ${((2 * xdcPrice * cap) / 1e18)?.toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-500">24h Change</span>
+                            <span
+                              className={
+                                priceChangeH24 >= 0
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }
+                            >
+                              {priceChangeH24 >= 0 ? "+" : ""}
+                              {priceChangeH24?.toFixed(2)}%
+                            </span>
                           </div>
                         </div>
-
-                        <div className="flex gap-1 items-center">
-                          <div className="opacity-50">Cap </div>
-                          <div className="">
-                            {"$" +
-                              ((2 * xdcPrice * cap) / 1e18)?.toLocaleString()}
-                            ({percent?.toFixed(2)}%)
+                        <div className="mt-4">
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-green-600 h-2 rounded-full"
+                              style={{ width: `${percent}%` }}
+                            ></div>
                           </div>
                         </div>
-
-                        <progress
-                          className="progress progress-success w-full"
-                          value={percent}
-                          max="100"
-                        ></progress>
                       </div>
                     </div>
                   );
@@ -821,103 +906,96 @@ const Home = () => {
             )}
 
             {dropTokens?.length > 0 && (
-              <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
-                <li
-                  className={tokens.pageNumber == 1 ? "disabled" : ""}
-                  key={0}
-                  onClick={() => {
-                    setMarketState((prev) => ({
-                      ...prev,
-                      tokens: {
-                        ...prev.tokens,
-                        pageNumber: prev.tokens.pageNumber - 1,
-                      },
-                    }));
-                  }}
-                >
-                  <a style={{ background: "transparent" }}>{"<"}</a>
-                </li>
+              <div className="flex justify-center p-4">
+                <ul className="flex items-center gap-2">
+                  <li
+                    className={`${
+                      tokens.pageNumber == 1
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer hover:bg-green-50"
+                    } rounded-lg`}
+                    onClick={() => {
+                      if (tokens.pageNumber > 1) {
+                        setMarketState((prev) => ({
+                          ...prev,
+                          tokens: {
+                            ...prev.tokens,
+                            pageNumber: prev.tokens.pageNumber - 1,
+                          },
+                        }));
+                      }
+                    }}
+                  >
+                    <a className="px-4 py-2 block">{"<"}</a>
+                  </li>
 
-                {pages?.map((item, index) => {
-                  let showPageItems = false;
-                  if (item == 1 || item == tokens.totalPage) {
-                    showPageItems = true;
-                  }
-                  const pageDiff = Math.abs(tokens.pageNumber - item);
-                  if (pageDiff <= 2) {
-                    showPageItems = true;
-                  }
+                  {pages?.map((item) => {
+                    const showPageItems =
+                      item == 1 ||
+                      item == tokens.totalPage ||
+                      Math.abs(tokens.pageNumber - item) <= 2;
+                    const showPassFront = item == 1 && tokens.pageNumber >= 5;
+                    const showPassBack =
+                      item == tokens?.totalPage &&
+                      tokens.totalPage - tokens.pageNumber >= 4;
 
-                  let showPassFront = false;
+                    if (!showPageItems && !showPassFront && !showPassBack) {
+                      return null;
+                    }
 
-                  if (item == 1 && tokens.pageNumber >= 5) {
-                    showPassFront = true;
-                  }
+                    return (
+                      <li key={item}>
+                        {showPassBack && item === tokens.totalPage && (
+                          <span className="px-2 py-2">...</span>
+                        )}
 
-                  let showPassBack = false;
-
-                  if (
-                    item == tokens?.totalPage &&
-                    tokens.totalPage - tokens.pageNumber >= 4
-                  ) {
-                    showPassBack = true;
-                  }
-
-                  return (
-                    <div key={item} className="flex items-center">
-                      {showPassBack && (
-                        <li className="disabled" key={-1}>
-                          <a style={{ background: "transparent" }}>...</a>
-                        </li>
-                      )}
-
-                      {showPageItems && (
-                        <li
-                          onClick={() => {
-                            setMarketState((prev) => ({
-                              ...prev,
-                              tokens: { ...prev.tokens, pageNumber: item },
-                            }));
-                          }}
-                        >
-                          <a
-                            className={
+                        {showPageItems && (
+                          <button
+                            className={`min-w-[40px] px-4 py-2 rounded-lg ${
                               item == tokens?.pageNumber
-                                ? "focus font-bold"
-                                : ""
-                            }
+                                ? "bg-green-500 text-white"
+                                : "hover:bg-green-50 text-gray-700"
+                            }`}
+                            onClick={() => {
+                              setMarketState((prev) => ({
+                                ...prev,
+                                tokens: { ...prev.tokens, pageNumber: item },
+                              }));
+                            }}
                           >
                             {item}
-                          </a>
-                        </li>
-                      )}
-                      {showPassFront && (
-                        <li className="disabled" key={-1}>
-                          <a style={{ background: "transparent" }}>...</a>
-                        </li>
-                      )}
-                    </div>
-                  );
-                })}
+                          </button>
+                        )}
 
-                <li
-                  className={
-                    tokens.pageNumber == tokens.totalPage ? "disabled" : ""
-                  }
-                  onClick={() => {
-                    setMarketState((prev) => ({
-                      ...prev,
-                      tokens: {
-                        ...prev.tokens,
-                        pageNumber: prev.tokens.pageNumber + 1,
-                      },
-                    }));
-                  }}
-                  key={-3}
-                >
-                  <a style={{ background: "transparent" }}>{">"}</a>
-                </li>
-              </ul>
+                        {showPassFront && item === 1 && (
+                          <span className="px-2 py-2">...</span>
+                        )}
+                      </li>
+                    );
+                  })}
+
+                  <li
+                    className={`${
+                      tokens.pageNumber == tokens.totalPage
+                        ? "opacity-50 cursor-not-allowed"
+                        : "cursor-pointer hover:bg-green-50"
+                    } rounded-lg`}
+                    onClick={() => {
+                      if (tokens.pageNumber < tokens.totalPage) {
+                        setMarketState((prev) => ({
+                          ...prev,
+                          tokens: {
+                            ...prev.tokens,
+                            pageNumber: prev.tokens.pageNumber + 1,
+                          },
+                        }));
+                      }
+                    }}
+                  >
+                    <a className="px-4 py-2 block">{">"}</a>
+                  </li>
+                </ul>
+              </div>
             )}
           </div>
         </div>

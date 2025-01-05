@@ -21,6 +21,7 @@ import {
 import WriteButton from "@/components/WriteButton";
 import { track } from "@vercel/analytics";
 import { useRouter } from "next/router";
+
 const Launch = () => {
   const router = useRouter();
   const chainId = useChainId();
@@ -116,99 +117,109 @@ const Launch = () => {
   };
 
   return (
-    <>
-      <div className="card max-w-lg w-full m-auto">
-        <div className="card-body">
-          <h3 className="font-bold label-text text-center mt-2">
-            Launch token
-          </h3>
-          <div className="text-center mt-5">
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Image <span className="text-green-700">*</span>
-                </span>
-              </div>
+    <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
+      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+          Launch Your Token
+        </h1>
+        <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+          🚀 Create your own token on XDC Network in minutes
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+        <div className="space-y-6">
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text font-semibold text-gray-700">
+                Token Image <span className="text-green-700">*</span>
+              </span>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
               <ImageUpload {...imageUpload} />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Name <span className="text-green-700">*</span>
-                </span>
-                <span className="text-right">
-                  {getBytesLength(formData?.dName)}/20
-                </span>
-              </div>
-              <input
-                type="text"
-                className="input input-bordered w-full "
-                value={formData?.dName}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (getBytesLength(newValue) <= 20) {
-                    setFormData({ ...formData, dName: newValue });
-                  }
-                }}
-              />
-            </label>
-            <label className="form-control w-full">
-              <div className="label">
-                <span className="label-text">
-                  Symbol <span className="text-green-700">*</span>
-                </span>
-                <span className="text-right">
-                  {getBytesLength(formData?.dSymbol)}/10
-                </span>
-              </div>
-              <input
-                type="text"
-                className="input input-bordered w-full"
-                value={formData?.dSymbol}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (getBytesLength(newValue) <= 10) {
-                    let change = { dSymbol: newValue };
-                    if (formData?.maxSymbol != "XDC") {
-                      change = { ...change, maxSymbol: newValue };
-                    }
-                    if (formData?.buySymbol != "XDC") {
-                      change = { ...change, buySymbol: newValue };
-                    }
+            </div>
+          </label>
 
-                    setFormData({
-                      ...formData,
-                      ...change,
-                    });
-                  }
-                }}
-              />
-            </label>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text font-semibold text-gray-700">
+                Token Name <span className="text-green-700">*</span>
+              </span>
+              <span className="text-right text-gray-500">
+                {getBytesLength(formData?.dName)}/20
+              </span>
+            </div>
+            <input
+              type="text"
+              className="input input-bordered w-full bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              value={formData?.dName}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (getBytesLength(newValue) <= 20) {
+                  setFormData({ ...formData, dName: newValue });
+                }
+              }}
+            />
+          </label>
 
-            <label className="form-control">
-              <div className="label">
-                <span className="label-text">
-                  Token Decription <span className="text-green-700">*</span>
-                </span>
-                <span className="text-right">
-                  {getBytesLength(formData?.dDesciption)}/256
-                </span>
-              </div>
-              <textarea
-                className="textarea textarea-bordered h-20"
-                value={formData?.dDesciption}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  if (getBytesLength(newValue) <= 256) {
-                    setFormData({ ...formData, dDesciption: newValue });
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text font-semibold text-gray-700">
+                Token Symbol <span className="text-green-700">*</span>
+              </span>
+              <span className="text-right text-gray-500">
+                {getBytesLength(formData?.dSymbol)}/10
+              </span>
+            </div>
+            <input
+              type="text"
+              className="input input-bordered w-full bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              value={formData?.dSymbol}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (getBytesLength(newValue) <= 10) {
+                  let change = { dSymbol: newValue };
+                  if (formData?.maxSymbol != "XDC") {
+                    change = { ...change, maxSymbol: newValue };
                   }
-                }}
-              ></textarea>
-            </label>
-            <div className="flex items-center mt-2">
-              Max Curve(minimum 1m xdc)
-              <div
-                className="btn btn-xs ml-auto"
+                  if (formData?.buySymbol != "XDC") {
+                    change = { ...change, buySymbol: newValue };
+                  }
+                  setFormData({
+                    ...formData,
+                    ...change,
+                  });
+                }
+              }}
+            />
+          </label>
+
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text font-semibold text-gray-700">
+                Token Description <span className="text-green-700">*</span>
+              </span>
+              <span className="text-right text-gray-500">
+                {getBytesLength(formData?.dDesciption)}/256
+              </span>
+            </div>
+            <textarea
+              className="textarea textarea-bordered h-20 bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              value={formData?.dDesciption}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (getBytesLength(newValue) <= 256) {
+                  setFormData({ ...formData, dDesciption: newValue });
+                }
+              }}
+            ></textarea>
+          </label>
+
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-semibold text-gray-700">Max Curve (minimum 1m XDC)</span>
+              <button
+                className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (formData.maxSymbol == "XDC") {
                     setFormData({
@@ -220,13 +231,12 @@ const Launch = () => {
                   }
                 }}
               >
-                switch to{" "}
-                {formData?.maxSymbol == "XDC" ? formData?.dSymbol : "XDC"}
-              </div>
+                switch to {formData?.maxSymbol == "XDC" ? formData?.dSymbol : "XDC"}
+              </button>
             </div>
 
             {formData?.maxSymbol == "XDC" && (
-              <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+              <label className="input input-bordered flex items-center gap-2 w-full bg-white">
                 <input
                   type="text"
                   className="grow"
@@ -254,11 +264,12 @@ const Launch = () => {
                     }
                   }}
                 />
-                <div className="font-bold">XDC</div>
+                <div className="font-bold text-gray-700">XDC</div>
               </label>
             )}
+
             {formData?.dSymbol == formData?.maxSymbol && (
-              <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
+              <label className="input input-bordered flex items-center gap-2 w-full bg-white">
                 <input
                   type="text"
                   className="grow"
@@ -286,32 +297,35 @@ const Launch = () => {
                     }
                   }}
                 />
-                <div className="font-bold">{formData?.dSymbol}</div>
+                <div className="font-bold text-gray-700">{formData?.dSymbol}</div>
               </label>
             )}
-            <div className="collapse">
-              <input
-                type="checkbox"
-                value={formData?.showOptions}
-                onClick={(e) => {
-                  setFormData({
-                    ...formData,
-                    showOptions: e.target.checked,
-                  });
-                }}
-              />
-              <div className="collapse-title text-left pl-0 text-green-700">
-                Show more options {formData?.showOptions ? "↑" : "↓"}
-              </div>
-              <div className="collapse-content p-0 w-72 sm:w-full">
+          </div>
+
+          <div className="collapse bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-green-100">
+            <input
+              type="checkbox"
+              value={formData?.showOptions}
+              onClick={(e) => {
+                setFormData({
+                  ...formData,
+                  showOptions: e.target.checked,
+                });
+              }}
+            />
+            <div className="collapse-title text-left pl-4 text-green-700 font-semibold">
+              Show more options {formData?.showOptions ? "↑" : "↓"}
+            </div>
+            <div className="collapse-content p-4">
+              <div className="space-y-4">
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text">Website</span>
-                    <span className="text-right">
+                    <span className="label-text font-semibold text-gray-700">Website</span>
+                    <span className="text-right text-gray-500">
                       {getBytesLength(formData?.dWebiste)}/64
                     </span>
                   </div>
-                  <label className="input input-bordered flex items-center gap-2 ">
+                  <label className="input input-bordered flex items-center gap-2 bg-white">
                     https://
                     <input
                       type="text"
@@ -327,14 +341,15 @@ const Launch = () => {
                     />
                   </label>
                 </label>
+
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text">Telegram</span>
-                    <span className="text-right">
+                    <span className="label-text font-semibold text-gray-700">Telegram</span>
+                    <span className="text-right text-gray-500">
                       {getBytesLength(formData?.dTelegram)}/64
                     </span>
                   </div>
-                  <label className="input input-bordered flex items-center gap-2">
+                  <label className="input input-bordered flex items-center gap-2 bg-white">
                     https://t.me/
                     <input
                       type="text"
@@ -350,15 +365,15 @@ const Launch = () => {
                     />
                   </label>
                 </label>
+
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text">Twitter</span>
-                    <span className="text-right">
+                    <span className="label-text font-semibold text-gray-700">Twitter</span>
+                    <span className="text-right text-gray-500">
                       {getBytesLength(formData?.dTwitter)}/64
                     </span>
                   </div>
-
-                  <label className="input input-bordered flex items-center gap-2">
+                  <label className="input input-bordered flex items-center gap-2 bg-white">
                     https://x.com/
                     <input
                       type="text"
@@ -375,124 +390,130 @@ const Launch = () => {
                   </label>
                 </label>
 
-                <div className="flex items-center mt-2">
-                  How many you want buy
-                  <div
-                    className="btn btn-xs ml-auto"
-                    onClick={() => {
-                      if (formData.buySymbol == "XDC") {
-                        setFormData({
-                          ...formData,
-                          buySymbol: formData?.dSymbol,
-                        });
-                      } else {
-                        setFormData({ ...formData, buySymbol: "XDC" });
-                      }
-                    }}
-                  >
-                    switch to{" "}
-                    {formData?.buySymbol == "XDC" ? formData?.dSymbol : "XDC"}
+                <div className="mt-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-semibold text-gray-700">How many you want to buy</span>
+                    <button
+                      className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                      onClick={() => {
+                        if (formData.buySymbol == "XDC") {
+                          setFormData({
+                            ...formData,
+                            buySymbol: formData?.dSymbol,
+                          });
+                        } else {
+                          setFormData({ ...formData, buySymbol: "XDC" });
+                        }
+                      }}
+                    >
+                      switch to {formData?.buySymbol == "XDC" ? formData?.dSymbol : "XDC"}
+                    </button>
                   </div>
+
+                  {formData?.buySymbol == "XDC" && (
+                    <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          formData?.dBuy >= 0
+                            ? formatEther(formData?.dBuy)
+                            : undefined
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setFormData({
+                              ...formData,
+                              dBuy: undefined,
+                              dBuySymbol: undefined,
+                            });
+                          }
+                          if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                            setFormData({
+                              ...formData,
+                              dBuySymbol: parseEther(calculateSupply(newValue)),
+                              dBuy: parseEther(newValue),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-bold text-gray-700">XDC</div>
+                    </label>
+                  )}
+
+                  {formData?.buySymbol == formData?.dSymbol && (
+                    <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+                      <input
+                        type="text"
+                        className="grow"
+                        placeholder="0.00"
+                        value={
+                          formData?.dBuySymbol >= 0
+                            ? formatEther(formData?.dBuySymbol)
+                            : undefined
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (!newValue) {
+                            setFormData({
+                              ...formData,
+                              dBuy: undefined,
+                              dBuySymbol: undefined,
+                            });
+                          }
+                          if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
+                            setFormData({
+                              ...formData,
+                              dBuySymbol: parseEther(newValue),
+                              dBuy: parseEther(calculateXdcAmount(newValue)),
+                            });
+                          }
+                        }}
+                      />
+                      <div className="font-bold text-gray-700">{formData?.dSymbol}</div>
+                    </label>
+                  )}
                 </div>
-                {formData?.buySymbol == "XDC" && (
-                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="0.00"
-                      value={
-                        formData?.dBuy >= 0
-                          ? formatEther(formData?.dBuy)
-                          : undefined
-                      }
-                      onChange={(e) => {
-                        const newValue = e.target.value;
-                        if (!newValue) {
-                          setFormData({
-                            ...formData,
-                            dBuy: undefined,
-                            dBuySymbol: undefined,
-                          });
-                        }
-
-                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                          setFormData({
-                            ...formData,
-                            dBuySymbol: parseEther(calculateSupply(newValue)),
-                            dBuy: parseEther(newValue),
-                          });
-                        }
-                      }}
-                    />
-                    <div className="font-bold">XDC</div>
-                  </label>
-                )}
-                {formData?.buySymbol == formData?.dSymbol && (
-                  <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-                    <input
-                      type="text"
-                      className="grow"
-                      placeholder="0.00"
-                      value={
-                        formData?.dBuySymbol >= 0
-                          ? formatEther(formData?.dBuySymbol)
-                          : undefined
-                      }
-                      onChange={(e) => {
-                        const newValue = e.target.value;
-                        if (!newValue) {
-                          setFormData({
-                            ...formData,
-                            dBuy: undefined,
-                            dBuySymbol: undefined,
-                          });
-                        }
-
-                        if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                          setFormData({
-                            ...formData,
-                            dBuySymbol: parseEther(newValue),
-                            dBuy: parseEther(calculateXdcAmount(newValue)),
-                          });
-                        }
-                      }}
-                    />
-                    <div className="font-bold">{formData?.dSymbol}</div>
-                  </label>
-                )}
               </div>
             </div>
-
-            {/* <div className="text-left text-xs text-slate-500">
-                Cost <span className="text-xl text-black">FREE</span>{" "}
-                <span className="line-through text-slate-500">100</span>{" "}
-                <span className="text-green-700">100% OFF</span>{" XDC"}
-              </div> */}
-            <label className="input input-bordered flex items-center gap-2 w-full m-auto mt-2">
-              Cost
-              <input
-                type="text"
-                className="grow"
-                placeholder={formatEther(totalCost || 0) + " XDC"}
-                disabled
-              />
-              {/* <div className="text-green-700">Free</div> */}
-            </label>
           </div>
-          <div className="mt-1 text-xs">Avbl {balance?.formatted} XDC</div>
-          <Link className="underline text-xs" href={buyXDCLink} target="_blank">
-            XDC is not enough ?
-          </Link>
+
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-lg font-semibold text-gray-700 mb-1">Launch Cost</div>
+                <div className="text-3xl font-bold text-green-600">
+                  {formatEther(totalCost || 0)} XDC
+                </div>
+                <div className="text-sm text-gray-500 mt-1">
+                  Available: {balance?.formatted} XDC
+                </div>
+              </div>
+              <Link
+                className="text-green-600 hover:text-green-700 underline text-sm"
+                href={buyXDCLink}
+                target="_blank"
+              >
+                Need more XDC?
+              </Link>
+            </div>
+          </div>
+
           {!canDrop && (
-            <div className="text-red-700">
-              image, name, symbol, token description are required
+            <div className="text-red-600 bg-red-50 p-4 rounded-xl border border-red-100">
+              ⚠️ Image, name, symbol, and token description are required
             </div>
           )}
 
-          <WriteButton {...drop} className="btn w-full btn-success" />
+          <WriteButton
+            {...drop}
+            className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

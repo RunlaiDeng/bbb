@@ -68,8 +68,8 @@ const Earn = () => {
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
       {/* Total Points Display */}
-      <div className="bg-gradient-to-br from-indigo-600 via-blue-500 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
-        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
           {puser?.weekId} Total Points
         </h1>
         <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
@@ -98,7 +98,7 @@ const Earn = () => {
             <button
               onClick={handleJoinTradeEvent}
               disabled={isSubmitting || !address}
-              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
+              className="cursor-pointer bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
             >
               {isSubmitting ? "Joining..." : "Join Trade Event"}
             </button>
@@ -112,20 +112,20 @@ const Earn = () => {
       {/* Trade to earn points */}
       <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
             {puser?.weekId} Trade to Earn Points
           </h2>
           <Link
             href="/markets"
-            className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
           >
             Go to Trade
           </Link>
         </div>
         <div className="space-y-6">
-          <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl border border-gray-100">
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <p className="text-gray-600 mb-2">Current Points from Trading</p>
-            <p className="text-3xl font-bold text-blue-600">
+            <p className="text-3xl font-bold text-green-600">
               {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
             </p>
           </div>
@@ -140,13 +140,13 @@ const Earn = () => {
       {/* Twitter Tasks */}
       <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
             {puser?.weekId} Twitter Tasks
           </h2>
-          <div className="text-blue-600 font-bold text-lg">Bonus: 10,000 pts</div>
+          <div className="text-green-600 font-bold text-lg">Bonus: 10,000 pts</div>
         </div>
         <div className="space-y-6">
-          <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl border border-gray-100">
+          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-800 mb-1">Link X Account</p>
@@ -166,7 +166,7 @@ const Earn = () => {
                     ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white"
                     : !tradeEventJoined
                     ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-lg transform hover:-translate-y-1"
+                    : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1"
                 } ${
                   linkedTwitter || !tradeEventJoined
                     ? "opacity-50 cursor-not-allowed"
@@ -203,7 +203,7 @@ const Earn = () => {
                     className={`px-6 py-3 rounded-xl transition-all duration-300 ${
                       completed || !tradeEventJoined
                         ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white opacity-50 cursor-not-allowed"
-                        : "bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-lg transform hover:-translate-y-1"
+                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1"
                     }`}
                     onClick={async () => {
                       if (!tradeEventJoined) return;
@@ -229,22 +229,22 @@ const Earn = () => {
       {/* Points Leaderboard */}
       <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
             {puser?.weekId} Points Leaderboard
           </h2>
         </div>
-        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-yellow-200 rounded-xl p-6 mb-6">
+        <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-green-100 rounded-xl p-6 mb-6">
           <div className="flex items-center">
-            <span className="text-amber-500 text-2xl mr-3">🏆</span>
-            <span className="font-semibold text-lg text-amber-700">Weekly Rewards</span>
+            <span className="text-emerald-500 text-2xl mr-3">🏆</span>
+            <span className="font-semibold text-lg text-emerald-700">Weekly Rewards</span>
           </div>
-          <p className="text-amber-600 mt-2 leading-relaxed">
+          <p className="text-emerald-600 mt-2 leading-relaxed">
             Top 10 participants each week will receive special airdrop rewards!
           </p>
         </div>
         <div className="space-y-4">
           {address && rank && (
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 mb-3 transform hover:scale-[1.02] transition-all duration-300">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-green-100 mb-3 transform hover:scale-[1.02] transition-all duration-300">
               <div className="flex items-center space-x-4">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
@@ -261,7 +261,7 @@ const Earn = () => {
                 </div>
                 <div className="font-medium text-gray-700">{formatAddress(address)}</div>
               </div>
-              <div className="font-bold text-xl text-blue-600">
+              <div className="font-bold text-xl text-green-600">
                 {Number(puser?.totalPoint)?.toLocaleString()} pts
               </div>
             </div>
@@ -271,7 +271,7 @@ const Earn = () => {
               key={user.account}
               className={`flex items-center justify-between p-3 rounded-lg ${
                 user.account === address
-                  ? "bg-blue-50 border border-blue-200"
+                  ? "bg-emerald-50 border border-green-200"
                   : "bg-gray-50"
               }`}
             >

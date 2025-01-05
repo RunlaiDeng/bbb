@@ -6,6 +6,7 @@ import MerkleTree from "merkletreejs";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
 import { contracts } from "@/config";
 import Image from "next/image";
+
 const hash = (msgSender, max) => {
   try {
     return keccak256(encodePacked(["address", "uint256"], [msgSender, max]));
@@ -25,17 +26,16 @@ const getTree = (data) => {
   });
   return tree;
 };
+
 const getProof = (list, data) => {
   const tree = getTree(list);
   const leaf = hash(data?.address, data?.max);
   const proof = tree.getHexProof(leaf);
-
   return { proof, root: tree.getHexRoot() };
 };
 
 const AirdropHub = () => {
   const { address } = useAccount();
-
   const chainId = useChainId();
 
   const ccrRewards = contracts[chainId]?.ccrRewards;
@@ -61,78 +61,82 @@ const AirdropHub = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8 text-green-700">
-        Airdrop Hub
-      </h1>
-      <div className="bg-base-200 rounded-2xl shadow-xl p-6 font-bold">
-        <div className="overflow-x-auto">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th className="text-right">Available</th>
-                <th className="text-right">Operation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {airdropList.map((item, index) => {
-                const dataList = item?.dataList;
-                const claimMax = dataList[address] || 0;
-                const { proof: proof0, root: root0 } = getProof(dataList, {
-                  address: address,
-                  max: claimMax,
-                });
+    <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
+      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+          BBBPump Airdrops
+        </h1>
+        <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+          🎁 Claim your BBBPump airdrops and rewards
+        </div>
+      </div>
 
-                console.log(item?.key, root0);
+      <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
+          Available Airdrops
+        </h2>
+        
+        <div className="space-y-4">
+          {airdropList.map((item, index) => {
+            const dataList = item?.dataList;
+            const claimMax = dataList[address] || 0;
+            const { proof: proof0 } = getProof(dataList, {
+              address: address,
+              max: claimMax,
+            });
 
-                const claimBtn = {
-                  buttonName: "claim",
-                  disabled: claimMax == 0,
-                  data: {
-                    ...item.contract,
-                    functionName: "claim",
-                    args: [claimMax, proof0],
-                  },
-                  callback: (confirm) => {
-                    if (confirm) {
-                    }
-                  },
-                };
+            const claimBtn = {
+              buttonName: "Claim",
+              disabled: claimMax == 0,
+              data: {
+                ...item.contract,
+                functionName: "claim",
+                args: [claimMax, proof0],
+              },
+              callback: () => {},
+            };
 
-                return (
-                  <tr
-                    key={index}
-                    className="hover:bg-base-300 transition-colors duration-200"
-                  >
-                    <td className="py-4 text-lg flex items-center gap-1">
-                      <div className="h-8 w-8 overflow-hidden">
-                        <Image
-                          height={400}
-                          width={400}
-                          src={item?.logo}
-                          alt={""}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      {item?.desc}
-                    </td>
-                    <td className="text-right py-4">
-                      <span className="text-lg font-medium text-green-700">
-                        {claimMax * item?.rewards} $BBB
-                      </span>
-                    </td>
-                    <td className="text-right py-4">
-                      <WriteButton
-                        {...claimBtn}
-                        className="btn btn-xs btn-green-700 w-max"
+            return (
+              <div 
+                key={index}
+                className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 hover:shadow-md transition-all duration-300"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-full overflow-hidden bg-white shadow-sm">
+                      <Image
+                        height={400}
+                        width={400}
+                        src={item?.logo}
+                        alt={item?.desc}
+                        className="object-cover w-full h-full"
                       />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-800">{item?.desc}</h3>
+                      <p className="text-sm text-gray-600">
+                        Available: {claimMax * item?.rewards} BBB
+                      </p>
+                    </div>
+                  </div>
+                  <WriteButton
+                    {...claimBtn}
+                    className={`btn btn-sm ${
+                      claimMax == 0
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md transform hover:-translate-y-1"
+                    } transition-all duration-300`}
+                  />
+                </div>
+              </div>
+            );
+          })}
+
+          {airdropList.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              No airdrops available at the moment
+            </div>
+          )}
         </div>
       </div>
     </div>

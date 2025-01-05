@@ -180,7 +180,7 @@ const sendMsg = async (chainid, index, msg, address) => {
 const getTokens = async (
   sort = 1,
   pageNumber = 1,
-  pageSize = 10,
+  pageSize = 11,
   queryList
 ) => {
   return send("getTokens", [sort, pageNumber, pageSize, queryList], {
