@@ -26,11 +26,12 @@ const Earn = () => {
 
   useEffect(() => {
     const checkTradeEvent = async () => {
+      let user;
       if (address) {
-        const user = await rpc.getEarn(address);
-        const leaderboard = await rpc.getEarnLeaderboard();
-        setData({ ...data, user, leaderboard });
+        user = await rpc.getEarn(address);
       }
+      const leaderboard = await rpc.getEarnLeaderboard();
+      setData({ ...data, user, leaderboard });
     };
     checkTradeEvent();
   }, [address]);
@@ -74,7 +75,7 @@ const Earn = () => {
         {tradeEventJoined ? (
           <>
             <div className="text-4xl font-bold mb-2">
-              {Number(puser?.totalPoint||0)?.toLocaleString()}
+              {Number(puser?.totalPoint || 0)?.toLocaleString()}
             </div>
             <div className="text-sm opacity-80 mb-2">
               Earn more points by trading tokens
@@ -108,7 +109,9 @@ const Earn = () => {
       {/* Trade to earn points */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">{puser?.weekId} Trade to Earn Points</h2>
+          <h2 className="text-xl font-bold">
+            {puser?.weekId} Trade to Earn Points
+          </h2>
           <Link
             href="/markets"
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
@@ -120,7 +123,7 @@ const Earn = () => {
           <div className="bg-gray-50 p-4 rounded-lg">
             <p className="text-gray-600">Current Points from Trading</p>
             <p className="text-2xl font-bold">
-              {Number(puser?.tradePoint||0)?.toLocaleString()} pts
+              {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
             </p>
           </div>
           <p className="text-sm text-gray-500">
@@ -159,7 +162,11 @@ const Earn = () => {
                     : !tradeEventJoined
                     ? "bg-gray-400 text-white cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600"
-                } ${linkedTwitter || !tradeEventJoined ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${
+                  linkedTwitter || !tradeEventJoined
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
               >
                 {linkedTwitter ? "Completed" : "Complete"}
               </button>
@@ -217,7 +224,9 @@ const Earn = () => {
       {/* Points Leaderboard */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">{puser?.weekId} Points Leaderboard</h2>
+          <h2 className="text-xl font-bold">
+            {puser?.weekId} Points Leaderboard
+          </h2>
         </div>
         <div className="space-y-3">
           {address && rank && (
