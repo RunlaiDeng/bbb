@@ -413,7 +413,7 @@ const Home = () => {
                           </div>
                           <div className="text-sm">
                             <div className="flex justify-between items-center mb-1">
-                              <span className="text-gray-500">Market Cap</span>
+                              <span className="text-gray-500">Cap</span>
                               <span className="font-medium">
                                 $
                                 {(
@@ -585,7 +585,12 @@ const Home = () => {
                             <div className="font-medium">
                               ${Number(bbbCap)?.toLocaleString()}
                             </div>
-                            <div className="text-gray-500">100.00%</div>
+                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                              <div
+                                className="bg-green-500 h-1.5 rounded-full"
+                                style={{ width: "100%" }}
+                              ></div>
+                            </div>
                           </div>
                         </td>
                       </tr>
@@ -655,8 +660,15 @@ const Home = () => {
                                     1e18
                                   )?.toLocaleString()}
                                 </div>
-                                <div className="text-gray-500">
-                                  {percent?.toFixed(2)}%
+                                <div className="w-full bg-gray-100 rounded-full h-1.5">
+                                  <div
+                                    className="bg-green-500 h-1.5 rounded-full"
+                                    style={{
+                                      width: `${
+                                        percent > 100 ? 100 : percent
+                                      }%`,
+                                    }}
+                                  ></div>
                                 </div>
                               </div>
                             </td>
