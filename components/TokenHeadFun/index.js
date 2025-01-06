@@ -273,7 +273,7 @@ const TokenHeadFun = (props) => {
           </div>
           <div className="text-left text-xs hidden lg:block">
             <div className="flex gap-2 h-6 items-center">
-              <span className="opacity-50">RLD Curve Progress: </span>
+              <span className="opacity-50">Progress: </span>
               <span className="opacity-50">
                 {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(
                   2
@@ -320,7 +320,7 @@ const TokenHeadFun = (props) => {
           </div>
           <div className="text-left text-xs">
             <div className="flex gap-2 h-6 items-center">
-              <span className="opacity-50">RLD Curve Progress: </span>
+              <span className="opacity-50">Progress: </span>
 
               <span className="opacity-50">
                 {((xdcAmount?.toString() * 100) / maxXdc?.toString())?.toFixed(

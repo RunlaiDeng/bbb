@@ -285,7 +285,7 @@ const Swap = () => {
 
   return showData ? (
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-6 m-2">
+      <div className="bg-white rounded-2xl shadow-lg p-2 m-2">
         {graduate ? (
           <TokenHeadPool {...tHeadPool} />
         ) : (
@@ -393,7 +393,7 @@ const Swap = () => {
                 {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
-              <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+              <div className=" bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
                 <TokenSwapFun {...tSwapFun} />
               </div>
             </>
