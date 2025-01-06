@@ -28,6 +28,8 @@ const Stake = () => {
     dTotalSupply: 1000000000,
     dDropPercent: 100,
     drop: 2,
+    showDepositModal: false,
+    showWithdrawModal: false,
   });
 
   const bbb = contracts[chainId]?.bbb;
@@ -138,7 +140,7 @@ const Stake = () => {
                   if (!isConnected) {
                     privyLogin();
                   } else {
-                    document.getElementById("depositModal").showModal();
+                    setData(prev => ({ ...prev, showDepositModal: true }));
                   }
                 }}
               >
@@ -150,7 +152,7 @@ const Stake = () => {
                   if (!isConnected) {
                     privyLogin();
                   } else {
-                    document.getElementById("withdrawModal").showModal();
+                    setData(prev => ({ ...prev, showWithdrawModal: true }));
                   }
                 }}
               >
@@ -250,15 +252,18 @@ const Stake = () => {
         </div>
       </div>
 
-      <dialog id="depositModal" className="modal">
-        <div className="modal-box bg-white rounded-2xl">
+      <div id="depositModal" className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${data.showDepositModal ? '' : 'hidden'}`}>
+        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
               Stake BBB
             </h3>
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
-            </form>
+            <button 
+              className="btn btn-sm btn-circle btn-ghost"
+              onClick={() => setData(prev => ({ ...prev, showDepositModal: false }))}
+            >
+              ✕
+            </button>
           </div>
 
           <div className="space-y-4">
@@ -326,17 +331,20 @@ const Stake = () => {
             )}
           </div>
         </div>
-      </dialog>
+      </div>
 
-      <dialog id="withdrawModal" className="modal">
-        <div className="modal-box bg-white rounded-2xl">
+      <div id="withdrawModal" className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${data.showWithdrawModal ? '' : 'hidden'}`}>
+        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
               Unstake BBB
             </h3>
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost">✕</button>
-            </form>
+            <button 
+              className="btn btn-sm btn-circle btn-ghost"
+              onClick={() => setData(prev => ({ ...prev, showWithdrawModal: false }))}
+            >
+              ✕
+            </button>
           </div>
 
           <div className="space-y-4">
@@ -388,7 +396,7 @@ const Stake = () => {
             />
           </div>
         </div>
-      </dialog>
+      </div>
     </>
   );
 };
