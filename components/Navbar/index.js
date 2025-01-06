@@ -29,6 +29,7 @@ const Navbar = () => {
   useEffect(() => {
     setMount(true);
   }, []);
+
   return (
     mount && (
       <>
@@ -318,9 +319,10 @@ const Navbar = () => {
                         <div
                           className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                           onClick={async () => {
-                            await logout();
                             if (connectorType == "injected") {
-                              disconnect();
+                              info("Please disconnect your wallet manually");
+                            } else {
+                              await logout();
                             }
                             setData({ ...data, showUserItems: false });
                           }}
@@ -555,9 +557,12 @@ const Navbar = () => {
                             <div
                               className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                               onClick={async () => {
-                                await logout();
                                 if (connectorType == "injected") {
-                                  disconnect();
+                                  info(
+                                    "Please disconnect your wallet manually"
+                                  );
+                                } else {
+                                  await logout();
                                 }
                                 setData({ ...data, showUserItems: false });
                               }}

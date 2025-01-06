@@ -4,8 +4,6 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <>
-      {" "}
-
       <footer className="footer p-10">
         <nav>
           <h6 className="footer-title">Community</h6>
