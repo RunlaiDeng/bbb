@@ -46,7 +46,7 @@ const Quests = () => {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span className="text-2xl">💰</span>
-              <h3 className="text-xl font-bold text-gray-800">Earn</h3>
+              <h3 className="text-xl font-bold text-gray-800">Earn Event</h3>
             </div>
             <p className="text-gray-600">
               Trade tokens, follow and retweet on Twitter to earn BBB airdrops

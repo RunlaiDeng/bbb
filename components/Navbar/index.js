@@ -66,19 +66,14 @@ const Navbar = () => {
                 >
                   Trade
                 </Link>
-                <Link
-                  href={"/earn"}
-                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                >
-                  Earn
-                </Link>
+
                 <div className="dropdown dropdown-hover font-bold">
                   <div
                     tabIndex={0}
                     role="button"
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
                   >
-                    More
+                    Earn
                   </div>
                   <ul
                     tabIndex={0}
