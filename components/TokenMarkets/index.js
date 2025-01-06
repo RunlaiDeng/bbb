@@ -145,7 +145,7 @@ const TokenMarkets = (props) => {
             <table className={"table table-" + tableSize}>
               <thead className="sticky top-0 bg-base-100 z-10">
                 <tr>
-                  <th>Coin</th>
+                  <th>Coin / Ca</th>
                   <th className="text-right">Price / 24h</th>
                 </tr>
               </thead>
@@ -186,7 +186,12 @@ const TokenMarkets = (props) => {
                           priority={false}
                         />
                       </div>
-                      BBB
+                      <div className="flex flex-col">
+                        <div>BBB</div>
+                        <div className="text-xs text-gray-500">
+                          {bbbInfo.address.slice(-6)}
+                        </div>
+                      </div>
                     </td>
                     <td className="text-right">
                       <div>${bbbPrice}</div>
@@ -285,7 +290,12 @@ const TokenMarkets = (props) => {
                               />
                             </div>
                           }
-                          {item?.symbol}
+                          <div className="flex flex-col">
+                            <div>{item?.symbol}</div>
+                            <div className="text-xs text-gray-500">
+                              {item?.token?.slice(-6)}
+                            </div>
+                          </div>
                         </td>
                         <td className="text-right">
                           <div>${price}</div>

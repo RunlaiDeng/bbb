@@ -490,7 +490,7 @@ const Home = () => {
                     <thead>
                       <tr className="bg-gray-50">
                         <th className="w-4/8 text-gray-600 font-semibold p-4">
-                          Coin
+                          Coin / Ca
                         </th>
                         <th className="w-4/8 text-right text-gray-600 font-semibold p-4">
                           Price / 24h
@@ -505,7 +505,7 @@ const Home = () => {
                             }));
                           }}
                         >
-                          Cap/Process{" "}
+                          Cap / Process
                           <div className="ml-1">
                             <svg
                               viewBox="0 -450 1024 1024"
@@ -560,7 +560,7 @@ const Home = () => {
                             <div>
                               <div className="font-semibold">BBB</div>
                               <div className="text-sm text-gray-500">
-                                Beny Bad Boy
+                                {bbbInfo.address.slice(-6)}
                               </div>
                             </div>
                           </div>
@@ -631,7 +631,7 @@ const Home = () => {
                                     {item?.symbol}
                                   </div>
                                   <div className="text-sm text-gray-500 whitespace-nowrap">
-                                    {item?.name}
+                                    {item?.token?.slice(-6)}
                                   </div>
                                 </div>
                               </div>
