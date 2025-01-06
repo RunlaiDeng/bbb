@@ -28,16 +28,22 @@ const Earn = () => {
   const [data, setData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const ranks = data?.leaderboard;
+  const rankList = ranks?.list;
+  const totalPage = ranks?.totalPage;
+  const pageSize = ranks?.pageSize;
 
   useEffect(() => {
     const checkTradeEvent = async () => {
       let user = await rpc.getEarn(address);
 
-      const leaderboard = await rpc.getEarnLeaderboard();
+      const leaderboard = await rpc.getEarnLeaderboard(pageNumber, 10);
       setData({ ...data, user, leaderboard });
     };
     checkTradeEvent();
-  }, [address, isSubmitting]);
+  }, [address, isSubmitting, pageNumber]);
 
   const tradeEventJoined = data?.user?.join;
   const tasks = data?.user?.twitterTasks;
@@ -66,9 +72,7 @@ const Earn = () => {
 
   const puser = data?.user;
   const rank = puser?.rank;
-  const pleaderboard = data?.leaderboard?.list;
 
-  console.log(data);
 
   const privyLogin = usePrivyLogin();
 
@@ -286,7 +290,7 @@ const Earn = () => {
             </div>
           )}
           <div className="divider my-1"></div>
-          {pleaderboard?.map((user, index) => (
+          {rankList?.map((user, index) => (
             <div
               key={user.account}
               className={`flex items-center justify-between p-3 rounded-lg ${
@@ -319,6 +323,41 @@ const Earn = () => {
             </div>
           ))}
         </div>
+        
+        {/* Pagination Controls */}
+        {totalPage > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-6">
+            <button
+              onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
+              disabled={pageNumber === 1}
+              className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPage }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setPageNumber(page)}
+                  className={`w-8 h-8 rounded-lg ${
+                    pageNumber === page
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setPageNumber(Math.min(totalPage, pageNumber + 1))}
+              disabled={pageNumber === totalPage}
+              className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
