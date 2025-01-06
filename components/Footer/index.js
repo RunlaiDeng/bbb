@@ -9,7 +9,7 @@ const Footer = () => {
       <footer className="footer p-10">
         <nav>
           <h6 className="footer-title">Community</h6>
-          <div className="grid grid-flow-col sm:grid-cols-4 gap-4">
+          <div className="grid grid-flow-col sm:grid-cols-5 gap-4">
             <div
               className="btn btn-xs"
               onClick={(e) => {
@@ -61,6 +61,21 @@ const Footer = () => {
                   d="M941.3 296.1c-10.3-38.6-40.7-69-79.2-79.3C792.2 198 512 198 512 198s-280.2 0-350.1 18.7C123.3 227 93 257.4 82.7 296 64 366 64 512 64 512s0 146 18.7 215.9c10.3 38.6 40.7 69 79.2 79.3C231.8 826 512 826 512 826s280.2 0 350.1-18.8c38.6-10.3 68.9-40.7 79.2-79.3C960 658 960 512 960 512s0-146-18.7-215.9zM423 646V378l232 133-232 135z"
                   p-id="15726"
                 ></path>
+              </svg>
+            </div>
+            <div
+              className="btn btn-xs"
+              onClick={(e) => {
+                window.open(bbbInfo.substack);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+              >
+                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" fill="currentColor"/>
               </svg>
             </div>
           </div>

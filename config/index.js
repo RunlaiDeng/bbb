@@ -114,7 +114,7 @@ export const bbbInfo = {
   symbol: "BBB",
   imageUrl: "/bbb.jpg",
   description:
-    "$BBB isn’t just a meme; it’s the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we’re rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
+    "$BBB isn't just a meme; it's the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we're rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
   x: "https://x.com/bbbpumpdotfun",
   cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
   coingecko:
@@ -122,6 +122,7 @@ export const bbbInfo = {
   tg: "https://t.me/bbbpump",
   website: "https://bbbpump.fun",
   youtube: "https://www.youtube.com/@bbbpump",
+  substack: "https://bbbpump.substack.com/",
   createTime: "09/06/24",
   deployer: "0x2475Dcd4Fe333bE814Ef7C8f8CE8A1E9B5FcDEA0",
   address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
