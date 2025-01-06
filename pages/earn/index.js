@@ -18,16 +18,13 @@ const Earn = () => {
 
   useEffect(() => {
     const checkTradeEvent = async () => {
-      let user;
-      if (address) {
-        user = await rpc.getEarn(address);
-      }
+      let user = await rpc.getEarn(address);
 
       const leaderboard = await rpc.getEarnLeaderboard();
       setData({ ...data, user, leaderboard });
     };
     checkTradeEvent();
-  }, [address]);
+  }, [address, isSubmitting]);
 
   const tradeEventJoined = data?.user?.join;
   const tasks = data?.user?.twitterTasks;
@@ -73,14 +70,7 @@ const Earn = () => {
         {tradeEventJoined ? (
           <>
             <div className="text-5xl font-bold mb-4 drop-shadow-lg">
-              {Number(puser?.totalPoint || 0)?.toLocaleString()}{" "}
-              <Image
-                src="/favicon.ico"
-                alt="points"
-                width={24}
-                height={24}
-                className="inline-block ml-1"
-              />
+              {Number(puser?.totalPoint || 0)?.toLocaleString()} pts
             </div>
             <div className="text-lg opacity-90 mb-2">
               Earn more points by trading tokens
@@ -128,14 +118,7 @@ const Earn = () => {
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <p className="text-gray-600 mb-2">Current Points from Trading</p>
             <p className="text-3xl font-bold text-green-600">
-              {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
-              <Image
-                src="/favicon.ico"
-                alt="points"
-                width={24}
-                height={24}
-                className="inline-block ml-1"
-              />
+              {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
             </p>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed">
@@ -214,7 +197,7 @@ const Earn = () => {
                     className={`px-6 py-3 rounded-xl transition-all duration-300 ${
                       completed || !tradeEventJoined
                         ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white opacity-50 cursor-not-allowed"
-                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1"
+                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 cursor-pointer "
                     }`}
                     onClick={async () => {
                       if (!tradeEventJoined) return;
@@ -277,14 +260,7 @@ const Earn = () => {
                 </div>
               </div>
               <div className="font-bold text-xl text-green-600">
-                {Number(puser?.totalPoint)?.toLocaleString()}{" "}
-                <Image
-                  src="/favicon.ico"
-                  alt="points"
-                  width={24}
-                  height={24}
-                  className="inline-block ml-1"
-                />
+                {Number(puser?.totalPoint)?.toLocaleString()} pts
               </div>
             </div>
           )}
@@ -314,14 +290,7 @@ const Earn = () => {
                 <div className="font-medium">{formatAddress(user.account)}</div>
               </div>
               <div className="font-bold text-lg">
-                {Number(user.totalPoint)?.toLocaleString()}{" "}
-                <Image
-                  src="/favicon.ico"
-                  alt="points"
-                  width={24}
-                  height={24}
-                  className="inline-block ml-1"
-                />
+                {Number(user.totalPoint)?.toLocaleString()} pts
               </div>
             </div>
           ))}
