@@ -267,7 +267,7 @@ const Earn = () => {
               </span>
             </div>
             <p className="text-emerald-600 mt-2 leading-relaxed">
-              Top 10 participants each week will receive special airdrop
+              Top 3 participants each week will receive special airdrop
               rewards!
             </p>
           </div>
