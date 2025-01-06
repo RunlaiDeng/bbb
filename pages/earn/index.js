@@ -2,6 +2,7 @@ import { useAccount, useChainId } from "wagmi";
 import { useState, useEffect } from "react";
 import { contracts } from "@/config";
 import Link from "next/link";
+import Image from "next/image";
 import rpc from "@/components/Rpc";
 import { usePrivy } from "@privy-io/react-auth";
 
@@ -15,10 +16,12 @@ const Earn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-
   useEffect(() => {
     const checkTradeEvent = async () => {
-      let user= await rpc.getEarn(address);;
+      let user;
+      if (address) {
+        user = await rpc.getEarn(address);
+      }
 
       const leaderboard = await rpc.getEarnLeaderboard();
       setData({ ...data, user, leaderboard });
@@ -55,7 +58,7 @@ const Earn = () => {
   const rank = puser?.rank;
   const pleaderboard = data?.leaderboard?.list;
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
@@ -70,7 +73,14 @@ const Earn = () => {
         {tradeEventJoined ? (
           <>
             <div className="text-5xl font-bold mb-4 drop-shadow-lg">
-              {Number(puser?.totalPoint || 0)?.toLocaleString()}
+              {Number(puser?.totalPoint || 0)?.toLocaleString()}{" "}
+              <Image
+                src="/favicon.ico"
+                alt="points"
+                width={24}
+                height={24}
+                className="inline-block ml-1"
+              />
             </div>
             <div className="text-lg opacity-90 mb-2">
               Earn more points by trading tokens
@@ -118,7 +128,14 @@ const Earn = () => {
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <p className="text-gray-600 mb-2">Current Points from Trading</p>
             <p className="text-3xl font-bold text-green-600">
-              {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
+              {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
+              <Image
+                src="/favicon.ico"
+                alt="points"
+                width={24}
+                height={24}
+                className="inline-block ml-1"
+              />
             </p>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed">
@@ -135,7 +152,9 @@ const Earn = () => {
           <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
             {puser?.weekId} Twitter Tasks
           </h2>
-          <div className="text-green-600 font-bold text-lg">Bonus: 10,000 pts</div>
+          <div className="text-green-600 font-bold text-lg">
+            Bonus: 10,000 cps
+          </div>
         </div>
         <div className="space-y-6">
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
@@ -228,7 +247,9 @@ const Earn = () => {
         <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-green-100 rounded-xl p-6 mb-6">
           <div className="flex items-center">
             <span className="text-emerald-500 text-2xl mr-3">🏆</span>
-            <span className="font-semibold text-lg text-emerald-700">Weekly Rewards</span>
+            <span className="font-semibold text-lg text-emerald-700">
+              Weekly Rewards
+            </span>
           </div>
           <p className="text-emerald-600 mt-2 leading-relaxed">
             Top 10 participants each week will receive special airdrop rewards!
@@ -251,10 +272,19 @@ const Earn = () => {
                 >
                   {rank}
                 </div>
-                <div className="font-medium text-gray-700">{formatAddress(address)}</div>
+                <div className="font-medium text-gray-700">
+                  {formatAddress(address)}
+                </div>
               </div>
               <div className="font-bold text-xl text-green-600">
-                {Number(puser?.totalPoint)?.toLocaleString()} pts
+                {Number(puser?.totalPoint)?.toLocaleString()}{" "}
+                <Image
+                  src="/favicon.ico"
+                  alt="points"
+                  width={24}
+                  height={24}
+                  className="inline-block ml-1"
+                />
               </div>
             </div>
           )}
@@ -284,7 +314,14 @@ const Earn = () => {
                 <div className="font-medium">{formatAddress(user.account)}</div>
               </div>
               <div className="font-bold text-lg">
-                {Number(user.totalPoint)?.toLocaleString()} pts
+                {Number(user.totalPoint)?.toLocaleString()}{" "}
+                <Image
+                  src="/favicon.ico"
+                  alt="points"
+                  width={24}
+                  height={24}
+                  className="inline-block ml-1"
+                />
               </div>
             </div>
           ))}
