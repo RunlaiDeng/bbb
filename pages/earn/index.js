@@ -15,18 +15,10 @@ const Earn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  // Mock leaderboard data - replace with actual data from API/contract
-  const [leaderboard] = useState([
-    { address: "0x1234...5678", points: 25000, rank: 1 },
-    { address: "0x8765...4321", points: 18500, rank: 2 },
-    { address: "0x9876...1234", points: 15200, rank: 3 },
-    { address: "0x4321...8765", points: 12800, rank: 4 },
-    { address: "0x5678...9012", points: 10500, rank: 5 },
-  ]);
 
   useEffect(() => {
     const checkTradeEvent = async () => {
-      let user;
+      let user= await rpc.getEarn(address);;
       if (address) {
         user = await rpc.getEarn(address);
       }
@@ -64,6 +56,8 @@ const Earn = () => {
   const puser = data?.user;
   const rank = puser?.rank;
   const pleaderboard = data?.leaderboard?.list;
+
+  console.log(data)
 
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
