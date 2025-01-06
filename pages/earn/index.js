@@ -75,9 +75,7 @@ const Earn = () => {
             <div className="text-lg opacity-90 mb-2">
               Earn more points by trading tokens
             </div>
-            <div className="text-sm opacity-80 italic mb-3">
-              (Points are updated every 5 minutes)
-            </div>
+
             {completedTasks?.length === tasks?.length && tasks?.length > 0 && (
               <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-xl mt-3 shadow-lg">
                 🌟 1.5x Points Multiplier Active!
@@ -240,26 +238,24 @@ const Earn = () => {
         </div>
         <div className="space-y-4">
           {address && rank && (
-            <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border border-green-100 mb-3 transform hover:scale-[1.02] transition-all duration-300">
-              <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-green-200">
+              <div className="flex items-center space-x-3">
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-md ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     rank == 1
-                      ? "bg-gradient-to-br from-yellow-400 to-amber-500"
+                      ? "bg-yellow-400"
                       : rank == 2
-                      ? "bg-gradient-to-br from-gray-300 to-gray-400"
+                      ? "bg-gray-300"
                       : rank == 3
-                      ? "bg-gradient-to-br from-amber-600 to-amber-700"
-                      : "bg-gradient-to-br from-gray-200 to-gray-300"
-                  } text-white font-bold text-lg`}
+                      ? "bg-amber-600"
+                      : "bg-gray-200"
+                  } text-white font-bold`}
                 >
                   {rank}
                 </div>
-                <div className="font-medium text-gray-700">
-                  {formatAddress(address)}
-                </div>
+                <div className="font-medium">{formatAddress(address)}</div>
               </div>
-              <div className="font-bold text-xl text-green-600">
+              <div className="font-bold text-lg">
                 {Number(puser?.totalPoint)?.toLocaleString()} pts
               </div>
             </div>
@@ -276,11 +272,11 @@ const Earn = () => {
               <div className="flex items-center space-x-3">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    index === 0
+                    user.rank == 1
                       ? "bg-yellow-400"
-                      : index === 1
+                      : user.rank == 2
                       ? "bg-gray-300"
-                      : index === 2
+                      : user.rank == 3
                       ? "bg-amber-600"
                       : "bg-gray-200"
                   } text-white font-bold`}
