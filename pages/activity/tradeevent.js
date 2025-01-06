@@ -75,7 +75,7 @@ const TradeEvent = () => {
                 className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={privyLogin}
               >
-                Connect Wallet
+                Log in
               </button>
             )}
           </div>
@@ -86,10 +86,12 @@ const TradeEvent = () => {
         <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
           Event Details
         </h2>
-        
+
         <div className="space-y-6">
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
-            <h3 className="font-semibold text-gray-800 mb-4">Eligibility Requirements</h3>
+            <h3 className="font-semibold text-gray-800 mb-4">
+              Eligibility Requirements
+            </h3>
             <div className="space-y-3">
               <div className="flex items-start gap-3 text-gray-700">
                 <span className="text-green-500">•</span>
@@ -97,7 +99,10 @@ const TradeEvent = () => {
               </div>
               <div className="flex items-start gap-3 text-gray-700">
                 <span className="text-green-500">•</span>
-                <span>Trade at least $50 worth of tokens (excluding BBB tokens and graduated tokens)</span>
+                <span>
+                  Trade at least $50 worth of tokens (excluding BBB tokens and
+                  graduated tokens)
+                </span>
               </div>
               <div className="flex items-start gap-3 text-gray-700">
                 <span className="text-green-500">•</span>
@@ -107,7 +112,9 @@ const TradeEvent = () => {
           </div>
 
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
-            <h3 className="font-semibold text-gray-800 mb-4">Event Information</h3>
+            <h3 className="font-semibold text-gray-800 mb-4">
+              Event Information
+            </h3>
             <div className="space-y-3 text-gray-700">
               <div className="flex justify-between items-center">
                 <span className="font-medium">Event Period:</span>
@@ -118,7 +125,8 @@ const TradeEvent = () => {
                 <span>After event ends</span>
               </div>
               <div className="text-sm text-gray-500 mt-4 italic">
-                BBBPump reserves all rights for final interpretation of this event
+                BBBPump reserves all rights for final interpretation of this
+                event
               </div>
             </div>
           </div>

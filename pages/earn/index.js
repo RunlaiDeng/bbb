@@ -5,9 +5,22 @@ import Link from "next/link";
 import Image from "next/image";
 import rpc from "@/components/Rpc";
 import { usePrivy } from "@privy-io/react-auth";
+import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+
+const FavIcon = () => (
+  <div className="bg-white rounded-full p-1.5 inline-flex hover:scale-125 transition-transform duration-300 cursor-pointer mr-2">
+    <Image
+      src="/favicon.ico"
+      width={32}
+      height={32}
+      alt="Fav Icon"
+      className="inline-block"
+    />
+  </div>
+);
 
 const Earn = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const { user, linkTwitter } = usePrivy();
   const linkedTwitter = user?.twitter;
@@ -57,6 +70,8 @@ const Earn = () => {
 
   console.log(data);
 
+  const privyLogin = usePrivyLogin();
+
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
       {/* Total Points Display */}
@@ -69,8 +84,10 @@ const Earn = () => {
         </div>
         {tradeEventJoined ? (
           <>
-            <div className="text-5xl font-bold mb-4 drop-shadow-lg">
-              {Number(puser?.totalPoint || 0)?.toLocaleString()} pts
+            <div className="text-5xl font-bold mb-4 drop-shadow-lg flex items-center justify-center">
+              <FavIcon />
+              {Number(puser?.totalPoint || 0)?.toLocaleString()}{" "}
+              <span className="ml-2 text-sm">cps</span>
             </div>
             <div className="text-lg opacity-90 mb-2">
               Earn more points by trading tokens
@@ -85,13 +102,23 @@ const Earn = () => {
         ) : (
           <div className="mt-6">
             {error && <div className="text-red-300 mb-3">{error}</div>}
-            <button
-              onClick={handleJoinTradeEvent}
-              disabled={isSubmitting || !address}
-              className="cursor-pointer bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
-            >
-              {isSubmitting ? "Joining..." : "Join Trade Event"}
-            </button>
+            {isConnected && (
+              <button
+                onClick={handleJoinTradeEvent}
+                disabled={isSubmitting || !address}
+                className="cursor-pointer bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
+              >
+                {isSubmitting ? "Joining..." : "Join Trade Event"}
+              </button>
+            )}
+            {!isConnected && (
+              <button
+                onClick={privyLogin}
+                className="cursor-pointer bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all disabled:opacity-50 shadow-lg transform hover:-translate-y-1"
+              >
+                Log in
+              </button>
+            )}
             <div className="text-sm opacity-90 mt-4">
               Join the trade event to start earning points
             </div>
@@ -115,8 +142,10 @@ const Earn = () => {
         <div className="space-y-6">
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <p className="text-gray-600 mb-2">Current Points from Trading</p>
-            <p className="text-3xl font-bold text-green-600">
-              {Number(puser?.tradePoint || 0)?.toLocaleString()} pts
+            <p className="text-3xl font-bold text-green-600 flex items-center">
+              <FavIcon />
+              {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
+              <span className="ml-2 text-sm">cps</span>
             </p>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed">
@@ -134,7 +163,7 @@ const Earn = () => {
             {puser?.weekId} Twitter Tasks
           </h2>
           <div className="text-green-600 font-bold text-lg">
-            Bonus: 10,000 cps
+            Bonus: 10,000 <span className="ml-1 text-sm">cps</span>
           </div>
         </div>
         <div className="space-y-6">
@@ -154,15 +183,9 @@ const Earn = () => {
                 }}
                 disabled={linkedTwitter || !tradeEventJoined}
                 className={`px-6 py-3 rounded-xl transition-all duration-300 ${
-                  linkedTwitter
-                    ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white"
-                    : !tradeEventJoined
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1"
-                } ${
                   linkedTwitter || !tradeEventJoined
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
+                    ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white opacity-50 cursor-not-allowed"
+                    : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1"
                 }`}
               >
                 {linkedTwitter ? "Completed" : "Complete"}
@@ -255,11 +278,14 @@ const Earn = () => {
                 </div>
                 <div className="font-medium">{formatAddress(address)}</div>
               </div>
-              <div className="font-bold text-lg">
-                {Number(puser?.totalPoint)?.toLocaleString()} pts
+              <div className="font-bold text-lg flex items-center">
+                <FavIcon />
+                {Number(puser?.totalPoint)?.toLocaleString()}{" "}
+                <span className="ml-2 text-sm">cps</span>
               </div>
             </div>
           )}
+          <div className="divider my-1"></div>
           {pleaderboard?.map((user, index) => (
             <div
               key={user.account}
@@ -285,8 +311,10 @@ const Earn = () => {
                 </div>
                 <div className="font-medium">{formatAddress(user.account)}</div>
               </div>
-              <div className="font-bold text-lg">
-                {Number(user.totalPoint)?.toLocaleString()} pts
+              <div className="font-bold text-lg flex items-center">
+                <FavIcon />
+                {Number(user.totalPoint)?.toLocaleString()}{" "}
+                <span className="ml-2 text-sm">cps</span>
               </div>
             </div>
           ))}
