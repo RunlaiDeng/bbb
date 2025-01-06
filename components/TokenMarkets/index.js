@@ -146,8 +146,7 @@ const TokenMarkets = (props) => {
               <thead className="sticky top-0 bg-base-100 z-10">
                 <tr>
                   <th>Coin</th>
-                  <th className="text-right">Price</th>
-                  <th className="text-right">24h change</th>
+                  <th className="text-right">Price / 24h</th>
                 </tr>
               </thead>
 
@@ -189,17 +188,12 @@ const TokenMarkets = (props) => {
                       </div>
                       BBB
                     </td>
-                    <td className="text-right">${bbbPrice}</td>
-                    <td
-                      className={
-                        "text-right " +
-                        (bbbPriceChange24h >= 0
-                          ? "text-green-700"
-                          : "text-red-700")
-                      }
-                    >
-                      {bbbPriceChange24h >= 0 ? "+" : ""}
-                      {Number(bbbPriceChange24h)?.toFixed(2)}%
+                    <td className="text-right">
+                      <div>${bbbPrice}</div>
+                      <div className={bbbPriceChange24h >= 0 ? "text-green-700" : "text-red-700"}>
+                        {bbbPriceChange24h >= 0 ? "+" : ""}
+                        {Number(bbbPriceChange24h)?.toFixed(2)}%
+                      </div>
                     </td>
                   </tr>
                 )}
@@ -293,22 +287,19 @@ const TokenMarkets = (props) => {
                           }
                           {item?.symbol}
                         </td>
-                        <td className="text-right">${price}</td>
-                        <td
-                          className={
-                            "text-right " +
-                            (changeH24 >= 0 ? "text-green-700" : "text-red-700")
-                          }
-                        >
-                          {changeH24 >= 0 ? "+" : ""}
-                          {changeH24}%
+                        <td className="text-right">
+                          <div>${price}</div>
+                          <div className={changeH24 >= 0 ? "text-green-700" : "text-red-700"}>
+                            {changeH24 >= 0 ? "+" : ""}
+                            {changeH24}%
+                          </div>
                         </td>
                       </tr>
                     );
                   })
                 ) : (
                   <tr>
-                    <td colSpan="3" className="text-center py-4 text-gray-500">
+                    <td colSpan="2" className="text-center py-4 text-gray-500">
                       No data available
                     </td>
                   </tr>

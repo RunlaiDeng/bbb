@@ -492,14 +492,11 @@ const Home = () => {
                         <th className="w-4/8 text-gray-600 font-semibold p-4">
                           Coin
                         </th>
-                        <th className="w-1/8 text-right text-gray-600 font-semibold p-4">
-                          Price
-                        </th>
-                        <th className="w-1/8 text-right text-gray-600 font-semibold p-4">
-                          24H Change
+                        <th className="w-4/8 text-right text-gray-600 font-semibold p-4">
+                          Price / 24h
                         </th>
                         <th
-                          className="cursor-pointer flex items-center w-1/8 justify-end text-gray-600 font-semibold p-4"
+                          className="cursor-pointer hidden md:flex items-center w-1/8 justify-end text-gray-600 font-semibold p-4"
                           onClick={() => {
                             let setSort = tokens?.sort == 1 ? 2 : 1;
                             setMarketState((prev) => ({
@@ -508,7 +505,7 @@ const Home = () => {
                             }));
                           }}
                         >
-                          Market Cap{" "}
+                          Cap/Process{" "}
                           <div className="ml-1">
                             <svg
                               viewBox="0 -450 1024 1024"
@@ -568,27 +565,27 @@ const Home = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="text-right p-4 font-medium">
-                          ${Number(bbbPrice)?.toFixed(6)}
-                        </td>
                         <td className="text-right p-4">
-                          <span
+                          <div className="font-medium">
+                            ${Number(bbbPrice)?.toFixed(6)}
+                          </div>
+                          <div
                             className={
                               bbbPriceChange24h >= 0
-                                ? "text-green-600 font-medium"
-                                : "text-red-600 font-medium"
+                                ? "text-green-600 font-medium text-sm"
+                                : "text-red-600 font-medium text-sm"
                             }
                           >
                             {bbbPriceChange24h >= 0 ? "+" : "-"}
                             {Math.abs(bbbPriceChange24h * 100)?.toFixed(2)}%
-                          </span>
+                          </div>
                         </td>
-                        <td className="text-right p-4">
-                          <div className="flex gap-2 justify-end items-center">
+                        <td className="hidden md:table-cell text-right p-4">
+                          <div className="flex flex-col gap-1 items-end">
                             <div className="font-medium">
                               ${Number(bbbCap)?.toLocaleString()}
                             </div>
-                            <div className="text-gray-500">(100.00%)</div>
+                            <div className="text-gray-500">100.00%</div>
                           </div>
                         </td>
                       </tr>
@@ -634,23 +631,23 @@ const Home = () => {
                                 </div>
                               </div>
                             </td>
-                            <td className="text-right p-4 font-medium">
-                              ${(xdcPrice * price * 2)?.toFixed(6)}
-                            </td>
                             <td className="text-right p-4">
-                              <span
+                              <div className="font-medium">
+                                ${(xdcPrice * price * 2)?.toFixed(6)}
+                              </div>
+                              <div
                                 className={
                                   priceChangeH24 >= 0
-                                    ? "text-green-600 font-medium"
-                                    : "text-red-600 font-medium"
+                                    ? "text-green-600 font-medium text-sm"
+                                    : "text-red-600 font-medium text-sm"
                                 }
                               >
                                 {priceChangeH24 >= 0 ? "+" : ""}
                                 {priceChangeH24?.toFixed(2)}%
-                              </span>
+                              </div>
                             </td>
-                            <td className="text-right p-4">
-                              <div className="flex gap-2 justify-end items-center">
+                            <td className="hidden md:table-cell text-right p-4">
+                              <div className="flex flex-col gap-1 items-end">
                                 <div className="font-medium">
                                   $
                                   {(
@@ -659,7 +656,7 @@ const Home = () => {
                                   )?.toLocaleString()}
                                 </div>
                                 <div className="text-gray-500">
-                                  ({percent?.toFixed(2)}%)
+                                  {percent?.toFixed(2)}%
                                 </div>
                               </div>
                             </td>
