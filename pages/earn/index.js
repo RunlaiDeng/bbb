@@ -19,9 +19,7 @@ const Earn = () => {
   useEffect(() => {
     const checkTradeEvent = async () => {
       let user= await rpc.getEarn(address);;
-      if (address) {
-        user = await rpc.getEarn(address);
-      }
+
       const leaderboard = await rpc.getEarnLeaderboard();
       setData({ ...data, user, leaderboard });
     };
