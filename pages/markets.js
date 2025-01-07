@@ -413,15 +413,9 @@ const Home = () => {
                           </div>
                           <div className="text-sm">
                             <div className="flex justify-between items-center mb-1">
-                              <span className="text-gray-500">Cap</span>
+                              <span className="text-gray-500">Process</span>
                               <span className="font-medium">
-                                $
-                                {(
-                                  (2 *
-                                    xdcPrice *
-                                    latestKing?.xdcAmount?.toString()) /
-                                  1e18
-                                )?.toLocaleString()}
+                                {((100 * latestKing?.xdcAmount?.toString()) / latestKing?.maxXdc?.toString())?.toFixed(2)}%
                               </span>
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-1.5">
@@ -505,7 +499,7 @@ const Home = () => {
                             }));
                           }}
                         >
-                          Cap / Process
+                          Process
                           <div className="ml-1">
                             <svg
                               viewBox="0 -450 1024 1024"
@@ -583,7 +577,7 @@ const Home = () => {
                         <td className="hidden md:table-cell text-right p-4">
                           <div className="flex flex-col gap-1 items-end">
                             <div className="font-medium">
-                              ${Number(bbbCap)?.toLocaleString()}
+                              100%
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-1.5">
                               <div
@@ -654,11 +648,7 @@ const Home = () => {
                             <td className="hidden md:table-cell text-right p-4">
                               <div className="flex flex-col gap-1 items-end">
                                 <div className="font-medium">
-                                  $
-                                  {(
-                                    (2 * (xdcPrice * cap)) /
-                                    1e18
-                                  )?.toLocaleString()}
+                                  {percent > 100 ? 100 : percent?.toFixed(2)}%
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-1.5">
                                   <div

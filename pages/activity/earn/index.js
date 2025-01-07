@@ -249,6 +249,12 @@ const Earn = () => {
               * Complete all Twitter tasks to get 10,000 bonus points and 1.5x
               points multiplier!
             </p>
+            <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+              <p className="text-sm text-gray-600">
+                <span className="font-semibold">Example:</span> If a user completes all Twitter tasks and trades 10,000 XDC,
+                they will receive: 1.5 × (10,000 trade points + 10,000 bonus points) = 30,000 total points
+              </p>
+            </div>
           </div>
         </div>
 
