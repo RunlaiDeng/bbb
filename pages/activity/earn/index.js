@@ -84,10 +84,10 @@ const Earn = () => {
         {/* Total Points Display */}
         <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
           <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
-            {puser?.weekId} Total Points
+            {puser?.weekId} Total cps
           </h1>
           <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
-            🎯 All points earned will be counted towards BBB airdrop in Q3-Q4
+            🎯 All cps earned will be counted towards BBB airdrop in Q3-Q4
             2025
           </div>
           {tradeEventJoined ? (
@@ -98,7 +98,7 @@ const Earn = () => {
                 <span className="ml-2 text-sm">cps</span>
               </div>
               <div className="text-lg opacity-90 mb-2">
-                Earn more points by trading tokens
+                Earn more cps by trading tokens
               </div>
 
               {completedTasks?.length === tasks?.length &&
@@ -129,7 +129,7 @@ const Earn = () => {
                 </button>
               )}
               <div className="text-sm opacity-90 mt-4">
-                Join the trade event to start earning points
+                Join the trade event to start earning cps
               </div>
             </div>
           )}
@@ -139,7 +139,7 @@ const Earn = () => {
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
-              {puser?.weekId} Trade to Earn Points
+              {puser?.weekId} Trade to Earn cps
             </h2>
             <Link
               href="/markets"
@@ -150,7 +150,7 @@ const Earn = () => {
           </div>
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
-              <p className="text-gray-600 mb-2">Current Points from Trading</p>
+              <p className="text-gray-600 mb-2">Current cps from Trading</p>
               <p className="text-3xl font-bold text-green-600 flex items-center">
                 <FavIcon />
                 {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
@@ -158,9 +158,9 @@ const Earn = () => {
               </p>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              * Only trading non-BBB and non-graduated tokens will earn points.
-              Higher trading volume earns more points. Trading amount greater
-              than 1 XDC will be counted for points.
+              * Only trading non-BBB and non-graduated tokens will earn cps.
+              Higher trading volume earns more cps. Trading amount greater
+              than 1 XDC will be counted for cps.
             </p>
           </div>
         </div>
@@ -246,13 +246,13 @@ const Earn = () => {
               })}
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              * Complete all Twitter tasks to get 10,000 bonus points and 1.5x
-              points multiplier!
+              * Complete all Twitter tasks to get 10,000 bonus cps and 1.5x
+              cps multiplier!
             </p>
             <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
               <p className="text-sm text-gray-600">
                 <span className="font-semibold">Example:</span> If a user completes all Twitter tasks and trades 10,000 XDC,
-                they will receive: 1.5 × (10,000 trade points + 10,000 bonus points) = 30,000 total points
+                they will receive: 1.5 × (10,000 trade cps + 10,000 bonus cps) = 30,000 total cps
               </p>
             </div>
           </div>
