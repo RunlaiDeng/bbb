@@ -115,7 +115,7 @@ const AirdropHub = () => {
                     <div>
                       <h3 className="font-bold text-gray-800">{item?.desc}</h3>
                       <p className="text-sm text-gray-600">
-                        Available: {claimMax * item?.rewards} BBB
+                        Available: {claimMax * item?.rewards} mBBB
                       </p>
                     </div>
                   </div>
