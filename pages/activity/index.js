@@ -40,7 +40,7 @@ const Quests = () => {
         <div 
           className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer group p-6 border border-green-100"
           onClick={() => {
-            router.push("/earn");
+            router.push("/activity/earn");
           }}
         >
           <div className="space-y-2">
