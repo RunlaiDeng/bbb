@@ -178,7 +178,7 @@ const sendMsg = async (chainid, index, msg, address) => {
  * @returns {Promise<Object>} Paginated tokens data
  */
 const getTokens = async (
-  sort = 1,
+  sort = 3,
   pageNumber = 1,
   pageSize = 11,
   queryList
