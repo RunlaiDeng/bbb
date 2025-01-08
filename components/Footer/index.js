@@ -95,6 +95,9 @@ const Footer = () => {
           <Link className="link link-hover" href={"/farm"}>
             Farm
           </Link>
+          <Link className="link link-hover" href={"/bbbchain"}>
+            BBB Chain
+          </Link>
         </nav>
         <nav>
           <h6 className="footer-title">Learn</h6>
