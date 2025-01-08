@@ -44,9 +44,9 @@ const MobileNav = () => {
               <span className="ml-2">Stake</span>
             </Link>
             <Link
-              href="/activity/earn"
+              href="/farm"
               className={`flex items-center p-3 rounded-lg ${
-                router.pathname === "/activity/earn" ? "bg-gray-100" : ""
+                router.pathname === "/farm" ? "bg-gray-100" : ""
               }`}
             >
               <svg viewBox="0 0 24 24" width="20" height="20">
