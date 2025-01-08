@@ -1,13 +1,158 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
+import { useState } from "react";
 
 const MobileNav = () => {
   const router = useRouter();
   const { address } = useAccount();
+  const [isEarnOpen, setIsEarnOpen] = useState(false);
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+      {isEarnOpen && (
+        <div className="absolute bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Link
+              href="/stake"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/stake" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span className="ml-2">Stake</span>
+            </Link>
+            <Link
+              href="/activity/earn"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/activity/earn" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M3 6.5C3 4.01472 5.01472 2 7.5 2C9.98528 2 12 4.01472 12 6.5C12 8.98528 9.98528 11 7.5 11C5.01472 11 3 8.98528 3 6.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M12 6.5C12 4.01472 14.0147 2 16.5 2C18.9853 2 21 4.01472 21 6.5C21 8.98528 18.9853 11 16.5 11C14.0147 11 12 8.98528 12 6.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M3 17.5C3 15.0147 5.01472 13 7.5 13C9.98528 13 12 15.0147 12 17.5C12 19.9853 9.98528 22 7.5 22C5.01472 22 3 19.9853 3 17.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M12 17.5C12 15.0147 14.0147 13 16.5 13C18.9853 13 21 15.0147 21 17.5C21 19.9853 18.9853 22 16.5 22C14.0147 22 12 19.9853 12 17.5Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+              </svg>
+              <span className="ml-2">Farm</span>
+            </Link>
+            <Link
+              href="/activity"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/activity" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 2L2 7L12 12L22 7L12 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M2 17L12 22L22 17"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M2 12L12 17L22 12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 22V12"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="ml-2">Activity</span>
+            </Link>
+            <Link
+              href="/airdrophub"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/airdrophub" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 2L8 6H4C3.44772 6 3 6.44772 3 7V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7C21 6.44772 20.5523 6 20 6H16L12 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 11V15"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M12 18V22"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <circle cx="12" cy="9" r="1" fill="currentColor" />
+              </svg>
+              <span className="ml-2">Airdrop Hub</span>
+            </Link>
+          </div>
+        </div>
+      )}
       <div className="flex justify-around items-center h-16">
         <Link
           href="/"
@@ -45,6 +190,31 @@ const MobileNav = () => {
           </svg>
           <span className="text-xs">Markets</span>
         </Link>
+        <button
+          onClick={() => setIsEarnOpen(!isEarnOpen)}
+          className={`flex flex-col items-center p-2 ${
+            router.pathname.startsWith("/activity") ||
+            router.pathname === "/stake"
+              ? "text-gray-900"
+              : "text-gray-400"
+          }`}
+        >
+          <svg
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="15539"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
+              p-id="15540"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span className="text-xs">Earn {isEarnOpen ? "▼" : "▲"}</span>
+        </button>
         <Link
           href="/swap/bbb"
           className={`flex flex-col items-center p-2 ${
@@ -104,4 +274,4 @@ const MobileNav = () => {
   );
 };
 
-export default MobileNav; 
+export default MobileNav;
