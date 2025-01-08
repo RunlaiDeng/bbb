@@ -297,7 +297,14 @@ const Earn = () => {
                   <div>
                     <div className="font-medium">{formatAddress(address)}</div>
                     {twitterUserName && (
-                      <div className="text-sm text-gray-500">@{twitterUserName}</div>
+                      <a
+                        href={`https://x.com/${twitterUserName}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-gray-500 hover:text-blue-500 transition-colors"
+                      >
+                        @{twitterUserName}
+                      </a>
                     )}
                   </div>
                 </div>
@@ -335,7 +342,14 @@ const Earn = () => {
                   <div>
                     <div className="font-medium">{formatAddress(user.account)}</div>
                     {user.twitterUserName && (
-                      <div className="text-sm text-gray-500">@{user.twitterUserName}</div>
+                      <a
+                        href={`https://x.com/${user.twitterUserName}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-gray-500 hover:text-blue-500 transition-colors"
+                      >
+                        @{user.twitterUserName}
+                      </a>
                     )}
                   </div>
                 </div>
