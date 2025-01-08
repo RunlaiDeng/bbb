@@ -194,7 +194,9 @@ const MobileNav = () => {
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/activity") ||
-            router.pathname === "/stake"
+            router.pathname === "/stake" ||
+            router.pathname === "/farm" ||
+            router.pathname === "/airdrophub"
               ? "text-gray-900"
               : "text-gray-400"
           }`}
