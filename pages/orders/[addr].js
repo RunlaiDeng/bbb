@@ -90,13 +90,13 @@ const Orders = () => {
     <>
       {
         <>
-          <div className="card font-medium p-0 m-auto w-96 sm:w-11/12 mt-4">
-            <div className="card-body p-0">
-              <div className="flex items-center gap-2">
+          <div className="card bg-base-100 shadow-xl font-medium p-0 m-auto w-96 sm:w-11/12 mt-6 mb-6">
+            <div className="card-body p-6">
+              <div className="flex items-center gap-4 border-b pb-4 mb-4">
                 <div
                   className={
-                    "btn btn-ghost hover:text-green-700 hover:bg-inherit " +
-                    (data?.type == 1 ? "text-green-700" : "")
+                    "btn btn-sm px-6 " +
+                    (data?.type == 1 ? "bg-green-500 text-white hover:bg-green-600" : "bg-gray-100 hover:bg-gray-200 text-gray-700")
                   }
                   onClick={() => {
                     setData({ ...data, type: 1 });
@@ -106,8 +106,8 @@ const Orders = () => {
                 </div>
                 <div
                   className={
-                    "btn btn-ghost hover:text-green-700 hover:bg-inherit " +
-                    (data?.type == 2 ? "text-green-700" : "")
+                    "btn btn-sm px-6 " +
+                    (data?.type == 2 ? "bg-green-500 text-white hover:bg-green-600" : "bg-gray-100 hover:bg-gray-200 text-gray-700")
                   }
                   onClick={() => {
                     setData({ ...data, type: 2 });
@@ -123,11 +123,11 @@ const Orders = () => {
                       <table className="table">
                         {/* head */}
                         <thead>
-                          <tr>
-                            <th>Date</th>
-                            <th>Coin</th>
-                            <th>Fee</th>
-                            <th>Total in USD</th>
+                          <tr className="bg-base-200">
+                            <th className="font-bold">Date</th>
+                            <th className="font-bold">Coin</th>
+                            <th className="font-bold">Fee</th>
+                            <th className="font-bold">Total in USD</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -136,7 +136,7 @@ const Orders = () => {
                             return (
                               <tr
                                 key={item?.tid}
-                                className="whitespace-nowrap"
+                                className="whitespace-nowrap hover:bg-gray-50 transition-colors duration-150"
                               >
                                 <td>{getDateSpecifics(item?.createTime)}</td>
                                 <td className="flex gap-2 items-center">
@@ -202,14 +202,14 @@ const Orders = () => {
                       <table className="table">
                         {/* head */}
                         <thead>
-                          <tr>
-                            <th>Date</th>
-                            <th>Coin</th>
-                            <th>Side</th>
-                            <th>Price</th>
-                            <th>Filled</th>
-                            <th>Fee</th>
-                            <th>Total in USD</th>
+                          <tr className="bg-base-200">
+                            <th className="font-bold">Date</th>
+                            <th className="font-bold">Coin</th>
+                            <th className="font-bold">Side</th>
+                            <th className="font-bold">Price</th>
+                            <th className="font-bold">Filled</th>
+                            <th className="font-bold">Fee</th>
+                            <th className="font-bold">Total in USD</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -217,7 +217,7 @@ const Orders = () => {
                             const drop = drops?.[index];
 
                             return (
-                              <tr key={item?.tid} className="whitespace-nowrap">
+                              <tr key={item?.tid} className="whitespace-nowrap hover:bg-gray-50 transition-colors duration-150">
                                 <td>{getDateSpecifics(item?.time)}</td>
                                 <td className="flex gap-1 items-center">
                                   <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
@@ -296,94 +296,80 @@ const Orders = () => {
                 </>
               )}
               {showList && (
-                <ul className="menu menu-horizontal rounded-box ml-auto menu-xs">
-                  <li
-                    className={orders.pageNumber == 1 ? "disabled" : ""}
-                    key={0}
+                <div className="flex justify-center items-center gap-1 mt-8 whitespace-nowrap overflow-x-auto">
+                  <button 
+                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => {
                       setOrders({
                         ...orders,
                         pageNumber: orders.pageNumber - 1,
                       });
                     }}
+                    disabled={orders.pageNumber == 1}
                   >
-                    <a style={{ background: "transparent" }}>{"<"}</a>
-                  </li>
+                    <span className="text-gray-600">&lt;</span>
+                  </button>
 
-                  {pages?.map((item, index) => {
-                    let showPageItems = false;
-                    if (item == 1 || item == orders.totalPage) {
-                      showPageItems = true;
+                  {Array.from({ length: orders.totalPage }, (_, i) => i + 1).map((page, index) => {
+                    let showPage = false;
+                    if (orders.totalPage <= 5) {
+                      showPage = true;
+                    } else {
+                      if (page === 1 || page === orders.totalPage) {
+                        showPage = true;
+                      } else if (orders.pageNumber <= 3 && page <= 4) {
+                        showPage = true;
+                      } else if (orders.pageNumber >= orders.totalPage - 2 && page >= orders.totalPage - 3) {
+                        showPage = true;
+                      } else if (Math.abs(orders.pageNumber - page) <= 1) {
+                        showPage = true;
+                      }
                     }
-                    const pageDiff = Math.abs(orders.pageNumber - item);
-                    if (pageDiff <= 2) {
-                      showPageItems = true;
-                    }
 
-                    let showPassFront = false;
-
-                    if (item == 1 && orders.pageNumber >= 5) {
-                      showPassFront = true;
-                    }
-
-                    let showPassBack = false;
-
-                    if (
-                      item == orders?.totalPage &&
-                      orders.totalPage - orders.pageNumber >= 4
-                    ) {
-                      showPassBack = true;
+                    if (!showPage) {
+                      if ((page === 2 && orders.pageNumber > 3) || 
+                          (page === orders.totalPage - 1 && orders.pageNumber < orders.totalPage - 2)) {
+                        return (
+                          <button
+                            key={index}
+                            className="min-w-[32px] h-8 rounded-lg flex items-center justify-center cursor-default bg-transparent"
+                            disabled
+                          >
+                            ...
+                          </button>
+                        );
+                      }
+                      return null;
                     }
 
                     return (
-                      <div key={item} className="flex items-center">
-                        {showPassBack && (
-                          <li className="disabled" key={-1}>
-                            <a style={{ background: "transparent" }}>...</a>
-                          </li>
-                        )}
-
-                        {showPageItems && (
-                          <li
-                            onClick={() => {
-                              setOrders({ ...orders, pageNumber: item });
-                            }}
-                          >
-                            <a
-                              className={
-                                item == orders?.pageNumber
-                                  ? "focus font-bold"
-                                  : ""
-                              }
-                            >
-                              {item}
-                            </a>
-                          </li>
-                        )}
-                        {showPassFront && (
-                          <li className="disabled" key={-1}>
-                            <a style={{ background: "transparent" }}>...</a>
-                          </li>
-                        )}
-                      </div>
+                      <button
+                        key={index}
+                        onClick={() => setOrders({ ...orders, pageNumber: page })}
+                        className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center transition-colors ${
+                          page === orders.pageNumber
+                            ? 'bg-green-500 text-white'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        }`}
+                      >
+                        {page}
+                      </button>
                     );
                   })}
 
-                  <li
-                    className={
-                      orders.pageNumber == orders.totalPage ? "disabled" : ""
-                    }
+                  <button
+                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => {
                       setOrders({
                         ...orders,
                         pageNumber: orders.pageNumber + 1,
                       });
                     }}
-                    key={-3}
+                    disabled={orders.pageNumber == orders.totalPage}
                   >
-                    <a style={{ background: "transparent" }}>{">"}</a>
-                  </li>
-                </ul>
+                    <span className="text-gray-600">&gt;</span>
+                  </button>
+                </div>
               )}
             </div>
           </div>

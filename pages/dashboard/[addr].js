@@ -221,139 +221,122 @@ const Address = () => {
   const show = mount && data;
 
   return (
-    <>
-      <div className="card font-bold p-0 m-auto w-96 sm:w-11/12 mt-4">
-        <div className="card-body p-0">
-          <div className="flex items-center gap-4 p-0 text-xl">
-            <Image
-              src="/bbb.jpg"
-              alt="user"
-              height={100}
-              width={100}
-              className="rounded-md"
-            />
-            <div>
-              <div className="flex items-center gap-1 text-xs sm:text-sm">
-                {addr?.substr(36)}
-                {address != addr && <div>(Watch Only)</div>}
+    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      {/* Profile Card */}
+      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200">
+        <div className="card-body p-6">
+          <div className="flex items-center gap-6">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+              <Image
+                src="/bbb.jpg"
+                alt="user"
+                fill
+                className="rounded-2xl object-cover"
+                priority
+              />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 text-sm sm:text-base font-medium">
+                <span className="font-mono">{addr?.substr(36)}</span>
+                {address != addr && <span className="text-gray-500">(Watch Only)</span>}
                 <div
-                  className={"cursor-pointer tooltip"}
+                  className="tooltip cursor-pointer hover:opacity-80 transition-opacity"
                   data-tip="Copy Address"
                   onClick={() => {
                     copy(addr);
-                    success("copy success!");
+                    success("Address copied!");
                   }}
                 >
                   <svg
                     viewBox="0 0 1024 1024"
-                    version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
-                    p-id="1641"
-                    width="20"
-                    height="20"
+                    className="w-5 h-5"
                   >
                     <path
                       d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                      fill="#5E6570"
-                      p-id="1642"
-                    ></path>
+                      className="fill-current"
+                    />
                     <path
                       d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                      fill="#5E6570"
-                      p-id="1643"
-                    ></path>
-                    <path
-                      d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
-                      fill="#5E6570"
-                      p-id="1644"
-                    ></path>
-                    <path
-                      d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
-                      fill="#5E6570"
-                      p-id="1645"
-                    ></path>
-                    <path
-                      d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
-                      fill="#5E6570"
-                      p-id="1646"
-                    ></path>
+                      className="fill-current"
+                    />
                   </svg>
                 </div>
                 <div
-                  className={"cursor-pointer tooltip"}
+                  className="tooltip cursor-pointer hover:opacity-80 transition-opacity"
                   data-tip="View on XDCScan"
                   onClick={() => {
                     window.open("https://xdcscan.com/address/" + addr);
                   }}
                 >
-                  <Image src="/xdc.png" width={20} height={20} alt="" />
+                  <Image src="/xdc.png" width={20} height={20} alt="XDC" className="rounded-full" />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="card font-bold border m-auto w-96 sm:w-11/12 mt-4">
+
+      {/* Balance Card */}
+      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200">
         <div className="card-body p-6">
           <div className="flex justify-between items-center">
-            Estimated Balance{" "}
+            <h2 className="card-title text-lg font-bold">Estimated Balance</h2>
             {addr == address && (
-              <div className="gap-2 hidden sm:flex">
-                <div
-                  className="btn btn-sm"
-                  onClick={() => {
-                    router.push("/deposit");
-                  }}
+              <div className="gap-3 hidden sm:flex">
+                <button
+                  className="btn btn-success btn-sm"
+                  onClick={() => router.push("/deposit")}
                 >
                   Deposit
-                </div>
-                <div
-                  className="btn btn-sm"
-                  onClick={() => {
-                    router.push("/withdraw");
-                  }}
+                </button>
+                <button
+                  className="btn btn-outline btn-success btn-sm"
+                  onClick={() => router.push("/withdraw")}
                 >
                   Withdraw
-                </div>
+                </button>
               </div>
             )}
           </div>
-          {!show && <Loading />}
+          
+          {!show && (
+            <div className="flex justify-center py-8">
+              <Loading />
+            </div>
+          )}
+          
           {show && (
             <>
-              <div className="text-2xl sm:text-4xl">
-                ${totalBalance?.toLocaleString()}
-              </div>
-              <div className={"flex items-center text-xs gap-2 "}>
-                <div className="text-black">{"Totay's Pnl"}</div>{" "}
-                <div
-                  className={
-                    total24hChange >= 0 ? "text-green-700" : "text-red-700"
-                  }
-                >
-                  {total24hChange >= 0 ? "+" : "-"}$
-                  {Math.abs(total24hChange)?.toLocaleString()}(
-                  {(total24hChangePercent * 100)?.toFixed(2) + "%"})
+              <div className="mt-4">
+                <div className="text-3xl sm:text-4xl font-bold">
+                  ${totalBalance?.toLocaleString()}
+                </div>
+                <div className="flex items-center gap-2 mt-2 text-sm">
+                  <span className="text-gray-600">24h Change</span>
+                  <span className={total24hChange >= 0 ? "text-success" : "text-error"}>
+                    {total24hChange >= 0 ? "+" : "-"}$
+                    {Math.abs(total24hChange)?.toLocaleString()}
+                    <span className="ml-1">
+                      ({(total24hChangePercent * 100)?.toFixed(2)}%)
+                    </span>
+                  </span>
                 </div>
               </div>
               {addr == address && (
-                <div className="gap-2 flex sm:hidden">
-                  <div
-                    className="btn btn-sm"
-                    onClick={() => {
-                      router.push("/deposit");
-                    }}
+                <div className="flex gap-3 mt-4 sm:hidden">
+                  <button
+                    className="btn btn-success btn-sm flex-1"
+                    onClick={() => router.push("/deposit")}
                   >
                     Deposit
-                  </div>
-                  <div
-                    className="btn btn-sm"
-                    onClick={() => {
-                      router.push("/withdraw");
-                    }}
+                  </button>
+                  <button
+                    className="btn btn-outline btn-success btn-sm flex-1"
+                    onClick={() => router.push("/withdraw")}
                   >
                     Withdraw
-                  </div>
+                  </button>
                 </div>
               )}
             </>
@@ -361,267 +344,232 @@ const Address = () => {
         </div>
       </div>
 
-      <div className="card font-medium border m-auto w-96 sm:w-11/12 mt-4">
-        <div className="card-body p-2">
-          <div className="font-bold p-4">My Assets</div>
+      {/* Assets Card */}
+      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200">
+        <div className="card-body p-6">
+          <h2 className="card-title text-lg font-bold mb-4">My Assets</h2>
+          {!show && (
+            <div className="flex justify-center py-8">
+              <Loading />
+            </div>
+          )}
           {show && (
             <div className="overflow-x-auto">
               {isLoading ? (
-                <div className="flex justify-center items-center p-4">
-                  <div className="loading loading-spinner loading-lg"></div>
+                <div className="flex justify-center items-center p-8">
+                  <Loading />
                 </div>
               ) : error ? (
                 <div className="alert alert-error">
-                  <span>
-                    {error.message || "An error occurred while loading data"}
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  <span>{error.message || "An error occurred while loading data"}</span>
                 </div>
               ) : (
                 <table className="table">
-                  {/* head */}
                   <thead>
-                    <tr>
+                    <tr className="bg-base-200">
                       <th>Coin</th>
                       <th className="text-right">Amount</th>
-                      <th className="text-right hidden sm:table-cell">
-                        Coin Price
-                      </th>
-                      <th className="text-right hidden sm:table-cell">
-                        24H Change
-                      </th>
-                      <th className="text-right hidden sm:table-cell">
-                        Operate
-                      </th>
+                      <th className="text-right hidden sm:table-cell">Price</th>
+                      <th className="text-right hidden sm:table-cell">24h Change</th>
+                      <th className="text-right hidden sm:table-cell">Actions</th>
                       <th className="text-right sm:hidden px-0"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="hover">
-                      <td className="flex items-center gap-2">
-                        <div className="h-6 w-6 overflow-hidden">
-                          <Image
-                            height={24}
-                            width={24}
-                            src="/xdc.png"
-                            alt="XDC Token"
-                            className="object-cover w-full h-full"
-                            priority
-                          />
-                        </div>
-                        <div>
-                          <div>bXDC</div>
-                          <div className="text-xs opacity-50 whitespace-nowrap">
-                            Bonus XDC
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full overflow-hidden">
+                            <Image
+                              height={32}
+                              width={32}
+                              src="/xdc.png"
+                              alt="XDC Token"
+                              className="object-cover"
+                              priority
+                            />
+                          </div>
+                          <div>
+                            <div className="font-medium">bXDC</div>
+                            <div className="text-sm text-gray-500">Bonus XDC</div>
                           </div>
                         </div>
                       </td>
                       <td className="text-right">
-                        <div>
-                          {Number(referralBonus)?.toLocaleString() || 0}
-                        </div>
-                        <div className="text-xs opacity-50">
-                          ${referralUsdBonus?.toLocaleString() || 0}
-                        </div>
+                        <div className="font-medium">{Number(referralBonus)?.toLocaleString() || 0}</div>
+                        <div className="text-sm text-gray-500">${referralUsdBonus?.toLocaleString() || 0}</div>
                       </td>
-                      <td className="text-right hidden sm:table-cell">
+                      <td className="text-right hidden sm:table-cell font-medium">
                         ${Number(xdcPrice || 0)?.toFixed(6)}
                       </td>
-                      <td
-                        className={
-                          "text-right hidden sm:table-cell " +
-                          (xdcPriceChange24h >= 0
-                            ? "text-green-700"
-                            : "text-red-700")
-                        }
-                      >
+                      <td className={
+                        "text-right hidden sm:table-cell font-medium " +
+                        (xdcPriceChange24h >= 0 ? "text-success" : "text-error")
+                      }>
                         {xdcPriceChange24h >= 0 ? "+" : "-"}
                         {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                       </td>
                       <td className="text-right hidden sm:table-cell">
-                        <div
-                          className="underline text-green-700 cursor-pointer"
-                          onClick={() => {
-                            router.push("/referral");
-                          }}
+                        <button
+                          className="btn btn-sm btn-success btn-outline"
+                          onClick={() => router.push("/referral")}
                         >
                           Claim
-                        </div>
+                        </button>
                       </td>
                       <td className="text-right sm:hidden px-0">
-                        <svg
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="12307"
-                          width="16"
-                          height="16"
-                        >
-                          <path
-                            d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
-                            fill="#444444"
-                            p-id="12308"
-                          ></path>
-                        </svg>
+                        <button className="btn btn-ghost btn-sm btn-square">
+                          <svg
+                            viewBox="0 0 1024 1024"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
+                              className="fill-current"
+                            />
+                          </svg>
+                        </button>
                       </td>
                     </tr>
+                    {/* XDC Row */}
                     <tr className="hover">
-                      <td className="flex items-center gap-2">
-                        <div className="h-6 w-6 overflow-hidden">
-                          <Image
-                            height={24}
-                            width={24}
-                            src="/xdc.png"
-                            alt="XDC Token"
-                            className="object-cover w-full h-full"
-                            priority
-                          />
-                        </div>
-                        <div>
-                          <div>XDC</div>
-                          <div className="text-xs opacity-50 whitespace-nowrap">
-                            XDC Network
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full overflow-hidden">
+                            <Image
+                              height={32}
+                              width={32}
+                              src="/xdc.png"
+                              alt="XDC Token"
+                              className="object-cover"
+                              priority
+                            />
+                          </div>
+                          <div>
+                            <div className="font-medium">XDC</div>
+                            <div className="text-sm text-gray-500">XDC Network</div>
                           </div>
                         </div>
                       </td>
                       <td className="text-right">
-                        <div>{Number(xdcBalance)?.toLocaleString() || 0}</div>
-                        <div className="text-xs opacity-50">
-                          ${xdcUsdBalance?.toLocaleString() || 0}
-                        </div>
+                        <div className="font-medium">{Number(xdcBalance)?.toLocaleString() || 0}</div>
+                        <div className="text-sm text-gray-500">${xdcUsdBalance?.toLocaleString() || 0}</div>
                       </td>
-                      <td className="text-right hidden sm:table-cell">
+                      <td className="text-right hidden sm:table-cell font-medium">
                         ${Number(xdcPrice || 0)?.toFixed(6)}
                       </td>
-                      <td
-                        className={
-                          "text-right hidden sm:table-cell " +
-                          (xdcPriceChange24h >= 0
-                            ? "text-green-700"
-                            : "text-red-700")
-                        }
-                      >
+                      <td className={
+                        "text-right hidden sm:table-cell font-medium " +
+                        (xdcPriceChange24h >= 0 ? "text-success" : "text-error")
+                      }>
                         {xdcPriceChange24h >= 0 ? "+" : "-"}
                         {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                       </td>
                       <td className="text-right hidden sm:table-cell"></td>
                       <td className="text-right sm:hidden px-0">
-                        <svg
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="12307"
-                          width="16"
-                          height="16"
-                        >
-                          <path
-                            d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
-                            fill="#444444"
-                            p-id="12308"
-                          ></path>
-                        </svg>
+                        <button className="btn btn-ghost btn-sm btn-square">
+                          <svg
+                            viewBox="0 0 1024 1024"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
+                              className="fill-current"
+                            />
+                          </svg>
+                        </button>
                       </td>
                     </tr>
-                    {tokens?.map((item, index) => {
-                      return (
-                        <tr
-                          key={index}
-                          className={
-                            "hover " + (item?.balance == 0 ? "hidden" : "")
-                          }
-                        >
-                          <td className="flex items-center gap-2">
-                            <div className="h-6 w-6 overflow-hidden ">
+                    {/* Other Tokens */}
+                    {tokens?.map((item, index) => (
+                      <tr
+                        key={index}
+                        className={"hover " + (item?.balance == 0 ? "hidden" : "")}
+                      >
+                        <td>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full overflow-hidden bg-base-200">
                               {item?.imageUrl && (
                                 <Image
-                                  height={24}
-                                  width={24}
+                                  height={32}
+                                  width={32}
                                   src={item?.imageUrl}
-                                  alt={""}
-                                  className="object-cover w-full h-full"
+                                  alt={item.symbol}
+                                  className="object-cover"
                                   priority
                                 />
                               )}
                             </div>
                             <div>
-                              <div>{item.symbol}</div>
-                              <div className="text-xs opacity-50 whitespace-nowrap hidden sm:block">
+                              <div className="font-medium">{item.symbol}</div>
+                              <div className="text-sm text-gray-500 hidden sm:block">
                                 {item.name}
                               </div>
-                              <div className="text-xs opacity-50 whitespace-nowrap sm:hidden">
+                              <div className="text-sm text-gray-500 sm:hidden">
                                 {item.name?.length > 10
                                   ? item.name?.substr(0, 10) + "..."
                                   : item.name}
                               </div>
                             </div>
-                          </td>
-                          <td className="text-right">
-                            <div>
-                              {formatEther(item?.balance) >= 1000
-                                ? Number(
-                                    formatEther(item?.balance)
-                                  )?.toLocaleString() || 0
-                                : formatEther(item?.balance)}
-                            </div>
-                            <div className="text-xs opacity-50">
-                              ${item?.usdBalance?.toLocaleString() || 0}
-                            </div>
-                          </td>
-                          <td className="text-right hidden sm:table-cell">
-                            ${Number(item?.price || 0)?.toFixed(6)}
-                          </td>
-                          <td
-                            className={
-                              "text-right hidden sm:table-cell " +
-                              (item?.priceChange24h >= 0
-                                ? "text-green-700"
-                                : "text-red-700")
-                            }
-                          >
-                            {item?.priceChange24h >= 0 && "+"}
-                            {(item?.priceChange24h * 100)?.toFixed(2)}%
-                          </td>
-                          <td className="text-right hidden sm:table-cell">
-                            {item?.tradeLink && (
-                              <div
-                                className="underline text-green-700 cursor-pointer"
-                                onClick={() => {
-                                  if (item?.tradeLink) {
-                                    router.push(item?.tradeLink);
-                                  }
-                                }}
-                              >
-                                Trade
-                              </div>
-                            )}
-                          </td>
-                          <td className="text-right sm:hidden px-0">
+                          </div>
+                        </td>
+                        <td className="text-right">
+                          <div className="font-medium">
+                            {formatEther(item?.balance) >= 1000
+                              ? Number(formatEther(item?.balance))?.toLocaleString()
+                              : formatEther(item?.balance)}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            ${item?.usdBalance?.toLocaleString() || 0}
+                          </div>
+                        </td>
+                        <td className="text-right hidden sm:table-cell font-medium">
+                          ${Number(item?.price || 0)?.toFixed(6)}
+                        </td>
+                        <td className={
+                          "text-right hidden sm:table-cell font-medium " +
+                          (item?.priceChange24h >= 0 ? "text-success" : "text-error")
+                        }>
+                          {item?.priceChange24h >= 0 && "+"}
+                          {(item?.priceChange24h * 100)?.toFixed(2)}%
+                        </td>
+                        <td className="text-right hidden sm:table-cell">
+                          {item?.tradeLink && (
+                            <button
+                              className="btn btn-sm btn-success btn-outline"
+                              onClick={() => router.push(item?.tradeLink)}
+                            >
+                              Trade
+                            </button>
+                          )}
+                        </td>
+                        <td className="text-right sm:hidden px-0">
+                          <button className="btn btn-ghost btn-sm btn-square">
                             <svg
                               viewBox="0 0 1024 1024"
-                              version="1.1"
                               xmlns="http://www.w3.org/2000/svg"
-                              p-id="12307"
-                              width="16"
-                              height="16"
+                              className="w-4 h-4"
                             >
                               <path
                                 d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
-                                fill="#444444"
-                                p-id="12308"
-                              ></path>
+                                className="fill-current"
+                              />
                             </svg>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               )}
             </div>
           )}
-          {!show && <Loading />}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
