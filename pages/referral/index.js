@@ -27,7 +27,16 @@ const Referral = () => {
     },
   });
 
-  const refetch = async () => {};
+  const refetch = async () => {
+    if (address) {
+      const referrals = await rpc.getReferrals(address);
+      setReferralData(referrals);
+      if (typeof window !== "undefined") {
+        const inviteLink = window.location.origin + "/register/" + address;
+        setData(prev => ({ ...prev, inviteLink, userShare: referrals.shareFee }));
+      }
+    }
+  };
 
   useEffect(() => {
     refetch();
@@ -48,22 +57,13 @@ const Referral = () => {
     callback: async (signature) => {
       await rpc.updateShareFee(data?.userShare, signature);
       document.getElementById("commissionRate").close();
-      refetch();
+      await refetch();
     },
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const inviteLink = window.location.origin + "/register/" + address;
-      setData({ ...data, inviteLink, userShare: referralData.userShare });
-    }
-    const fetchData = async () => {
-      const referrals = await rpc.getReferrals(address);
-      setReferralData(referrals);
-      setMount(true);
-    };
-    fetchData();
-  }, [address, referralData.userShare]);
+    setMount(true);
+  }, []);
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
@@ -148,13 +148,13 @@ const Referral = () => {
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
               <p className="text-sm font-medium text-gray-600 mb-2">Friends</p>
               <p className="text-3xl font-bold text-green-600">
-                {referralData.userShare || 0}%
+                {referralData.shareFee || 0}%
               </p>
             </div>
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
               <p className="text-sm font-medium text-gray-600 mb-2">Mine</p>
               <p className="text-3xl font-bold text-green-600">
-                {maxShare - (referralData.userShare || 0)}%
+                {maxShare - (referralData.shareFee || 0)}%
               </p>
             </div>
           </div>
@@ -283,7 +283,9 @@ const Referral = () => {
                       </span>
                     </td>
                     <td className="text-gray-700">
-                      {(referralData.leaderInfo.isKol === 1 ? 30 : 20) - referralData.leaderInfo.shareFee || 0}%
+                      {(referralData.leaderInfo.isKol === 1 ? 30 : 20) -
+                        referralData.leaderInfo.shareFee || 0}
+                      %
                     </td>
                     <td className="text-gray-700">
                       {Number(
