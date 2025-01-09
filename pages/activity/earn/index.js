@@ -364,29 +364,60 @@ const Earn = () => {
 
           {/* Pagination Controls */}
           {totalPage > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-6">
+            <div className="flex justify-center items-center gap-1 mt-8 whitespace-nowrap overflow-x-auto">
               <button
                 onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
                 disabled={pageNumber === 1}
-                className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
+                <span className="text-gray-600">&lt;</span>
               </button>
-              <div className="flex items-center">
-                <span className="text-sm text-gray-600">
-                  {pageNumber} / {totalPage}
-                </span>
-              </div>
+              {(() => {
+                let pages = [];
+                if (totalPage <= 5) {
+                  // 如果总页数小于等于5，显示所有页码
+                  for (let i = 1; i <= totalPage; i++) {
+                    pages.push(i);
+                  }
+                } else {
+                  // 始终显示第一页
+                  pages.push(1);
+                  
+                  if (pageNumber <= 3) {
+                    // 当前页靠近开始
+                    pages.push(2, 3, 4, '...', totalPage);
+                  } else if (pageNumber >= totalPage - 2) {
+                    // 当前页靠近结束
+                    pages.push('...', totalPage - 3, totalPage - 2, totalPage - 1, totalPage);
+                  } else {
+                    // 当前页在中间
+                    pages.push('...', pageNumber - 1, pageNumber, pageNumber + 1, '...', totalPage);
+                  }
+                }
+
+                return pages.map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() => page !== '...' && setPageNumber(page)}
+                    disabled={page === '...'}
+                    className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center transition-colors ${
+                      page === pageNumber
+                        ? 'bg-green-500 text-white'
+                        : page === '...'
+                        ? 'cursor-default bg-transparent'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ));
+              })()}
               <button
                 onClick={() => setPageNumber(Math.min(totalPage, pageNumber + 1))}
                 disabled={pageNumber === totalPage}
-                className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
+                <span className="text-gray-600">&gt;</span>
               </button>
             </div>
           )}
