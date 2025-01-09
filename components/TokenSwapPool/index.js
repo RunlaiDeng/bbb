@@ -443,7 +443,7 @@ const TokenSwap = (props) => {
               )}
             </>
           )}
-          {isBBB && (
+          {/* {isBBB && (
             <div
               className="text-left font-bold text-xs hover:underline cursor-pointer flex items-center text-red-700"
               onClick={() => {
@@ -472,7 +472,7 @@ const TokenSwap = (props) => {
               </svg>
               Swap not work ? click to try xswap {"->"}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>
