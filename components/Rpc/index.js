@@ -247,6 +247,18 @@ const getEarnLeaderboard = async (pageNumber = 1, pageSize = 9999) => {
   return send("getEarnLeaderboard", [pageNumber, pageSize]);
 };
 
+const register = (leader, signature) => {
+  return send("register", [leader, signature]);
+};
+
+const updateShareFee = (shareFee, signature) => {
+  return send("updateShareFee", [shareFee, signature]);
+};
+
+const getReferrals = (account) => {
+  return send("getReferrals", [account]);
+};
+
 // Clear expired cache entries periodically
 setInterval(() => {
   const now = Date.now();
@@ -272,4 +284,7 @@ module.exports = {
   getEarn,
   finishTwitterTasks,
   getEarnLeaderboard,
+  register,
+  updateShareFee,
+  getReferrals,
 };

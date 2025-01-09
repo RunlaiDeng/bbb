@@ -2,45 +2,36 @@ import { useRouter } from "next/router";
 import WriteButton from "@/components/WriteButton";
 import { useEffect, useState } from "react";
 import { contracts } from "@/config";
-import { useAccount, useChainId, useReadContracts } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { useNotification } from "@/components/Context/notice";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
 import rpc from "@/components/Rpc";
 import { formatEther } from "viem";
+import SignButton from "@/components/SignButton";
+
 const Referral = () => {
   const [mount, setMount] = useState(false);
   const chainId = useChainId();
-  const bbbpumpReferral = contracts[chainId]?.bbbpumpReferral;
-  const mutilCall = contracts[chainId]?.multicallAddress;
-  const router = useRouter();
-  const [data, setData] = useState({});
-  const [referralObj, setReferralObj] = useState({});
-  const { address } = useAccount();
 
-  const { data: reads0, refetch: refetch0 } = useReadContracts({
-    contracts: [
-      {
-        ...bbbpumpReferral,
-        functionName: "getReferrersList",
-        args: [address],
-      },
-      {
-        ...bbbpumpReferral,
-        functionName: "leaderMap",
-        args: [address],
-      },
-      { ...bbbpumpReferral, functionName: "getLeader", args: [address] },
-    ],
+  const [data, setData] = useState({});
+  const { address } = useAccount();
+  const [referralData, setReferralData] = useState({
+    isKol: false,
+    userShare: "0",
+    underline: [],
+    leader: {
+      account: "0x0000000000000000000000000000000000000000",
+      shareFee: "0",
+      prize: "0",
+    },
   });
 
-  const refetch = () => {
-    refetch0();
-  };
+  const refetch = async () => {};
 
-  const referralList = reads0?.[0]?.result;
-  const leaderMap = reads0?.[1]?.result;
-  const leaderConfig = reads0?.[2]?.result;
+  useEffect(() => {
+    refetch();
+  }, [address]);
 
   const { success, info } = useNotification();
 
@@ -50,45 +41,39 @@ const Referral = () => {
     data: {},
   };
 
-  const changeCommission = {
+  const signShareFee = {
     buttonName: "confirm",
     disabled: !data?.userShare,
-    data: {
-      ...bbbpumpReferral,
-      functionName: "setShare",
-      args: [data?.userShare],
-    },
-    callback: () => {
+    message: JSON.stringify({ shareFee: data?.userShare }),
+    callback: async (signature) => {
+      await rpc.updateShareFee(data?.userShare, signature);
       document.getElementById("commissionRate").close();
       refetch();
     },
   };
 
-  const isKol = leaderMap?.[0];
-  const userShare = leaderMap?.[2];
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       const inviteLink = window.location.origin + "/register/" + address;
-      setData({ ...data, inviteLink, userShare: userShare?.toString() });
+      setData({ ...data, inviteLink, userShare: referralData.userShare });
     }
     const fetchData = async () => {
-      const referralInfo = await rpc.getReferralInfo(address);
-      setReferralObj({ ...referralInfo });
+      const referrals = await rpc.getReferrals(address);
+      setReferralData(referrals);
       setMount(true);
     };
     fetchData();
-  }, [address, userShare]);
+  }, [address, referralData.userShare]);
 
   const shareLink =
     "https://twitter.com/intent/tweet?text=Register on the BBBPump trading platform. Enjoy a 20％ cashback. &url=" +
     data?.inviteLink;
 
-  const totalPrize = referralObj?.totalPrize;
-  const leaderPrize = referralObj?.leaderPrize;
-  const referrals = referralObj?.referrals;
+  const totalPrize = referralData?.totalPrize;
 
-  const maxShare = isKol ? "30" : "20";
+  const maxShare = referralData.isKol == 1 ? "30" : "20";
+
+  console.log(referralData);
 
   return (
     mount && (
@@ -99,7 +84,8 @@ const Referral = () => {
             BBBPump KOL Program
           </h1>
           <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
-            🌟 Join the BBB Pump KOL program now to enjoy exclusive events and up to 50% referral commission!
+            🌟 Join the BBB Pump KOL program now to enjoy exclusive events and
+            up to 50% referral commission!
           </div>
           <button
             className="btn bg-white text-green-600 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
@@ -162,13 +148,13 @@ const Referral = () => {
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
               <p className="text-sm font-medium text-gray-600 mb-2">Friends</p>
               <p className="text-3xl font-bold text-green-600">
-                {userShare?.toLocaleString() || 0}%
+                {referralData.userShare || 0}%
               </p>
             </div>
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
               <p className="text-sm font-medium text-gray-600 mb-2">Mine</p>
               <p className="text-3xl font-bold text-green-600">
-                {maxShare - (userShare?.toLocaleString() || 0)}%
+                {maxShare - (referralData.userShare || 0)}%
               </p>
             </div>
           </div>
@@ -179,7 +165,7 @@ const Referral = () => {
           <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
             Invitation Methods
           </h2>
-          
+
           <div className="space-y-4">
             <label
               className="input input-bordered flex items-center gap-2 cursor-pointer w-full bg-gray-50 hover:bg-gray-100 transition-colors"
@@ -189,7 +175,9 @@ const Referral = () => {
               }}
             >
               <div className="text-sm font-medium">Invite Code</div>
-              <div className="text-gray-600">{"..." + address?.substring(33, 45)}</div>
+              <div className="text-gray-600">
+                {"..." + address?.substring(33, 45)}
+              </div>
               <svg
                 viewBox="0 0 1024 1024"
                 version="1.1"
@@ -262,7 +250,7 @@ const Referral = () => {
                   viewBox="0 0 512 512"
                   fill="currentColor"
                 >
-                  <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+                  <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
                 </svg>
               </button>
             </div>
@@ -274,7 +262,7 @@ const Referral = () => {
           <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
             Invitee Cashback
           </h2>
-          
+
           <div className="overflow-x-auto">
             <table className="table table-sm">
               <thead>
@@ -285,19 +273,26 @@ const Referral = () => {
                 </tr>
               </thead>
               <tbody>
-                {leaderConfig &&
-                  leaderConfig?.[0] != "0x0000000000000000000000000000000000000000" && (
-                    <tr className="hover:bg-green-50 transition-colors">
-                      <td className="flex items-center gap-2">
-                        <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                        <span className="text-gray-700">{leaderConfig?.[0]}</span>
-                      </td>
-                      <td className="text-gray-700">{leaderConfig?.[1]?.toString() || 0}%</td>
-                      <td className="text-gray-700">
-                        {Number(formatEther(leaderPrize || 0))?.toLocaleString()} XDC
-                      </td>
-                    </tr>
-                  )}
+                {referralData.leader?.account !==
+                  "0x0000000000000000000000000000000000000000" && (
+                  <tr className="hover:bg-green-50 transition-colors">
+                    <td className="flex items-center gap-2">
+                      <Image height={16} width={16} src="/bbb.jpg" alt={""} />
+                      <span className="text-gray-700">
+                        {referralData.leader}
+                      </span>
+                    </td>
+                    <td className="text-gray-700">
+                      {referralData.leaderInfo.shareFee || 0}%
+                    </td>
+                    <td className="text-gray-700">
+                      {Number(
+                        formatEther(referralData.leaderPrize || 0)
+                      )?.toLocaleString()}{" "}
+                      XDC
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -308,7 +303,7 @@ const Referral = () => {
           <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
             Invited Users
           </h2>
-          
+
           <div className="overflow-x-auto">
             <table className="table table-sm">
               <thead>
@@ -316,25 +311,32 @@ const Referral = () => {
                   <th>Referral</th>
                   <th>Fee</th>
                   <th>Bonus</th>
+                  <th>Underline</th>
                 </tr>
               </thead>
               <tbody>
-                {referralList?.map((item) => {
-                  const referralPrize = referrals?.[item];
-                  const shareFee = referralPrize?.shareFee;
-                  const fee = referralPrize?.fee;
-
+                {referralData.underline?.map((item) => {
                   return (
-                    <tr key={item} className="hover:bg-green-50 transition-colors">
+                    <tr
+                      key={item.account}
+                      className="hover:bg-green-50 transition-colors"
+                    >
                       <td className="flex items-center gap-2">
                         <Image height={16} width={16} src="/bbb.jpg" alt={""} />
-                        <span className="text-gray-700">{item}</span>
+                        <span className="text-gray-700">{item.account}</span>
                       </td>
                       <td className="text-gray-700">
-                        {Number(formatEther(fee || 0))?.toLocaleString()} XDC
+                        {Number(formatEther(item.fee || 0))?.toLocaleString()}{" "}
+                        XDC
                       </td>
                       <td className="text-gray-700">
-                        {Number(formatEther(shareFee || 0))?.toLocaleString()} XDC
+                        {Number(
+                          formatEther(item.shareFee || 0)
+                        )?.toLocaleString()}{" "}
+                        XDC
+                      </td>
+                      <td className="text-gray-700">
+                        {item.underline?.length || 0}
                       </td>
                     </tr>
                   );
@@ -343,6 +345,45 @@ const Referral = () => {
             </table>
           </div>
         </div>
+
+        <dialog id="commissionRate" className="modal">
+          <div className="modal-box">
+            <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
+            <h3 className="font-bold text-lg mb-4">Set Commission Rate</h3>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Commission Rate</span>
+              </label>
+              <input
+                type="number"
+                placeholder="Type here"
+                className="input input-bordered w-full"
+                value={data?.userShare}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value >= 0 && value <= maxShare) {
+                    setData({ ...data, userShare: value });
+                  }
+                }}
+              />
+              <label className="label">
+                <span className="label-text-alt">
+                  You can set up to {maxShare}% commission rate
+                </span>
+              </label>
+            </div>
+            <div className="modal-action">
+              <SignButton
+                {...signShareFee}
+                className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+              />
+            </div>
+          </div>
+        </dialog>
       </div>
     )
   );

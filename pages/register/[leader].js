@@ -1,29 +1,31 @@
 import { useRouter } from "next/router";
-import WriteButton from "@/components/WriteButton";
+import SignButton from "@/components/SignButton";
 import { useEffect, useState } from "react";
 import { contracts } from "@/config";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
+import rpc from "@/components/Rpc";
 
 const Register = () => {
   const chainId = useChainId();
   const bbbpumpReferral = contracts[chainId]?.bbbpumpReferral;
-  const mutilCall = contracts[chainId]?.multicallAddress;
+
   const router = useRouter();
   const { leader } = router.query;
   const [data, setData] = useState({});
   const { address } = useAccount();
 
-  const { data: reads0 } = useReadContracts({
-    contracts: [
-      {
-        ...bbbpumpReferral,
-        functionName: "leaderMap",
-        args: [data?.leader],
-      },
-    ],
-  });
+  const [userShare, setUserShare] = useState(0);
+  const [error, setError] = useState("");
 
-  const userShare = reads0?.[0]?.result?.[2];
+  useEffect(() => {
+    if (data?.leader) {
+      rpc.getReferrals(data.leader).then((result) => {
+        if (result?.shareFee) {
+          setUserShare(result.shareFee);
+        }
+      });
+    }
+  }, [data.leader]);
 
   useEffect(() => {
     setData({ ...data, leader });
@@ -31,13 +33,16 @@ const Register = () => {
 
   const submit = {
     buttonName: "Register",
-    data: {
-      ...bbbpumpReferral,
-      functionName: "register",
-      args: [data?.leader],
-    },
-    callback: () => {
-      router.push("/");
+    message: JSON.stringify({ leader: leader }),
+    callback: (signature) => {
+      setError("");
+      rpc.register(leader, signature).then((result) => {
+        if (result?.error) {
+          setError(result.error);
+        } else {
+          router.push("/");
+        }
+      });
     },
   };
   return (
@@ -51,6 +56,11 @@ const Register = () => {
             🎯 Join BBBPump and get trade fee cashback rewards
           </div>
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 text-gray-700">
+            {error && (
+              <div className="text-red-500 text-sm mb-4 bg-red-50 p-3 rounded-lg border border-red-100">
+                {error}
+              </div>
+            )}
             <div className="mb-4">
               <div className="text-left font-medium mb-2">Invite Code</div>
               <input
@@ -64,12 +74,14 @@ const Register = () => {
             </div>
             <div className="text-left text-sm mb-4">
               You can get{" "}
-              <span className="text-green-600 font-bold">{userShare?.toString()}%</span>{" "}
+              <span className="text-green-600 font-bold">
+                {userShare?.toString()}%
+              </span>{" "}
               trade fee back
             </div>
-            <WriteButton 
-              {...submit} 
-              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300" 
+            <SignButton
+              {...submit}
+              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
             />
           </div>
         </div>
