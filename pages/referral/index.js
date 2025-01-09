@@ -283,7 +283,7 @@ const Referral = () => {
                       </span>
                     </td>
                     <td className="text-gray-700">
-                      {referralData.leaderInfo.shareFee || 0}%
+                      {(referralData.leaderInfo.isKol === 1 ? 30 : 20) - referralData.leaderInfo.shareFee || 0}%
                     </td>
                     <td className="text-gray-700">
                       {Number(
@@ -311,7 +311,6 @@ const Referral = () => {
                   <th>Referral</th>
                   <th>Fee</th>
                   <th>Bonus</th>
-                  <th>Underline</th>
                 </tr>
               </thead>
               <tbody>
@@ -326,17 +325,16 @@ const Referral = () => {
                         <span className="text-gray-700">{item.account}</span>
                       </td>
                       <td className="text-gray-700">
-                        {Number(formatEther(item.fee || 0))?.toLocaleString()}{" "}
-                        XDC
-                      </td>
-                      <td className="text-gray-700">
                         {Number(
-                          formatEther(item.shareFee || 0)
+                          formatEther(item.totalFee || 0)
                         )?.toLocaleString()}{" "}
                         XDC
                       </td>
                       <td className="text-gray-700">
-                        {item.underline?.length || 0}
+                        {Number(
+                          formatEther(item.totalShareFee || 0)
+                        )?.toLocaleString()}{" "}
+                        XDC
                       </td>
                     </tr>
                   );

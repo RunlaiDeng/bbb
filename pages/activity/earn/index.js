@@ -80,9 +80,9 @@ const Earn = () => {
 
   return (
     mount && (
-      <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
+      <div className="m-auto md:w-3/4 w-full px-4 mt-2 pb-1">
         {/* Total Points Display */}
-        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-4 md:p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
           <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
             {puser?.weekId} Total cps
           </h1>
@@ -136,28 +136,28 @@ const Earn = () => {
         </div>
 
         {/* Trade to earn points */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+        <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 mb-8 hover:shadow-xl transition-all duration-300">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h2 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-4 md:mb-0 text-center md:text-left">
               {puser?.weekId} Trade to Earn cps
             </h2>
             <Link
               href="/markets"
-              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+              className="w-full md:w-auto bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center"
             >
               Go to Trade
             </Link>
           </div>
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
-              <p className="text-gray-600 mb-2">Current cps from Trading</p>
-              <p className="text-3xl font-bold text-green-600 flex items-center">
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 md:p-6 rounded-xl border border-green-100">
+              <p className="text-gray-600 mb-2 text-center md:text-left">Current cps from Trading</p>
+              <p className="text-3xl font-bold text-green-600 flex items-center justify-center md:justify-start">
                 <FavIcon />
                 {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
                 <span className="ml-2 text-sm">cps</span>
               </p>
             </div>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm text-gray-500 leading-relaxed text-center md:text-left">
               * Only trading non-BBB and non-graduated tokens will earn cps.
               Higher trading volume earns more cps. Trading amount greater
               than 1 XDC will be counted for cps.
@@ -166,9 +166,9 @@ const Earn = () => {
         </div>
 
         {/* Twitter Tasks */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+        <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 mb-8 hover:shadow-xl transition-all duration-300">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-2 md:mb-0">
               {puser?.weekId} Twitter Tasks
             </h2>
             <div className="text-green-600 font-bold text-lg">
@@ -259,9 +259,9 @@ const Earn = () => {
         </div>
 
         {/* Points Leaderboard */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+        <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 hover:shadow-xl transition-all duration-300">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-2 md:mb-0">
               {puser?.weekId} Points Leaderboard
             </h2>
           </div>
@@ -319,13 +319,13 @@ const Earn = () => {
             {rankList?.map((user, index) => (
               <div
                 key={user.account}
-                className={`flex items-center justify-between p-3 rounded-lg ${
+                className={`flex flex-col md:flex-row items-center justify-between p-3 rounded-lg ${
                   user.account === address
                     ? "bg-emerald-50 border border-green-200"
                     : "bg-gray-50"
                 }`}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 mb-2 md:mb-0">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
                       user.rank == 1
@@ -353,7 +353,7 @@ const Earn = () => {
                     )}
                   </div>
                 </div>
-                <div className="font-bold text-lg flex items-center">
+                <div className="font-bold text-lg flex items-center mt-2 md:mt-0">
                   <FavIcon />
                   {Number(user.totalPoint)?.toLocaleString()}{" "}
                   <span className="ml-2 text-sm">cps</span>
@@ -368,35 +368,25 @@ const Earn = () => {
               <button
                 onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
                 disabled={pageNumber === 1}
-                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Previous
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
               </button>
-              <div className="flex items-center gap-1">
-                {Array.from({ length: totalPage }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setPageNumber(page)}
-                      className={`w-8 h-8 rounded-lg ${
-                        pageNumber === page
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-100 hover:bg-gray-200"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
+              <div className="flex items-center">
+                <span className="text-sm text-gray-600">
+                  {pageNumber} / {totalPage}
+                </span>
               </div>
               <button
-                onClick={() =>
-                  setPageNumber(Math.min(totalPage, pageNumber + 1))
-                }
+                onClick={() => setPageNumber(Math.min(totalPage, pageNumber + 1))}
                 disabled={pageNumber === totalPage}
-                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
               </button>
             </div>
           )}
