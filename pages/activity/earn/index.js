@@ -259,7 +259,7 @@ const Earn = () => {
         </div>
 
         {/* Points Leaderboard */}
-        <div className="bg-white rounded-2xl shadow-lg p-4 md:p-8 hover:shadow-xl transition-all duration-300">
+        <div id="leaderboard" className="bg-white rounded-2xl shadow-lg p-4 md:p-8 hover:shadow-xl transition-all duration-300">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-2 md:mb-0">
               {puser?.weekId} Points Leaderboard
