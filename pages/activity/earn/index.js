@@ -277,7 +277,7 @@ const Earn = () => {
                 Top 3 participants each week will share $500 worth of BBB tokens!
               </p>
               <p className="text-emerald-600 mt-2 leading-relaxed">
-                Total Participants: {Number(ranks?.totalParticipants || 0).toLocaleString()}
+                Total Participants: {Number(ranks?.totalSize || 0).toLocaleString()}
               </p>
             </div>
           </div>
