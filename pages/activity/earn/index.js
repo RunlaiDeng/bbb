@@ -272,10 +272,14 @@ const Earn = () => {
                 Weekly Rewards
               </span>
             </div>
-            <p className="text-emerald-600 mt-2 leading-relaxed">
-              Top 3 participants each week will receive special airdrop
-              rewards!
-            </p>
+            <div className="mt-2 space-y-2">
+              <p className="text-emerald-600 mt-2 leading-relaxed">
+                Top 3 participants each week will share $500 worth of BBB tokens!
+              </p>
+              <p className="text-emerald-600 mt-2 leading-relaxed">
+                Total Participants: {Number(ranks?.totalParticipants || 0).toLocaleString()}
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {address && rank && (
