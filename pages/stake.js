@@ -82,7 +82,7 @@ const Stake = () => {
     },
     callback: () => {
       refetch();
-      document.getElementById("depositModal").close();
+      setData(prev => ({ ...prev, showDepositModal: false }));
     },
   };
 
@@ -95,7 +95,7 @@ const Stake = () => {
     },
     callback: () => {
       refetch();
-      document.getElementById("withdrawModal").close();
+      setData(prev => ({ ...prev, showWithdrawModal: false }));
     },
   };
 
