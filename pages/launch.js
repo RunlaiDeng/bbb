@@ -44,8 +44,8 @@ const Launch = () => {
   const [formData, setFormData] = useState({
     dName: "",
     dSymbol: "",
-    dMaxXdcCap: parseEther("1000000"),
-    dMaxSymbolCap: parseEther(calculateSupply("1000000")),
+    dMaxXdcCap: parseEther("100000"),
+    dMaxSymbolCap: parseEther(calculateSupply("100000")),
     maxSymbol: "XDC",
     buySymbol: "XDC",
     showOptions: false,
@@ -217,7 +217,7 @@ const Launch = () => {
 
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
             <div className="flex items-center justify-between mb-4">
-              <span className="font-semibold text-gray-700">Max Curve (minimum 1m XDC)</span>
+              <span className="font-semibold text-gray-700">Max Curve (minimum 10000 XDC)</span>
               <button
                 className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
