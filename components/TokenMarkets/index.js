@@ -32,7 +32,7 @@ const TokenMarkets = (props) => {
     if (show == 1) {
       const followList = Object.keys(follow).filter((key) => follow[key]);
       if (followList?.length > 0) {
-        findTokens = await rpc.getTokens(1, 1, pageSize, followList);
+        findTokens = await rpc.getTokens(undefined, 1, pageSize, followList);
       }
     }
     if (show == 2) {
@@ -120,7 +120,9 @@ const TokenMarkets = (props) => {
               <div role="tablist" className="tabs tabs-bordered w-full">
                 <a
                   role="tab"
-                  className={"tab " + (show == 1 ? "tab-active text-green-700" : "")}
+                  className={
+                    "tab " + (show == 1 ? "tab-active text-green-700" : "")
+                  }
                   onClick={() => {
                     setShow(1);
                   }}
@@ -129,12 +131,14 @@ const TokenMarkets = (props) => {
                 </a>
                 <a
                   role="tab"
-                  className={"tab " + (show == 2 ? "tab-active text-green-700" : "")}
+                  className={
+                    "tab " + (show == 2 ? "tab-active text-green-700" : "")
+                  }
                   onClick={() => {
                     setShow(2);
                   }}
                 >
-                 Trending
+                  Trending
                 </a>
               </div>
             </div>
@@ -195,7 +199,13 @@ const TokenMarkets = (props) => {
                     </td>
                     <td className="text-right">
                       <div>${bbbPrice}</div>
-                      <div className={bbbPriceChange24h >= 0 ? "text-green-700" : "text-red-700"}>
+                      <div
+                        className={
+                          bbbPriceChange24h >= 0
+                            ? "text-green-700"
+                            : "text-red-700"
+                        }
+                      >
                         {bbbPriceChange24h >= 0 ? "+" : ""}
                         {Number(bbbPriceChange24h)?.toFixed(2)}%
                       </div>
@@ -299,7 +309,11 @@ const TokenMarkets = (props) => {
                         </td>
                         <td className="text-right">
                           <div>${price}</div>
-                          <div className={changeH24 >= 0 ? "text-green-700" : "text-red-700"}>
+                          <div
+                            className={
+                              changeH24 >= 0 ? "text-green-700" : "text-red-700"
+                            }
+                          >
                             {changeH24 >= 0 ? "+" : ""}
                             {changeH24}%
                           </div>
