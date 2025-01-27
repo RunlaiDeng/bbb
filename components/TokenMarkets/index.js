@@ -36,7 +36,7 @@ const TokenMarkets = (props) => {
       }
     }
     if (show == 2) {
-      findTokens = await rpc.getTokens(1, 1, pageSize);
+      findTokens = await rpc.getTokens(undefined, 1, pageSize);
     }
 
     setData({ ...data, tokenList: findTokens?.list, bbb });
