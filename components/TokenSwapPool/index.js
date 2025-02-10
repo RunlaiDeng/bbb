@@ -7,12 +7,12 @@ import { useAccount, useBalance, useReadContracts } from "wagmi";
 import SendButton from "@/components/SendButton";
 import { getBBBPrice, getPrice, getQuoteFromPool } from "../Utils";
 import WriteButton from "../WriteButton";
-import { setRequestMeta } from "next/dist/server/request-meta";
+
 const TokenSwap = (props) => {
   const [data, setData] = useState({ buyRange: 0, sellRange: 0 });
   const [type, setType] = useState("buy");
   const [max, setMax] = useState({});
-  const { poolAddress, isBBB, symbol, imageUrl, token, xdcPrice } = props;
+  const { poolAddress, symbol, imageUrl, token, xdcPrice } = props;
 
   async function fetchData() {
     const pool = await getPrice(poolAddress);

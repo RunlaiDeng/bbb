@@ -24,7 +24,7 @@ const TokenHead = (props) => {
   const privyLogin = usePrivyLogin();
   
   const { success } = useNotification();
-  const price = pool.price;
+  const price = pool?.price;
   const h24Change = pool?.priceChangeH24;
   const h24ChangeNum = price / (1 - h24Change) - price;
 
