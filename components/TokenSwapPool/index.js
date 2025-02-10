@@ -20,7 +20,7 @@ const TokenSwap = (props) => {
   }
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [poolAddress]);
 
   const { address } = useAccount();
 
@@ -135,6 +135,7 @@ const TokenSwap = (props) => {
   const usdBuyTo = Number(toBuyAmount) * poolPrice;
   const usdSellIn = Number(data?.sellAmount) * poolPrice;
   const usdSellTo = Number(toSellAmount) * xdcPrice;
+
   const disableBuy =
     data?.disabledBtn ||
     !buyTx?.data ||
