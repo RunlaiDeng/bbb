@@ -167,7 +167,7 @@ const Swap = () => {
     const pool = data?.pool;
     poolCap = pool?.cap;
     poolAddress = pool?.address;
-    showData = xdcPrice != undefined;
+    showData = poolAddress != undefined && xdcPrice != undefined;
   } else {
     showData = dropToken != undefined && xdcPrice != undefined;
     showRLD = true;
