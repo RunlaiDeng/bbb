@@ -133,6 +133,7 @@ const Swap = () => {
   async function fetchGraduate() {
     if (token) {
       const pool = await getPool(token);
+
       if (pool) {
         const poolInfo = {
           price: pool?.base_token_price_usd || 0,
@@ -166,7 +167,7 @@ const Swap = () => {
     const pool = data?.pool;
     poolCap = pool?.cap;
     poolAddress = pool?.address;
-    showData = poolAddress != undefined && xdcPrice != undefined;
+    showData = xdcPrice != undefined;
   } else {
     showData = dropToken != undefined && xdcPrice != undefined;
     showRLD = true;
@@ -413,7 +414,9 @@ const Swap = () => {
   ) : (
     <>
       <Loading />
-      <div className="text-center mt-10 text-gray-600">Searching for {token}</div>
+      <div className="text-center mt-10 text-gray-600">
+        Searching for {token}
+      </div>
     </>
   );
 };
