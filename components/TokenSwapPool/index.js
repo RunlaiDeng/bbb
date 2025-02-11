@@ -136,6 +136,13 @@ const TokenSwap = (props) => {
   const usdSellIn = Number(data?.sellAmount) * poolPrice;
   const usdSellTo = Number(toSellAmount) * xdcPrice;
 
+  console.log(
+    data?.disabledBtn,
+    !buyTx?.data,
+    usdBuyIn * 0.4 > usdBuyTo,
+    data.buyAmount > xdcBalance
+  );
+
   const disableBuy =
     data?.disabledBtn ||
     !buyTx?.data ||
