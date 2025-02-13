@@ -248,7 +248,7 @@ const Stake = () => {
                     return (
                       <tr
                         key={item?.index}
-                        className="text-center hover:bg-green-50 transition-colors whitespace-nowrap"
+                        className="hover:bg-green-50 transition-colors whitespace-nowrap"
                       >
                         <td>
                           <div
