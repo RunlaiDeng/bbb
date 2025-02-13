@@ -131,13 +131,24 @@ const Stake = () => {
     };
   });
 
+  const searchClaimed = graduateTokkens?.map((item) => {
+    return {
+      ...mbbbv2,
+      functionName: "claimed",
+      args: [address, item?.index],
+    };
+  });
+
   const { data: reads1 } = useReadContracts({
     contracts: searchGraduatedTokens,
   });
-
+  const { data: reads2 } = useReadContracts({ contracts: searchClaimed });
+  const claimedV2 = reads2?.map((item) => item?.result);
   const dropTokensV2 = reads1?.map((item) => item?.result);
 
   const showList = dropTokensV2?.length > 0;
+
+  console.log(claimedV2);
 
   return (
     <>
@@ -232,6 +243,8 @@ const Stake = () => {
                       (100 * stakeMbbbAmount?.toString() || 0) /
                         totalStakeMbbbAmount?.toString() || 0;
 
+                    const claimed = claimedV2[index];
+                    console.log(claimedV2[index]);
                     return (
                       <tr
                         key={item?.index}
@@ -281,7 +294,7 @@ const Stake = () => {
                           {tokenObj?.symbol}
                         </td>
                         <td>
-                          {airdropAmount?.toString() == 0 ? (
+                          {claimed || airdropAmount?.toString() == 0 ? (
                             <span className="text-gray-400">Unavailable</span>
                           ) : (
                             <WriteButton
