@@ -259,6 +259,10 @@ const getReferrals = (account) => {
   return send("getReferrals", [account]);
 };
 
+const getGraduateTokens = () => {
+  return send("getGraduateTokens", []);
+};
+
 // Clear expired cache entries periodically
 setInterval(() => {
   const now = Date.now();
@@ -287,4 +291,5 @@ module.exports = {
   register,
   updateShareFee,
   getReferrals,
+  getGraduateTokens,
 };
