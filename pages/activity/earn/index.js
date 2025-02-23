@@ -87,8 +87,7 @@ const Earn = () => {
             {puser?.weekId} Total cps
           </h1>
           <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
-            🎯 All cps earned will be counted towards BBB airdrop in Q3-Q4
-            2025
+            🎯 All cps earned will be counted towards BBB airdrop in Q3-Q4 2025
           </div>
           {tradeEventJoined ? (
             <>
@@ -150,7 +149,9 @@ const Earn = () => {
           </div>
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 md:p-6 rounded-xl border border-green-100">
-              <p className="text-gray-600 mb-2 text-center md:text-left">Current cps from Trading</p>
+              <p className="text-gray-600 mb-2 text-center md:text-left">
+                Current cps from Trading
+              </p>
               <p className="text-3xl font-bold text-green-600 flex items-center justify-center md:justify-start">
                 <FavIcon />
                 {Number(puser?.tradePoint || 0)?.toLocaleString()}{" "}
@@ -159,8 +160,8 @@ const Earn = () => {
             </div>
             <p className="text-sm text-gray-500 leading-relaxed text-center md:text-left">
               * Only trading non-BBB and non-graduated tokens will earn cps.
-              Higher trading volume earns more cps. Trading amount greater
-              than 1 XDC will be counted for cps.
+              Higher trading volume earns more cps. Trading amount greater than
+              1 XDC will be counted for cps.
             </p>
           </div>
         </div>
@@ -246,20 +247,25 @@ const Earn = () => {
               })}
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              * Complete all Twitter tasks to get 10,000 bonus cps and 1.5x
-              cps multiplier!
+              * Complete all Twitter tasks to get 10,000 bonus cps and 1.5x cps
+              multiplier!
             </p>
             <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
               <p className="text-sm text-gray-600">
-                <span className="font-semibold">Example:</span> If a user completes all Twitter tasks and trades 10,000 XDC,
-                they will receive: 1.5 × (10,000 trade cps + 10,000 bonus cps) = 30,000 total cps
+                <span className="font-semibold">Example:</span> If a user
+                completes all Twitter tasks and trades 10,000 XDC, they will
+                receive: 1.5 × (10,000 trade cps + 10,000 bonus cps) = 30,000
+                total cps
               </p>
             </div>
           </div>
         </div>
 
         {/* Points Leaderboard */}
-        <div id="leaderboard" className="bg-white rounded-2xl shadow-lg p-4 md:p-8 hover:shadow-xl transition-all duration-300">
+        <div
+          id="leaderboard"
+          className="bg-white rounded-2xl shadow-lg p-4 md:p-8 hover:shadow-xl transition-all duration-300"
+        >
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-2 md:mb-0">
               {puser?.weekId} Points Leaderboard
@@ -268,16 +274,11 @@ const Earn = () => {
           <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-green-100 rounded-xl p-6 mb-6">
             <div className="flex items-center">
               <span className="text-emerald-500 text-2xl mr-3">🏆</span>
-              <span className="font-semibold text-lg text-emerald-700">
-                Weekly Rewards
-              </span>
             </div>
             <div className="mt-2 space-y-2">
               <p className="text-emerald-600 mt-2 leading-relaxed">
-                Top 3 participants each week will share $500 worth of BBB tokens!
-              </p>
-              <p className="text-emerald-600 mt-2 leading-relaxed">
-                Total Participants: {Number(ranks?.totalSize || 0).toLocaleString()}
+                Total Participants:{" "}
+                {Number(ranks?.totalSize || 0).toLocaleString()}
               </p>
             </div>
           </div>
@@ -344,7 +345,9 @@ const Earn = () => {
                     {user.rank}
                   </div>
                   <div>
-                    <div className="font-medium">{formatAddress(user.account)}</div>
+                    <div className="font-medium">
+                      {formatAddress(user.account)}
+                    </div>
                     {user.twitterUserName && (
                       <a
                         href={`https://x.com/${user.twitterUserName}`}
@@ -386,30 +389,43 @@ const Earn = () => {
                 } else {
                   // 始终显示第一页
                   pages.push(1);
-                  
+
                   if (pageNumber <= 3) {
                     // 当前页靠近开始
-                    pages.push(2, 3, 4, '...', totalPage);
+                    pages.push(2, 3, 4, "...", totalPage);
                   } else if (pageNumber >= totalPage - 2) {
                     // 当前页靠近结束
-                    pages.push('...', totalPage - 3, totalPage - 2, totalPage - 1, totalPage);
+                    pages.push(
+                      "...",
+                      totalPage - 3,
+                      totalPage - 2,
+                      totalPage - 1,
+                      totalPage
+                    );
                   } else {
                     // 当前页在中间
-                    pages.push('...', pageNumber - 1, pageNumber, pageNumber + 1, '...', totalPage);
+                    pages.push(
+                      "...",
+                      pageNumber - 1,
+                      pageNumber,
+                      pageNumber + 1,
+                      "...",
+                      totalPage
+                    );
                   }
                 }
 
                 return pages.map((page, index) => (
                   <button
                     key={index}
-                    onClick={() => page !== '...' && setPageNumber(page)}
-                    disabled={page === '...'}
+                    onClick={() => page !== "..." && setPageNumber(page)}
+                    disabled={page === "..."}
                     className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center transition-colors ${
                       page === pageNumber
-                        ? 'bg-green-500 text-white'
-                        : page === '...'
-                        ? 'cursor-default bg-transparent'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        ? "bg-green-500 text-white"
+                        : page === "..."
+                        ? "cursor-default bg-transparent"
+                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                     }`}
                   >
                     {page}
@@ -417,7 +433,9 @@ const Earn = () => {
                 ));
               })()}
               <button
-                onClick={() => setPageNumber(Math.min(totalPage, pageNumber + 1))}
+                onClick={() =>
+                  setPageNumber(Math.min(totalPage, pageNumber + 1))
+                }
                 disabled={pageNumber === totalPage}
                 className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
