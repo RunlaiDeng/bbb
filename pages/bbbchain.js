@@ -5,10 +5,10 @@ const BBBChain = () => {
       <div className="container mx-auto px-4 py-10 md:py-20">
         <div className="text-center animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-bold text-green-800 mb-4 md:mb-6 animate-slide-up">
-            The Future of Blockchain
+            The Future of Fast Payments
           </h1>
           <p className="text-lg md:text-2xl text-green-700 mb-6 md:mb-8 animate-slide-up delay-200 px-2">
-            BBB Chain - AI-Powered Chain
+            BBB Chain - Lightning Fast Payment Network
           </p>
           <div className="stats stats-vertical md:stats-horizontal shadow bg-green-700 text-white animate-slide-up delay-300">
             <div className="stat">
@@ -29,24 +29,14 @@ const BBBChain = () => {
 
       {/* Features Section */}
       <div className="container mx-auto px-4 py-10 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          <div className="card bg-white shadow-xl transition-transform duration-300 hover:scale-105">
-            <div className="card-body p-4 md:p-8">
-              <svg className="w-12 h-12 md:w-16 md:h-16 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">JavaScript Smart Contracts</h2>
-              <p className="text-center text-sm md:text-base text-green-700">Write smart contracts in JavaScript, the world&apos;s most popular programming language</p>
-            </div>
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8">
           <div className="card bg-white shadow-xl transition-transform duration-300 hover:scale-105">
             <div className="card-body p-4 md:p-8">
               <svg className="w-12 h-12 md:w-16 md:h-16 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">Lightning Fast</h2>
-              <p className="text-center text-sm md:text-base text-green-700">1 million transactions per second for unparalleled performance</p>
+              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">Instant Payments</h2>
+              <p className="text-center text-sm md:text-base text-green-700">Process payments in milliseconds with our high-performance network</p>
             </div>
           </div>
 
@@ -55,8 +45,8 @@ const BBBChain = () => {
               <svg className="w-12 h-12 md:w-16 md:h-16 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
-              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">BBB Token</h2>
-              <p className="text-center text-sm md:text-base text-green-700">Native token powering the future of decentralized applications</p>
+              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">Low Cost</h2>
+              <p className="text-center text-sm md:text-base text-green-700">Minimal transaction fees for efficient value transfer</p>
             </div>
           </div>
 
@@ -65,8 +55,8 @@ const BBBChain = () => {
               <svg className="w-12 h-12 md:w-16 md:h-16 text-green-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">AI-Powered Chain</h2>
-              <p className="text-center text-sm md:text-base text-green-700">Advanced AI algorithms optimize network performance and smart contract execution</p>
+              <h2 className="card-title text-lg md:text-xl text-green-800 justify-center mt-2">AI-Powered Security</h2>
+              <p className="text-center text-sm md:text-base text-green-700">Advanced AI algorithms ensure secure and reliable transactions</p>
             </div>
           </div>
         </div>
