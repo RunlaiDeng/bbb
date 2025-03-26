@@ -82,6 +82,14 @@ const Navbar = () => {
                   >
                     <li className="rounded-lg">
                       <Link
+                        href={"/liquidityfarm"}
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                      >
+                        Liquidity Farm
+                      </Link>
+                    </li>
+                    <li className="rounded-lg">
+                      <Link
                         href={"/stake"}
                         className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                       >
@@ -742,6 +750,15 @@ const Navbar = () => {
                           Earn
                         </div>
                         <div className="collapse-content z-50">
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            onClick={(e) => {
+                              router.push("/liquidityfarm");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div>Liquidity Farm</div>
+                          </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
