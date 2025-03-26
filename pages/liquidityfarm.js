@@ -13,6 +13,7 @@ import WriteButton from "@/components/WriteButton";
 import Link from "next/link";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import { getBBBPrice, getPrice } from "@/components/Utils";
 
 const LiquidityFarm = () => {
   const [data, setData] = useState({
@@ -20,6 +21,8 @@ const LiquidityFarm = () => {
     showUnstakeModal: false,
     stakeAmount: "",
     unstakeAmount: "",
+    bbbPrice: 0,
+    lpTokenPrice: 0,
   });
 
   const chainId = useChainId();
@@ -89,6 +92,81 @@ const LiquidityFarm = () => {
         abi: ERC20ABI,
         functionName: "symbol",
       },
+      {
+        address: lpTokenAddress,
+        abi: ERC20ABI,
+        functionName: "totalSupply",
+      },
+    ],
+    query: {
+      enabled: !!lpTokenAddress && isConnected,
+    },
+  });
+
+  // Read LP pool reserves to calculate price directly
+  const { data: pairData, refetch: refetchPairData } = useReadContracts({
+    contracts: [
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "getReserves",
+            outputs: [
+              { internalType: "uint112", name: "_reserve0", type: "uint112" },
+              { internalType: "uint112", name: "_reserve1", type: "uint112" },
+              {
+                internalType: "uint32",
+                name: "_blockTimestampLast",
+                type: "uint32",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "token0",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "token1",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "getReserves",
+      },
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "token0",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "token0",
+      },
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "token1",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "token1",
+      },
     ],
     query: {
       enabled: !!lpTokenAddress && isConnected,
@@ -99,17 +177,92 @@ const LiquidityFarm = () => {
   const allowance = lpTokenData?.[0]?.result || BigInt(0);
   const balance = lpTokenData?.[1]?.result || BigInt(0);
   const symbol = lpTokenData?.[2]?.result || "LP Token";
+  const lpTotalSupply = lpTokenData?.[3]?.result || BigInt(0);
+  const reserves = pairData?.[0]?.result || [BigInt(0), BigInt(0), 0];
+  const token0 = pairData?.[1]?.result;
+  const token1 = pairData?.[2]?.result;
   const userStaked = userInfoData?.[0]?.result?.[0] || BigInt(0);
   const pendingReward = userInfoData?.[1]?.result || BigInt(0);
   const totalStaked = pool?.[4] || BigInt(0);
   const rewardPerBlock = pool?.[5] || BigInt(0);
   const isActive = pool?.[6] || false;
 
+  // Load BBB and XDC prices, then calculate LP token price directly
+  useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const bbbPriceData = await getBBBPrice();
+        const bbbPrice = bbbPriceData.price || 0;
+
+        // Get XDC price
+        const xdcPriceRes = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=xdce-crowd-sale&vs_currencies=usd"
+        );
+        const xdcPriceData = await xdcPriceRes.json();
+        const xdcPrice = xdcPriceData["xdce-crowd-sale"]?.usd || 0;
+
+        // Skip if we don't have reserves or totalSupply
+        if (
+          reserves &&
+          lpTotalSupply &&
+          lpTotalSupply > 0 &&
+          token0 &&
+          token1
+        ) {
+          // Determine which token is BBB and which is XDC
+          const bbbAddress = contracts[chainId]?.bbb?.address;
+          const wxdcAddress = contracts[chainId]?.wxdc?.address;
+
+          let bbbReserve, xdcReserve;
+
+          if (token0.toLowerCase() === bbbAddress.toLowerCase()) {
+            bbbReserve = reserves[0];
+            xdcReserve = reserves[1];
+          } else if (token1.toLowerCase() === bbbAddress.toLowerCase()) {
+            bbbReserve = reserves[1];
+            xdcReserve = reserves[0];
+          } else {
+            // If neither token is BBB, we can't calculate
+            return;
+          }
+
+          // Calculate LP token price based on reserves and prices
+          // LP price = (bbbReserve * bbbPrice + xdcReserve * xdcPrice) / lpTotalSupply
+          const bbbValue = Number(formatEther(bbbReserve)) * bbbPrice;
+          const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
+          const lpPrice =
+            (bbbValue + xdcValue) / Number(formatEther(lpTotalSupply));
+
+          setData((prev) => ({
+            ...prev,
+            bbbPrice: bbbPrice,
+            lpTokenPrice: lpPrice,
+          }));
+        }
+      } catch (error) {
+        console.error("Error calculating LP token price:", error);
+      }
+    };
+
+    if (isConnected && lpTokenAddress && reserves && lpTotalSupply) {
+      fetchPrices();
+    }
+  }, [
+    isConnected,
+    lpTokenAddress,
+    reserves,
+    lpTotalSupply,
+    token0,
+    token1,
+    chainId,
+  ]);
+
   // Function to refresh all data
   const refreshData = () => {
     refetchPool();
     refetchUserInfo();
     refetchLpTokenData();
+    refetchPairData();
   };
 
   // MAX_UINT256 for approvals
@@ -189,10 +342,17 @@ const LiquidityFarm = () => {
     // Annual rewards = reward per block * blocks per year
     const annualRewards = rewardPerBlock * BigInt(BLOCKS_PER_YEAR);
 
-    // APR = (annual rewards / total staked) * 100
+    // Get BBB price and LP token price from the state
+    const bbbPrice = data.bbbPrice || 1;
+    const lpPrice = data.lpTokenPrice || 1;
+
+    // Convert to USD value
+    const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
+    const totalStakedUSD = Number(formatEther(totalStaked)) * lpPrice;
+
+    // APR = (annual rewards in USD / total staked in USD) * 100
     const apr =
-      (Number(formatEther(annualRewards)) / Number(formatEther(totalStaked))) *
-      100;
+      totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
 
     return apr.toFixed(2);
   };
@@ -234,7 +394,6 @@ const LiquidityFarm = () => {
                 <h3 className="text-xl font-bold">{symbol} Farm</h3>
                 <p className="text-sm opacity-80">Pool ID: {pid}</p>
               </div>
-        
             </div>
           </div>
 
@@ -254,7 +413,9 @@ const LiquidityFarm = () => {
                 <p className="font-semibold text-lg">
                   {Number(formatEther(userStaked)).toFixed(4)} {symbol}
                   <Link
-                    href={"https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"}
+                    href={
+                      "https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"
+                    }
                     className="ml-1 text-xs text-green-600 hover:underline"
                     target="_blank"
                   >
@@ -276,7 +437,9 @@ const LiquidityFarm = () => {
                 <p className="font-semibold">
                   {Number(formatEther(totalStaked)).toFixed(4)} {symbol}
                   <Link
-                    href={"https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"}
+                    href={
+                      "https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"
+                    }
                     className="ml-1 text-xs text-green-600 hover:underline"
                     target="_blank"
                   >
