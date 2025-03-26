@@ -6,6 +6,7 @@ import mBBBV2ABI from "../abi/mBBBV2ABI.json";
 import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
 import PoolABI from "../abi/PoolABI.json";
 import ClaimRewardsABI from "../abi/ClaimRewardsABI.json";
+import LpStakeABI from "../abi/LpStakeABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -66,6 +67,10 @@ export const contracts = {
       address: "0x47Ab36821c53E574310c5cc5fabdA4467B8f8fc0",
       abi: mBBBV2ABI,
     },
+    lpStake: {
+      address: "0x123456789abcdef123456789abcdef123456789", // Replace with actual address when deployed
+      abi: LpStakeABI,
+    },
   },
   50: {
     referralProgram: {
@@ -103,6 +108,10 @@ export const contracts = {
     ccrRewards: {
       address: "0xeF7dfC1BcA77c46F1C02E5D13fe7C10BE405cE59",
       abi: ClaimRewardsABI,
+    },
+    lpStake: {
+      address: "0xEfbFBA9137309A8412D708F83d4fB9dD90d5414d", // Replace with actual address when deployed
+      abi: LpStakeABI,
     },
   },
 };
