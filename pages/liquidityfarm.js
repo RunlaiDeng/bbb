@@ -24,7 +24,7 @@ const LiquidityFarm = () => {
 
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const publicClient = usePublicClient();
+
   const privyLogin = usePrivyLogin();
 
   // LP Stake contract address
@@ -104,8 +104,6 @@ const LiquidityFarm = () => {
   const totalStaked = pool?.[4] || BigInt(0);
   const rewardPerBlock = pool?.[5] || BigInt(0);
   const isActive = pool?.[6] || false;
-
-  console.log(pool);
 
   // Function to refresh all data
   const refreshData = () => {
@@ -191,8 +189,6 @@ const LiquidityFarm = () => {
     // Annual rewards = reward per block * blocks per year
     const annualRewards = rewardPerBlock * BigInt(BLOCKS_PER_YEAR);
 
-    console.log(annualRewards);
-
     // APR = (annual rewards / total staked) * 100
     const apr =
       (Number(formatEther(annualRewards)) / Number(formatEther(totalStaked))) *
@@ -209,18 +205,6 @@ const LiquidityFarm = () => {
         </h1>
         <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
           🌊 Stake your LP tokens to earn rewards and boost your yield
-        </div>
-
-        <div className="flex justify-center mb-4">
-          <Link
-            href={
-              "https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"
-            }
-            className="btn bg-white text-green-600 hover:bg-opacity-90"
-            target="_blank"
-          >
-            Get LP Tokens
-          </Link>
         </div>
       </div>
 
@@ -245,8 +229,21 @@ const LiquidityFarm = () => {
       ) : (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 mx-auto max-w-2xl">
           <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4 text-white">
-            <h3 className="text-xl font-bold">{symbol} Farm</h3>
-            <p className="text-sm opacity-80">Pool ID: {pid}</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold">{symbol} Farm</h3>
+                <p className="text-sm opacity-80">Pool ID: {pid}</p>
+              </div>
+              <Link
+                href={
+                  "https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"
+                }
+                className="btn btn-sm bg-white text-green-600 hover:bg-opacity-90"
+                target="_blank"
+              >
+                Get {symbol} Tokens
+              </Link>
+            </div>
           </div>
 
           <div className="p-6">
@@ -283,7 +280,9 @@ const LiquidityFarm = () => {
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Rewards per Block</p>
-                <p className="font-semibold">{formatEther(rewardPerBlock)} BBB</p>
+                <p className="font-semibold">
+                  {formatEther(rewardPerBlock)} BBB
+                </p>
               </div>
             </div>
 
