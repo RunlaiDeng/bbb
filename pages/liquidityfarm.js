@@ -234,15 +234,7 @@ const LiquidityFarm = () => {
                 <h3 className="text-xl font-bold">{symbol} Farm</h3>
                 <p className="text-sm opacity-80">Pool ID: {pid}</p>
               </div>
-              <Link
-                href={
-                  "https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"
-                }
-                className="btn btn-sm bg-white text-green-600 hover:bg-opacity-90"
-                target="_blank"
-              >
-                Get {symbol} Tokens
-              </Link>
+        
             </div>
           </div>
 
@@ -260,13 +252,20 @@ const LiquidityFarm = () => {
               <div>
                 <p className="text-gray-500 text-sm">Your Staked</p>
                 <p className="font-semibold text-lg">
-                  {formatEther(userStaked)} {symbol}
+                  {Number(formatEther(userStaked)).toFixed(4)} {symbol}
+                  <Link
+                    href={"https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"}
+                    className="ml-1 text-xs text-green-600 hover:underline"
+                    target="_blank"
+                  >
+                    Get {symbol}
+                  </Link>
                 </p>
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Pending Rewards</p>
                 <p className="font-semibold text-lg">
-                  {formatEther(pendingReward)} BBB
+                  {Number(formatEther(pendingReward)).toFixed(4)} BBB
                 </p>
               </div>
             </div>
@@ -275,13 +274,20 @@ const LiquidityFarm = () => {
               <div>
                 <p className="text-gray-500 text-sm">Total Staked</p>
                 <p className="font-semibold">
-                  {formatEther(totalStaked)} {symbol}
+                  {Number(formatEther(totalStaked)).toFixed(4)} {symbol}
+                  <Link
+                    href={"https://icecreamswap.com/v2/add/0x951857744785E80e2De051c32EE7b25f9c458C42/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"}
+                    className="ml-1 text-xs text-green-600 hover:underline"
+                    target="_blank"
+                  >
+                    Get {symbol}
+                  </Link>
                 </p>
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Rewards per Block</p>
                 <p className="font-semibold">
-                  {formatEther(rewardPerBlock)} BBB
+                  {Number(formatEther(rewardPerBlock)).toFixed(4)} BBB
                 </p>
               </div>
             </div>
