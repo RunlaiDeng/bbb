@@ -269,7 +269,7 @@ const LiquidityFarm = () => {
               <div>
                 <p className="text-gray-500 text-sm">Pending Rewards</p>
                 <p className="font-semibold text-lg">
-                  {formatEther(pendingReward)}
+                  {formatEther(pendingReward)} BBB
                 </p>
               </div>
             </div>
@@ -283,7 +283,7 @@ const LiquidityFarm = () => {
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Rewards per Block</p>
-                <p className="font-semibold">{formatEther(rewardPerBlock)}</p>
+                <p className="font-semibold">{formatEther(rewardPerBlock)} BBB</p>
               </div>
             </div>
 
