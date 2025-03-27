@@ -7,7 +7,7 @@ const products = [
   {
     id: 1,
     name: "BBB Hat",
-    price: 250,
+    price: 100000,
     image: "/merch/hat.png",
     description: "Stylish BBB hat for crypto enthusiasts",
     inStock: true,
@@ -15,7 +15,7 @@ const products = [
   {
     id: 2,
     name: "BBB Socks",
-    price: 150,
+    price: 75000,
     image: "/merch/sock.png",
     description: "Comfortable BBB socks for everyday wear",
     inStock: true,
