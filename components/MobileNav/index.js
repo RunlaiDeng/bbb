@@ -150,6 +150,36 @@ const MobileNav = () => {
               </svg>
               <span className="ml-2">Airdrop Hub</span>
             </Link>
+            <Link
+              href="/liquidityfarm"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/liquidityfarm" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M3 3H21V21H3V3Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M3 9H21"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M9 21V9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className="ml-2">Liquidity Farm</span>
+            </Link>
           </div>
         </div>
       )}
@@ -270,6 +300,32 @@ const MobileNav = () => {
             ></path>
           </svg>
           <span className="text-xs">Dashboard</span>
+        </Link>
+        <Link
+          href="/merch"
+          className={`flex flex-col items-center p-2 ${
+            router.pathname === "/merch" ? "text-gray-900" : "text-gray-400"
+          }`}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="text-xs">Merch</span>
         </Link>
       </div>
     </div>
