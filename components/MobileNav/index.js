@@ -248,6 +248,28 @@ const MobileNav = () => {
           <span className="text-xs">Earn {isEarnOpen ? "▼" : "▲"}</span>
         </button>
         <Link
+          href="/ido"
+          className={`flex flex-col items-center p-2 ${
+            router.pathname === "/ido" ? "text-gray-900" : "text-gray-400"
+          }`}
+        >
+          <svg
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="5273"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
+              fill="currentColor"
+              p-id="5274"
+            ></path>
+          </svg>
+          <span className="text-xs">IDO</span>
+        </Link>
+        <Link
           href="/swap/bbb"
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/swap")

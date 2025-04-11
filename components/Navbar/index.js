@@ -73,6 +73,12 @@ const Navbar = () => {
                 >
                   Merch
                 </Link>
+                <Link
+                  href={"/ido"}
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                >
+                  IDO
+                </Link>
 
                 <div className="dropdown dropdown-hover font-bold">
                   <div
@@ -756,6 +762,29 @@ const Navbar = () => {
                           ></path>
                         </svg>
                         <div>Merch</div>
+                      </div>
+                      <div
+                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                        onClick={(e) => {
+                          router.push("/ido");
+                          setData({ ...data, menuItemsOpen: false });
+                        }}
+                      >
+                        <svg
+                          viewBox="0 0 1024 1024"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          p-id="5273"
+                          width="20"
+                          height="20"
+                        >
+                          <path
+                            d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
+                            fill="#515151"
+                            p-id="5274"
+                          ></path>
+                        </svg>
+                        <div>IDO</div>
                       </div>
                       <div
                         tabIndex={0}
