@@ -65,13 +65,15 @@ const TokenSwap = (props) => {
         const res0 = await getQuoteFromPool(
           "0x0000000000000000000000000000000000000000",
           token,
-          xdcBalance?.toString()
+          xdcBalance?.toString(),
+          address
         );
 
         const res1 = await getQuoteFromPool(
           token,
           "0x0000000000000000000000000000000000000000",
-          tokenBalance?.toString()
+          tokenBalance?.toString(),
+          address
         );
         setMax({ maxBuy: res0?.toAmount, maxSell: res1?.toAmount });
       }
@@ -86,7 +88,8 @@ const TokenSwap = (props) => {
         const res = await getQuoteFromPool(
           "0x0000000000000000000000000000000000000000",
           token,
-          data?.buyAmount?.toString()
+          data?.buyAmount?.toString(),
+          address
         );
 
         setData({ ...data, buy: res, disabledBtn: false });
@@ -108,7 +111,8 @@ const TokenSwap = (props) => {
         const res = await getQuoteFromPool(
           token,
           "0x0000000000000000000000000000000000000000",
-          data?.sellAmount?.toString()
+          data?.sellAmount?.toString(),
+          address
         );
 
         setData({ ...data, sell: res, disabledBtn: false });

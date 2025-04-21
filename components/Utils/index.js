@@ -189,11 +189,11 @@ const getERC20List = async (address) => {
 const getXDCPrice = async () =>
   getPrice("0xfcabba53dac7b6b19714c7d741a46f6dad260107");
 
-const getQuoteFromPool = async (src, dst, amount) => {
+const getQuoteFromPool = async (src, dst, amount, address) => {
   if (!src || !dst || !amount) return {};
   try {
     return await send(
-      `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=99`
+      `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=99&from=${address}`
     );
   } catch (error) {
     console.error("Error getting quote from pool:", error);
