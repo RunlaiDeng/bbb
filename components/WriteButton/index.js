@@ -98,6 +98,7 @@ const WriteButton = (props) => {
           try {
             const gas = await client.estimateContractGas({ ...writeData });
             writeData.gas = (gas * 20n) / 10n;
+            
           } catch (e) {}
           props?.before?.();
           if (connectorType == "embedded") {
