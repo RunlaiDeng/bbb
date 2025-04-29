@@ -197,7 +197,7 @@ const TokenSwap = (props) => {
   };
 
   let showApprove = true;
-  if (allowance && allowance >= (data?.sellAmount || 0)) {
+  if ((allowance && allowance >= (data?.sellAmount || 0)) || !sellTx.to) {
     showApprove = false;
   }
 
