@@ -28,12 +28,15 @@ const TokenSwap = (props) => {
 
   const { data: balance, refetch: refetch1 } = useBalance({ address: address });
   const tokenContract = { address: token, abi: erc20Abi };
+
+  const sellTx = data?.sell?.tx || {};
+  const buyTx = data?.buy?.tx || {};
   const { data: reads0, refetch: refetch0 } = useReadContracts({
     contracts: [
       {
         ...tokenContract,
         functionName: "allowance",
-        args: [address, icecreamswap],
+        args: [address, sellTx?.to],
       },
       {
         ...tokenContract,
@@ -128,8 +131,6 @@ const TokenSwap = (props) => {
     };
   }, [data?.sellAmount]);
 
-  const sellTx = data?.sell?.tx || {};
-  const buyTx = data?.buy?.tx || {};
   buyTx.value = data.buyAmount;
   delete sellTx.from;
   const toBuyAmount = BigInt(data?.buy?.toAmount || 0);
@@ -140,6 +141,7 @@ const TokenSwap = (props) => {
   const usdSellIn = Number(data?.sellAmount) * poolPrice;
   const usdSellTo = Number(toSellAmount) * xdcPrice;
 
+  console.log(sellTx);
   const disableBuy =
     data?.disabledBtn ||
     !buyTx?.data ||
@@ -185,7 +187,7 @@ const TokenSwap = (props) => {
       address: token,
       abi: erc20Abi,
       functionName: "approve",
-      args: [icecreamswap, MAX_UINT256],
+      args: [sellTx?.to, MAX_UINT256],
     },
     callback: (confirm) => {
       if (confirm) {
