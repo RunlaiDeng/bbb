@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import IDOABI from "../../abi/IDOABI.json";
 import Link from "next/link";
 import Image from "next/image";
+import { idos } from "../ido";
 
 const IdoDetail = () => {
   const router = useRouter();
@@ -22,16 +23,6 @@ const IdoDetail = () => {
   const [purchaseInput, setPurchaseInput] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const idos = {
-    0: {
-      description: "this is good project",
-      website: "https://google.com",
-    },
-    1: {
-      description: "this is good project",
-      website: "https://google.com",
-    },
-  };
   // Define your contract address - replace with actual deployed contract address
   const idoContractAddress = "0x1bFa56fb42F5C5291EEa7953938ac265c802a5Cb"; // Replace with your actual IDO contract address
 
@@ -157,9 +148,9 @@ const IdoDetail = () => {
     return new Date(timestamp * 1000).toLocaleString();
   };
 
-  // Get IDO additional info from the idos configuration
+  // Get IDO additional info from the idos configuration in the main file
   const getIdoInfo = (idNumber) => {
-    return idos[idNumber] || { description: "", website: "" };
+    return idos[idNumber] || { description: "", website: "", image: "/logo.png" };
   };
 
   // Handle token purchase
@@ -209,7 +200,7 @@ const IdoDetail = () => {
         <div className="text-center py-16 bg-gray-50 rounded-lg">
           <h2 className="text-3xl font-bold mb-2">Campaign Not Found</h2>
           <p className="text-gray-600 mb-6">
-            The IDO campaign you're looking for does not exist.
+            The IDO campaign you&apos;re looking for does not exist.
           </p>
           <Link href="/ido" className="btn btn-primary">
             Back to All Campaigns
@@ -228,7 +219,9 @@ const IdoDetail = () => {
 
   // Default image if no custom image is available
   const campaignImage =
-    `/ido/${campaign.tokenSymbol?.toLowerCase()}.png` || "/logo.png";
+    idos[campaign.id]?.image || 
+    `/ido/${campaign.tokenSymbol?.toLowerCase()}.png` || 
+    "/logo.png";
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -263,6 +256,8 @@ const IdoDetail = () => {
               <Image
                 src={campaignImage}
                 alt={campaign.tokenName}
+                height={200}
+                width={200}
                 className="max-w-full max-h-full object-contain"
                 onError={(e) => {
                   e.target.onerror = null;
@@ -580,7 +575,7 @@ const IdoDetail = () => {
                 {timeStatus.status === "upcoming" && (
                   <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4 text-center">
                     <p className="text-yellow-700">
-                      This sale hasn't started yet. Come back on{" "}
+                      This sale hasn&apos;t started yet. Come back on{" "}
                       {formatDate(campaign.saleStartTime)}.
                     </p>
                   </div>

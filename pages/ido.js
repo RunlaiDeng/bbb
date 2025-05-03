@@ -15,6 +15,20 @@ import IDOABI from "../abi/IDOABI.json";
 import Link from "next/link";
 import Image from "next/image";
 
+// IDO项目额外信息
+export const idos = {
+  0: {
+    description: "this is good project",
+    website: "https://google.com",
+    image: "/logo.png",
+  },
+  1: {
+    description: "this is good project",
+    website: "https://google.com",
+    image: "/logo.png",
+  },
+};
+
 const Ido = () => {
   const router = useRouter();
   const { address, isConnected } = useAccount();
@@ -761,8 +775,7 @@ const Ido = () => {
             );
 
             // Default image if no custom image is available
-            const campaignImage =
-              `/ido/${campaign.tokenSymbol?.toLowerCase()}.png` || "/logo.png";
+            const campaignImage = idos[campaign.id]?.image;
 
             return (
               <div
@@ -775,6 +788,8 @@ const Ido = () => {
                     <Image
                       src={campaignImage}
                       alt={campaign.tokenName}
+                      height={200}
+                      width={200}
                       className="h-3/4 object-contain"
                       onError={(e) => {
                         e.target.onerror = null;
