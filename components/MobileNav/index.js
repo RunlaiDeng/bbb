@@ -14,6 +14,50 @@ const MobileNav = () => {
         <div className="absolute bottom-16 left-0 right-0 bg-white border-t border-gray-200 p-4">
           <div className="grid grid-cols-2 gap-4">
             <Link
+              href="/merch"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/merch" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="ml-2">Merch</span>
+            </Link>
+            <Link
+              href="/launch"
+              className={`flex items-center p-3 rounded-lg ${
+                router.pathname === "/launch" ? "bg-gray-100" : ""
+              }`}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M22 2L15 22L11 13L2 9L22 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="ml-2">Launch</span>
+            </Link>
+            <Link
               href="/stake"
               className={`flex items-center p-3 rounded-lg ${
                 router.pathname === "/stake" ? "bg-gray-100" : ""
@@ -199,77 +243,6 @@ const MobileNav = () => {
           <span className="text-xs">Home</span>
         </Link>
         <Link
-          href="/markets"
-          className={`flex flex-col items-center p-2 ${
-            router.pathname === "/markets" ? "text-gray-900" : "text-gray-400"
-          }`}
-        >
-          <svg
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="10337"
-            width="20"
-            height="20"
-          >
-            <path
-              d="M173.9776 765.6448h148.8384a18.2272 18.2272 0 0 0 18.688-17.7664V301.056a18.2272 18.2272 0 0 0-18.688-17.7664H173.9776a18.2272 18.2272 0 0 0-18.688 17.7664v446.8224c0 9.8304 8.3456 17.7664 18.688 17.7664z m268.3392 0h148.8896a18.2272 18.2272 0 0 0 18.6368-17.7664V120.1664A18.2272 18.2272 0 0 0 591.2064 102.4H442.3168a18.2272 18.2272 0 0 0-18.688 17.7664v627.712c-0.1024 9.8304 8.3968 17.7664 18.688 17.7664z m268.288 0h148.7872a18.2272 18.2272 0 0 0 18.688-17.7664V481.9456a18.2272 18.2272 0 0 0-18.688-17.7664h-148.8384a18.2272 18.2272 0 0 0-18.688 17.7664v265.9328c0 9.8304 8.3968 17.7664 18.688 17.7664z m192.4096 77.9776H121.088a18.2272 18.2272 0 0 0-18.688 17.8176v42.3936c0 9.8304 8.3456 17.7664 18.688 17.7664h781.824a18.2272 18.2272 0 0 0 18.688-17.7664v-42.2912a18.176 18.176 0 0 0-18.5856-17.92z"
-              fill="currentColor"
-              p-id="10338"
-            ></path>
-          </svg>
-          <span className="text-xs">Markets</span>
-        </Link>
-        <button
-          onClick={() => setIsEarnOpen(!isEarnOpen)}
-          className={`flex flex-col items-center p-2 ${
-            router.pathname.startsWith("/activity") ||
-            router.pathname === "/stake" ||
-            router.pathname === "/farm" ||
-            router.pathname === "/airdrophub"
-              ? "text-gray-900"
-              : "text-gray-400"
-          }`}
-        >
-          <svg
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="15539"
-            width="20"
-            height="20"
-          >
-            <path
-              d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
-              p-id="15540"
-              fill="currentColor"
-            ></path>
-          </svg>
-          <span className="text-xs">Earn {isEarnOpen ? "▼" : "▲"}</span>
-        </button>
-        <Link
-          href="/ido"
-          className={`flex flex-col items-center p-2 ${
-            router.pathname === "/ido" ? "text-gray-900" : "text-gray-400"
-          }`}
-        >
-          <svg
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="5273"
-            width="20"
-            height="20"
-          >
-            <path
-              d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
-              fill="currentColor"
-              p-id="5274"
-            ></path>
-          </svg>
-          <span className="text-xs">IDO</span>
-        </Link>
-        <Link
           href="/swap/bbb"
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/swap")
@@ -299,6 +272,56 @@ const MobileNav = () => {
           <span className="text-xs">Trade</span>
         </Link>
         <Link
+          href="/ido"
+          className={`flex flex-col items-center p-2 ${
+            router.pathname === "/ido" ? "text-gray-900" : "text-gray-400"
+          }`}
+        >
+          <svg
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="5273"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
+              fill="currentColor"
+              p-id="5274"
+            ></path>
+          </svg>
+          <span className="text-xs">IDO</span>
+        </Link>
+        <button
+          onClick={() => setIsEarnOpen(!isEarnOpen)}
+          className={`flex flex-col items-center p-2 ${
+            router.pathname.startsWith("/activity") ||
+            router.pathname === "/stake" ||
+            router.pathname === "/farm" ||
+            router.pathname === "/airdrophub" ||
+            router.pathname === "/merch"
+              ? "text-gray-900"
+              : "text-gray-400"
+          }`}
+        >
+          <svg
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="15539"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
+              p-id="15540"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span className="text-xs">More {isEarnOpen ? "▼" : "▲"}</span>
+        </button>
+        <Link
           href={"/dashboard/" + address}
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/dashboard")
@@ -322,32 +345,6 @@ const MobileNav = () => {
             ></path>
           </svg>
           <span className="text-xs">Dashboard</span>
-        </Link>
-        <Link
-          href="/merch"
-          className={`flex flex-col items-center p-2 ${
-            router.pathname === "/merch" ? "text-gray-900" : "text-gray-400"
-          }`}
-        >
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path
-              d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="text-xs">Merch</span>
         </Link>
       </div>
     </div>

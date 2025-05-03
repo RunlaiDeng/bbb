@@ -56,22 +56,10 @@ const Navbar = () => {
                   Buy XDC
                 </Link>
                 <Link
-                  href={"/markets"}
-                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                >
-                  Markets
-                </Link>
-                <Link
                   href={"/swap/bbb"}
                   className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
                   Trade
-                </Link>
-                <Link
-                  href={"/merch"}
-                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                >
-                  Merch
                 </Link>
                 <Link
                   href={"/ido"}
@@ -86,12 +74,28 @@ const Navbar = () => {
                     role="button"
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
                   >
-                    Earn
+                    More
                   </div>
                   <ul
                     tabIndex={0}
                     className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50"
                   >
+                    <li className="rounded-lg">
+                      <Link
+                        href={"/merch"}
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                      >
+                        Merch
+                      </Link>
+                    </li>
+                    <li className="rounded-lg">
+                      <Link
+                        href={"/launch"}
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                      >
+                        Launch
+                      </Link>
+                    </li>
                     <li className="rounded-lg">
                       <Link
                         href={"/liquidityfarm"}
@@ -693,28 +697,6 @@ const Navbar = () => {
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={(e) => {
-                          router.push("/markets");
-                          setData({ ...data, menuItemsOpen: false });
-                        }}
-                      >
-                        <svg
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="10337"
-                          width="20"
-                          height="20"
-                        >
-                          <path
-                            d="M173.9776 765.6448h148.8384a18.2272 18.2272 0 0 0 18.688-17.7664V301.056a18.2272 18.2272 0 0 0-18.688-17.7664H173.9776a18.2272 18.2272 0 0 0-18.688 17.7664v446.8224c0 9.8304 8.3456 17.7664 18.688 17.7664z m268.3392 0h148.8896a18.2272 18.2272 0 0 0 18.6368-17.7664V120.1664A18.2272 18.2272 0 0 0 591.2064 102.4H442.3168a18.2272 18.2272 0 0 0-18.688 17.7664v627.712c-0.1024 9.8304 8.3968 17.7664 18.688 17.7664z m268.288 0h148.7872a18.2272 18.2272 0 0 0 18.688-17.7664V481.9456a18.2272 18.2272 0 0 0-18.688-17.7664h-148.8384a18.2272 18.2272 0 0 0-18.688 17.7664v265.9328c0 9.8304 8.3968 17.7664 18.688 17.7664z m192.4096 77.9776H121.088a18.2272 18.2272 0 0 0-18.688 17.8176v42.3936c0 9.8304 8.3456 17.7664 18.688 17.7664h781.824a18.2272 18.2272 0 0 0 18.688-17.7664v-42.2912a18.176 18.176 0 0 0-18.5856-17.92z"
-                            p-id="10338"
-                          ></path>
-                        </svg>
-                        <div>Markets</div>
-                      </div>
-                      <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                        onClick={(e) => {
                           router.push("/swap/bbb");
                           setData({ ...data, menuItemsOpen: false });
                         }}
@@ -739,29 +721,6 @@ const Navbar = () => {
                           ></path>
                         </svg>
                         <div>Trade</div>
-                      </div>
-                      <div
-                        className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                        onClick={(e) => {
-                          router.push("/merch");
-                          setData({ ...data, menuItemsOpen: false });
-                        }}
-                      >
-                        <svg
-                          viewBox="0 0 1024 1024"
-                          version="1.1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          p-id="5273"
-                          width="20"
-                          height="20"
-                        >
-                          <path
-                            d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
-                            fill="#515151"
-                            p-id="5274"
-                          ></path>
-                        </svg>
-                        <div>Merch</div>
                       </div>
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
@@ -805,7 +764,7 @@ const Navbar = () => {
                               p-id="15540"
                             ></path>
                           </svg>{" "}
-                          Earn
+                          More
                         </div>
                         <div className="collapse-content z-50">
                           <div
@@ -816,6 +775,15 @@ const Navbar = () => {
                             }}
                           >
                             <div>Liquidity Farm</div>
+                          </div>
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            onClick={(e) => {
+                              router.push("/launch");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div>Launch</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
