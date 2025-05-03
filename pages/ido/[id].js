@@ -10,6 +10,7 @@ import WriteButton from "../../components/WriteButton";
 import { useRouter } from "next/router";
 import IDOABI from "../../abi/IDOABI.json";
 import Link from "next/link";
+import Image from "next/image";
 
 const IdoDetail = () => {
   const router = useRouter();
@@ -259,7 +260,7 @@ const IdoDetail = () => {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
             <div className="w-full aspect-square bg-gradient-to-r from-green-100 to-emerald-100 flex items-center justify-center p-8">
-              <img
+              <Image
                 src={campaignImage}
                 alt={campaign.tokenName}
                 className="max-w-full max-h-full object-contain"
