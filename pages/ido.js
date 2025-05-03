@@ -14,20 +14,7 @@ import { useRouter } from "next/router";
 import IDOABI from "../abi/IDOABI.json";
 import Link from "next/link";
 import Image from "next/image";
-
-// IDO项目额外信息
-export const idos = {
-  0: {
-    description: "this is good project",
-    website: "https://google.com",
-    image: "/logo.png",
-  },
-  1: {
-    description: "this is good project",
-    website: "https://google.com",
-    image: "/logo.png",
-  },
-};
+import { contracts, idos } from "@/config";
 
 const Ido = () => {
   const router = useRouter();
@@ -43,6 +30,8 @@ const Ido = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
 
+  const idoContract = contracts?.[chainId]?.idoContract;
+
   // New campaign form state
   const [newCampaign, setNewCampaign] = useState({
     tokenName: "",
@@ -53,9 +42,6 @@ const Ido = () => {
     startTime: "",
     endTime: "",
   });
-
-  // Define your contract address - replace with actual deployed contract address
-  const idoContractAddress = "0x6fd6932d99193C930b007B99003824B1F9a18425"; // Replace with your actual IDO contract address
 
   // Get public client for direct contract calls
   const publicClient = usePublicClient();
@@ -69,18 +55,16 @@ const Ido = () => {
   const { data: contractData } = useReadContracts({
     contracts: [
       {
-        address: idoContractAddress,
-        abi: IDOABI,
+        ...idoContract,
         functionName: "getCampaignCount",
       },
       {
-        address: idoContractAddress,
-        abi: IDOABI,
+        ...idoContract,
         functionName: "owner",
       },
     ],
     query: {
-      enabled: Boolean(idoContractAddress && isConnected),
+      enabled: Boolean(idoContract && isConnected),
       refetchInterval: 10000,
     },
   });
@@ -107,7 +91,7 @@ const Ido = () => {
   // Load campaigns when count changes
   useEffect(() => {
     const fetchCampaigns = async () => {
-      if (!campaignCount || !idoContractAddress || !publicClient) return;
+      if (!campaignCount || !idoContract || !publicClient) return;
 
       setLoading(true);
 
@@ -117,8 +101,7 @@ const Ido = () => {
         const campaignResults = await Promise.all(
           campaignIds.map(async (id) => {
             const campaign = await publicClient.readContract({
-              address: idoContractAddress,
-              abi: IDOABI,
+              ...idoContract,
               functionName: "getCampaign",
               args: [id],
             });
@@ -129,15 +112,13 @@ const Ido = () => {
             if (address) {
               try {
                 userPurchase = await publicClient.readContract({
-                  address: idoContractAddress,
-                  abi: IDOABI,
+                  ...idoContract,
                   functionName: "userPurchases",
                   args: [id, address],
                 });
 
                 claimable = await publicClient.readContract({
-                  address: idoContractAddress,
-                  abi: IDOABI,
+                  ...idoContract,
                   functionName: "getClaimableAmount",
                   args: [id, address],
                 });
@@ -268,8 +249,7 @@ const Ido = () => {
     const value = parseEther(purchaseAmount);
 
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "buyTokens",
       args: [campaignId],
       value: value,
@@ -279,8 +259,7 @@ const Ido = () => {
   // Handle token claiming
   const handleClaim = (campaignId) => {
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "claimTokens",
       args: [campaignId],
     };
@@ -303,8 +282,7 @@ const Ido = () => {
     );
 
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "createCampaign",
       args: [
         newCampaign.tokenName,
@@ -321,8 +299,7 @@ const Ido = () => {
   // Update campaign status
   const handleUpdateStatus = (campaignId, isActive) => {
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "updateCampaignStatus",
       args: [campaignId, isActive],
     };
@@ -331,8 +308,7 @@ const Ido = () => {
   // Finalize sale (add liquidity)
   const handleFinalizeSale = (campaignId) => {
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "finalizeSale",
       args: [campaignId],
     };
@@ -775,7 +751,7 @@ const Ido = () => {
             );
 
             // Default image if no custom image is available
-            const campaignImage = idos[campaign.id]?.image;
+            const campaignImage = idos?.[campaign.id]?.image;
 
             return (
               <div

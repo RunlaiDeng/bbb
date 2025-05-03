@@ -7,6 +7,7 @@ import BBBPumpReferralABI from "../abi/BBBPumpReferralABI.json";
 import PoolABI from "../abi/PoolABI.json";
 import ClaimRewardsABI from "../abi/ClaimRewardsABI.json";
 import LpStakeABI from "../abi/LpStakeABI.json";
+import IDOABI from "../abi/IDOABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -113,6 +114,23 @@ export const contracts = {
       address: "0xEfbFBA9137309A8412D708F83d4fB9dD90d5414d", // Replace with actual address when deployed
       abi: LpStakeABI,
     },
+    idoContract: {
+      address: "0xac9aC25ebc5A99d205263dc1C4fcf4Cfb7e2aBc6",
+      abi: IDOABI,
+    },
+  },
+};
+// IDO项目额外信息
+export const idos = {
+  0: {
+    description: "this is good project",
+    website: "https://google.com",
+    image: "/logo.png",
+  },
+  1: {
+    description: "this is good project",
+    website: "https://google.com",
+    image: "/logo.png",
   },
 };
 

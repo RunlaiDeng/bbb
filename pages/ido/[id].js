@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import IDOABI from "../../abi/IDOABI.json";
 import Link from "next/link";
 import Image from "next/image";
-import { idos } from "../ido";
+import { contracts, idos } from "@/config";
 
 const IdoDetail = () => {
   const router = useRouter();
@@ -23,23 +23,20 @@ const IdoDetail = () => {
   const [purchaseInput, setPurchaseInput] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  // Define your contract address - replace with actual deployed contract address
-  const idoContractAddress = "0x1bFa56fb42F5C5291EEa7953938ac265c802a5Cb"; // Replace with your actual IDO contract address
-
+  const idoContract = contracts?.[chainId]?.idoContract;
   // Get public client for direct contract calls
   const publicClient = usePublicClient();
 
   // Fetch campaign data
   useEffect(() => {
     const fetchCampaign = async () => {
-      if (!id || !publicClient || !idoContractAddress) return;
+      if (!id || !publicClient || !idoContract) return;
 
       setLoading(true);
 
       try {
         const campaignData = await publicClient.readContract({
-          address: idoContractAddress,
-          abi: IDOABI,
+          ...idoContract,
           functionName: "getCampaign",
           args: [Number(id)],
         });
@@ -50,15 +47,13 @@ const IdoDetail = () => {
         if (address) {
           try {
             userPurchase = await publicClient.readContract({
-              address: idoContractAddress,
-              abi: IDOABI,
+              ...idoContract,
               functionName: "userPurchases",
               args: [Number(id), address],
             });
 
             claimable = await publicClient.readContract({
-              address: idoContractAddress,
-              abi: IDOABI,
+              ...idoContract,
               functionName: "getClaimableAmount",
               args: [Number(id), address],
             });
@@ -96,7 +91,7 @@ const IdoDetail = () => {
     };
 
     fetchCampaign();
-  }, [id, address, publicClient, idoContractAddress, refreshTrigger]);
+  }, [id, address, publicClient, idoContract, refreshTrigger]);
 
   // Calculate time remaining
   const getTimeStatus = (startTime, endTime, isActive, liquidityAdded) => {
@@ -150,7 +145,9 @@ const IdoDetail = () => {
 
   // Get IDO additional info from the idos configuration in the main file
   const getIdoInfo = (idNumber) => {
-    return idos[idNumber] || { description: "", website: "", image: "/logo.png" };
+    return (
+      idos[idNumber] || { description: "", website: "", image: "/logo.png" }
+    );
   };
 
   // Handle token purchase
@@ -161,8 +158,7 @@ const IdoDetail = () => {
     const value = parseEther(purchaseInput);
 
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "buyTokens",
       args: [Number(id)],
       value: value,
@@ -172,8 +168,7 @@ const IdoDetail = () => {
   // Handle token claiming
   const handleClaim = () => {
     return {
-      address: idoContractAddress,
-      abi: IDOABI,
+      ...idoContract,
       functionName: "claimTokens",
       args: [Number(id)],
     };
@@ -218,10 +213,7 @@ const IdoDetail = () => {
   );
 
   // Default image if no custom image is available
-  const campaignImage =
-    idos[campaign.id]?.image || 
-    `/ido/${campaign.tokenSymbol?.toLowerCase()}.png` || 
-    "/logo.png";
+  const campaignImage = idos?.[campaign.id]?.image || "/logo.png";
 
   return (
     <div className="container mx-auto py-12 px-4">
