@@ -21,7 +21,7 @@ import Loading from "@/components/Loading";
 
 const Swap = () => {
   const router = useRouter();
-  let { token } = router.query;
+  let { token, inputPoolAddress, ido } = router.query;
   const chainId = useChainId();
   const bbb = contracts[chainId]?.bbb;
   const mbbb = contracts[chainId]?.mbbbv2;
@@ -83,7 +83,7 @@ const Swap = () => {
   let maxXdc;
 
   let graduate;
-  if (token == bbb.address) {
+  if (token == bbb.address || inputPoolAddress) {
     graduate = 1n;
   } else {
     graduate = dropToken?.removed;
@@ -101,6 +101,8 @@ const Swap = () => {
     index = symbol;
     deployer = bbbInfo.deployer;
     createTime = bbbInfo.createTime;
+  } else if (ido) {
+
   } else {
     name = dropToken?.name;
     symbol = dropToken?.symbol;
@@ -165,10 +167,11 @@ const Swap = () => {
   let poolAddress;
   let showData;
   let showRLD;
+
   if (graduate) {
     const pool = data?.pool;
     poolCap = pool?.cap;
-    poolAddress = pool?.address;
+    poolAddress = pool?.address || inputPoolAddress;
     showData = pool != undefined && xdcPrice != undefined;
   } else {
     showData = dropToken != undefined && xdcPrice != undefined;

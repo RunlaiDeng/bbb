@@ -5,7 +5,7 @@ import { track } from "@vercel/analytics";
 import { icecreamswap, xswapDexLink } from "@/config";
 import { useAccount, useBalance, useReadContracts } from "wagmi";
 import SendButton from "@/components/SendButton";
-import { getBBBPrice, getPrice, getQuoteFromPool } from "../Utils";
+import { handleSrc, getPrice, getQuoteFromPool } from "../Utils";
 import WriteButton from "../WriteButton";
 
 const TokenSwap = (props) => {
@@ -310,7 +310,7 @@ const TokenSwap = (props) => {
                   <Image
                     height={400}
                     width={400}
-                    src={imageUrl}
+                    src={handleSrc(imageUrl)}
                     alt={""}
                     className="object-cover w-full h-full"
                   />
@@ -375,7 +375,7 @@ const TokenSwap = (props) => {
                   <Image
                     height={400}
                     width={400}
-                    src={imageUrl}
+                    src={handleSrc(imageUrl)}
                     alt={""}
                     className="object-cover w-full h-full"
                   />

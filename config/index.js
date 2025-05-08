@@ -115,7 +115,7 @@ export const contracts = {
       abi: LpStakeABI,
     },
     idoContract: {
-      address: "",
+      address: "0xac9aC25ebc5A99d205263dc1C4fcf4Cfb7e2aBc6",
       abi: IDOABI,
     },
   },

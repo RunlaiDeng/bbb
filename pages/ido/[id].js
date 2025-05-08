@@ -506,7 +506,7 @@ const IdoDetail = () => {
                         <button
                           className="btn btn-success w-full"
                           onClick={() =>
-                            (window.location.href = `/swap/${campaign.projectToken}`)
+                            (window.location.href = `/swap/${campaign.projectToken}?inputPoolAddress=${campaign.liquidityPair}`)
                           }
                         >
                           Go Swap
