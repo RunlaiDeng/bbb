@@ -265,6 +265,13 @@ const Ido = () => {
     };
   };
 
+  // Calculate minimum supply based on XDC raise and token price
+  const calculateMinSupply = () => {
+    if (!newCampaign.ethToRaise || !newCampaign.tokenPrice) return 0;
+    const minSupply = (Number(newCampaign.ethToRaise) / Number(newCampaign.tokenPrice)) * 1.5;
+    return minSupply;
+  };
+
   // Handle new campaign form change
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -489,7 +496,14 @@ const Ido = () => {
                     onChange={handleFormChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                     placeholder="e.g. 1000000"
+                    min={calculateMinSupply()}
                   />
+                  {newCampaign.ethToRaise && newCampaign.tokenPrice && (
+                    <p className="mt-1 text-sm text-gray-500">
+                      Minimum supply: {calculateMinSupply().toFixed(2)} tokens
+                      (based on {newCampaign.ethToRaise} XDC raise and {newCampaign.tokenPrice} XDC price)
+                    </p>
+                  )}
                 </div>
 
                 <div>
