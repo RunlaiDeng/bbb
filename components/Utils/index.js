@@ -193,7 +193,7 @@ const getQuoteFromPool = async (src, dst, amount, address) => {
   if (!src || !dst || !amount) return {};
   try {
     return await send(
-      `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=99&from=${address}&convenienceFee=0.7&convenienceFeeRecipient=0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0`
+      `${API_ENDPOINTS.ICECREAMSWAP}?src=${src}&dst=${dst}&amount=${amount}&slippage=99&from=${address}&convenienceFee=1&convenienceFeeRecipient=0x2475dcd4fe333be814ef7c8f8ce8a1e9b5fcdea0`
     );
   } catch (error) {
     console.error("Error getting quote from pool:", error);
