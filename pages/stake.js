@@ -1,339 +1,533 @@
-import { useReadContracts, useChainId, useAccount } from "wagmi";
-import { contracts } from "@/config";
+import LpStakeABI from "@/abi/LpStakeABI.json";
+import { useState, useEffect } from "react";
+import { parseEther, formatEther } from "viem";
+import { buyXDCLink, contracts, dexLink } from "@/config";
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  usePublicClient,
+  useReadContracts,
+} from "wagmi";
 import WriteButton from "@/components/WriteButton";
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { dexLink } from "@/config";
-import copy from "copy-to-clipboard";
-import { formatEther, parseEther } from "viem";
+import ERC20ABI from "@/abi/ERC20ABI.json";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
-import rpc from "@/components/Rpc";
-const Stake = () => {
-  const [tooltipText, setTooltipText] = useState("Click copy contract address");
+import { getBBBPrice, getPrice } from "@/components/Utils";
 
+const Stake = () => {
   const [data, setData] = useState({
-    dName: "Memes",
-    dSymbol: "MEMES",
-    dTotalSupply: 1000000000,
-    dDropPercent: 100,
-    drop: 2,
-    showDepositModal: false,
-    showWithdrawModal: false,
+    showStakeModal: false,
+    showUnstakeModal: false,
+    stakeAmount: "",
+    unstakeAmount: "",
+    bbbPrice: 0,
+    lpTokenPrice: 0,
+    basePrice: 0,  // BBB/XDC price ratio
+    xdcPrice: 0,   // XDC price in USD
   });
 
-  const handleCopyClick = (msg) => {
-    copy(msg);
-    setTooltipText("Address copied!");
-    setTimeout(() => {
-      setTooltipText("Click copy contract address");
-    }, 1000);
-  };
-
-  const isCopied = tooltipText === "Address copied!";
-
-  useEffect(() => {
-    async function fetchdata(params) {
-      const graduateTokkens = await rpc.getGraduateTokens();
-
-      setData({ ...data, graduateTokkens });
-    }
-    fetchdata();
-  }, []);
-
   const chainId = useChainId();
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
 
-  const bbb = contracts[chainId]?.bbb;
-  const mbbb = contracts[chainId]?.mbbb;
-  const mbbbv2 = contracts[chainId]?.mbbbv2;
-  const mutilCall = contracts[chainId]?.multicallAddress;
+  const privyLogin = usePrivyLogin();
 
-  const { data: reads0, refetch: refetch0 } = useReadContracts({
+  // LP Stake contract address
+  const lpStakeAddress = contracts[chainId]?.lpStake?.address || "0x123";
+
+  // Specifically focus on PID 0
+  const pid = 0;
+
+  // Read pool info from the contract for PID 0
+  const { data: poolInfo, refetch: refetchPool } = useReadContracts({
     contracts: [
-      { ...bbb, functionName: "allowance", args: [address, mbbb?.address] },
       {
-        ...mbbb,
-        functionName: "balanceOf",
-        args: [address],
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "poolInfo",
+        args: [pid],
       },
-      { ...bbb, functionName: "balanceOf", args: [address] },
     ],
   });
 
-  const allowance = reads0?.[0]?.result;
-  const mbbbBalance = reads0?.[1]?.result;
-  const bbbBalance = reads0?.[2]?.result;
+  // Read user info for PID 0
+  const { data: userInfoData, refetch: refetchUserInfo } = useReadContracts({
+    contracts: [
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "userInfo",
+        args: [pid, address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "pendingReward",
+        args: [pid, address || "0x0000000000000000000000000000000000000000"],
+      },
+    ],
+    query: {
+      enabled: !!lpStakeAddress,
+    },
+  });
 
-  const refetch = () => {
-    refetch0();
+  const pool = poolInfo?.[0]?.result;
+  const lpTokenAddress = pool?.[0];
+
+  // Read LP token data
+  const { data: lpTokenData, refetch: refetchLpTokenData } = useReadContracts({
+    contracts: [
+      {
+        address: lpTokenAddress,
+        abi: ERC20ABI,
+        functionName: "allowance",
+        args: [address || "0x0000000000000000000000000000000000000000", lpStakeAddress],
+      },
+      {
+        address: lpTokenAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: lpTokenAddress,
+        abi: ERC20ABI,
+        functionName: "symbol",
+      },
+      {
+        address: lpTokenAddress,
+        abi: ERC20ABI,
+        functionName: "totalSupply",
+      },
+    ],
+    query: {
+      enabled: !!lpTokenAddress,
+    },
+  });
+
+  // Read LP pool reserves to calculate price directly
+  const { data: pairData, refetch: refetchPairData } = useReadContracts({
+    contracts: [
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "getReserves",
+            outputs: [
+              { internalType: "uint112", name: "_reserve0", type: "uint112" },
+              { internalType: "uint112", name: "_reserve1", type: "uint112" },
+              {
+                internalType: "uint32",
+                name: "_blockTimestampLast",
+                type: "uint32",
+              },
+            ],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "token0",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+          {
+            inputs: [],
+            name: "token1",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "getReserves",
+      },
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "token0",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "token0",
+      },
+      {
+        address: lpTokenAddress,
+        abi: [
+          {
+            inputs: [],
+            name: "token1",
+            outputs: [{ internalType: "address", name: "", type: "address" }],
+            stateMutability: "view",
+            type: "function",
+          },
+        ],
+        functionName: "token1",
+      },
+    ],
+    query: {
+      enabled: !!lpTokenAddress,
+    },
+  });
+
+  // Extract data for the farm
+  const allowance = lpTokenData?.[0]?.result || BigInt(0);
+  const balance = lpTokenData?.[1]?.result || BigInt(0);
+  const symbol = lpTokenData?.[2]?.result || "LP Token";
+  const lpTotalSupply = lpTokenData?.[3]?.result || BigInt(0);
+  const reserves = pairData?.[0]?.result || [BigInt(0), BigInt(0), 0];
+  const token0 = pairData?.[1]?.result;
+  const token1 = pairData?.[2]?.result;
+  const userStaked = userInfoData?.[0]?.result?.[0] || BigInt(0);
+  const pendingReward = userInfoData?.[1]?.result || BigInt(0);
+  const totalStaked = pool?.[4] || BigInt(0);
+  const rewardPerBlock = pool?.[5] || BigInt(0);
+  const isActive = pool?.[6] || false;
+
+  // Load BBB and XDC prices, then calculate LP token price directly
+  useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        // Get BBB price and BBB/XDC price ratio from getPrice
+        const bbbPriceData = await getBBBPrice();
+        const bbbPrice = bbbPriceData.price || 0;
+        const basePrice = bbbPriceData.basePrice || 0; // BBB/XDC price ratio
+
+        // Get XDC price
+        const xdcPriceRes = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=xdce-crowd-sale&vs_currencies=usd"
+        );
+        const xdcPriceData = await xdcPriceRes.json();
+        const xdcPrice = xdcPriceData["xdce-crowd-sale"]?.usd || 0;
+
+        // Skip LP price calculation if we don't have reserves or totalSupply
+        if (
+          reserves &&
+          lpTotalSupply &&
+          lpTotalSupply > 0 &&
+          token0 &&
+          token1
+        ) {
+          // Determine which token is BBB and which is XDC
+          const bbbAddress = contracts[chainId]?.bbb?.address;
+          const wxdcAddress = contracts[chainId]?.wxdc?.address;
+
+          let bbbReserve, xdcReserve;
+
+          if (token0?.toLowerCase() === bbbAddress?.toLowerCase()) {
+            bbbReserve = reserves[0];
+            xdcReserve = reserves[1];
+          } else if (token1?.toLowerCase() === bbbAddress?.toLowerCase()) {
+            bbbReserve = reserves[1];
+            xdcReserve = reserves[0];
+          } else {
+            // If neither token is BBB, we can't calculate
+            return;
+          }
+
+          // Calculate LP token price based on reserves and prices
+          // LP price = (bbbReserve * bbbPrice + xdcReserve * xdcPrice) / lpTotalSupply
+          const bbbValue = Number(formatEther(bbbReserve)) * bbbPrice;
+          const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
+          const lpPrice =
+            (bbbValue + xdcValue) / Number(formatEther(lpTotalSupply));
+
+          setData((prev) => ({
+            ...prev,
+            bbbPrice: bbbPrice,
+            lpTokenPrice: lpPrice,
+            basePrice: basePrice,
+            xdcPrice: xdcPrice,
+          }));
+        } else {
+          // Still save price data even if LP calculation isn't possible
+          setData((prev) => ({
+            ...prev,
+            bbbPrice: bbbPrice,
+            basePrice: basePrice,
+            xdcPrice: xdcPrice,
+          }));
+        }
+      } catch (error) {
+        console.error("Error calculating prices:", error);
+      }
+    };
+
+    // Always fetch prices even without LP token data
+    fetchPrices();
+  }, [
+    lpTokenAddress,
+    reserves,
+    lpTotalSupply,
+    token0,
+    token1,
+    chainId,
+  ]);
+
+  // Function to refresh all data
+  const refreshData = () => {
+    refetchPool();
+    refetchUserInfo();
+    refetchLpTokenData();
+    refetchPairData();
   };
 
+  // MAX_UINT256 for approvals
   const MAX_UINT256 = BigInt(
     "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   );
 
+  // Approve LP token
   const approve = {
     buttonName: "Approve",
     data: {
-      ...bbb,
+      address: lpTokenAddress,
+      abi: ERC20ABI,
       functionName: "approve",
-      args: [mbbb?.address, MAX_UINT256],
+      args: [lpStakeAddress, MAX_UINT256],
     },
     callback: () => {
-      refetch();
+      refreshData();
     },
   };
 
+  // Stake LP tokens
   const stake = {
-    buttonName: "Confirm",
+    buttonName: "Stake",
     data: {
-      ...mbbb,
-      functionName: "depositFor",
-      args: [address, data?.value],
+      address: lpStakeAddress,
+      abi: LpStakeABI,
+      functionName: "deposit",
+      args: [pid, parseEther(data.stakeAmount || "0")],
     },
     callback: () => {
-      refetch();
-      setData((prev) => ({ ...prev, showDepositModal: false }));
+      refreshData();
+      setData((prev) => ({ ...prev, showStakeModal: false, stakeAmount: "" }));
     },
   };
 
-  const unStake = {
-    buttonName: "Confirm",
+  // Unstake LP tokens
+  const unstake = {
+    buttonName: "Unstake",
     data: {
-      ...mbbb,
-      functionName: "withdrawTo",
-      args: [address, data?.mValue],
+      address: lpStakeAddress,
+      abi: LpStakeABI,
+      functionName: "withdraw",
+      args: [pid, parseEther(data.unstakeAmount || "0")],
     },
     callback: () => {
-      refetch();
-      setData((prev) => ({ ...prev, showWithdrawModal: false }));
+      refreshData();
+      setData((prev) => ({
+        ...prev,
+        showUnstakeModal: false,
+        unstakeAmount: "",
+      }));
     },
   };
 
-  const bbbIsEnough = false;
+  // Claim rewards
+  const claim = {
+    buttonName: "Claim",
+    data: {
+      address: lpStakeAddress,
+      abi: LpStakeABI,
+      functionName: "claimReward",
+      args: [pid],
+    },
+    callback: () => {
+      refreshData();
+    },
+  };
 
-  let showApprove = true;
-  if (allowance && allowance > (data?.value || 0)) {
-    showApprove = false;
-  }
+  // Calculate APR
+  const BLOCKS_PER_YEAR = 31536000;
+  const calculateAPR = () => {
+    if (!totalStaked || totalStaked === BigInt(0) || !rewardPerBlock) {
+      return { total: "0.00", bbbAPR: "0.00" };
+    }
 
-  const { isConnected } = useAccount();
+    // Annual rewards = reward per block * blocks per year
+    const annualRewards = rewardPerBlock * BigInt(BLOCKS_PER_YEAR);
 
-  const graduateTokkens = data?.graduateTokkens;
+    // Get BBB price and other pricing data from the state
+    const bbbPrice = data.bbbPrice || 1;
+    const xdcPrice = data.xdcPrice || 1;
+    
+    // Check if this is a psXDC pool
+    const isPsXdcPool = symbol === "psXDC" || (symbol && symbol.includes("psXDC"));
+    
+    // Calculate annual rewards value in USD
+    const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
+    
+    // Calculate total staked value based on token type
+    let totalStakedUSD;
+    
+    if (isPsXdcPool) {
+      // For psXDC pools, use XDC price directly
+      totalStakedUSD = Number(formatEther(totalStaked)) * xdcPrice;
+    } else {
+      // For LP tokens or other tokens, use LP token price
+      totalStakedUSD = Number(formatEther(totalStaked)) * (data.lpTokenPrice || 1);
+    }
 
-  const privyLogin = usePrivyLogin();
+    // Base BBB APR = (annual rewards in USD / total staked in USD) * 100
+    const bbbAPR = totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
+    
+    // Add 6% bonus APR
+    const bonusAPR = 6;
+    const totalAPR = bbbAPR + bonusAPR;
 
-  const searchGraduatedTokens = graduateTokkens?.map((item) => {
+    // Format with commas for thousands
     return {
-      ...mbbbv2,
-      functionName: "getClaimAmt",
-      args: [item?.index, address],
+      total: totalAPR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      bbbAPR: bbbAPR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     };
-  });
-
-  const searchClaimed = graduateTokkens?.map((item) => {
-    return {
-      ...mbbbv2,
-      functionName: "claimed",
-      args: [address, item?.index],
-    };
-  });
-
-  const { data: reads1 } = useReadContracts({
-    contracts: searchGraduatedTokens,
-  });
-  const { data: reads2 } = useReadContracts({ contracts: searchClaimed });
-  const claimedV2 = reads2?.map((item) => item?.result);
-  const dropTokensV2 = reads1?.map((item) => item?.result);
-
-  const showList = dropTokensV2?.length > 0;
-
-  console.log(claimedV2);
+  };
 
   return (
-    <>
-      <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
-        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
-          <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
-            BBB Staking
-          </h1>
-          <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
-            🔒 Stake BBB to earn rewards and participate in airdrops
-          </div>
-
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 text-gray-700">
-            <div className="mb-6">
-              <p className="text-sm font-medium mb-2">Your Staked Balance</p>
-              <p className="text-3xl font-bold text-green-600">
-                {((mbbbBalance?.toString() || 0) / 1e18)?.toLocaleString()} mBBB
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
-                onClick={() => {
-                  if (!isConnected) {
-                    privyLogin();
-                  } else {
-                    setData((prev) => ({ ...prev, showDepositModal: true }));
-                  }
-                }}
-              >
-                Stake BBB
-              </button>
-              <button
-                className="btn bg-white border-2 border-green-500 text-green-600 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
-                onClick={() => {
-                  if (!isConnected) {
-                    privyLogin();
-                  } else {
-                    setData((prev) => ({ ...prev, showWithdrawModal: true }));
-                  }
-                }}
-              >
-                Unstake BBB
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
-              Airdrop List
-            </h2>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
-                <tr className="text-gray-600">
-                  <th>Coin</th>
-                  <th>Total Airdrop</th>
-                  <th>My Staked</th>
-                  <th>Total Staked</th>
-                  <th>My Stake Percentage</th>
-                  <th>My Airdrop</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {showList &&
-                  dropTokensV2?.map((item, index) => {
-                    const tokenObj = graduateTokkens[index];
-
-                    const claim = {
-                      buttonName: "Claim",
-                      data: {
-                        ...mbbbv2,
-                        functionName: "claim",
-                        args: [tokenObj?.index, address],
-                      },
-                      callback: () => {
-                        refetch();
-                      },
-                    };
-
-                    const airdropAmount = item?.[0];
-                    const totalAirdropAmount = item?.[1];
-                    const stakeMbbbAmount = item?.[2];
-                    const totalStakeMbbbAmount = item?.[3];
-                    const stakePercent =
-                      (100 * stakeMbbbAmount?.toString() || 0) /
-                        totalStakeMbbbAmount?.toString() || 0;
-
-                    const claimed = claimedV2[index];
-                    console.log(claimedV2[index]);
-                    return (
-                      <tr
-                        key={item?.index}
-                        className="hover:bg-green-50 transition-colors whitespace-nowrap"
-                      >
-                        <td>
-                          <div
-                            className={`cursor-pointer tooltip ${
-                              isCopied ? "tooltip-success" : ""
-                            }`}
-                            data-tip={tooltipText}
-                            onClick={() => {
-                              handleCopyClick(item?.token);
-                            }}
-                          >
-                            {tokenObj?.symbol}
-                          </div>
-                        </td>
-                        <td>
-                          {Number(
-                            totalAirdropAmount?.toString() / 1e18 || 0
-                          ).toLocaleString()}{" "}
-                          {tokenObj?.symbol}
-                        </td>
-                        <td>
-                          {Number(
-                            stakeMbbbAmount?.toString() / 1e18 || 0
-                          ).toLocaleString()}{" "}
-                          BBB
-                        </td>
-                        <td>
-                          {Number(
-                            totalStakeMbbbAmount?.toString() / 1e18 || 0
-                          ).toLocaleString()}{" "}
-                          BBB
-                        </td>
-                        <td>
-                          {Number(
-                            stakePercent?.toString() || 0
-                          ).toLocaleString()}
-                          %
-                        </td>
-                        <td>
-                          {Number(
-                            airdropAmount?.toString() / 1e18 || 0
-                          ).toLocaleString()}{" "}
-                          {tokenObj?.symbol}
-                        </td>
-                        <td>
-                          {claimed || airdropAmount?.toString() == 0 ? (
-                            <span className="text-gray-400">Unavailable</span>
-                          ) : (
-                            <WriteButton
-                              {...claim}
-                              className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                {!showList && (
-                  <tr>
-                    <td colSpan="7" className="text-center py-8 text-gray-400">
-                      No drop history available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+    <div className="m-auto md:w-3/4 w-96 mt-6 pb-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold text-green-600">Stake</h1>
+        <div className="text-sm text-green-700">
+          🌊 Stake to earn
         </div>
       </div>
 
+      {!pool ? (
+        <div className="text-center p-8">
+          <p className="text-gray-600">
+            Farm information is not available at this time
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">{symbol} Stake</h2>
+            <div 
+              className="text-green-600 font-bold text-lg cursor-help relative group underline"
+              title={`psXDC 6% + BBB ${calculateAPR().bbbAPR}%`}
+            >
+              {calculateAPR().total}% APR
+              <div className="opacity-0 bg-black text-white text-xs rounded p-1 absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                psXDC 6% + BBB {calculateAPR().bbbAPR}%
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {isConnected ? (
+              <>
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-500">Your Staked</span>
+                  <div className="font-medium">
+                    {Number(formatEther(userStaked)).toFixed(4)} {symbol}
+                    <Link
+                      href={
+                        "https://primestaking.xyz/xdc-liquid-staking"
+                      }
+                      className="ml-1 text-xs text-green-600 hover:underline"
+                      target="_blank"
+                    >
+                      Get {symbol}
+                    </Link>
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                  <span className="text-gray-500">Pending Rewards</span>
+                  <div className="font-medium">
+                    {Number(formatEther(pendingReward)).toFixed(4)} BBB
+                  </div>
+                </div>
+              </>
+            ) : null}
+            
+            <div className="flex justify-between items-center py-2 border-b border-gray-100">
+              <span className="text-gray-500">Total Staked</span>
+              <div className="font-medium">
+                {Number(formatEther(totalStaked)).toFixed(4)} {symbol}
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-center py-2 border-b border-gray-100">
+              <span className="text-gray-500">Rewards per Block</span>
+              <div className="font-medium">
+                {Number(formatEther(rewardPerBlock)).toFixed(4)} BBB
+              </div>
+            </div>
+          </div>
+
+          {isConnected ? (
+            <>
+              <div className="flex gap-4 pt-4">
+                <button
+                  className="flex-1 py-2 px-4 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors"
+                  onClick={() =>
+                    setData((prev) => ({
+                      ...prev,
+                      showStakeModal: true,
+                    }))
+                  }
+                  disabled={!isActive}
+                >
+                  Stake
+                </button>
+                <button
+                  className="flex-1 py-2 px-4 text-green-600 border border-green-500 rounded-md hover:bg-green-50 transition-colors"
+                  onClick={() =>
+                    setData((prev) => ({
+                      ...prev,
+                      showUnstakeModal: true,
+                    }))
+                  }
+                  disabled={userStaked <= 0}
+                >
+                  Unstake
+                </button>
+                {pendingReward > 0 && (
+                  <WriteButton
+                    {...claim}
+                    className="flex-1 py-2 px-4 text-white bg-amber-500 rounded-md hover:bg-amber-600 transition-colors cursor-pointer"
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="text-center p-4 mt-4 bg-gray-50 rounded-lg">
+              <p className="mb-4 text-gray-600">
+                Connect your wallet to stake and earn rewards
+              </p>
+              <button
+                className="btn bg-green-600 text-white hover:bg-green-700"
+                onClick={privyLogin}
+              >
+                Connect Wallet
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Stake Modal */}
       <div
-        id="depositModal"
-        className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${
-          data.showDepositModal ? "" : "hidden"
+        className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ${
+          data.showStakeModal ? "" : "hidden"
         }`}
       >
         <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
-              Stake BBB
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+              Stake LP Tokens
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
               onClick={() =>
-                setData((prev) => ({ ...prev, showDepositModal: false }))
+                setData((prev) => ({ ...prev, showStakeModal: false }))
               }
             >
               ✕
@@ -346,31 +540,24 @@ const Stake = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={data?.value >= 0 ? formatEther(data?.value) : undefined}
+                value={data.stakeAmount}
                 onChange={(e) => {
                   const newValue = e.target.value;
-                  if (!newValue) {
-                    setData({
-                      ...data,
-                      value: undefined,
-                    });
-                  }
-
-                  if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                    setData({
-                      ...data,
-                      value: parseEther(newValue),
-                    });
+                  if (
+                    /^(0|[1-9]\d*)(\.\d*)?$/.test(newValue) ||
+                    newValue === ""
+                  ) {
+                    setData({ ...data, stakeAmount: newValue });
                   }
                 }}
               />
-              <div className="font-medium">BBB</div>
+              <div className="font-medium">{symbol}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50"
                 onClick={() => {
                   setData({
                     ...data,
-                    value: bbbBalance,
+                    stakeAmount: formatEther(balance),
                   });
                 }}
               >
@@ -380,48 +567,41 @@ const Stake = () => {
 
             <div className="flex justify-between text-sm text-gray-500">
               <span>Available</span>
-              <span>{(bbbBalance?.toString() || 0) / 1e18} BBB</span>
+              <span>
+                {formatEther(balance)} {symbol}
+              </span>
             </div>
 
-            {!bbbIsEnough && (
-              <Link
-                className="text-sm text-green-600 hover:text-green-700 block"
-                href={dexLink}
-              >
-                Need more BBB?
-              </Link>
-            )}
-
-            {showApprove ? (
+            {allowance < parseEther(data.stakeAmount || "0") ? (
               <WriteButton
                 {...approve}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
               />
             ) : (
               <WriteButton
                 {...stake}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
               />
             )}
           </div>
         </div>
       </div>
 
+      {/* Unstake Modal */}
       <div
-        id="withdrawModal"
-        className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ${
-          data.showWithdrawModal ? "" : "hidden"
+        className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ${
+          data.showUnstakeModal ? "" : "hidden"
         }`}
       >
         <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
-              Unstake BBB
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+              Unstake LP Tokens
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
               onClick={() =>
-                setData((prev) => ({ ...prev, showWithdrawModal: false }))
+                setData((prev) => ({ ...prev, showUnstakeModal: false }))
               }
             >
               ✕
@@ -434,33 +614,24 @@ const Stake = () => {
                 type="number"
                 className="grow"
                 placeholder="0.00"
-                value={
-                  data?.mValue >= 0 ? formatEther(data?.mValue) : undefined
-                }
+                value={data.unstakeAmount}
                 onChange={(e) => {
                   const newValue = e.target.value;
-                  if (!newValue) {
-                    setData({
-                      ...data,
-                      mValue: undefined,
-                    });
-                  }
-
-                  if (/^(0|[+]?[1-9][0-9]*)(\.[0-9]+)?$/.test(newValue)) {
-                    setData({
-                      ...data,
-                      mValue: parseEther(newValue),
-                    });
+                  if (
+                    /^(0|[1-9]\d*)(\.\d*)?$/.test(newValue) ||
+                    newValue === ""
+                  ) {
+                    setData({ ...data, unstakeAmount: newValue });
                   }
                 }}
               />
-              <div className="font-medium">mBBB</div>
+              <div className="font-medium">{symbol}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50"
                 onClick={() => {
                   setData({
                     ...data,
-                    mValue: mbbbBalance,
+                    unstakeAmount: formatEther(userStaked),
                   });
                 }}
               >
@@ -469,18 +640,20 @@ const Stake = () => {
             </label>
 
             <div className="flex justify-between text-sm text-gray-500">
-              <span>Available</span>
-              <span>{(mbbbBalance?.toString() || 0) / 1e18} mBBB</span>
+              <span>Staked</span>
+              <span>
+                {formatEther(userStaked)} {symbol}
+              </span>
             </div>
 
             <WriteButton
-              {...unStake}
-              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+              {...unstake}
+              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
             />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

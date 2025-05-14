@@ -111,7 +111,7 @@ export const contracts = {
       abi: ClaimRewardsABI,
     },
     lpStake: {
-      address: "0xEfbFBA9137309A8412D708F83d4fB9dD90d5414d", // Replace with actual address when deployed
+      address: "0x2B3Bb9b3265Fcee484e857506fDCf2C0776E9c43", // Replace with actual address when deployed
       abi: LpStakeABI,
     },
     idoContract: {

@@ -85,7 +85,7 @@ const MobileNav = () => {
                   fill="currentColor"
                 />
               </svg>
-              <span className="ml-2">Stake</span>
+              <span className="ml-2">BBB Stake</span>
             </Link>
             <Link
               href="/farm"
@@ -195,9 +195,9 @@ const MobileNav = () => {
               <span className="ml-2">Airdrop Hub</span>
             </Link>
             <Link
-              href="/liquidityfarm"
+              href="/Stake"
               className={`flex items-center p-3 rounded-lg ${
-                router.pathname === "/liquidityfarm" ? "bg-gray-100" : ""
+                router.pathname === "/Stake" ? "bg-gray-100" : ""
               }`}
             >
               <svg viewBox="0 0 24 24" width="20" height="20">
@@ -222,7 +222,7 @@ const MobileNav = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="ml-2">Liquidity Farm</span>
+              <span className="ml-2">BBB Stake</span>
             </Link>
           </div>
         </div>
@@ -272,6 +272,36 @@ const MobileNav = () => {
           <span className="text-xs">Trade</span>
         </Link>
         <Link
+          href="/stake"
+          className={`flex flex-col items-center p-2 ${
+            router.pathname === "/stake" ? "text-gray-900" : "text-gray-400"
+          }`}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M3 3H21V21H3V3Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M3 9H21"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M9 21V9"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span className="text-xs">Stake</span>
+        </Link>
+        <Link
           href="/ido"
           className={`flex flex-col items-center p-2 ${
             router.pathname === "/ido" ? "text-gray-900" : "text-gray-400"
@@ -297,7 +327,6 @@ const MobileNav = () => {
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/activity") ||
-            router.pathname === "/stake" ||
             router.pathname === "/farm" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch"

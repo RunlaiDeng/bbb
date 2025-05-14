@@ -62,6 +62,12 @@ const Navbar = () => {
                   Trade
                 </Link>
                 <Link
+                  href={"/stake"}
+                  className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                >
+                  Stake
+                </Link>
+                <Link
                   href={"/ido"}
                   className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
@@ -98,18 +104,10 @@ const Navbar = () => {
                     </li>
                     <li className="rounded-lg">
                       <Link
-                        href={"/liquidityfarm"}
-                        className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                      >
-                        Liquidity Farm
-                      </Link>
-                    </li>
-                    <li className="rounded-lg">
-                      <Link
                         href={"/stake"}
                         className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                       >
-                        Stake
+                        BBB Stake
                       </Link>
                     </li>
                     <li className="rounded-lg">
@@ -770,11 +768,11 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
-                              router.push("/liquidityfarm");
+                              router.push("/Stake");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Liquidity Farm</div>
+                            <div>Stake</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
@@ -792,7 +790,7 @@ const Navbar = () => {
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Stake</div>
+                            <div>BBB Stake</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"

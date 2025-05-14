@@ -223,6 +223,7 @@ const getPrice = async (pool) => {
     const item = json?.data?.attributes;
     return {
       price: item?.base_token_price_usd || 0,
+      basePrice: item?.base_token_price_native_currency || 0,
       priceChange24h: (item?.price_change_percentage?.h24 || 0) / 100,
       cap: item?.market_cap_usd || 0,
       volumeH24: item?.volume_usd?.h24 || 0,
