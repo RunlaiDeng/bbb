@@ -23,8 +23,8 @@ const Stake = () => {
     unstakeAmount: "",
     bbbPrice: 0,
     lpTokenPrice: 0,
-    basePrice: 0,  // BBB/XDC price ratio
-    xdcPrice: 0,   // XDC price in USD
+    basePrice: 0, // BBB/XDC price ratio
+    xdcPrice: 0, // XDC price in USD
   });
 
   const chainId = useChainId();
@@ -81,7 +81,10 @@ const Stake = () => {
         address: lpTokenAddress,
         abi: ERC20ABI,
         functionName: "allowance",
-        args: [address || "0x0000000000000000000000000000000000000000", lpStakeAddress],
+        args: [
+          address || "0x0000000000000000000000000000000000000000",
+          lpStakeAddress,
+        ],
       },
       {
         address: lpTokenAddress,
@@ -198,13 +201,6 @@ const Stake = () => {
         const bbbPrice = bbbPriceData.price || 0;
         const basePrice = bbbPriceData.basePrice || 0; // BBB/XDC price ratio
 
-        // Get XDC price
-        const xdcPriceRes = await fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=xdce-crowd-sale&vs_currencies=usd"
-        );
-        const xdcPriceData = await xdcPriceRes.json();
-        const xdcPrice = xdcPriceData["xdce-crowd-sale"]?.usd || 0;
-
         // Skip LP price calculation if we don't have reserves or totalSupply
         if (
           reserves &&
@@ -231,8 +227,9 @@ const Stake = () => {
           }
 
           // Calculate LP token price based on reserves and prices
-          // LP price = (bbbReserve * bbbPrice + xdcReserve * xdcPrice) / lpTotalSupply
+          // Using basePrice for XDC value calculation
           const bbbValue = Number(formatEther(bbbReserve)) * bbbPrice;
+          const xdcPrice = bbbPrice / basePrice; // Calculate XDC price from BBB price and basePrice
           const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
           const lpPrice =
             (bbbValue + xdcValue) / Number(formatEther(lpTotalSupply));
@@ -246,6 +243,9 @@ const Stake = () => {
           }));
         } else {
           // Still save price data even if LP calculation isn't possible
+          // Calculate XDC price from BBB price and basePrice ratio
+          const xdcPrice = basePrice > 0 ? bbbPrice / basePrice : 0;
+
           setData((prev) => ({
             ...prev,
             bbbPrice: bbbPrice,
@@ -260,14 +260,7 @@ const Stake = () => {
 
     // Always fetch prices even without LP token data
     fetchPrices();
-  }, [
-    lpTokenAddress,
-    reserves,
-    lpTotalSupply,
-    token0,
-    token1,
-    chainId,
-  ]);
+  }, []);
 
   // Function to refresh all data
   const refreshData = () => {
@@ -357,35 +350,44 @@ const Stake = () => {
     // Get BBB price and other pricing data from the state
     const bbbPrice = data.bbbPrice || 1;
     const xdcPrice = data.xdcPrice || 1;
-    
+
     // Check if this is a psXDC pool
-    const isPsXdcPool = symbol === "psXDC" || (symbol && symbol.includes("psXDC"));
-    
+    const isPsXdcPool =
+      symbol === "psXDC" || (symbol && symbol.includes("psXDC"));
+
     // Calculate annual rewards value in USD
     const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
-    
+
     // Calculate total staked value based on token type
     let totalStakedUSD;
-    
+
     if (isPsXdcPool) {
       // For psXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(totalStaked)) * xdcPrice;
     } else {
       // For LP tokens or other tokens, use LP token price
-      totalStakedUSD = Number(formatEther(totalStaked)) * (data.lpTokenPrice || 1);
+      totalStakedUSD =
+        Number(formatEther(totalStaked)) * (data.lpTokenPrice || 1);
     }
 
     // Base BBB APR = (annual rewards in USD / total staked in USD) * 100
-    const bbbAPR = totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
-    
+    const bbbAPR =
+      totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
+
     // Add 6% bonus APR
     const bonusAPR = 6;
     const totalAPR = bbbAPR + bonusAPR;
 
     // Format with commas for thousands
     return {
-      total: totalAPR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-      bbbAPR: bbbAPR.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      total: totalAPR.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      bbbAPR: bbbAPR.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
     };
   };
 
@@ -393,9 +395,7 @@ const Stake = () => {
     <div className="m-auto md:w-3/4 w-96 mt-6 pb-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-green-600">Stake</h1>
-        <div className="text-sm text-green-700">
-          🌊 Stake to earn
-        </div>
+        <div className="text-sm text-green-700">🌊 Stake to earn</div>
       </div>
 
       {!pool ? (
@@ -408,7 +408,7 @@ const Stake = () => {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">{symbol} Stake</h2>
-            <div 
+            <div
               className="text-green-600 font-bold text-lg cursor-help relative group underline"
               title={`psXDC 6% + BBB ${calculateAPR().bbbAPR}%`}
             >
@@ -427,9 +427,7 @@ const Stake = () => {
                   <div className="font-medium">
                     {Number(formatEther(userStaked)).toFixed(4)} {symbol}
                     <Link
-                      href={
-                        "https://primestaking.xyz/xdc-liquid-staking"
-                      }
+                      href={"https://primestaking.xyz/xdc-liquid-staking"}
                       className="ml-1 text-xs text-green-600 hover:underline"
                       target="_blank"
                     >
@@ -437,7 +435,7 @@ const Stake = () => {
                     </Link>
                   </div>
                 </div>
-                
+
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Pending Rewards</span>
                   <div className="font-medium">
@@ -446,14 +444,14 @@ const Stake = () => {
                 </div>
               </>
             ) : null}
-            
+
             <div className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-gray-500">Total Staked</span>
               <div className="font-medium">
                 {Number(formatEther(totalStaked)).toFixed(4)} {symbol}
               </div>
             </div>
-            
+
             <div className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-gray-500">Rewards per Block</span>
               <div className="font-medium">
