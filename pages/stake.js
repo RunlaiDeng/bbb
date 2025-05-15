@@ -439,7 +439,7 @@ const Stake = () => {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Pending Rewards</span>
                   <div className="font-medium">
-                    {Number(formatEther(pendingReward)).toFixed(4)} BBB
+                    {Number(formatEther(pendingReward)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} BBB
                   </div>
                 </div>
               </>
@@ -448,7 +448,7 @@ const Stake = () => {
             <div className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-gray-500">Total Staked</span>
               <div className="font-medium">
-                {Number(formatEther(totalStaked)).toFixed(4)} {symbol}
+                {Number(formatEther(totalStaked)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
               </div>
             </div>
 
