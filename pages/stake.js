@@ -407,7 +407,7 @@ const Stake = () => {
       ) : (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">{symbol} Stake</h2>
+            <h2 className="text-xl font-bold">{symbol} ReStaking</h2>
             <div
               className="text-green-600 font-bold text-lg cursor-help relative group underline"
               title={`psXDC 6% + BBB ${calculateAPR().bbbAPR}%`}
