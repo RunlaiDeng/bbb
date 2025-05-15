@@ -455,7 +455,7 @@ const Stake = () => {
             <div className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-gray-500">Rewards per Block</span>
               <div className="font-medium">
-                {Number(formatEther(rewardPerBlock)).toFixed(4)} BBB
+                {Number(formatEther(rewardPerBlock)).toLocaleString()} BBB
               </div>
             </div>
           </div>
