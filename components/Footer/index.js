@@ -181,6 +181,16 @@ const Footer = () => {
             24/7 Chat Support
           </Link>
         </nav>
+        <nav>
+          <h6 className="footer-title">Docs</h6>
+          <Link
+            className="link link-hover"
+            href={"https://docs.bbbpump.fun/"}
+            target="_blank"
+          >
+            Documentation
+          </Link>
+        </nav>
       </footer>
     </>
   );
