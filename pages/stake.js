@@ -425,7 +425,7 @@ const Stake = () => {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Your Staked</span>
                   <div className="font-medium">
-                    {Number(formatEther(userStaked)).toFixed(4)} {symbol}
+                    {Number(formatEther(userStaked)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
                     <Link
                       href={"https://primestaking.xyz/xdc-liquid-staking"}
                       className="ml-1 text-xs text-green-600 hover:underline"
