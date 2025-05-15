@@ -104,7 +104,7 @@ const Navbar = () => {
                     </li>
                     <li className="rounded-lg">
                       <Link
-                        href={"/stake"}
+                        href={"/bbbstake"}
                         className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                       >
                         BBB Stake

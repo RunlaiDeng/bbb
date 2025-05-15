@@ -58,9 +58,9 @@ const MobileNav = () => {
               <span className="ml-2">Launch</span>
             </Link>
             <Link
-              href="/stake"
+              href="/bbbstake"
               className={`flex items-center p-3 rounded-lg ${
-                router.pathname === "/stake" ? "bg-gray-100" : ""
+                router.pathname === "/bbbstake" ? "bg-gray-100" : ""
               }`}
             >
               <svg viewBox="0 0 24 24" width="20" height="20">
@@ -195,9 +195,9 @@ const MobileNav = () => {
               <span className="ml-2">Airdrop Hub</span>
             </Link>
             <Link
-              href="/Stake"
+              href="/bbbstake"
               className={`flex items-center p-3 rounded-lg ${
-                router.pathname === "/Stake" ? "bg-gray-100" : ""
+                router.pathname === "/bbbstake" ? "bg-gray-100" : ""
               }`}
             >
               <svg viewBox="0 0 24 24" width="20" height="20">
