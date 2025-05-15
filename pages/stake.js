@@ -380,11 +380,11 @@ const Stake = () => {
 
     // Format with commas for thousands
     return {
-      total: totalAPR.toLocaleString("en-US", {
+      total: totalAPR?.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }),
-      bbbAPR: bbbAPR.toLocaleString("en-US", {
+      bbbAPR: bbbAPR?.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }),
@@ -425,7 +425,7 @@ const Stake = () => {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Your Staked</span>
                   <div className="font-medium">
-                    {Number(formatEther(userStaked)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
+                    {Number(formatEther(userStaked))?.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
                     <Link
                       href={"https://primestaking.xyz/xdc-liquid-staking"}
                       className="ml-1 text-xs text-green-600 hover:underline"
@@ -439,7 +439,7 @@ const Stake = () => {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Pending Rewards</span>
                   <div className="font-medium">
-                    {Number(formatEther(pendingReward)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} BBB
+                    {Number(formatEther(pendingReward))?.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} BBB
                   </div>
                 </div>
               </>
@@ -448,7 +448,7 @@ const Stake = () => {
             <div className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-gray-500">Total Staked</span>
               <div className="font-medium">
-                {Number(formatEther(totalStaked)).toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
+                {Number(formatEther(totalStaked))?.toLocaleString('en-US', {minimumFractionDigits: 4, maximumFractionDigits: 4})} {symbol}
               </div>
             </div>
 
