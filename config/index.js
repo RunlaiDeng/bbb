@@ -8,6 +8,7 @@ import PoolABI from "../abi/PoolABI.json";
 import ClaimRewardsABI from "../abi/ClaimRewardsABI.json";
 import LpStakeABI from "../abi/LpStakeABI.json";
 import IDOABI from "../abi/IDOABI.json";
+import bpsXDCABI from "../abi/bpsXDCABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -117,6 +118,14 @@ export const contracts = {
     idoContract: {
       address: "0xac9aC25ebc5A99d205263dc1C4fcf4Cfb7e2aBc6",
       abi: IDOABI,
+    },
+    psXDC: {
+      address: "0x9B8e12b0BAC165B86967E771d98B520Ec3F665A6",
+      abi: ERC20ABI,
+    },
+    bpsXDC: {
+      address: "0x24be372f0915b8BAf17AfA150210FFcB79C88845",
+      abi: bpsXDCABI,
     },
   },
 };
