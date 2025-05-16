@@ -26,7 +26,7 @@ const MobileNav = () => {
             href="/merch"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/merch" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -54,7 +54,7 @@ const MobileNav = () => {
             href="/launch"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/launch" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -74,7 +74,7 @@ const MobileNav = () => {
             href="/bbbstake"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/bbbstake" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -106,7 +106,7 @@ const MobileNav = () => {
             href="/farm"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/farm" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -142,7 +142,7 @@ const MobileNav = () => {
             href="/activity"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/activity" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -186,7 +186,7 @@ const MobileNav = () => {
             href="/airdrophub"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/airdrophub" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -219,7 +219,7 @@ const MobileNav = () => {
             href="/bpsXDC"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/bpsXDC" 
-                ? "bg-blue-50 text-blue-600 font-medium" 
+                ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
           >
@@ -250,7 +250,7 @@ const MobileNav = () => {
           href="/"
           className={`flex flex-col items-center p-2 ${
             router.pathname === "/" 
-              ? "text-blue-600 font-medium" 
+              ? "text-green-600 font-medium" 
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
@@ -266,7 +266,7 @@ const MobileNav = () => {
           href="/swap/bbb"
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/swap")
-              ? "text-blue-600 font-medium"
+              ? "text-green-600 font-medium"
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
@@ -295,7 +295,7 @@ const MobileNav = () => {
           href="/stake"
           className={`flex flex-col items-center p-2 ${
             router.pathname === "/stake" 
-              ? "text-blue-600 font-medium" 
+              ? "text-green-600 font-medium" 
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
@@ -327,7 +327,7 @@ const MobileNav = () => {
           href="/ido"
           className={`flex flex-col items-center p-2 ${
             router.pathname === "/ido" 
-              ? "text-blue-600 font-medium" 
+              ? "text-green-600 font-medium" 
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
@@ -354,7 +354,7 @@ const MobileNav = () => {
             router.pathname === "/farm" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch"
-              ? "text-blue-600 font-medium"
+              ? "text-green-600 font-medium"
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
@@ -381,7 +381,7 @@ const MobileNav = () => {
           href={address ? `/dashboard/${address}` : "/dashboard"}
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/dashboard")
-              ? "text-blue-600 font-medium"
+              ? "text-green-600 font-medium"
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
