@@ -450,7 +450,7 @@ const TokenSwap = (props) => {
               )}
             </>
           )}
-          <div
+          {/* <div
             className="text-left font-bold text-xs hover:underline cursor-pointer flex items-center text-red-700 mt-2"
             onClick={() => {
               window.open(`https://icecreamswap.com/swap?chain=xdc&outputCurrency=${token}`);
@@ -477,7 +477,7 @@ const TokenSwap = (props) => {
               ></path>
             </svg>
             IceCreamSwap API temporary issue. Please trade on icecreamswap.com {"->"} 
-          </div>
+          </div> */}
         </div>
       </div>
     </>
