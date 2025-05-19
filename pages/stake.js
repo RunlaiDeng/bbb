@@ -38,7 +38,7 @@ const Stake = () => {
   const psXDC = contracts[chainId]?.psXDC;
   const bpsXDC = contracts[chainId]?.bpsXDC;
 
-  // Read pool info from the contract for PID 0 and 1
+  // Read pool info from the contract for PID 0, 1, and 2
   const { data: poolInfo, refetch: refetchPool } = useReadContracts({
     contracts: [
       {
@@ -53,10 +53,16 @@ const Stake = () => {
         functionName: "poolInfo",
         args: [1],
       },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "poolInfo",
+        args: [2],
+      },
     ],
   });
 
-  // Read user info for PID 0 and 1
+  // Read user info for PID 0, 1, and 2
   const { data: userInfoData, refetch: refetchUserInfo } = useReadContracts({
     contracts: [
       {
@@ -83,6 +89,18 @@ const Stake = () => {
         functionName: "pendingReward",
         args: [1, address || "0x0000000000000000000000000000000000000000"],
       },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "userInfo",
+        args: [2, address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "pendingReward",
+        args: [2, address || "0x0000000000000000000000000000000000000000"],
+      },
     ],
     query: {
       enabled: !!lpStakeAddress,
@@ -101,6 +119,12 @@ const Stake = () => {
       poolData: poolInfo?.[1]?.result,
       userStaked: userInfoData?.[2]?.result?.[0] || BigInt(0),
       pendingReward: userInfoData?.[3]?.result || BigInt(0),
+    },
+    {
+      pid: 2,
+      poolData: poolInfo?.[2]?.result,
+      userStaked: userInfoData?.[4]?.result?.[0] || BigInt(0),
+      pendingReward: userInfoData?.[5]?.result || BigInt(0),
     },
   ];
 
@@ -243,7 +267,43 @@ const Stake = () => {
     },
   });
 
-  // Process data for both pools
+  // Create contracts for BBB token
+  const bbbTokenAddress = contracts[chainId]?.bbb?.address || "0x123";
+  
+  const { data: bbbTokenData, refetch: refetchBBBData } = useReadContracts({
+    contracts: [
+      {
+        address: bbbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "allowance",
+        args: [
+          address || "0x0000000000000000000000000000000000000000",
+          lpStakeAddress,
+        ],
+      },
+      {
+        address: bbbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: bbbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "symbol",
+      },
+      {
+        address: bbbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "totalSupply",
+      },
+    ],
+    query: {
+      enabled: !!bbbTokenAddress,
+    },
+  });
+
+  // Process data for all pools
   const poolsWithData = [
     {
       ...pools[0],
@@ -270,6 +330,16 @@ const Stake = () => {
       totalStaked: pools[1].poolData?.[4] || BigInt(0),
       rewardPerBlock: pools[1].poolData?.[5] || BigInt(0),
       isActive: pools[1].poolData?.[6] || false,
+    },
+    {
+      ...pools[2],
+      allowance: bbbTokenData?.[0]?.result || BigInt(0),
+      balance: bbbTokenData?.[1]?.result || BigInt(0),
+      symbol: bbbTokenData?.[2]?.result || "BBB",
+      lpTotalSupply: bbbTokenData?.[3]?.result || BigInt(0),
+      totalStaked: pools[2].poolData?.[4] || BigInt(0),
+      rewardPerBlock: pools[2].poolData?.[5] || BigInt(0),
+      isActive: pools[2].poolData?.[6] || false,
     },
   ];
 
@@ -356,6 +426,7 @@ const Stake = () => {
     refetchLpTokenData1();
     refetchPairData0();
     refetchPairData1();
+    refetchBBBData();
   };
 
   // MAX_UINT256 for approvals
@@ -455,6 +526,11 @@ const Stake = () => {
     const isBpsXdcPool =
       pool.symbol === "bpsXDC" ||
       (pool.symbol && pool.symbol.includes("bpsXDC"));
+      
+    // Check if this is a BBB pool
+    const isBBBPool =
+      pool.symbol === "BBB" ||
+      (pool.symbol && pool.symbol.includes("BBB"));
 
     // Calculate annual rewards value in USD
     const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
@@ -465,6 +541,9 @@ const Stake = () => {
     if (isPsXdcPool || isBpsXdcPool) {
       // For psXDC or bpsXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
+    } else if (isBBBPool) {
+      // For BBB pool, use BBB price directly
+      totalStakedUSD = Number(formatEther(pool.totalStaked)) * bbbPrice;
     } else {
       // For LP tokens or other tokens, use LP token price
       totalStakedUSD =
@@ -475,8 +554,8 @@ const Stake = () => {
     const bbbAPR =
       totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
 
-    // Add 6% bonus APR
-    const bonusAPR = 6;
+    // Add 6% bonus APR only for psXDC or bpsXDC pools
+    const bonusAPR = (isPsXdcPool || isBpsXdcPool) ? 6 : 0;
     const totalAPR = bbbAPR + bonusAPR;
 
     // Format with commas for thousands
@@ -497,6 +576,31 @@ const Stake = () => {
     const poolActions = createPoolActions(pool.pid);
     const apr = calculateAPR(pool);
 
+    // Determine the pool title and get token link
+    const getPoolTitle = () => {
+      if (pool.pid === 0) return `${pool.symbol} ReStaking`;
+      if (pool.pid === 1) return "bpsXDC ReStaking";
+      if (pool.pid === 2) return "BBB Staking";
+      return `${pool.symbol} Staking`;
+    };
+
+    // Determine the 'Get Token' link
+    const getTokenLink = () => {
+      if (pool.symbol === "bpsXDC") return "/bpsXDC";
+      if (pool.symbol === "BBB") return "/buy"; // Use direct link to /buy for BBB
+      return "https://primestaking.xyz/xdc-liquid-staking"; // Default for psXDC
+    };
+
+    // Determine the APR tooltip text
+    const getAprTooltip = () => {
+      // For psXDC or bpsXDC pools, show 6% + BBB APR
+      if (pool.symbol === "psXDC" || pool.symbol === "bpsXDC") {
+        return `${pool.symbol} 6% + BBB ${apr.bbbAPR}%`;
+      }
+      // For BBB pool, only show BBB APR
+      return `BBB ${apr.bbbAPR}%`;
+    };
+
     return (
       <div
         key={pool.pid}
@@ -504,9 +608,9 @@ const Stake = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <h2 className="text-lg md:text-xl font-bold flex items-center flex-wrap gap-2">
-            {pool.pid === 1 ? "bpsXDC ReStaking" : `${pool.symbol} ReStaking`}
+            {getPoolTitle()}
             <Link
-              href={pool.symbol === "bpsXDC" ? "/bpsXDC" : "https://primestaking.xyz/xdc-liquid-staking"}
+              href={getTokenLink()}
               className="text-xs text-green-600 hover:underline"
               target="_blank"
             >
@@ -515,11 +619,11 @@ const Stake = () => {
           </h2>
           <div
             className="text-green-600 font-bold text-lg cursor-help relative group underline"
-            title={`${pool.symbol} 6% + BBB ${apr.bbbAPR}%`}
+            title={getAprTooltip()}
           >
             {apr.total}% APR
             <div className="opacity-0 bg-black text-white text-xs rounded p-1 absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              {pool.symbol} 6% + BBB {apr.bbbAPR}%
+              {getAprTooltip()}
             </div>
           </div>
         </div>
