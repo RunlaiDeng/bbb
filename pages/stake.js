@@ -38,6 +38,37 @@ const Stake = () => {
   const psXDC = contracts[chainId]?.psXDC;
   const bpsXDC = contracts[chainId]?.bpsXDC;
 
+  // Add token to wallet function
+  const addTokenToWallet = async (tokenAddress, symbol, decimals = 18, tokenImage = "") => {
+    try {
+      if (!window.ethereum) {
+        alert("Please install MetaMask or another compatible wallet");
+        return;
+      }
+      
+      const wasAdded = await window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: tokenAddress,
+            symbol: symbol,
+            decimals: decimals,
+            image: tokenImage,
+          },
+        },
+      });
+
+      if (wasAdded) {
+        console.log(`${symbol} token added to wallet`);
+      } else {
+        console.log('Token not added');
+      }
+    } catch (error) {
+      console.error("Error adding token to wallet:", error);
+    }
+  };
+
   // Read pool info from the contract for PID 0, 1, and 2
   const { data: poolInfo, refetch: refetchPool } = useReadContracts({
     contracts: [
@@ -317,6 +348,7 @@ const Stake = () => {
       totalStaked: pools[0].poolData?.[4] || BigInt(0),
       rewardPerBlock: pools[0].poolData?.[5] || BigInt(0),
       isActive: pools[0].poolData?.[6] || false,
+      tokenAddress: lpTokenAddresses[0],
     },
     {
       ...pools[1],
@@ -330,6 +362,7 @@ const Stake = () => {
       totalStaked: pools[1].poolData?.[4] || BigInt(0),
       rewardPerBlock: pools[1].poolData?.[5] || BigInt(0),
       isActive: pools[1].poolData?.[6] || false,
+      tokenAddress: lpTokenAddresses[1],
     },
     {
       ...pools[2],
@@ -340,6 +373,7 @@ const Stake = () => {
       totalStaked: pools[2].poolData?.[4] || BigInt(0),
       rewardPerBlock: pools[2].poolData?.[5] || BigInt(0),
       isActive: pools[2].poolData?.[6] || false,
+      tokenAddress: bbbTokenAddress,
     },
   ];
 
@@ -609,13 +643,24 @@ const Stake = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <h2 className="text-lg md:text-xl font-bold flex items-center flex-wrap gap-2">
             {getPoolTitle()}
-            <Link
-              href={getTokenLink()}
-              className="text-xs text-green-600 hover:underline"
-              target="_blank"
-            >
-              Get {pool.symbol}
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href={getTokenLink()}
+                className="text-xs text-green-600 hover:underline"
+                target="_blank"
+              >
+                Get {pool.symbol}
+              </Link>
+              {isConnected && pool.tokenAddress && (
+                <button
+                  onClick={() => addTokenToWallet(pool.tokenAddress, pool.symbol)}
+                  className="text-xs text-blue-600 hover:underline"
+                  title={`Add ${pool.symbol} to wallet`}
+                >
+                  Add to Wallet
+                </button>
+              )}
+            </div>
           </h2>
           <div
             className="text-green-600 font-bold text-lg cursor-help relative group underline"
@@ -670,6 +715,15 @@ const Stake = () => {
             <span className="text-gray-500">Rewards per Block</span>
             <div className="font-medium truncate max-w-[60%] text-right">
               {Number(formatEther(pool.rewardPerBlock)).toLocaleString()} BBB
+              {isConnected && (
+                <button
+                  onClick={() => addTokenToWallet(bbbTokenAddress, "BBB")}
+                  className="ml-1 text-xs text-blue-600 hover:underline"
+                  title="Add BBB to wallet"
+                >
+                  Add to Wallet
+                </button>
+              )}
             </div>
           </div>
         </div>
