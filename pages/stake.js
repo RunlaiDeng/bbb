@@ -42,7 +42,7 @@ const Stake = () => {
   const addTokenToWallet = async (tokenAddress, symbol, decimals = 18, tokenImage = "") => {
     try {
       if (!window.ethereum) {
-        alert("Please install MetaMask or another compatible wallet");
+        alert("Please install OKX Wallet or another compatible wallet");
         return;
       }
       
