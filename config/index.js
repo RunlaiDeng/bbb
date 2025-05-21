@@ -9,6 +9,7 @@ import ClaimRewardsABI from "../abi/ClaimRewardsABI.json";
 import LpStakeABI from "../abi/LpStakeABI.json";
 import IDOABI from "../abi/IDOABI.json";
 import bpsXDCABI from "../abi/bpsXDCABI.json";
+import XDCStakeABI from "../abi/XDCStakeABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -126,6 +127,10 @@ export const contracts = {
     bpsXDC: {
       address: "0x24be372f0915b8BAf17AfA150210FFcB79C88845",
       abi: bpsXDCABI,
+    },
+    xdcStake: {
+      address: "0x5af754f822CEd42deC729c1F1B3EDb9f13485ba7",
+      abi: XDCStakeABI,
     },
   },
 };
