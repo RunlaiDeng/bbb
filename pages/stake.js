@@ -695,13 +695,27 @@ const Stake = () => {
     const isBBBPool =
       pool.symbol === "BBB" || (pool.symbol && pool.symbol.includes("BBB"));
 
+    // Check if this is native XDC pool
+    const isNativeXdc = pool.isXdcPool === true;
+
     // Calculate annual rewards value in USD
     const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
 
     // Calculate total staked value based on token type
     let totalStakedUSD;
 
-    if (isPsXdcPool || isBpsXdcPool) {
+    if (isNativeXdc) {
+      // For native XDC pool, use XDC price directly
+      totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
+      console.log('Native XDC Pool APR calculation:', {
+        totalStaked: Number(formatEther(pool.totalStaked)),
+        xdcPrice,
+        totalStakedUSD,
+        annualRewards: Number(formatEther(annualRewards)),
+        bbbPrice,
+        annualRewardsUSD
+      });
+    } else if (isPsXdcPool || isBpsXdcPool) {
       // For psXDC or bpsXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
     } else if (isBBBPool) {
