@@ -30,7 +30,7 @@ const Stake = () => {
     activePid: 0, // Track which pool the modals are for
     isXdcPool: false, // Flag to indicate if active pool is XDC pool
     expandedPools: {}, // Track which pools are expanded
-    sortBy: "apr-desc", // default, apr-desc, apr-asc
+    sortBy: "apr", // apr, latest
   });
 
   const router = useRouter();
@@ -773,10 +773,6 @@ const Stake = () => {
 
   // Sort pools by APR
   const sortPools = (pools) => {
-    if (data.sortBy === "default") {
-      return pools;
-    }
-
     // Remove any potential duplicates based on unique pool identifier
     const uniquePools = pools.filter((pool, index, self) => {
       const uniqueId = pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`;
@@ -786,19 +782,18 @@ const Stake = () => {
       });
     });
 
+    if (data.sortBy === "latest") {
+      // Return default order reversed
+      return [...uniquePools].reverse();
+    }
+
+    // Default to APR sorting (from high to low)
     const poolsWithAPR = uniquePools.map(pool => ({
       ...pool,
       aprValue: calculateAPR(pool).numericTotal || 0
     }));
 
-    return [...poolsWithAPR].sort((a, b) => {
-      if (data.sortBy === "apr-desc") {
-        return b.aprValue - a.aprValue;
-      } else if (data.sortBy === "apr-asc") {
-        return a.aprValue - b.aprValue;
-      }
-      return 0;
-    });
+    return [...poolsWithAPR].sort((a, b) => b.aprValue - a.aprValue);
   };
 
   // Render a pool card
@@ -1091,9 +1086,8 @@ const Stake = () => {
               onChange={(e) => setData(prev => ({ ...prev, sortBy: e.target.value }))}
               className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
             >
-              <option value="default">Default</option>
-              <option value="apr-desc">APR High to Low</option>
-              <option value="apr-asc">APR Low to High</option>
+              <option value="apr">APR</option>
+              <option value="latest">Latest</option>
             </select>
           </div>
           <div className="text-sm text-green-700 text-center sm:text-left">🌊 Stake to earn</div>
