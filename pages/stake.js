@@ -30,6 +30,7 @@ const Stake = () => {
     activePid: 0, // Track which pool the modals are for
     isXdcPool: false, // Flag to indicate if active pool is XDC pool
     expandedPools: {}, // Track which pools are expanded
+    sortBy: "apr-desc", // default, apr-desc, apr-asc
   });
 
   const router = useRouter();
@@ -37,6 +38,27 @@ const Stake = () => {
   const { address, isConnected } = useAccount();
 
   const privyLogin = usePrivyLogin();
+
+  // Add token to wallet function
+  const addTokenToWallet = async (tokenAddress, symbol, decimals = 18) => {
+    try {
+      if (window.ethereum) {
+        await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: tokenAddress,
+              symbol: symbol,
+              decimals: decimals,
+            },
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Error adding token to wallet:', error);
+    }
+  };
 
   // LP Stake contract address
   const lpStakeAddress = contracts[chainId]?.lpStake?.address || "0x123";
@@ -745,7 +767,38 @@ const Stake = () => {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }),
+      numericTotal: totalAPR, // Keep numeric value for sorting
     };
+  };
+
+  // Sort pools by APR
+  const sortPools = (pools) => {
+    if (data.sortBy === "default") {
+      return pools;
+    }
+
+    // Remove any potential duplicates based on unique pool identifier
+    const uniquePools = pools.filter((pool, index, self) => {
+      const uniqueId = pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`;
+      return index === self.findIndex(p => {
+        const pId = p.isXdcPool ? `xdc-${p.pid}` : `lp-${p.pid}`;
+        return pId === uniqueId;
+      });
+    });
+
+    const poolsWithAPR = uniquePools.map(pool => ({
+      ...pool,
+      aprValue: calculateAPR(pool).numericTotal || 0
+    }));
+
+    return [...poolsWithAPR].sort((a, b) => {
+      if (data.sortBy === "apr-desc") {
+        return b.aprValue - a.aprValue;
+      } else if (data.sortBy === "apr-asc") {
+        return a.aprValue - b.aprValue;
+      }
+      return 0;
+    });
   };
 
   // Render a pool card
@@ -825,7 +878,7 @@ const Stake = () => {
     return (
       <div
         id={poolId}
-        key={pool.pid}
+        key={pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`}
         className="space-y-3 mb-8 bg-white rounded-lg shadow-sm overflow-hidden"
       >
         <div 
@@ -1023,14 +1076,31 @@ const Stake = () => {
   // Combine XDC pool with other pools for rendering
   const allPools = [xdcPool, ...poolsWithData];
 
+  // Apply sorting to pools
+  const sortedPools = sortPools(allPools);
+
   return (
     <div className="m-auto md:w-3/4 w-full px-4 md:px-0 mt-6 pb-20">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6">
         <h1 className="text-2xl font-bold text-green-600">Stake</h1>
-        <div className="text-sm text-green-700">🌊 Stake to earn</div>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Sort by:</span>
+            <select
+              value={data.sortBy}
+              onChange={(e) => setData(prev => ({ ...prev, sortBy: e.target.value }))}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
+            >
+              <option value="default">Default</option>
+              <option value="apr-desc">APR High to Low</option>
+              <option value="apr-asc">APR Low to High</option>
+            </select>
+          </div>
+          <div className="text-sm text-green-700 text-center sm:text-left">🌊 Stake to earn</div>
+        </div>
       </div>
 
-      {allPools.map((pool, index) => renderPoolCard(pool, index))}
+      {sortedPools.map((pool, index) => renderPoolCard(pool, index))}
 
       {/* Stake Modal */}
       <div
