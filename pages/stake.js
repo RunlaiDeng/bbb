@@ -31,6 +31,7 @@ const Stake = () => {
     isXdcPool: false, // Flag to indicate if active pool is XDC pool
     expandedPools: {}, // Track which pools are expanded
     sortBy: "apr", // apr, latest
+    searchQuery: "", // Search keyword for filtering pools
   });
 
   const router = useRouter();
@@ -796,6 +797,39 @@ const Stake = () => {
     return [...poolsWithAPR].sort((a, b) => b.aprValue - a.aprValue);
   };
 
+  // Filter pools by search query
+  const filterPools = (pools) => {
+    if (!data.searchQuery.trim()) {
+      return pools;
+    }
+
+    const searchTerm = data.searchQuery.toLowerCase().trim();
+    
+    return pools.filter(pool => {
+      // Search by pool symbol
+      const symbolMatch = pool.symbol?.toLowerCase().includes(searchTerm);
+      
+      // Search by pool title
+      const getPoolTitle = () => {
+        if (pool.isXdcPool) return "XDC Staking";
+        if (pool.pid === 0) return `${pool.symbol} ReStaking`;
+        if (pool.pid === 1) return "bpsXDC ReStaking";
+        if (pool.pid === 2) return "BBB Staking";
+        return `${pool.symbol} Staking`;
+      };
+      const titleMatch = getPoolTitle().toLowerCase().includes(searchTerm);
+      
+      // Search by token type keywords
+      const keywordMatch = 
+        (searchTerm.includes('xdc') && (pool.isXdcPool || pool.symbol?.toLowerCase().includes('xdc'))) ||
+        (searchTerm.includes('bbb') && pool.symbol?.toLowerCase().includes('bbb')) ||
+        (searchTerm.includes('stake') || searchTerm.includes('staking')) ||
+        (searchTerm.includes('restake') || searchTerm.includes('restaking'));
+
+      return symbolMatch || titleMatch || keywordMatch;
+    });
+  };
+
   // Render a pool card
   const renderPoolCard = (pool, index) => {
     const poolActions = pool.isXdcPool ? createXdcPoolActions() : createPoolActions(pool.pid);
@@ -1074,27 +1108,78 @@ const Stake = () => {
   // Apply sorting to pools
   const sortedPools = sortPools(allPools);
 
+  // Apply filtering to pools
+  const filteredPools = filterPools(sortedPools);
+
   return (
     <div className="m-auto md:w-3/4 w-full px-4 md:px-0 mt-6 pb-20">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-600">Stake</h1>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Sort by:</span>
-            <select
-              value={data.sortBy}
-              onChange={(e) => setData(prev => ({ ...prev, sortBy: e.target.value }))}
-              className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
-            >
-              <option value="apr">APR</option>
-              <option value="latest">Latest</option>
-            </select>
+        <div className="text-sm text-green-700">🌊 Stake to earn</div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mb-6">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Sort by:</span>
+          <select
+            value={data.sortBy}
+            onChange={(e) => setData(prev => ({ ...prev, sortBy: e.target.value }))}
+            className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
+          >
+            <option value="apr">APR</option>
+            <option value="latest">Latest</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Search:</span>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search pools..."
+              value={data.searchQuery}
+              onChange={(e) => setData(prev => ({ ...prev, searchQuery: e.target.value }))}
+              className="px-3 py-1 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
+            />
+            {data.searchQuery && (
+              <button
+                onClick={() => setData(prev => ({ ...prev, searchQuery: "" }))}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            )}
           </div>
-          <div className="text-sm text-green-700 text-center sm:text-left">🌊 Stake to earn</div>
         </div>
       </div>
 
-      {sortedPools.map((pool, index) => renderPoolCard(pool, index))}
+      {data.searchQuery && (
+        <div className="mb-4 text-sm text-gray-600">
+          Found {filteredPools.length} pool{filteredPools.length !== 1 ? 's' : ''} 
+          {filteredPools.length > 0 ? ` matching \`${data.searchQuery}\`` : ` for \`${data.searchQuery}\``}
+        </div>
+      )}
+
+      {filteredPools.length > 0 ? (
+        filteredPools.map((pool, index) => renderPoolCard(pool, index))
+      ) : data.searchQuery ? (
+        <div className="text-center py-12">
+          <div className="text-gray-500 mb-4">
+            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No pools found</h3>
+          <p className="text-gray-500 mb-4">No pools match your search for `{data.searchQuery}`</p>
+          <button
+            onClick={() => setData(prev => ({ ...prev, searchQuery: "" }))}
+            className="text-green-600 hover:text-green-700 font-medium"
+          >
+            Clear search
+          </button>
+        </div>
+      ) : (
+        filteredPools.map((pool, index) => renderPoolCard(pool, index))
+      )}
 
       {/* Stake Modal */}
       <div
