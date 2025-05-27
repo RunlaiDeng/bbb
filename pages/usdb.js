@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 const USDB = () => {
   const [data, setData] = useState({
-    currentApr: "6.25",
+    currentApr: "5.25",
     expandedFaq: null,
   });
 
@@ -46,7 +46,7 @@ const USDB = () => {
     {
       question: "How do I earn yields?",
       answer:
-        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 6%+ base annual yield plus 10-1000% BBB token rewards.",
+        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 5%+ base annual yield plus 10-1000% BBB token rewards.",
     },
     {
       question: "What is Delta Hedging?",
@@ -518,7 +518,7 @@ const USDB = () => {
                   Start Earning
                 </h3>
                 <p className="text-gray-600">
-                  Confirm the transaction and immediately start earning 6%+ base
+                  Confirm the transaction and immediately start earning 5%+ base
                   yields and BBB token rewards.
                 </p>
               </div>
