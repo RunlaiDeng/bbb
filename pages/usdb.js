@@ -49,6 +49,11 @@ const USDB = () => {
         "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 6%+ base annual yield plus 10-1000% BBB token rewards.",
     },
     {
+      question: "How are funds allocated?",
+      answer:
+        "USDB employs a strategic fund allocation model: 80% of deposited funds are actively deployed in delta-neutral arbitrage strategies across major crypto exchanges to maximize returns, while 20% is reserved for liquidity management to ensure instant withdrawals and maintain stability.",
+    },
+    {
       question: "What is Delta Hedging?",
       answer:
         "Delta hedging is a risk management strategy that uses perpetual contracts and deliverable futures to hedge spot assets, reducing price volatility risk while capturing funding rate yields.",
@@ -61,12 +66,12 @@ const USDB = () => {
     {
       question: "How is fund security ensured?",
       answer:
-        "USDB is backed by a diversified portfolio of crypto assets and liquid stablecoins, using advanced risk management strategies with all assets undergoing strict security audits.",
+        "USDB is backed by a diversified portfolio of crypto assets and liquid stablecoins, using advanced risk management strategies with all assets undergoing strict security audits. The 80/20 allocation strategy ensures both growth and liquidity protection.",
     },
     {
       question: "How do I participate in USDB?",
       answer:
-        "Connect your wallet, select the amount you want to stake, confirm the transaction and start earning yields. You can view yields and withdraw at any time.",
+        "Connect your wallet, select the amount you want to stake, confirm the transaction and start earning yields. You can view yields and withdraw at any time thanks to our 20% liquidity reserve.",
     },
   ];
 
@@ -185,7 +190,8 @@ const USDB = () => {
                   <p className="text-gray-600">
                     Backing assets generate funding through hedged perpetual
                     contracts and stablecoin rewards, creating sustainable
-                    yields for holders.
+                    yields for holders. 80% of funds are allocated for arbitrage
+                    opportunities, while 20% maintains liquidity for instant redemptions.
                   </p>
                 </div>
               </div>
@@ -479,11 +485,12 @@ const USDB = () => {
                   <span className="text-white font-bold text-2xl">1</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Connect Wallet
+                  Asset Collateralization
                 </h3>
                 <p className="text-gray-600">
-                  Connect your Web3 wallet to the BBBPump platform, supporting
-                  multiple mainstream wallets.
+                  USDB is backed by a diversified portfolio of crypto assets (BTC, ETH, SOL) 
+                  and liquid stablecoins (USDC, USDT, USDe, USDtb) with strategic 80/20 allocation 
+                  for maximum efficiency.
                 </p>
               </div>
 
@@ -492,11 +499,12 @@ const USDB = () => {
                   <span className="text-white font-bold text-2xl">2</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Choose Amount
+                  Smart Fund Allocation
                 </h3>
                 <p className="text-gray-600">
-                  Enter the amount of USDB you want to stake, and the system
-                  will display expected yield rates and BBB rewards.
+                  80% of funds are actively deployed in delta-neutral arbitrage strategies 
+                  across major exchanges, while 20% maintains liquidity reserves for instant 
+                  withdrawals and stability.
                 </p>
               </div>
 
@@ -505,11 +513,12 @@ const USDB = () => {
                   <span className="text-white font-bold text-2xl">3</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Start Earning
+                  Yield Distribution
                 </h3>
                 <p className="text-gray-600">
-                  Confirm the transaction and immediately start earning 6%+ base
-                  yields and BBB token rewards.
+                  Generated income from arbitrage strategies and stablecoin rewards is 
+                  distributed to USDB holders as base yield plus additional BBB token rewards, 
+                  ensuring sustainable returns.
                 </p>
               </div>
             </div>
