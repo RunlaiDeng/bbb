@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 
 const USDB = () => {
   const [data, setData] = useState({
-    currentApr: "5.25",
+    currentApr: "5",
     expandedFaq: null,
   });
 
