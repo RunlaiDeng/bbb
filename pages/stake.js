@@ -79,7 +79,8 @@ const Stake = () => {
     'xdc': 'xdc-0',
     'psxdc': 'lp-0',
     'bpsxdc': 'lp-1', 
-    'bbb': 'lp-2'
+    'bbb': 'lp-2',
+    'xdc-bbb': 'lp-3'
   };
 
   // Handle hash-based navigation to expand specific pools
@@ -113,7 +114,7 @@ const Stake = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Read pool info from the contract for PID 0, 1, and 2
+  // Read pool info from the contract for PID 0, 1, 2, and 3
   const { data: poolInfo, refetch: refetchPool } = useReadContracts({
     contracts: [
       {
@@ -134,10 +135,16 @@ const Stake = () => {
         functionName: "poolInfo",
         args: [2],
       },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "poolInfo",
+        args: [3],
+      },
     ],
   });
 
-  // Read user info for PID 0, 1, and 2
+  // Read user info for PID 0, 1, 2, and 3
   const { data: userInfoData, refetch: refetchUserInfo } = useReadContracts({
     contracts: [
       {
@@ -176,6 +183,18 @@ const Stake = () => {
         functionName: "pendingReward",
         args: [2, address || "0x0000000000000000000000000000000000000000"],
       },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "userInfo",
+        args: [3, address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: lpStakeAddress,
+        abi: LpStakeABI,
+        functionName: "pendingReward",
+        args: [3, address || "0x0000000000000000000000000000000000000000"],
+      },
     ],
     query: {
       enabled: !!lpStakeAddress,
@@ -201,9 +220,15 @@ const Stake = () => {
       userStaked: userInfoData?.[4]?.result?.[0] || BigInt(0),
       pendingReward: userInfoData?.[5]?.result || BigInt(0),
     },
+    {
+      pid: 3,
+      poolData: poolInfo?.[3]?.result,
+      userStaked: userInfoData?.[6]?.result?.[0] || BigInt(0),
+      pendingReward: userInfoData?.[7]?.result || BigInt(0),
+    },
   ];
 
-  // Read LP token data for both pools
+  // Read LP token data for all pools
   const lpTokenAddresses = pools.map((pool) => pool.poolData?.[0]);
 
   const createLpTokenContracts = (lpTokenAddress) => {
@@ -254,6 +279,28 @@ const Stake = () => {
         : [],
       query: {
         enabled: !!lpTokenAddresses[1],
+      },
+    }
+  );
+
+  const { data: lpTokenData2, refetch: refetchLpTokenData2 } = useReadContracts(
+    {
+      contracts: lpTokenAddresses[2]
+        ? createLpTokenContracts(lpTokenAddresses[2])
+        : [],
+      query: {
+        enabled: !!lpTokenAddresses[2],
+      },
+    }
+  );
+
+  const { data: lpTokenData3, refetch: refetchLpTokenData3 } = useReadContracts(
+    {
+      contracts: lpTokenAddresses[3]
+        ? createLpTokenContracts(lpTokenAddresses[3])
+        : [],
+      query: {
+        enabled: !!lpTokenAddresses[3],
       },
     }
   );
@@ -342,6 +389,24 @@ const Stake = () => {
     },
   });
 
+  const { data: pairData2, refetch: refetchPairData2 } = useReadContracts({
+    contracts: lpTokenAddresses[2]
+      ? createPairDataContracts(lpTokenAddresses[2])
+      : [],
+    query: {
+      enabled: !!lpTokenAddresses[2],
+    },
+  });
+
+  const { data: pairData3, refetch: refetchPairData3 } = useReadContracts({
+    contracts: lpTokenAddresses[3]
+      ? createPairDataContracts(lpTokenAddresses[3])
+      : [],
+    query: {
+      enabled: !!lpTokenAddresses[3],
+    },
+  });
+
   // Create contracts for BBB token
   const bbbTokenAddress = contracts[chainId]?.bbb?.address || "0x123";
 
@@ -418,6 +483,20 @@ const Stake = () => {
       rewardPerBlock: pools[2].poolData?.[5] || BigInt(0),
       isActive: pools[2].poolData?.[6] || false,
       tokenAddress: bbbTokenAddress,
+    },
+    {
+      ...pools[3],
+      allowance: lpTokenData3?.[0]?.result || BigInt(0),
+      balance: lpTokenData3?.[1]?.result || BigInt(0),
+      symbol: "XDC-BBB LP",
+      lpTotalSupply: lpTokenData3?.[3]?.result || BigInt(0),
+      reserves: pairData3?.[0]?.result || [BigInt(0), BigInt(0), 0],
+      token0: pairData3?.[1]?.result,
+      token1: pairData3?.[2]?.result,
+      totalStaked: pools[3].poolData?.[4] || BigInt(0),
+      rewardPerBlock: pools[3].poolData?.[5] || BigInt(0),
+      isActive: pools[3].poolData?.[6] || false,
+      tokenAddress: lpTokenAddresses[3],
     },
   ];
 
@@ -558,8 +637,12 @@ const Stake = () => {
     refetchXdcUserInfo();
     refetchLpTokenData0();
     refetchLpTokenData1();
+    refetchLpTokenData2();
+    refetchLpTokenData3();
     refetchPairData0();
     refetchPairData1();
+    refetchPairData2();
+    refetchPairData3();
     refetchBBBData();
   };
 
@@ -809,12 +892,16 @@ const Stake = () => {
       // Search by pool symbol
       const symbolMatch = pool.symbol?.toLowerCase().includes(searchTerm);
       
+      // For PID 3, also search by the contract symbol "icelp"
+      const contractSymbolMatch = pool.pid === 3 && "icelp".includes(searchTerm);
+      
       // Search by pool title
       const getPoolTitle = () => {
         if (pool.isXdcPool) return "XDC Staking";
         if (pool.pid === 0) return `${pool.symbol} ReStaking`;
         if (pool.pid === 1) return "bpsXDC ReStaking";
         if (pool.pid === 2) return "BBB Staking";
+        if (pool.pid === 3) return "XDC-BBB LP Staking";
         return `${pool.symbol} Staking`;
       };
       const titleMatch = getPoolTitle().toLowerCase().includes(searchTerm);
@@ -824,9 +911,11 @@ const Stake = () => {
         (searchTerm.includes('xdc') && (pool.isXdcPool || pool.symbol?.toLowerCase().includes('xdc'))) ||
         (searchTerm.includes('bbb') && pool.symbol?.toLowerCase().includes('bbb')) ||
         (searchTerm.includes('stake') || searchTerm.includes('staking')) ||
-        (searchTerm.includes('restake') || searchTerm.includes('restaking'));
+        (searchTerm.includes('restake') || searchTerm.includes('restaking')) ||
+        (searchTerm.includes('lp') && pool.pid === 3) ||
+        (searchTerm.includes('icelp') && pool.pid === 3);
 
-      return symbolMatch || titleMatch || keywordMatch;
+      return symbolMatch || contractSymbolMatch || titleMatch || keywordMatch;
     });
   };
 
@@ -843,6 +932,7 @@ const Stake = () => {
       if (pool.pid === 0) return '#psXDC';
       if (pool.pid === 1) return '#bpsXDC';
       if (pool.pid === 2) return '#bbb';
+      if (pool.pid === 3) return '#xdc-bbb';
       return '';
     };
 
@@ -854,6 +944,9 @@ const Stake = () => {
       if (pool.pid === 2) {
         return "/bbb.jpg"; // BBB icon for BBB pool
       }
+      if (pool.pid === 3) {
+        return "combined"; // Special identifier for combined XDC-BBB icon
+      }
       return "";
     };
 
@@ -863,6 +956,7 @@ const Stake = () => {
       if (pool.pid === 0) return `${pool.symbol} ReStaking`;
       if (pool.pid === 1) return "bpsXDC ReStaking";
       if (pool.pid === 2) return "BBB Staking";
+      if (pool.pid === 3) return "XDC-BBB LP Staking";
       return `${pool.symbol} Staking`;
     };
 
@@ -871,6 +965,7 @@ const Stake = () => {
       if (pool.isXdcPool) return buyXDCLink;
       if (pool.symbol === "bpsXDC") return "/bpsXDC";
       if (pool.symbol === "BBB") return "/buy"; // Use direct link to /buy for BBB
+      if (pool.pid === 3) return "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"; // IceCreamSwap link for XDC-BBB LP
       return "https://primestaking.xyz/xdc-liquid-staking"; // Default for psXDC
     };
 
@@ -916,12 +1011,27 @@ const Stake = () => {
         >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
             <div className="flex items-center">
-              <div className="w-6 h-6 mr-2 rounded-full overflow-hidden flex-shrink-0">
-                <img 
-                  src={getPoolIcon()} 
-                  alt={`${pool.symbol} icon`} 
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-6 h-6 mr-2 rounded-full overflow-hidden flex-shrink-0 relative">
+                {getPoolIcon() === "combined" ? (
+                  <div className="relative w-full h-full">
+                    <img 
+                      src="/xdc.png" 
+                      alt="XDC icon" 
+                      className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
+                    />
+                    <img 
+                      src="/bbb.jpg" 
+                      alt="BBB icon" 
+                      className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
+                    />
+                  </div>
+                ) : (
+                  <img 
+                    src={getPoolIcon()} 
+                    alt={`${pool.symbol} icon`} 
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <h2 className="text-lg md:text-xl font-bold flex items-center flex-wrap gap-2">
                 <a href={getHashTag()} onClick={(e) => e.preventDefault()} className="hover:text-green-600 transition-colors">
@@ -947,7 +1057,7 @@ const Stake = () => {
                   className="text-xs text-green-600 hover:underline"
                   target="_blank"
                 >
-                  Get {pool.symbol}
+                  Get {pool.pid === 3 ? "XDC-BBB LP" : pool.symbol}
                 </Link>
                 {isConnected && pool.tokenAddress && !pool.isXdcPool && (
                   <button
@@ -986,7 +1096,7 @@ const Stake = () => {
                     <div className="font-medium truncate max-w-[60%] text-right">
                       {Number(formatEther(pool.userStaked))?.toLocaleString(
                         "en-US",
-                        { minimumFractionDigits: 4, maximumFractionDigits: 4 }
+                        { minimumFractionDigits: pool.pid === 3 ? 8 : 4, maximumFractionDigits: pool.pid === 3 ? 8 : 4 }
                       )}{" "}
                       {pool.symbol}
                     </div>
@@ -1009,8 +1119,8 @@ const Stake = () => {
                 <span className="text-gray-500">Total Staked</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
                   {Number(formatEther(pool.totalStaked))?.toLocaleString("en-US", {
-                    minimumFractionDigits: 4,
-                    maximumFractionDigits: 4,
+                    minimumFractionDigits: pool.pid === 3 ? 8 : 4,
+                    maximumFractionDigits: pool.pid === 3 ? 8 : 4,
                   })}{" "}
                   {pool.symbol}
                 </div>
@@ -1236,7 +1346,11 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Available</span>
               <span className="truncate max-w-[70%] text-right">
-                {formatEther(activePool.balance)} {activePool.symbol}
+                {Number(formatEther(activePool.balance))?.toLocaleString("en-US", {
+                  minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                  maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                })}{" "}
+                {activePool.symbol}
               </span>
             </div>
 
@@ -1310,7 +1424,11 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Staked</span>
               <span className="truncate max-w-[70%] text-right">
-                {formatEther(activePool.userStaked)} {activePool.symbol}
+                {Number(formatEther(activePool.userStaked))?.toLocaleString("en-US", {
+                  minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                  maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                })}{" "}
+                {activePool.symbol}
               </span>
             </div>
 
