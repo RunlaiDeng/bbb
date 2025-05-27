@@ -6,10 +6,10 @@ import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 import { contracts } from "@/config";
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const USDB = () => {
   const [data, setData] = useState({
-    showParticipateModal: false,
     currentApr: "6.25",
     expandedFaq: null,
   });
@@ -17,6 +17,7 @@ const USDB = () => {
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const privyLogin = usePrivyLogin();
+  const router = useRouter();
 
   const { data: balance } = useBalance({
     address,
@@ -25,11 +26,8 @@ const USDB = () => {
     },
   });
 
-  const handleParticipateModal = () => {
-    setData((prev) => ({
-      ...prev,
-      showParticipateModal: !prev.showParticipateModal,
-    }));
+  const handleParticipate = () => {
+    router.push('/stake#usdb');
   };
 
   const toggleFaq = (index) => {
@@ -74,6 +72,13 @@ const USDB = () => {
 
   return (
     <>
+      <Head>
+        <title>USDB - Synthetic USD | BBBPump</title>
+        <meta name="description" content="USDB is a synthetic USD that provides 6%+ annual yield and BBB token rewards through delta hedging strategies." />
+        <link rel="icon" href="/favicon-usdb.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/usdb-icon.svg" />
+      </Head>
+
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
         {/* Hero Section */}
         <div className="relative overflow-hidden">
@@ -81,8 +86,12 @@ const USDB = () => {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
             <div className="text-center">
               <div className="inline-flex items-center gap-3 mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-xl">US</span>
+                <div className="w-16 h-16">
+                  <img 
+                    src="/usdb.png" 
+                    alt="USDB Logo" 
+                    className="w-full h-full drop-shadow-lg"
+                  />
                 </div>
                 <h1 className="text-6xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                   USDB
@@ -114,7 +123,7 @@ const USDB = () => {
               <div className="flex justify-center">
                 {isConnected ? (
                   <button
-                    onClick={handleParticipateModal}
+                    onClick={handleParticipate}
                     className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
                   >
                     Participate Now
@@ -508,7 +517,7 @@ const USDB = () => {
             <div className="text-center mt-12">
               {isConnected ? (
                 <button
-                  onClick={handleParticipateModal}
+                  onClick={handleParticipate}
                   className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
                 >
                   Get Started
@@ -579,54 +588,6 @@ const USDB = () => {
           </div>
         </div>
       </div>
-
-      {/* Participate Modal */}
-      {data.showParticipateModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 w-full max-w-md">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900">
-                Participate in USDB
-              </h3>
-              <button
-                onClick={handleParticipateModal}
-                className="text-gray-400 hover:text-gray-600 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="text-center space-y-4">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl">
-                <div className="text-lg font-semibold text-gray-900 mb-2">
-                  Coming Soon
-                </div>
-                <p className="text-gray-600">
-                  USDB staking functionality is under development. Stay tuned.
-                </p>
-              </div>
-
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Expected Annual Yield:</span>
-                <span className="font-semibold text-green-600">
-                  {data.currentApr}%
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">BBB Rewards:</span>
-                <span className="font-semibold text-orange-600">10-1000%</span>
-              </div>
-
-              <button
-                onClick={handleParticipateModal}
-                className="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };
