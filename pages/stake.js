@@ -804,6 +804,9 @@ const Stake = () => {
     // Check if this is native XDC pool
     const isNativeXdc = pool.isXdcPool === true;
 
+    // Check if this is XDC-BBB LP pool (PID 3)
+    const isXdcBbbLp = pool.pid === 3;
+
     // Calculate annual rewards value in USD
     const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
 
@@ -821,6 +824,42 @@ const Stake = () => {
         bbbPrice,
         annualRewardsUSD
       });
+    } else if (isXdcBbbLp && pool.reserves && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+      // For XDC-BBB LP pool, calculate LP token value based on reserves
+      const bbbAddress = contracts[chainId]?.bbb?.address;
+      let xdcReserve, bbbReserve;
+
+      // Determine which token is BBB and which is XDC/WXDC
+      if (pool.token0?.toLowerCase() === bbbAddress?.toLowerCase()) {
+        bbbReserve = pool.reserves[0];
+        xdcReserve = pool.reserves[1];
+      } else {
+        bbbReserve = pool.reserves[1];
+        xdcReserve = pool.reserves[0];
+      }
+
+      // Calculate total LP value in USD
+      const bbbValue = Number(formatEther(bbbReserve)) * bbbPrice;
+      const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
+      const totalLpValueUSD = bbbValue + xdcValue;
+
+      // Calculate LP token price (USD per LP token)
+      const lpTokenPrice = totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
+
+      // Calculate total staked value
+      totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+
+      console.log('XDC-BBB LP Pool APR calculation:', {
+        bbbReserve: Number(formatEther(bbbReserve)),
+        xdcReserve: Number(formatEther(xdcReserve)),
+        bbbValue,
+        xdcValue,
+        totalLpValueUSD,
+        lpTokenPrice,
+        totalStaked: Number(formatEther(pool.totalStaked)),
+        totalStakedUSD,
+        annualRewardsUSD
+      });
     } else if (isPsXdcPool || isBpsXdcPool) {
       // For psXDC or bpsXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -828,7 +867,7 @@ const Stake = () => {
       // For BBB pool, use BBB price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * bbbPrice;
     } else {
-      // For LP tokens or other tokens, use LP token price
+      // For other LP tokens, use the general LP token price calculation
       totalStakedUSD =
         Number(formatEther(pool.totalStaked)) * (data.lpTokenPrice || 1);
     }
