@@ -47,9 +47,9 @@ const Stake = () => {
     try {
       if (window.ethereum) {
         await window.ethereum.request({
-          method: 'wallet_watchAsset',
+          method: "wallet_watchAsset",
           params: {
-            type: 'ERC20',
+            type: "ERC20",
             options: {
               address: tokenAddress,
               symbol: symbol,
@@ -59,7 +59,7 @@ const Stake = () => {
         });
       }
     } catch (error) {
-      console.error('Error adding token to wallet:', error);
+      console.error("Error adding token to wallet:", error);
     }
   };
 
@@ -74,7 +74,7 @@ const Stake = () => {
     address,
     query: {
       enabled: !!address,
-    }
+    },
   });
 
   // USDB token balance
@@ -100,32 +100,32 @@ const Stake = () => {
 
   // Process pool ids for hash navigation
   const POOL_HASH_MAP = {
-    'xdc': 'xdc-0',
-    'usdb': 'usdb-0',
-    'psxdc': 'lp-0',
-    'bpsxdc': 'lp-1', 
-    'bbb': 'lp-2',
-    'xdc-bbb': 'lp-3'
+    xdc: "xdc-0",
+    usdb: "usdb-0",
+    psxdc: "lp-0",
+    bpsxdc: "lp-1",
+    bbb: "lp-2",
+    "xdc-bbb": "lp-3",
   };
 
   // Handle hash-based navigation to expand specific pools
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.toLowerCase().replace('#', '');
+      const hash = window.location.hash.toLowerCase().replace("#", "");
       if (hash && POOL_HASH_MAP[hash]) {
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
           expandedPools: {
             ...prev.expandedPools,
-            [POOL_HASH_MAP[hash]]: true
-          }
+            [POOL_HASH_MAP[hash]]: true,
+          },
         }));
-        
+
         // Scroll to the pool
         setTimeout(() => {
           const element = document.getElementById(POOL_HASH_MAP[hash]);
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            element.scrollIntoView({ behavior: "smooth" });
           }
         }, 100);
       }
@@ -135,8 +135,8 @@ const Stake = () => {
     handleHashChange();
 
     // Listen to hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   // Read pool info from the contract for PID 0, 1, 2, and 3
@@ -537,29 +537,30 @@ const Stake = () => {
     ],
     query: {
       enabled: !!xdcStakeAddress,
-    }
+    },
   });
 
   // Read XDC user info
-  const { data: xdcUserInfoData, refetch: refetchXdcUserInfo } = useReadContracts({
-    contracts: [
-      {
-        address: xdcStakeAddress,
-        abi: XDCStakeABI,
-        functionName: "userInfo",
-        args: [0, address || "0x0000000000000000000000000000000000000000"],
+  const { data: xdcUserInfoData, refetch: refetchXdcUserInfo } =
+    useReadContracts({
+      contracts: [
+        {
+          address: xdcStakeAddress,
+          abi: XDCStakeABI,
+          functionName: "userInfo",
+          args: [0, address || "0x0000000000000000000000000000000000000000"],
+        },
+        {
+          address: xdcStakeAddress,
+          abi: XDCStakeABI,
+          functionName: "pendingReward",
+          args: [0, address || "0x0000000000000000000000000000000000000000"],
+        },
+      ],
+      query: {
+        enabled: !!xdcStakeAddress && !!address,
       },
-      {
-        address: xdcStakeAddress,
-        abi: XDCStakeABI,
-        functionName: "pendingReward",
-        args: [0, address || "0x0000000000000000000000000000000000000000"],
-      },
-    ],
-    query: {
-      enabled: !!xdcStakeAddress && !!address,
-    },
-  });
+    });
 
   // Read USDB stake pool info
   const { data: usdbPoolInfo, refetch: refetchUsdbPool } = useReadContracts({
@@ -573,47 +574,49 @@ const Stake = () => {
     ],
     query: {
       enabled: !!usdbStakeAddress,
-    }
+    },
   });
 
   // Read USDB user info
-  const { data: usdbUserInfoData, refetch: refetchUsdbUserInfo } = useReadContracts({
-    contracts: [
-      {
-        address: usdbStakeAddress,
-        abi: USDBStakeABI,
-        functionName: "userInfo",
-        args: [0, address || "0x0000000000000000000000000000000000000000"],
+  const { data: usdbUserInfoData, refetch: refetchUsdbUserInfo } =
+    useReadContracts({
+      contracts: [
+        {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "userInfo",
+          args: [0, address || "0x0000000000000000000000000000000000000000"],
+        },
+        {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "pendingReward",
+          args: [0, address || "0x0000000000000000000000000000000000000000"],
+        },
+      ],
+      query: {
+        enabled: !!usdbStakeAddress && !!address,
       },
-      {
-        address: usdbStakeAddress,
-        abi: USDBStakeABI,
-        functionName: "pendingReward",
-        args: [0, address || "0x0000000000000000000000000000000000000000"],
-      },
-    ],
-    query: {
-      enabled: !!usdbStakeAddress && !!address,
-    },
-  });
+    });
 
   // Read USDB token allowance
-  const { data: usdbTokenData, refetch: refetchUsdbTokenData } = useReadContracts({
-    contracts: [
-      {
-        address: usdbTokenAddress,
-        abi: ERC20ABI,
-        functionName: "allowance",
-        args: [
-          address || "0x0000000000000000000000000000000000000000",
-          usdbStakeAddress,
-        ],
+  const { data: usdbTokenData, refetch: refetchUsdbTokenData } =
+    useReadContracts({
+      contracts: [
+        {
+          address: usdbTokenAddress,
+          abi: ERC20ABI,
+          functionName: "allowance",
+          args: [
+            address || "0x0000000000000000000000000000000000000000",
+            usdbStakeAddress,
+          ],
+        },
+      ],
+      query: {
+        enabled: !!usdbTokenAddress && !!usdbStakeAddress && !!address,
       },
-    ],
-    query: {
-      enabled: !!usdbTokenAddress && !!usdbStakeAddress && !!address,
-    },
-  });
+    });
 
   // Process data for XDC pool
   const xdcPool = {
@@ -648,9 +651,6 @@ const Stake = () => {
     tokenAddress: usdbTokenAddress,
     decimals: 6, // USDB uses 6 decimals
   };
-
-  // Add console.log to debug pool data
-  console.log("XDC Pool Info:", xdcPoolInfo?.[0]?.result);
 
   // Load BBB and XDC prices, then calculate LP token price directly
   useEffect(() => {
@@ -873,6 +873,16 @@ const Stake = () => {
 
   // Create actions for USDB pool
   const createUsdbPoolActions = () => {
+    // 确保我们有有效的地址
+    if (!usdbStakeAddress || usdbStakeAddress === "0x123" || !usdbTokenAddress || usdbTokenAddress === "0x123") {
+      return {
+        approve: { buttonName: "Approve", data: null },
+        stake: { buttonName: "Stake", data: null },
+        unstake: { buttonName: "Unstake", data: null },
+        claimReward: { buttonName: "Claim", data: null },
+      };
+    }
+
     return {
       approve: {
         buttonName: "Approve",
@@ -921,23 +931,11 @@ const Stake = () => {
         },
       },
       claimReward: {
-        buttonName: "Claim BBB",
+        buttonName: "Claim",
         data: {
           address: usdbStakeAddress,
           abi: USDBStakeABI,
           functionName: "claimReward",
-          args: [0],
-        },
-        callback: () => {
-          refreshData();
-        },
-      },
-      claimInterest: {
-        buttonName: "Claim USDB",
-        data: {
-          address: usdbStakeAddress,
-          abi: USDBStakeABI,
-          functionName: "claimInterest",
           args: [0],
         },
         callback: () => {
@@ -996,15 +994,12 @@ const Stake = () => {
     if (isNativeXdc) {
       // For native XDC pool, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
-      console.log('Native XDC Pool APR calculation:', {
-        totalStaked: Number(formatEther(pool.totalStaked)),
-        xdcPrice,
-        totalStakedUSD,
-        annualRewards: Number(formatEther(annualRewards)),
-        bbbPrice,
-        annualRewardsUSD
-      });
-    } else if (isXdcBbbLp && pool.reserves && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+    } else if (
+      isXdcBbbLp &&
+      pool.reserves &&
+      pool.lpTotalSupply &&
+      pool.lpTotalSupply > 0
+    ) {
       // For XDC-BBB LP pool, calculate LP token value based on reserves
       const bbbAddress = contracts[chainId]?.bbb?.address;
       let xdcReserve, bbbReserve;
@@ -1024,33 +1019,14 @@ const Stake = () => {
       const totalLpValueUSD = bbbValue + xdcValue;
 
       // Calculate LP token price (USD per LP token)
-      const lpTokenPrice = totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
+      const lpTokenPrice =
+        totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
 
       // Calculate total staked value
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
-
-      console.log('XDC-BBB LP Pool APR calculation:', {
-        bbbReserve: Number(formatEther(bbbReserve)),
-        xdcReserve: Number(formatEther(xdcReserve)),
-        bbbValue,
-        xdcValue,
-        totalLpValueUSD,
-        lpTokenPrice,
-        totalStaked: Number(formatEther(pool.totalStaked)),
-        totalStakedUSD,
-        annualRewardsUSD
-      });
     } else if (isUsdbPool) {
       // For USDB pool, assume USDB price is 1 USD (stablecoin)
       totalStakedUSD = Number(formatUnits(pool.totalStaked, 6)) * 1;
-      console.log('USDB Pool APR calculation:', {
-        totalStaked: Number(formatUnits(pool.totalStaked, 6)),
-        totalStakedUSD,
-        annualRewards: Number(formatEther(annualRewards)),
-        bbbPrice,
-        annualRewardsUSD,
-        annualInterestRate: pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0
-      });
     } else if (isPsXdcPool || isBpsXdcPool) {
       // For psXDC or bpsXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -1069,12 +1045,13 @@ const Stake = () => {
 
     // Add 6% bonus APR only for psXDC or bpsXDC pools
     const bonusAPR = isPsXdcPool || isBpsXdcPool ? 6 : 0;
-    
+
     // Add annual interest rate for USDB pools
-    const interestAPR = isUsdbPool && pool.annualInterestRate 
-      ? Number(pool.annualInterestRate) / 100 
-      : 0;
-    
+    const interestAPR =
+      isUsdbPool && pool.annualInterestRate
+        ? Number(pool.annualInterestRate) / 100
+        : 0;
+
     const totalAPR = bbbAPR + bonusAPR + interestAPR;
 
     // Format with commas for thousands
@@ -1095,11 +1072,22 @@ const Stake = () => {
   const sortPools = (pools) => {
     // Remove any potential duplicates based on unique pool identifier
     const uniquePools = pools.filter((pool, index, self) => {
-      const uniqueId = pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`;
-      return index === self.findIndex(p => {
-        const pId = p.isXdcPool ? `xdc-${p.pid}` : p.isUsdbPool ? `usdb-${p.pid}` : `lp-${p.pid}`;
-        return pId === uniqueId;
-      });
+      const uniqueId = pool.isXdcPool
+        ? `xdc-${pool.pid}`
+        : pool.isUsdbPool
+        ? `usdb-${pool.pid}`
+        : `lp-${pool.pid}`;
+      return (
+        index ===
+        self.findIndex((p) => {
+          const pId = p.isXdcPool
+            ? `xdc-${p.pid}`
+            : p.isUsdbPool
+            ? `usdb-${p.pid}`
+            : `lp-${p.pid}`;
+          return pId === uniqueId;
+        })
+      );
     });
 
     if (data.sortBy === "latest") {
@@ -1108,9 +1096,9 @@ const Stake = () => {
     }
 
     // Default to APR sorting (from high to low)
-    const poolsWithAPR = uniquePools.map(pool => ({
+    const poolsWithAPR = uniquePools.map((pool) => ({
       ...pool,
-      aprValue: calculateAPR(pool).numericTotal || 0
+      aprValue: calculateAPR(pool).numericTotal || 0,
     }));
 
     return [...poolsWithAPR].sort((a, b) => b.aprValue - a.aprValue);
@@ -1123,14 +1111,15 @@ const Stake = () => {
     }
 
     const searchTerm = data.searchQuery.toLowerCase().trim();
-    
-    return pools.filter(pool => {
+
+    return pools.filter((pool) => {
       // Search by pool symbol
       const symbolMatch = pool.symbol?.toLowerCase().includes(searchTerm);
-      
+
       // For PID 3, also search by the contract symbol "icelp"
-      const contractSymbolMatch = pool.pid === 3 && "icelp".includes(searchTerm);
-      
+      const contractSymbolMatch =
+        pool.pid === 3 && "icelp".includes(searchTerm);
+
       // Search by pool title
       const getPoolTitle = () => {
         if (pool.isXdcPool) return "XDC Staking";
@@ -1142,15 +1131,19 @@ const Stake = () => {
         return `${pool.symbol} Staking`;
       };
       const titleMatch = getPoolTitle().toLowerCase().includes(searchTerm);
-      
+
       // Search by token type keywords
-      const keywordMatch = 
-        (searchTerm.includes('xdc') && (pool.isXdcPool || pool.symbol?.toLowerCase().includes('xdc'))) ||
-        (searchTerm.includes('bbb') && pool.symbol?.toLowerCase().includes('bbb')) ||
-        (searchTerm.includes('stake') || searchTerm.includes('staking')) ||
-        (searchTerm.includes('restake') || searchTerm.includes('restaking')) ||
-        (searchTerm.includes('lp') && pool.pid === 3) ||
-        (searchTerm.includes('icelp') && pool.pid === 3);
+      const keywordMatch =
+        (searchTerm.includes("xdc") &&
+          (pool.isXdcPool || pool.symbol?.toLowerCase().includes("xdc"))) ||
+        (searchTerm.includes("bbb") &&
+          pool.symbol?.toLowerCase().includes("bbb")) ||
+        searchTerm.includes("stake") ||
+        searchTerm.includes("staking") ||
+        searchTerm.includes("restake") ||
+        searchTerm.includes("restaking") ||
+        (searchTerm.includes("lp") && pool.pid === 3) ||
+        (searchTerm.includes("icelp") && pool.pid === 3);
 
       return symbolMatch || contractSymbolMatch || titleMatch || keywordMatch;
     });
@@ -1158,20 +1151,28 @@ const Stake = () => {
 
   // Render a pool card
   const renderPoolCard = (pool, index) => {
-    const poolActions = pool.isXdcPool ? createXdcPoolActions() : pool.isUsdbPool ? createUsdbPoolActions() : createPoolActions(pool.pid);
+    const poolActions = pool.isXdcPool
+      ? createXdcPoolActions()
+      : pool.isUsdbPool
+      ? createUsdbPoolActions()
+      : createPoolActions(pool.pid);
     const apr = calculateAPR(pool);
-    const poolId = pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`;
+    const poolId = pool.isXdcPool
+      ? `xdc-${pool.pid}`
+      : pool.isUsdbPool
+      ? `usdb-${pool.pid}`
+      : `lp-${pool.pid}`;
     const isExpanded = data.expandedPools[poolId] ?? false;
 
     // Get hashtag for this pool
     const getHashTag = () => {
-      if (pool.isXdcPool) return '#xdc';
-      if (pool.isUsdbPool) return '#usdb';
-      if (pool.pid === 0) return '#psXDC';
-      if (pool.pid === 1) return '#bpsXDC';
-      if (pool.pid === 2) return '#bbb';
-      if (pool.pid === 3) return '#xdc-bbb';
-      return '';
+      if (pool.isXdcPool) return "#xdc";
+      if (pool.isUsdbPool) return "#usdb";
+      if (pool.pid === 0) return "#psXDC";
+      if (pool.pid === 1) return "#bpsXDC";
+      if (pool.pid === 2) return "#bbb";
+      if (pool.pid === 3) return "#xdc-bbb";
+      return "";
     };
 
     // Get icon for this pool
@@ -1208,7 +1209,8 @@ const Stake = () => {
       if (pool.isUsdbPool) return "/usdb"; // Link to get USDB
       if (pool.symbol === "bpsXDC") return "/bpsXDC";
       if (pool.symbol === "BBB") return "/buy"; // Use direct link to /buy for BBB
-      if (pool.pid === 3) return "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"; // IceCreamSwap link for XDC-BBB LP
+      if (pool.pid === 3)
+        return "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"; // IceCreamSwap link for XDC-BBB LP
       return "https://primestaking.xyz/xdc-liquid-staking"; // Default for psXDC
     };
 
@@ -1216,7 +1218,9 @@ const Stake = () => {
     const getAprTooltip = () => {
       // For USDB pool, show BBB APR + USDB interest rate
       if (pool.isUsdbPool) {
-        const interestRate = pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0;
+        const interestRate = pool.annualInterestRate
+          ? Number(pool.annualInterestRate) / 100
+          : 0;
         return `BBB ${apr.bbbAPR}% + USDB ${interestRate.toFixed(2)}%`;
       }
       // For psXDC or bpsXDC pools, show 6% + BBB APR
@@ -1230,12 +1234,12 @@ const Stake = () => {
     // Toggle pool expansion and update URL
     const toggleExpand = () => {
       const newExpanded = !isExpanded;
-      setData(prev => ({
+      setData((prev) => ({
         ...prev,
         expandedPools: {
           ...prev.expandedPools,
-          [poolId]: newExpanded
-        }
+          [poolId]: newExpanded,
+        },
       }));
 
       // Update URL hash if expanding
@@ -1250,50 +1254,69 @@ const Stake = () => {
     return (
       <div
         id={poolId}
-        key={pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`}
+        key={
+          pool.isXdcPool
+            ? `xdc-${pool.pid}`
+            : pool.isUsdbPool
+            ? `usdb-${pool.pid}`
+            : `lp-${pool.pid}`
+        }
         className="space-y-3 mb-8 bg-white rounded-lg shadow-sm overflow-hidden"
       >
-        <div 
-          className="p-4 md:p-6 cursor-pointer"
-          onClick={toggleExpand}
-        >
+        <div className="p-4 md:p-6 cursor-pointer" onClick={toggleExpand}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
             <div className="flex items-center">
               <div className="w-6 h-6 mr-2 rounded-full overflow-hidden flex-shrink-0 relative">
                 {getPoolIcon() === "combined" ? (
                   <div className="relative w-full h-full">
-                    <img 
-                      src="/xdc.png" 
-                      alt="XDC icon" 
+                    <img
+                      src="/xdc.png"
+                      alt="XDC icon"
                       className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
                     />
-                    <img 
-                      src="/bbb.jpg" 
-                      alt="BBB icon" 
+                    <img
+                      src="/bbb.jpg"
+                      alt="BBB icon"
                       className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
                     />
                   </div>
                 ) : (
-                  <img 
-                    src={getPoolIcon()} 
-                    alt={`${pool.symbol} icon`} 
+                  <img
+                    src={getPoolIcon()}
+                    alt={`${pool.symbol} icon`}
                     className="w-full h-full object-cover"
                   />
                 )}
               </div>
               <h2 className="text-lg md:text-xl font-bold flex items-center flex-wrap gap-2">
-                <a href={getHashTag()} onClick={(e) => e.preventDefault()} className="hover:text-green-600 transition-colors">
+                <a
+                  href={getHashTag()}
+                  onClick={(e) => e.preventDefault()}
+                  className="hover:text-green-600 transition-colors"
+                >
                   {getPoolTitle()}
                 </a>
               </h2>
               <div className="ml-2 text-gray-500">
                 {isExpanded ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z" />
                   </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                   </svg>
                 )}
               </div>
@@ -1333,7 +1356,7 @@ const Stake = () => {
             </div>
           </div>
         </div>
-        
+
         {isExpanded && (
           <div className="space-y-6 px-4 md:px-6 pb-4 md:pb-6">
             <div className="space-y-4">
@@ -1342,16 +1365,20 @@ const Stake = () => {
                   <div className="flex justify-between items-center py-2 border-b border-gray-100">
                     <span className="text-gray-500">Your Staked</span>
                     <div className="font-medium truncate max-w-[60%] text-right">
-                      {pool.isUsdbPool 
-                        ? Number(formatUnits(pool.userStaked, 6))?.toLocaleString(
-                            "en-US",
-                            { minimumFractionDigits: 4, maximumFractionDigits: 4 }
-                          )
+                      {pool.isUsdbPool
+                        ? Number(
+                            formatUnits(pool.userStaked, 6)
+                          )?.toLocaleString("en-US", {
+                            minimumFractionDigits: 4,
+                            maximumFractionDigits: 4,
+                          })
                         : Number(formatEther(pool.userStaked))?.toLocaleString(
                             "en-US",
-                            { minimumFractionDigits: pool.pid === 3 ? 8 : 4, maximumFractionDigits: pool.pid === 3 ? 8 : 4 }
-                          )
-                      }{" "}
+                            {
+                              minimumFractionDigits: pool.pid === 3 ? 8 : 4,
+                              maximumFractionDigits: pool.pid === 3 ? 8 : 4,
+                            }
+                          )}{" "}
                       {pool.symbol}
                     </div>
                   </div>
@@ -1360,14 +1387,22 @@ const Stake = () => {
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
                       <span className="text-gray-500">Pending Rewards</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
-                        {Number(formatUnits(pool.pendingInterestReward || BigInt(0), 6))?.toLocaleString(
-                          "en-US",
-                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
-                        )}{" "}
-                        USDB + {Number(formatEther(pool.pendingReward))?.toLocaleString(
-                          "en-US",
-                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
-                        )}{" "}
+                        {Number(
+                          formatUnits(
+                            pool.pendingInterestReward || BigInt(0),
+                            6
+                          )
+                        )?.toLocaleString("en-US", {
+                          minimumFractionDigits: 4,
+                          maximumFractionDigits: 4,
+                        })}{" "}
+                        USDB +{" "}
+                        {Number(
+                          formatEther(pool.pendingReward)
+                        )?.toLocaleString("en-US", {
+                          minimumFractionDigits: 4,
+                          maximumFractionDigits: 4,
+                        })}{" "}
                         BBB
                       </div>
                     </div>
@@ -1375,10 +1410,12 @@ const Stake = () => {
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
                       <span className="text-gray-500">Pending Rewards</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
-                        {Number(formatEther(pool.pendingReward))?.toLocaleString(
-                          "en-US",
-                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
-                        )}{" "}
+                        {Number(
+                          formatEther(pool.pendingReward)
+                        )?.toLocaleString("en-US", {
+                          minimumFractionDigits: 4,
+                          maximumFractionDigits: 4,
+                        })}{" "}
                         BBB
                       </div>
                     </div>
@@ -1389,16 +1426,21 @@ const Stake = () => {
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-gray-500">Total Staked</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
-                  {pool.isUsdbPool 
-                    ? Number(formatUnits(pool.totalStaked, 6))?.toLocaleString("en-US", {
-                        minimumFractionDigits: 4,
-                        maximumFractionDigits: 4,
-                      })
-                    : Number(formatEther(pool.totalStaked))?.toLocaleString("en-US", {
-                        minimumFractionDigits: pool.pid === 3 ? 8 : 4,
-                        maximumFractionDigits: pool.pid === 3 ? 8 : 4,
-                      })
-                  }{" "}
+                  {pool.isUsdbPool
+                    ? Number(formatUnits(pool.totalStaked, 6))?.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 4,
+                          maximumFractionDigits: 4,
+                        }
+                      )
+                    : Number(formatEther(pool.totalStaked))?.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: pool.pid === 3 ? 8 : 4,
+                          maximumFractionDigits: pool.pid === 3 ? 8 : 4,
+                        }
+                      )}{" "}
                   {pool.symbol}
                 </div>
               </div>
@@ -1406,7 +1448,10 @@ const Stake = () => {
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-gray-500">Rewards per Block</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
-                  {pool.rewardPerBlock ? Number(formatEther(pool.rewardPerBlock)).toLocaleString() : "0.00"} BBB
+                  {pool.rewardPerBlock
+                    ? Number(formatEther(pool.rewardPerBlock)).toLocaleString()
+                    : "0.00"}{" "}
+                  BBB
                   {isConnected && (
                     <button
                       onClick={() => addTokenToWallet(bbbTokenAddress, "BBB")}
@@ -1454,11 +1499,20 @@ const Stake = () => {
                   >
                     Unstake
                   </button>
-                  {pool.pendingReward > 0 && (
-                    <WriteButton
-                      {...poolActions.claim}
-                      className="flex-1 py-2 px-4 text-white bg-amber-500 rounded-md hover:bg-amber-600 transition-colors cursor-pointer text-sm md:text-base"
-                    />
+                  {(pool.pendingReward > 0 || (pool.isUsdbPool && pool.pendingInterestReward > 0)) && (
+                    <>
+                      {pool.isUsdbPool ? (
+                        <WriteButton
+                          {...poolActions.claimReward}
+                          className="flex-1 py-2 px-4 text-white bg-amber-500 rounded-md hover:bg-amber-600 transition-colors cursor-pointer text-sm md:text-base"
+                        />
+                      ) : (
+                        <WriteButton
+                          {...poolActions.claim}
+                          className="flex-1 py-2 px-4 text-white bg-amber-500 rounded-md hover:bg-amber-600 transition-colors cursor-pointer text-sm md:text-base"
+                        />
+                      )}
+                    </>
                   )}
                 </div>
               </>
@@ -1484,13 +1538,13 @@ const Stake = () => {
     );
   };
 
-  const activePool = data.isXdcPool 
-    ? xdcPool 
-    : data.isUsdbPool 
+  const activePool = data.isXdcPool
+    ? xdcPool
+    : data.isUsdbPool
     ? usdbPool
     : poolsWithData[data.activePid] || poolsWithData[0];
-  const activeActions = data.isXdcPool 
-    ? createXdcPoolActions() 
+  const activeActions = data.isXdcPool
+    ? createXdcPoolActions()
     : data.isUsdbPool
     ? createUsdbPoolActions()
     : createPoolActions(data.activePid);
@@ -1516,7 +1570,9 @@ const Stake = () => {
           <span className="text-sm text-gray-600">Sort by:</span>
           <select
             value={data.sortBy}
-            onChange={(e) => setData(prev => ({ ...prev, sortBy: e.target.value }))}
+            onChange={(e) =>
+              setData((prev) => ({ ...prev, sortBy: e.target.value }))
+            }
             className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
           >
             <option value="apr">APR</option>
@@ -1530,12 +1586,16 @@ const Stake = () => {
               type="text"
               placeholder="Search pools..."
               value={data.searchQuery}
-              onChange={(e) => setData(prev => ({ ...prev, searchQuery: e.target.value }))}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, searchQuery: e.target.value }))
+              }
               className="px-3 py-1 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
             />
             {data.searchQuery && (
               <button
-                onClick={() => setData(prev => ({ ...prev, searchQuery: "" }))}
+                onClick={() =>
+                  setData((prev) => ({ ...prev, searchQuery: "" }))
+                }
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 ✕
@@ -1547,8 +1607,11 @@ const Stake = () => {
 
       {data.searchQuery && (
         <div className="mb-4 text-sm text-gray-600">
-          Found {filteredPools.length} pool{filteredPools.length !== 1 ? 's' : ''} 
-          {filteredPools.length > 0 ? ` matching \`${data.searchQuery}\`` : ` for \`${data.searchQuery}\``}
+          Found {filteredPools.length} pool
+          {filteredPools.length !== 1 ? "s" : ""}
+          {filteredPools.length > 0
+            ? ` matching \`${data.searchQuery}\``
+            : ` for \`${data.searchQuery}\``}
         </div>
       )}
 
@@ -1557,14 +1620,28 @@ const Stake = () => {
       ) : data.searchQuery ? (
         <div className="text-center py-12">
           <div className="text-gray-500 mb-4">
-            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No pools found</h3>
-          <p className="text-gray-500 mb-4">No pools match your search for `{data.searchQuery}`</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No pools found
+          </h3>
+          <p className="text-gray-500 mb-4">
+            No pools match your search for `{data.searchQuery}`
+          </p>
           <button
-            onClick={() => setData(prev => ({ ...prev, searchQuery: "" }))}
+            onClick={() => setData((prev) => ({ ...prev, searchQuery: "" }))}
             className="text-green-600 hover:text-green-700 font-medium"
           >
             Clear search
@@ -1618,7 +1695,7 @@ const Stake = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    stakeAmount: activePool.isUsdbPool 
+                    stakeAmount: activePool.isUsdbPool
                       ? formatUnits(activePool.balance, 6)
                       : formatEther(activePool.balance),
                   });
@@ -1631,26 +1708,34 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Available</span>
               <span className="truncate max-w-[70%] text-right">
-                {activePool.isUsdbPool 
-                  ? Number(formatUnits(activePool.balance, 6))?.toLocaleString("en-US", {
-                      minimumFractionDigits: 4,
-                      maximumFractionDigits: 4,
-                    })
-                  : Number(formatEther(activePool.balance))?.toLocaleString("en-US", {
-                      minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                      maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                    })
-                }{" "}
+                {activePool.isUsdbPool
+                  ? Number(formatUnits(activePool.balance, 6))?.toLocaleString(
+                      "en-US",
+                      {
+                        minimumFractionDigits: 4,
+                        maximumFractionDigits: 4,
+                      }
+                    )
+                  : Number(formatEther(activePool.balance))?.toLocaleString(
+                      "en-US",
+                      {
+                        minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                        maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                      }
+                    )}{" "}
                 {activePool.symbol}
               </span>
             </div>
 
-            {!data.isXdcPool && !data.isUsdbPool && activePool.allowance < parseEther(data.stakeAmount || "0") ? (
+            {!data.isXdcPool &&
+            !data.isUsdbPool &&
+            activePool.allowance < parseEther(data.stakeAmount || "0") ? (
               <WriteButton
                 {...activeActions.approve}
                 className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
               />
-            ) : data.isUsdbPool && activePool.allowance < parseUnits(data.stakeAmount || "0", 6) ? (
+            ) : data.isUsdbPool &&
+              activePool.allowance < parseUnits(data.stakeAmount || "0", 6) ? (
               <WriteButton
                 {...activeActions.approve}
                 className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
@@ -1709,7 +1794,7 @@ const Stake = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    unstakeAmount: activePool.isUsdbPool 
+                    unstakeAmount: activePool.isUsdbPool
                       ? formatUnits(activePool.userStaked, 6)
                       : formatEther(activePool.userStaked),
                   });
@@ -1722,16 +1807,20 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Staked</span>
               <span className="truncate max-w-[70%] text-right">
-                {activePool.isUsdbPool 
-                  ? Number(formatUnits(activePool.userStaked, 6))?.toLocaleString("en-US", {
+                {activePool.isUsdbPool
+                  ? Number(
+                      formatUnits(activePool.userStaked, 6)
+                    )?.toLocaleString("en-US", {
                       minimumFractionDigits: 4,
                       maximumFractionDigits: 4,
                     })
-                  : Number(formatEther(activePool.userStaked))?.toLocaleString("en-US", {
-                      minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                      maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                    })
-                }{" "}
+                  : Number(formatEther(activePool.userStaked))?.toLocaleString(
+                      "en-US",
+                      {
+                        minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                        maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                      }
+                    )}{" "}
                 {activePool.symbol}
               </span>
             </div>

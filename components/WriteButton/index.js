@@ -82,10 +82,10 @@ const WriteButton = (props) => {
       <div
         className={
           props.className +
-          (props?.disabled || !write || isLoading ? " btn-disabled" : "")
+          (props?.disabled || !write || isLoading || !props?.data ? " btn-disabled" : "")
         }
         disabled={
-          (props?.disabled || !write || isLoading || isStarted) && !txSuccess
+          (props?.disabled || !write || isLoading || isStarted || !props?.data) && !txSuccess
         }
         style={{ minWidth: 112 }}
         onClick={async () => {
@@ -93,6 +93,14 @@ const WriteButton = (props) => {
             alert("please connect wallet");
             return;
           }
+          
+          // Check if data exists and is valid
+          if (!props?.data) {
+            console.error("No transaction data provided");
+            failure("Transaction data is missing");
+            return;
+          }
+
           const writeData = { ...props?.data, type: "legacy" };
 
           try {

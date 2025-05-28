@@ -146,7 +146,7 @@ export const contracts = {
       abi: ERC20ABI,
     },
     usdbStake: {
-      address: "0xB4FD817386352a6677ebE3cA666A551Ba0a8a2F5",
+      address: "0x9F60225A8525b982C15B8231595a0D42Da744d88",
       abi: USDBStakeABI,
     },
   },

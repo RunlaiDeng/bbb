@@ -768,7 +768,7 @@ const USDB = () => {
                         rel="noopener noreferrer"
                         className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-600 px-2 py-1 rounded-full transition-colors"
                       >
-                        Get USDC
+                        Get USDC.e
                       </a>
                     )}
                   </div>
