@@ -1,7 +1,8 @@
 import LpStakeABI from "@/abi/LpStakeABI.json";
 import XDCStakeABI from "@/abi/XDCStakeABI.json";
+import USDBStakeABI from "@/abi/USDBStakeABI.json";
 import { useState, useEffect } from "react";
-import { parseEther, formatEther } from "viem";
+import { parseEther, formatEther, parseUnits, formatUnits } from "viem";
 import { buyXDCLink, contracts, dexLink } from "@/config";
 import {
   useAccount,
@@ -29,6 +30,7 @@ const Stake = () => {
     xdcPrice: 0, // XDC price in USD
     activePid: 0, // Track which pool the modals are for
     isXdcPool: false, // Flag to indicate if active pool is XDC pool
+    isUsdbPool: false, // Flag to indicate if active pool is USDB pool
     expandedPools: {}, // Track which pools are expanded
     sortBy: "apr", // apr, latest
     searchQuery: "", // Search keyword for filtering pools
@@ -65,6 +67,7 @@ const Stake = () => {
   const lpStakeAddress = contracts[chainId]?.lpStake?.address || "0x123";
   const xdcStakeAddress = contracts[chainId]?.xdcStake?.address || "0x123";
   const xdcStake = contracts[chainId]?.xdcStake;
+  const usdbStakeAddress = contracts[chainId]?.usdbStake?.address || "0x123";
 
   // Native XDC balance
   const { data: xdcBalance } = useBalance({
@@ -74,9 +77,31 @@ const Stake = () => {
     }
   });
 
+  // USDB token balance
+  const usdbTokenAddress = contracts[chainId]?.usdb?.address || "0x123";
+  const { data: usdbBalance } = useReadContracts({
+    contracts: [
+      {
+        address: usdbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: usdbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "decimals",
+      },
+    ],
+    query: {
+      enabled: !!address && !!usdbTokenAddress,
+    },
+  });
+
   // Process pool ids for hash navigation
   const POOL_HASH_MAP = {
     'xdc': 'xdc-0',
+    'usdb': 'usdb-0',
     'psxdc': 'lp-0',
     'bpsxdc': 'lp-1', 
     'bbb': 'lp-2',
@@ -536,6 +561,60 @@ const Stake = () => {
     },
   });
 
+  // Read USDB stake pool info
+  const { data: usdbPoolInfo, refetch: refetchUsdbPool } = useReadContracts({
+    contracts: [
+      {
+        address: usdbStakeAddress,
+        abi: USDBStakeABI,
+        functionName: "poolInfo",
+        args: [0],
+      },
+    ],
+    query: {
+      enabled: !!usdbStakeAddress,
+    }
+  });
+
+  // Read USDB user info
+  const { data: usdbUserInfoData, refetch: refetchUsdbUserInfo } = useReadContracts({
+    contracts: [
+      {
+        address: usdbStakeAddress,
+        abi: USDBStakeABI,
+        functionName: "userInfo",
+        args: [0, address || "0x0000000000000000000000000000000000000000"],
+      },
+      {
+        address: usdbStakeAddress,
+        abi: USDBStakeABI,
+        functionName: "pendingReward",
+        args: [0, address || "0x0000000000000000000000000000000000000000"],
+      },
+    ],
+    query: {
+      enabled: !!usdbStakeAddress && !!address,
+    },
+  });
+
+  // Read USDB token allowance
+  const { data: usdbTokenData, refetch: refetchUsdbTokenData } = useReadContracts({
+    contracts: [
+      {
+        address: usdbTokenAddress,
+        abi: ERC20ABI,
+        functionName: "allowance",
+        args: [
+          address || "0x0000000000000000000000000000000000000000",
+          usdbStakeAddress,
+        ],
+      },
+    ],
+    query: {
+      enabled: !!usdbTokenAddress && !!usdbStakeAddress && !!address,
+    },
+  });
+
   // Process data for XDC pool
   const xdcPool = {
     pid: 0,
@@ -549,6 +628,25 @@ const Stake = () => {
     rewardPerBlock: xdcPoolInfo?.[0]?.result?.[4] || BigInt(0), // Index 4 is rewardPerBlock
     isActive: true, // Always make XDC pool active
     tokenAddress: "0x0000000000000000000000000000000000000000", // Native XDC doesn't have a token address
+  };
+
+  // Process data for USDB pool
+  const usdbPool = {
+    pid: 0,
+    isUsdbPool: true,
+    poolData: usdbPoolInfo?.[0]?.result,
+    userStaked: usdbUserInfoData?.[0]?.result?.[0] || BigInt(0),
+    pendingReward: usdbUserInfoData?.[1]?.result?.[0] || BigInt(0), // BBB rewards
+    pendingInterestReward: usdbUserInfoData?.[1]?.result?.[1] || BigInt(0), // USDB interest rewards
+    symbol: "USDB",
+    balance: usdbBalance?.[0]?.result || BigInt(0),
+    allowance: usdbTokenData?.[0]?.result || BigInt(0),
+    totalStaked: usdbPoolInfo?.[0]?.result?.[4] || BigInt(0), // Index 4 is totalStaked
+    rewardPerBlock: usdbPoolInfo?.[0]?.result?.[5] || BigInt(0), // Index 5 is rewardPerBlock
+    annualInterestRate: usdbPoolInfo?.[0]?.result?.[9] || BigInt(0), // Index 9 is annualInterestRate
+    isActive: usdbPoolInfo?.[0]?.result?.[6] || false, // Index 6 is isActive
+    tokenAddress: usdbTokenAddress,
+    decimals: 6, // USDB uses 6 decimals
   };
 
   // Add console.log to debug pool data
@@ -635,6 +733,9 @@ const Stake = () => {
     refetchUserInfo();
     refetchXdcPool();
     refetchXdcUserInfo();
+    refetchUsdbPool();
+    refetchUsdbUserInfo();
+    refetchUsdbTokenData();
     refetchLpTokenData0();
     refetchLpTokenData1();
     refetchLpTokenData2();
@@ -770,6 +871,82 @@ const Stake = () => {
     };
   };
 
+  // Create actions for USDB pool
+  const createUsdbPoolActions = () => {
+    return {
+      approve: {
+        buttonName: "Approve",
+        data: {
+          address: usdbTokenAddress,
+          abi: ERC20ABI,
+          functionName: "approve",
+          args: [usdbStakeAddress, MAX_UINT256],
+        },
+        callback: () => {
+          refreshData();
+        },
+      },
+      stake: {
+        buttonName: "Stake",
+        data: {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "deposit",
+          args: [0, parseUnits(data.stakeAmount || "0", 6)],
+        },
+        callback: () => {
+          refreshData();
+          setData((prev) => ({
+            ...prev,
+            showStakeModal: false,
+            stakeAmount: "",
+          }));
+        },
+      },
+      unstake: {
+        buttonName: "Unstake",
+        data: {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "withdraw",
+          args: [0, parseUnits(data.unstakeAmount || "0", 6)],
+        },
+        callback: () => {
+          refreshData();
+          setData((prev) => ({
+            ...prev,
+            showUnstakeModal: false,
+            unstakeAmount: "",
+          }));
+        },
+      },
+      claimReward: {
+        buttonName: "Claim BBB",
+        data: {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "claimReward",
+          args: [0],
+        },
+        callback: () => {
+          refreshData();
+        },
+      },
+      claimInterest: {
+        buttonName: "Claim USDB",
+        data: {
+          address: usdbStakeAddress,
+          abi: USDBStakeABI,
+          functionName: "claimInterest",
+          args: [0],
+        },
+        callback: () => {
+          refreshData();
+        },
+      },
+    };
+  };
+
   // Calculate APR for a specific pool
   const BLOCKS_PER_YEAR = 31536000;
   const calculateAPR = (pool) => {
@@ -803,6 +980,9 @@ const Stake = () => {
 
     // Check if this is native XDC pool
     const isNativeXdc = pool.isXdcPool === true;
+
+    // Check if this is USDB pool
+    const isUsdbPool = pool.isUsdbPool === true;
 
     // Check if this is XDC-BBB LP pool (PID 3)
     const isXdcBbbLp = pool.pid === 3;
@@ -860,6 +1040,17 @@ const Stake = () => {
         totalStakedUSD,
         annualRewardsUSD
       });
+    } else if (isUsdbPool) {
+      // For USDB pool, assume USDB price is 1 USD (stablecoin)
+      totalStakedUSD = Number(formatUnits(pool.totalStaked, 6)) * 1;
+      console.log('USDB Pool APR calculation:', {
+        totalStaked: Number(formatUnits(pool.totalStaked, 6)),
+        totalStakedUSD,
+        annualRewards: Number(formatEther(annualRewards)),
+        bbbPrice,
+        annualRewardsUSD,
+        annualInterestRate: pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0
+      });
     } else if (isPsXdcPool || isBpsXdcPool) {
       // For psXDC or bpsXDC pools, use XDC price directly
       totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -878,7 +1069,13 @@ const Stake = () => {
 
     // Add 6% bonus APR only for psXDC or bpsXDC pools
     const bonusAPR = isPsXdcPool || isBpsXdcPool ? 6 : 0;
-    const totalAPR = bbbAPR + bonusAPR;
+    
+    // Add annual interest rate for USDB pools
+    const interestAPR = isUsdbPool && pool.annualInterestRate 
+      ? Number(pool.annualInterestRate) / 100 
+      : 0;
+    
+    const totalAPR = bbbAPR + bonusAPR + interestAPR;
 
     // Format with commas for thousands
     return {
@@ -898,9 +1095,9 @@ const Stake = () => {
   const sortPools = (pools) => {
     // Remove any potential duplicates based on unique pool identifier
     const uniquePools = pools.filter((pool, index, self) => {
-      const uniqueId = pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`;
+      const uniqueId = pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`;
       return index === self.findIndex(p => {
-        const pId = p.isXdcPool ? `xdc-${p.pid}` : `lp-${p.pid}`;
+        const pId = p.isXdcPool ? `xdc-${p.pid}` : p.isUsdbPool ? `usdb-${p.pid}` : `lp-${p.pid}`;
         return pId === uniqueId;
       });
     });
@@ -937,6 +1134,7 @@ const Stake = () => {
       // Search by pool title
       const getPoolTitle = () => {
         if (pool.isXdcPool) return "XDC Staking";
+        if (pool.isUsdbPool) return "USDB Staking";
         if (pool.pid === 0) return `${pool.symbol} ReStaking`;
         if (pool.pid === 1) return "bpsXDC ReStaking";
         if (pool.pid === 2) return "BBB Staking";
@@ -960,14 +1158,15 @@ const Stake = () => {
 
   // Render a pool card
   const renderPoolCard = (pool, index) => {
-    const poolActions = pool.isXdcPool ? createXdcPoolActions() : createPoolActions(pool.pid);
+    const poolActions = pool.isXdcPool ? createXdcPoolActions() : pool.isUsdbPool ? createUsdbPoolActions() : createPoolActions(pool.pid);
     const apr = calculateAPR(pool);
-    const poolId = pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`;
+    const poolId = pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`;
     const isExpanded = data.expandedPools[poolId] ?? false;
 
     // Get hashtag for this pool
     const getHashTag = () => {
       if (pool.isXdcPool) return '#xdc';
+      if (pool.isUsdbPool) return '#usdb';
       if (pool.pid === 0) return '#psXDC';
       if (pool.pid === 1) return '#bpsXDC';
       if (pool.pid === 2) return '#bbb';
@@ -977,6 +1176,9 @@ const Stake = () => {
 
     // Get icon for this pool
     const getPoolIcon = () => {
+      if (pool.isUsdbPool) {
+        return "/usdb.png"; // USDB icon for USDB pool
+      }
       if (pool.isXdcPool || pool.pid === 0 || pool.pid === 1) {
         return "/xdc.png"; // XDC icon for XDC, psXDC, bpsXDC pools
       }
@@ -992,6 +1194,7 @@ const Stake = () => {
     // Determine the pool title and get token link
     const getPoolTitle = () => {
       if (pool.isXdcPool) return "XDC Staking";
+      if (pool.isUsdbPool) return "USDB Staking";
       if (pool.pid === 0) return `${pool.symbol} ReStaking`;
       if (pool.pid === 1) return "bpsXDC ReStaking";
       if (pool.pid === 2) return "BBB Staking";
@@ -1002,6 +1205,7 @@ const Stake = () => {
     // Determine the 'Get Token' link
     const getTokenLink = () => {
       if (pool.isXdcPool) return buyXDCLink;
+      if (pool.isUsdbPool) return "/usdb"; // Link to get USDB
       if (pool.symbol === "bpsXDC") return "/bpsXDC";
       if (pool.symbol === "BBB") return "/buy"; // Use direct link to /buy for BBB
       if (pool.pid === 3) return "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc"; // IceCreamSwap link for XDC-BBB LP
@@ -1010,6 +1214,11 @@ const Stake = () => {
 
     // Determine the APR tooltip text
     const getAprTooltip = () => {
+      // For USDB pool, show BBB APR + USDB interest rate
+      if (pool.isUsdbPool) {
+        const interestRate = pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0;
+        return `BBB ${apr.bbbAPR}% + USDB ${interestRate.toFixed(2)}%`;
+      }
       // For psXDC or bpsXDC pools, show 6% + BBB APR
       if (pool.symbol === "psXDC" || pool.symbol === "bpsXDC") {
         return `${pool.symbol} 6% + BBB ${apr.bbbAPR}%`;
@@ -1041,7 +1250,7 @@ const Stake = () => {
     return (
       <div
         id={poolId}
-        key={pool.isXdcPool ? `xdc-${pool.pid}` : `lp-${pool.pid}`}
+        key={pool.isXdcPool ? `xdc-${pool.pid}` : pool.isUsdbPool ? `usdb-${pool.pid}` : `lp-${pool.pid}`}
         className="space-y-3 mb-8 bg-white rounded-lg shadow-sm overflow-hidden"
       >
         <div 
@@ -1133,34 +1342,63 @@ const Stake = () => {
                   <div className="flex justify-between items-center py-2 border-b border-gray-100">
                     <span className="text-gray-500">Your Staked</span>
                     <div className="font-medium truncate max-w-[60%] text-right">
-                      {Number(formatEther(pool.userStaked))?.toLocaleString(
-                        "en-US",
-                        { minimumFractionDigits: pool.pid === 3 ? 8 : 4, maximumFractionDigits: pool.pid === 3 ? 8 : 4 }
-                      )}{" "}
+                      {pool.isUsdbPool 
+                        ? Number(formatUnits(pool.userStaked, 6))?.toLocaleString(
+                            "en-US",
+                            { minimumFractionDigits: 4, maximumFractionDigits: 4 }
+                          )
+                        : Number(formatEther(pool.userStaked))?.toLocaleString(
+                            "en-US",
+                            { minimumFractionDigits: pool.pid === 3 ? 8 : 4, maximumFractionDigits: pool.pid === 3 ? 8 : 4 }
+                          )
+                      }{" "}
                       {pool.symbol}
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-500">Pending Rewards</span>
-                    <div className="font-medium truncate max-w-[60%] text-right">
-                      {Number(formatEther(pool.pendingReward))?.toLocaleString(
-                        "en-US",
-                        { minimumFractionDigits: 4, maximumFractionDigits: 4 }
-                      )}{" "}
-                      BBB
+                  {pool.isUsdbPool ? (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-gray-500">Pending Rewards</span>
+                      <div className="font-medium truncate max-w-[60%] text-right">
+                        {Number(formatUnits(pool.pendingInterestReward || BigInt(0), 6))?.toLocaleString(
+                          "en-US",
+                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
+                        )}{" "}
+                        USDB + {Number(formatEther(pool.pendingReward))?.toLocaleString(
+                          "en-US",
+                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
+                        )}{" "}
+                        BBB
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-gray-500">Pending Rewards</span>
+                      <div className="font-medium truncate max-w-[60%] text-right">
+                        {Number(formatEther(pool.pendingReward))?.toLocaleString(
+                          "en-US",
+                          { minimumFractionDigits: 4, maximumFractionDigits: 4 }
+                        )}{" "}
+                        BBB
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : null}
 
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-gray-500">Total Staked</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
-                  {Number(formatEther(pool.totalStaked))?.toLocaleString("en-US", {
-                    minimumFractionDigits: pool.pid === 3 ? 8 : 4,
-                    maximumFractionDigits: pool.pid === 3 ? 8 : 4,
-                  })}{" "}
+                  {pool.isUsdbPool 
+                    ? Number(formatUnits(pool.totalStaked, 6))?.toLocaleString("en-US", {
+                        minimumFractionDigits: 4,
+                        maximumFractionDigits: 4,
+                      })
+                    : Number(formatEther(pool.totalStaked))?.toLocaleString("en-US", {
+                        minimumFractionDigits: pool.pid === 3 ? 8 : 4,
+                        maximumFractionDigits: pool.pid === 3 ? 8 : 4,
+                      })
+                  }{" "}
                   {pool.symbol}
                 </div>
               </div>
@@ -1194,6 +1432,7 @@ const Stake = () => {
                         showStakeModal: true,
                         activePid: pool.pid,
                         isXdcPool: pool.isXdcPool || false,
+                        isUsdbPool: pool.isUsdbPool || false,
                       }));
                     }}
                   >
@@ -1208,6 +1447,7 @@ const Stake = () => {
                         showUnstakeModal: true,
                         activePid: pool.pid,
                         isXdcPool: pool.isXdcPool || false,
+                        isUsdbPool: pool.isUsdbPool || false,
                       }));
                     }}
                     disabled={pool.userStaked <= 0}
@@ -1246,13 +1486,17 @@ const Stake = () => {
 
   const activePool = data.isXdcPool 
     ? xdcPool 
+    : data.isUsdbPool 
+    ? usdbPool
     : poolsWithData[data.activePid] || poolsWithData[0];
   const activeActions = data.isXdcPool 
     ? createXdcPoolActions() 
+    : data.isUsdbPool
+    ? createUsdbPoolActions()
     : createPoolActions(data.activePid);
 
   // Combine XDC pool with other pools for rendering
-  const allPools = [xdcPool, ...poolsWithData];
+  const allPools = [xdcPool, usdbPool, ...poolsWithData];
 
   // Apply sorting to pools
   const sortedPools = sortPools(allPools);
@@ -1374,7 +1618,9 @@ const Stake = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    stakeAmount: formatEther(activePool.balance),
+                    stakeAmount: activePool.isUsdbPool 
+                      ? formatUnits(activePool.balance, 6)
+                      : formatEther(activePool.balance),
                   });
                 }}
               >
@@ -1385,15 +1631,26 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Available</span>
               <span className="truncate max-w-[70%] text-right">
-                {Number(formatEther(activePool.balance))?.toLocaleString("en-US", {
-                  minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                  maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                })}{" "}
+                {activePool.isUsdbPool 
+                  ? Number(formatUnits(activePool.balance, 6))?.toLocaleString("en-US", {
+                      minimumFractionDigits: 4,
+                      maximumFractionDigits: 4,
+                    })
+                  : Number(formatEther(activePool.balance))?.toLocaleString("en-US", {
+                      minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                      maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                    })
+                }{" "}
                 {activePool.symbol}
               </span>
             </div>
 
-            {!data.isXdcPool && activePool.allowance < parseEther(data.stakeAmount || "0") ? (
+            {!data.isXdcPool && !data.isUsdbPool && activePool.allowance < parseEther(data.stakeAmount || "0") ? (
+              <WriteButton
+                {...activeActions.approve}
+                className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+              />
+            ) : data.isUsdbPool && activePool.allowance < parseUnits(data.stakeAmount || "0", 6) ? (
               <WriteButton
                 {...activeActions.approve}
                 className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
@@ -1452,7 +1709,9 @@ const Stake = () => {
                 onClick={() => {
                   setData({
                     ...data,
-                    unstakeAmount: formatEther(activePool.userStaked),
+                    unstakeAmount: activePool.isUsdbPool 
+                      ? formatUnits(activePool.userStaked, 6)
+                      : formatEther(activePool.userStaked),
                   });
                 }}
               >
@@ -1463,10 +1722,16 @@ const Stake = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>Staked</span>
               <span className="truncate max-w-[70%] text-right">
-                {Number(formatEther(activePool.userStaked))?.toLocaleString("en-US", {
-                  minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                  maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
-                })}{" "}
+                {activePool.isUsdbPool 
+                  ? Number(formatUnits(activePool.userStaked, 6))?.toLocaleString("en-US", {
+                      minimumFractionDigits: 4,
+                      maximumFractionDigits: 4,
+                    })
+                  : Number(formatEther(activePool.userStaked))?.toLocaleString("en-US", {
+                      minimumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                      maximumFractionDigits: activePool.pid === 3 ? 8 : 4,
+                    })
+                }{" "}
                 {activePool.symbol}
               </span>
             </div>
