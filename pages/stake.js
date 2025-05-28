@@ -1393,8 +1393,8 @@ const Stake = () => {
                             6
                           )
                         )?.toLocaleString("en-US", {
-                          minimumFractionDigits: 4,
-                          maximumFractionDigits: 4,
+                          minimumFractionDigits: 6,
+                          maximumFractionDigits: 6,
                         })}{" "}
                         USDB +{" "}
                         {Number(
