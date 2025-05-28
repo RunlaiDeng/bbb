@@ -11,7 +11,7 @@ import IDOABI from "../abi/IDOABI.json";
 import bpsXDCABI from "../abi/bpsXDCABI.json";
 import XDCStakeABI from "../abi/XDCStakeABI.json";
 import USDBABI from "../abi/USDBABI.json";
-import USDBStakeABI from "../abi/usdbStakeABI.json";
+import USDBStakeABI from "../abi/USDBStakeABI.json";
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const dexLink = "/swap/bbb";
@@ -134,7 +134,7 @@ export const contracts = {
       abi: XDCStakeABI,
     },
     usdb: {
-      address: "0x90AEb7B103bd6086c13037B18897FDbA04faa133",
+      address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
       abi: USDBABI,
     },
     usdc: {
@@ -146,7 +146,7 @@ export const contracts = {
       abi: ERC20ABI,
     },
     usdbStake: {
-      address: "0x9F60225A8525b982C15B8231595a0D42Da744d88",
+      address: "0x510ef49A0aec84F1957D8aa1d7a4308782ABAD7d",
       abi: USDBStakeABI,
     },
   },

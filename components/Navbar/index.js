@@ -142,6 +142,14 @@ const Navbar = () => {
                         bpsXDC
                       </Link>
                     </li>
+                    <li className="rounded-lg">
+                      <Link
+                        href={"/usdb"}
+                        className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                      >
+                        USDB
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -826,6 +834,15 @@ const Navbar = () => {
                             }}
                           >
                             <div>Airdrop Hub</div>
+                          </div>
+                          <div
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            onClick={(e) => {
+                              router.push("/usdb");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div>USDB</div>
                           </div>
                         </div>
                       </div>
