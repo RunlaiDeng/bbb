@@ -757,9 +757,21 @@ const USDB = () => {
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Balance:</span>
-                  <span className="text-lg font-semibold text-gray-900">
-                    {tokenBalance ? `${formatUnits(tokenBalance.value, tokenBalance.decimals)} ${selectedToken === "USDC" ? "USDC.e" : selectedToken}` : "0"}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-semibold text-gray-900">
+                      {tokenBalance ? `${formatUnits(tokenBalance.value, tokenBalance.decimals)} ${selectedToken === "USDC" ? "USDC.e" : selectedToken}` : "0"}
+                    </span>
+                    {selectedToken === "USDC" && (
+                      <a
+                        href="https://icecreamswap.com/swap?chain=xdc&outputCurrency=0x2A8E898b6242355c290E1f4Fc966b8788729A4D4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-600 px-2 py-1 rounded-full transition-colors"
+                      >
+                        Get USDC
+                      </a>
+                    )}
+                  </div>
                 </div>
                 {/* 显示将收到的USDB数量 */}
                 {amount && isValidAmount() && (
