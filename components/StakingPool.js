@@ -554,7 +554,7 @@ const StakingPool = ({
       return {
         title: "XDC-bpsXDC LP Staking",
         icon: "combined",
-        getTokenLink: "https://icecreamswap.com/add/XDC/0x123456789abcdef?chain=xdc",
+        getTokenLink: "https://icecreamswap.com/add/XDC/0x24be372f0915b8BAf17AfA150210FFcB79C88845?chain=xdc",
         hashTag: "#xdc-bpsxdc",
       };
     }
