@@ -568,6 +568,13 @@ const StakingPool = ({
 
   const poolConfig = getPoolConfig();
 
+  // Get shorter symbol for modal display
+  const getModalSymbol = () => {
+    if (poolData.pid === 3) return "XDC-BBB LP";
+    if (poolData.pid === 4) return "XDC-bps LP";
+    return poolData.symbol;
+  };
+
   // Get APR tooltip text
   const getAprTooltip = () => {
     if (poolData.isUsdbPool) {
@@ -1092,7 +1099,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Stake {poolData.symbol}
+              Stake {getModalSymbol()}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1121,7 +1128,7 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium">{poolData.symbol}</div>
+              <div className="font-medium whitespace-nowrap">{getModalSymbol()}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
                 onClick={() => {
@@ -1191,7 +1198,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Unstake {poolData.symbol}
+              Unstake {getModalSymbol()}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1220,7 +1227,7 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium">{poolData.symbol}</div>
+              <div className="font-medium whitespace-nowrap">{getModalSymbol()}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
                 onClick={() => {
