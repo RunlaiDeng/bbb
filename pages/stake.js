@@ -11,6 +11,7 @@ const POOL_HASH_MAP = {
   bpsxdc: "lp-1",
   bbb: "lp-2",
   "xdc-bbb": "lp-3",
+  "xdc-bpsxdc": "lp-4",
 };
 
 // Pool configurations (move outside component)
@@ -21,6 +22,7 @@ const POOL_CONFIGS = [
   { id: 'lp-1', pid: 1, poolType: 'lp', title: 'bpsXDC ReStaking', symbol: 'bpsXDC' },
   { id: 'lp-2', pid: 2, poolType: 'lp', title: 'BBB Staking', symbol: 'BBB' },
   { id: 'lp-3', pid: 3, poolType: 'lp', title: 'XDC-BBB LP Staking', symbol: 'XDC-BBB LP' },
+  { id: 'lp-4', pid: 4, poolType: 'lp', title: 'XDC-bpsXDC LP Staking', symbol: 'XDC-bpsXDC LP' },
 ];
 
 const Stake = () => {

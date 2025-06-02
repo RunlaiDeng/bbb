@@ -327,6 +327,7 @@ const StakingPool = ({
           if (pid === 1) return "bpsXDC";
           if (pid === 2) return "BBB";
           if (pid === 3) return "XDC-BBB LP";
+          if (pid === 4) return "XDC-bpsXDC LP";
           return tokenData?.[2]?.result || "LP";
         };
         
@@ -547,6 +548,14 @@ const StakingPool = ({
         icon: "combined",
         getTokenLink: "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc",
         hashTag: "#xdc-bbb",
+      };
+    }
+    if (poolData.pid === 4) {
+      return {
+        title: "XDC-bpsXDC LP Staking",
+        icon: "combined",
+        getTokenLink: "https://icecreamswap.com/add/XDC/0x123456789abcdef?chain=xdc",
+        hashTag: "#xdc-bpsxdc",
       };
     }
     return {
@@ -794,16 +803,35 @@ const StakingPool = ({
               <div className="w-6 h-6 mr-2 rounded-full overflow-hidden flex-shrink-0 relative">
                 {poolConfig.icon === "combined" ? (
                   <div className="relative w-full h-full">
-                    <img
-                      src="/xdc.png"
-                      alt="XDC icon"
-                      className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
-                    />
-                    <img
-                      src="/bbb.jpg"
-                      alt="BBB icon"
-                      className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
-                    />
+                    {poolData.pid === 4 ? (
+                      // Two overlapping XDC icons for XDC-bpsXDC LP
+                      <>
+                        <img
+                          src="/xdc.png"
+                          alt="XDC icon"
+                          className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
+                        />
+                        <img
+                          src="/xdc.png"
+                          alt="XDC icon"
+                          className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
+                        />
+                      </>
+                    ) : (
+                      // XDC and BBB icons for XDC-BBB LP (pid 3)
+                      <>
+                        <img
+                          src="/xdc.png"
+                          alt="XDC icon"
+                          className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
+                        />
+                        <img
+                          src="/bbb.jpg"
+                          alt="BBB icon"
+                          className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
+                        />
+                      </>
+                    )}
                   </div>
                 ) : (
                   <img
