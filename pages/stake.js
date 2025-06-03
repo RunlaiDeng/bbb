@@ -28,16 +28,6 @@ const POOL_CONFIGS = [
     hashTag: "#xdc"
   },
   { 
-    id: 'usdb-0', 
-    pid: 0, 
-    poolType: 'usdb', 
-    title: 'USDB Staking (Expired)', 
-    symbol: 'USDB',
-    icon: "/usdb.png",
-    getTokenLink: "/usdb",
-    hashTag: "#usdb-expired"
-  },
-  { 
     id: 'usdb-2', 
     pid: 2, 
     poolType: 'usdb', 
