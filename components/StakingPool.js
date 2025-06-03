@@ -14,6 +14,7 @@ import ERC20ABI from "@/abi/ERC20ABI.json";
 const StakingPool = ({
   pid,
   poolType, // 'xdc', 'usdb', 'lp'
+  poolConfig, // Configuration from POOL_CONFIGS
   data,
   setData,
   addTokenToWallet,
@@ -87,19 +88,19 @@ const StakingPool = ({
           address: usdbStakeAddress,
           abi: USDBStakeABI,
           functionName: "poolInfo",
-          args: [0],
+          args: [pid],
         },
         {
           address: usdbStakeAddress,
           abi: USDBStakeABI,
           functionName: "userInfo",
-          args: [0, address || "0x0000000000000000000000000000000000000000"],
+          args: [pid, address || "0x0000000000000000000000000000000000000000"],
         },
         {
           address: usdbStakeAddress,
           abi: USDBStakeABI,
           functionName: "pendingReward",
-          args: [0, address || "0x0000000000000000000000000000000000000000"],
+          args: [pid, address || "0x0000000000000000000000000000000000000000"],
         },
         {
           address: usdbTokenAddress,
@@ -304,7 +305,7 @@ const StakingPool = ({
         };
       } else if (poolType === 'usdb') {
         pool = {
-          pid: 0,
+          pid,
           isUsdbPool: true,
           poolData: contractData[0]?.result,
           userStaked: contractData[1]?.result?.[0] || BigInt(0),
@@ -500,81 +501,6 @@ const StakingPool = ({
     : `lp-${poolData.pid}`;
   const isExpanded = data?.expandedPools?.[poolId] ?? false;
 
-  // Get pool configuration
-  const getPoolConfig = () => {
-    if (poolData.isXdcPool) {
-      return {
-        title: "XDC Staking",
-        icon: "/xdc.png",
-        getTokenLink: "https://faucet.blockpi.io/xdc",
-        hashTag: "#xdc",
-      };
-    }
-    if (poolData.isUsdbPool) {
-      return {
-        title: "USDB Staking",
-        icon: "/usdb.png",
-        getTokenLink: "/usdb",
-        hashTag: "#usdb",
-      };
-    }
-    if (poolData.pid === 0) {
-      return {
-        title: `${poolData.symbol} ReStaking`,
-        icon: "/xdc.png",
-        getTokenLink: "https://primestaking.xyz/xdc-liquid-staking",
-        hashTag: "#psXDC",
-      };
-    }
-    if (poolData.pid === 1) {
-      return {
-        title: "bpsXDC ReStaking",
-        icon: "/xdc.png",
-        getTokenLink: "/bpsXDC",
-        hashTag: "#bpsXDC",
-      };
-    }
-    if (poolData.pid === 2) {
-      return {
-        title: "BBB Staking",
-        icon: "/bbb.jpg",
-        getTokenLink: "/buy",
-        hashTag: "#bbb",
-      };
-    }
-    if (poolData.pid === 3) {
-      return {
-        title: "XDC-BBB LP Staking",
-        icon: "combined",
-        getTokenLink: "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc",
-        hashTag: "#xdc-bbb",
-      };
-    }
-    if (poolData.pid === 4) {
-      return {
-        title: "XDC-bpsXDC LP Staking",
-        icon: "combined",
-        getTokenLink: "https://icecreamswap.com/add/XDC/0x24be372f0915b8BAf17AfA150210FFcB79C88845?chain=xdc",
-        hashTag: "#xdc-bpsxdc",
-      };
-    }
-    return {
-      title: `${poolData.symbol} Staking`,
-      icon: "/xdc.png",
-      getTokenLink: "",
-      hashTag: "",
-    };
-  };
-
-  const poolConfig = getPoolConfig();
-
-  // Get shorter symbol for modal display
-  const getModalSymbol = () => {
-    if (poolData.pid === 3) return "XDC-BBB LP";
-    if (poolData.pid === 4) return "XDC-bps LP";
-    return poolData.symbol;
-  };
-
   // Get APR tooltip text
   const getAprTooltip = () => {
     if (poolData.isUsdbPool) {
@@ -690,7 +616,7 @@ const StakingPool = ({
             address: usdbStakeAddress,
             abi: USDBStakeABI,
             functionName: "deposit",
-            args: [0, parseUnits(localState.stakeAmount || "0", 6)],
+            args: [pid, parseUnits(localState.stakeAmount || "0", 6)],
           },
           callback: () => {
             refreshData();
@@ -707,7 +633,7 @@ const StakingPool = ({
             address: usdbStakeAddress,
             abi: USDBStakeABI,
             functionName: "withdraw",
-            args: [0, parseUnits(localState.unstakeAmount || "0", 6)],
+            args: [pid, parseUnits(localState.unstakeAmount || "0", 6)],
           },
           callback: () => {
             refreshData();
@@ -724,7 +650,7 @@ const StakingPool = ({
             address: usdbStakeAddress,
             abi: USDBStakeABI,
             functionName: "claimReward",
-            args: [0],
+            args: [pid],
           },
           callback: () => {
             refreshData();
@@ -888,7 +814,7 @@ const StakingPool = ({
                   className="text-xs text-green-600 hover:underline"
                   target="_blank"
                 >
-                  Get {poolData.pid === 3 ? "XDC-BBB LP" : poolData.symbol}
+                  Get {poolConfig.symbol}
                 </Link>
                 {isConnected && poolData.tokenAddress && !poolData.isXdcPool && (
                   <button
@@ -1099,7 +1025,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Stake {getModalSymbol()}
+              Stake {poolConfig.symbol}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1128,7 +1054,7 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium whitespace-nowrap">{getModalSymbol()}</div>
+              <div className="font-medium whitespace-nowrap">{poolConfig.symbol}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
                 onClick={() => {
@@ -1198,7 +1124,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Unstake {getModalSymbol()}
+              Unstake {poolConfig.symbol}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1227,7 +1153,7 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium whitespace-nowrap">{getModalSymbol()}</div>
+              <div className="font-medium whitespace-nowrap">{poolConfig.symbol}</div>
               <kbd
                 className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
                 onClick={() => {

@@ -6,7 +6,8 @@ import StakingPool from "@/components/StakingPool";
 // Process pool ids for hash navigation (move outside component to avoid dependency issues)
 const POOL_HASH_MAP = {
   xdc: "xdc-0",
-  usdb: "usdb-0",
+  usdb: "usdb-1",
+  "usdb-expired": "usdb-0",
   psxdc: "lp-0",
   bpsxdc: "lp-1",
   bbb: "lp-2",
@@ -16,13 +17,86 @@ const POOL_HASH_MAP = {
 
 // Pool configurations (move outside component)
 const POOL_CONFIGS = [
-  { id: 'xdc-0', pid: 0, poolType: 'xdc', title: 'XDC Staking', symbol: 'XDC' },
-  { id: 'usdb-0', pid: 0, poolType: 'usdb', title: 'USDB Staking', symbol: 'USDB' },
-  { id: 'lp-0', pid: 0, poolType: 'lp', title: 'psXDC ReStaking', symbol: 'psXDC' },
-  { id: 'lp-1', pid: 1, poolType: 'lp', title: 'bpsXDC ReStaking', symbol: 'bpsXDC' },
-  { id: 'lp-2', pid: 2, poolType: 'lp', title: 'BBB Staking', symbol: 'BBB' },
-  { id: 'lp-3', pid: 3, poolType: 'lp', title: 'XDC-BBB LP Staking', symbol: 'XDC-BBB LP' },
-  { id: 'lp-4', pid: 4, poolType: 'lp', title: 'XDC-bpsXDC LP Staking', symbol: 'XDC-bpsXDC LP' },
+  { 
+    id: 'xdc-0', 
+    pid: 0, 
+    poolType: 'xdc', 
+    title: 'XDC Staking', 
+    symbol: 'XDC',
+    icon: "/xdc.png",
+    getTokenLink: "https://faucet.blockpi.io/xdc",
+    hashTag: "#xdc"
+  },
+  { 
+    id: 'usdb-0', 
+    pid: 0, 
+    poolType: 'usdb', 
+    title: 'USDB Staking (Expired)', 
+    symbol: 'USDB',
+    icon: "/usdb.png",
+    getTokenLink: "/usdb",
+    hashTag: "#usdb-expired"
+  },
+  { 
+    id: 'usdb-2', 
+    pid: 2, 
+    poolType: 'usdb', 
+    title: 'USDB Staking', 
+    symbol: 'USDB',
+    icon: "/usdb.png",
+    getTokenLink: "/usdb",
+    hashTag: "#usdb"
+  },
+  { 
+    id: 'lp-0', 
+    pid: 0, 
+    poolType: 'lp', 
+    title: 'psXDC ReStaking', 
+    symbol: 'psXDC',
+    icon: "/xdc.png",
+    getTokenLink: "https://primestaking.xyz/xdc-liquid-staking",
+    hashTag: "#psxdc"
+  },
+  { 
+    id: 'lp-1', 
+    pid: 1, 
+    poolType: 'lp', 
+    title: 'bpsXDC ReStaking', 
+    symbol: 'bpsXDC',
+    icon: "/xdc.png",
+    getTokenLink: "/bpsXDC",
+    hashTag: "#bpsxdc"
+  },
+  { 
+    id: 'lp-2', 
+    pid: 2, 
+    poolType: 'lp', 
+    title: 'BBB Staking', 
+    symbol: 'BBB',
+    icon: "/bbb.jpg",
+    getTokenLink: "/buy",
+    hashTag: "#bbb"
+  },
+  { 
+    id: 'lp-3', 
+    pid: 3, 
+    poolType: 'lp', 
+    title: 'XDC-BBB LP Staking', 
+    symbol: 'XDC-BBB LP',
+    icon: "combined",
+    getTokenLink: "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc",
+    hashTag: "#xdc-bbb"
+  },
+  { 
+    id: 'lp-4', 
+    pid: 4, 
+    poolType: 'lp', 
+    title: 'XDC-bpsXDC LP Staking', 
+    symbol: 'XDC-bpsXDC LP',
+    icon: "combined",
+    getTokenLink: "https://icecreamswap.com/add/XDC/0x24be372f0915b8BAf17AfA150210FFcB79C88845?chain=xdc",
+    hashTag: "#xdc-bpsxdc"
+  },
 ];
 
 const Stake = () => {
@@ -244,6 +318,7 @@ const Stake = () => {
             key={poolConfig.id}
             pid={poolConfig.pid}
             poolType={poolConfig.poolType}
+            poolConfig={poolConfig}
             data={data}
             setData={setData}
             addTokenToWallet={addTokenToWallet}
