@@ -280,7 +280,7 @@ const USDB = () => {
                 {isConnected ? (
                   <div className="w-full max-w-md">
                     {/* Deposit Stable Coin Section */}
-                    <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl p-6 ">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg">
                       {/* 主标题 */}
                       <div className="text-center mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 mb-2">
