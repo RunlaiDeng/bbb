@@ -105,7 +105,7 @@ const WriteButton = (props) => {
 
           try {
             const gas = await client.estimateContractGas({ ...writeData });
-            writeData.gas = (gas * 20n) / 10n;
+            writeData.gas = (gas * 30n) / 10n;
           } catch (e) {
             console.error(e);
           }
