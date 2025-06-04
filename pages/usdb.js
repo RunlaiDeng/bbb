@@ -277,221 +277,232 @@ const USDB = () => {
               {/* <LiFiWidget integrator="Your dApp/company name" config={widgetConfig} /> */}
               {/* CTA Section */}
               <div className="flex justify-center">
-                {isConnected ? (
-                  <div className="w-full max-w-md">
-                    {/* Deposit Stable Coin Section */}
-                    <div className="bg-white rounded-2xl p-6 shadow-lg">
-                      {/* 主标题 */}
-                      <div className="text-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                          Buy USDB
-                        </h2>
-                        <p className="text-sm text-gray-600">
-                          Select a stable coin to deposit and receive USDB
-                        </p>
-                      </div>
+                <div className="w-full max-w-md">
+                  {/* Deposit Stable Coin Section */}
+                  <div className="bg-white rounded-2xl p-6 shadow-lg">
+                    {/* 主标题 */}
+                    <div className="text-center mb-6">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                        Buy USDB
+                      </h2>
+                      <p className="text-sm text-gray-600">
+                        Select a stable coin to deposit and receive USDB
+                      </p>
+                    </div>
 
-                      {/* 代币选择器 */}
-                      <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-3">
-                          Select Token
-                        </label>
-                        <div className="space-y-3">
-                          {Object.keys(tokenConfigs).map((token) => {
-                            const config = tokenConfigs[token];
-                            const balance = getTokenBalance(token);
-                            const isSelected = selectedToken === token;
+                    {/* 代币选择器 */}
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        Select Token
+                      </label>
+                      <div className="space-y-3">
+                        {Object.keys(tokenConfigs).map((token) => {
+                          const config = tokenConfigs[token];
+                          const balance = getTokenBalance(token);
+                          const isSelected = selectedToken === token;
 
-                            return (
-                              <button
-                                key={token}
-                                onClick={() => setSelectedToken(token)}
-                                className={`w-full p-4 border rounded-xl flex items-center justify-between transition-all ${
-                                  isSelected
-                                    ? "border-green-500 bg-green-50"
-                                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-                                }`}
-                              >
-                                {/* 左侧：图标和代币信息 */}
-                                <div className="flex items-center gap-3">
+                          return (
+                            <button
+                              key={token}
+                              onClick={() => setSelectedToken(token)}
+                              className={`w-full p-4 border rounded-xl flex items-center justify-between transition-all ${
+                                isSelected
+                                  ? "border-green-500 bg-green-50"
+                                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                              }`}
+                            >
+                              {/* 左侧：图标和代币信息 */}
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
+                                    isSelected
+                                      ? "bg-green-200"
+                                      : config.iconBg
+                                  }`}
+                                >
+                                  <img
+                                    src={config.icon}
+                                    alt={`${config.symbol} Logo`}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                  />
+                                </div>
+                                <div className="text-left">
                                   <div
-                                    className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
+                                    className={`font-bold text-lg ${
                                       isSelected
-                                        ? "bg-green-200"
-                                        : config.iconBg
+                                        ? "text-green-700"
+                                        : "text-gray-900"
                                     }`}
                                   >
-                                    <img
-                                      src={config.icon}
-                                      alt={`${config.symbol} Logo`}
-                                      className="w-8 h-8 rounded-full object-cover"
-                                    />
+                                    {config.symbol}
                                   </div>
-                                  <div className="text-left">
+                                  <div className="text-sm text-gray-600">
+                                    {config.name}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* 右侧：余额信息 */}
+                              <div className="text-right">
+                                {isConnected && balance ? (
+                                  <>
                                     <div
-                                      className={`font-bold text-lg ${
+                                      className={`font-semibold ${
                                         isSelected
                                           ? "text-green-700"
                                           : "text-gray-900"
                                       }`}
                                     >
-                                      {config.symbol}
+                                      {parseFloat(
+                                        formatUnits(
+                                          balance.value,
+                                          balance.decimals
+                                        )
+                                      ).toFixed(6)}
                                     </div>
-                                    <div className="text-sm text-gray-600">
-                                      {config.name}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* 右侧：余额信息 */}
-                                <div className="text-right">
-                                  {balance ? (
-                                    <>
-                                      <div
-                                        className={`font-semibold ${
-                                          isSelected
-                                            ? "text-green-700"
-                                            : "text-gray-900"
-                                        }`}
-                                      >
-                                        {parseFloat(
+                                    <div className="text-sm text-gray-500">
+                                      US$
+                                      {(
+                                        parseFloat(
                                           formatUnits(
                                             balance.value,
                                             balance.decimals
                                           )
-                                        ).toFixed(6)}
-                                      </div>
-                                      <div className="text-sm text-gray-500">
-                                        US$
-                                        {(
-                                          parseFloat(
-                                            formatUnits(
-                                              balance.value,
-                                              balance.decimals
-                                            )
-                                          ) * 0.999
-                                        ).toFixed(2)}
-                                      </div>
-                                    </>
-                                  ) : (
-                                    <div className="text-sm text-gray-400">
-                                      0.000000
+                                        ) * 0.999
+                                      ).toFixed(2)}
                                     </div>
-                                  )}
+                                  </>
+                                ) : (
+                                  <div className="text-sm text-gray-400">
+                                    {isConnected ? "0.000000" : "-- --"}
+                                  </div>
+                                )}
 
-                                  {/* 选中标记 */}
-                                  {isSelected && (
-                                    <div className="mt-1">
-                                      <svg
-                                        className="w-4 h-4 text-green-600 ml-auto"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </div>
-                                  )}
-                                </div>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* 输入金额 */}
-                      <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Deposit Amount
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={amount}
-                            onChange={handleAmountChange}
-                            placeholder="0.0"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-lg"
-                          />
-                          <button
-                            onClick={handleMaxClick}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-600 hover:text-green-700 font-medium text-sm"
-                          >
-                            MAX
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* 操作按钮 */}
-                      <div className="space-y-3">
-                        {needsApproval() ? (
-                          <WriteButton
-                            data={{
-                              address: getTokenConfig()?.address,
-                              abi: getTokenConfig()?.abi,
-                              functionName: "approve",
-                              args: [
-                                contracts[chainId]?.usdb?.address,
-                                maxUint256,
-                              ],
-                            }}
-                            callback={() => {
-                              // Approve成功后刷新allowance
-                              refetchAllowance();
-                            }}
-                            className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center"
-                            buttonName="Approve"
-                          />
-                        ) : (
-                          <WriteButton
-                            data={{
-                              address: contracts[chainId]?.usdb?.address,
-                              abi: contracts[chainId]?.usdb?.abi,
-                              functionName: "deposit",
-                              args: [
-                                getTokenConfig()?.address,
-                                parseUnits(
-                                  amount || "0",
-                                  tokenBalance?.decimals || 18
-                                ),
-                              ],
-                            }}
-                            callback={() => {
-                              setAmount("");
-                              // 刷新USDB余额和代币余额
-                              refetchUsdbBalance();
-                              refetchTokenBalance();
-                              // 延迟一下再刷新，确保链上状态已更新
-                              setTimeout(() => {
-                                refetchUsdbBalance();
-                                refetchTokenBalance();
-                              }, 2000);
-                            }}
-                            disabled={!isValidAmount()}
-                            className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 text-center"
-                            buttonName="Deposit"
-                          />
-                        )}
-
-                        {/* 提示信息 */}
-                        <div className="text-xs text-gray-500 text-center">
-                          {needsApproval()
-                            ? "First approve spending, then you can deposit to receive USDB tokens"
-                            : "You will receive USDB tokens equivalent to your deposit"}
-                        </div>
+                                {/* 选中标记 */}
+                                {isSelected && (
+                                  <div className="mt-1">
+                                    <svg
+                                      className="w-4 h-4 text-green-600 ml-auto"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
+
+                    {/* 输入金额 */}
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Deposit Amount
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={amount}
+                          onChange={handleAmountChange}
+                          placeholder="0.0"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-lg"
+                          disabled={!isConnected}
+                        />
+                        <button
+                          onClick={handleMaxClick}
+                          disabled={!isConnected}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-600 hover:text-green-700 font-medium text-sm disabled:text-gray-400 disabled:cursor-not-allowed"
+                        >
+                          MAX
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 操作按钮 */}
+                    <div className="space-y-3">
+                      {isConnected ? (
+                        <>
+                          {needsApproval() ? (
+                            <WriteButton
+                              data={{
+                                address: getTokenConfig()?.address,
+                                abi: getTokenConfig()?.abi,
+                                functionName: "approve",
+                                args: [
+                                  contracts[chainId]?.usdb?.address,
+                                  maxUint256,
+                                ],
+                              }}
+                              callback={() => {
+                                // Approve成功后刷新allowance
+                                refetchAllowance();
+                              }}
+                              className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center"
+                              buttonName="Approve"
+                            />
+                          ) : (
+                            <WriteButton
+                              data={{
+                                address: contracts[chainId]?.usdb?.address,
+                                abi: contracts[chainId]?.usdb?.abi,
+                                functionName: "deposit",
+                                args: [
+                                  getTokenConfig()?.address,
+                                  parseUnits(
+                                    amount || "0",
+                                    tokenBalance?.decimals || 18
+                                  ),
+                                ],
+                              }}
+                              callback={() => {
+                                setAmount("");
+                                // 刷新USDB余额和代币余额
+                                refetchUsdbBalance();
+                                refetchTokenBalance();
+                                // 延迟一下再刷新，确保链上状态已更新
+                                setTimeout(() => {
+                                  refetchUsdbBalance();
+                                  refetchTokenBalance();
+                                }, 2000);
+                              }}
+                              disabled={!isValidAmount()}
+                              className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 text-center"
+                              buttonName="Deposit"
+                            />
+                          )}
+
+                          {/* 提示信息 */}
+                          <div className="text-xs text-gray-500 text-center">
+                            {needsApproval()
+                              ? "First approve spending, then you can deposit to receive USDB tokens"
+                              : "You will receive USDB tokens equivalent to your deposit"}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={privyLogin}
+                            className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                          >
+                            Connect Wallet
+                          </button>
+                          
+                          {/* 提示信息 */}
+                          <div className="text-xs text-gray-500 text-center">
+                            Connect your wallet to deposit and receive USDB tokens
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <button
-                    onClick={privyLogin}
-                    className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-                  >
-                    Connect Wallet
-                  </button>
-                )}
+                </div>
               </div>
             </div>
           </div>
