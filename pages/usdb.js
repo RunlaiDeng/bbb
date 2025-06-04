@@ -261,13 +261,13 @@ const USDB = () => {
 
               {/* Key Features */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 backdrop-blur-sm rounded-2xl p-6 transition-all">
                   <div className="text-3xl font-bold text-green-600 mb-2">
                     {data.currentApr}%+
                   </div>
                   <div className="text-sm text-gray-600">Base Annual Yield</div>
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 backdrop-blur-sm rounded-2xl p-6  transition-all">
                   <div className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
                     10-1000%
                   </div>
@@ -280,11 +280,11 @@ const USDB = () => {
                 {isConnected ? (
                   <div className="w-full max-w-md">
                     {/* Deposit Stable Coin Section */}
-                    <div className="bg-white rounded-2xl p-6 shadow-lg">
+                    <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl p-6 ">
                       {/* 主标题 */}
                       <div className="text-center mb-6">
                         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                          Deposit Stable Coin
+                          Buy USDB
                         </h2>
                         <p className="text-sm text-gray-600">
                           Select a stable coin to deposit and receive USDB
