@@ -86,16 +86,16 @@ const Quests = () => {
       </div>
 
       {/* Activity Card */}
-      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-xl overflow-hidden border-2 border-green-200 mb-8">
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-8">
         {/* Activity Header */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-6 text-white relative">
+        <div className="p-6 border-b border-gray-100">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-3xl">🏆</span>
-            <h2 className="text-2xl font-bold">USDB Deposit Competition</h2>
+            <h2 className="text-2xl font-bold text-gray-800">USDB Deposit Competition</h2>
           </div>
-          <div className="bg-white/20 backdrop-blur-sm p-4 rounded-xl">
-            <p className="text-lg font-medium mb-2">📅 Event Period: June 10 - June 30, 2024</p>
-            <p className="text-base">💰 Deposit USDB to compete in rankings and win generous BBB rewards!</p>
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+            <p className="text-lg font-medium mb-2 text-gray-700">📅 Event Period: June 10 - June 30, 2024</p>
+            <p className="text-base text-gray-600">💰 Deposit USDB to compete in rankings and win generous BBB rewards!</p>
           </div>
         </div>
 
@@ -106,22 +106,22 @@ const Quests = () => {
             Reward Structure
           </h3>
           <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-xl border border-green-300">
+            <div className="bg-white border border-gray-100 p-4 rounded-xl">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-700 mb-2">🥇 Rank 1-3</div>
-                <div className="text-lg font-bold text-gray-800">$200 USD BBB</div>
+                <div className="text-2xl font-bold text-gray-700 mb-2">🥇 Rank 1-3</div>
+                <div className="text-lg font-medium text-green-600">$200 USD BBB</div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 p-4 rounded-xl border border-emerald-300">
+            <div className="bg-white border border-gray-100 p-4 rounded-xl">
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-700 mb-2">🥈 Rank 4-10</div>
-                <div className="text-lg font-bold text-gray-800">$100 USD BBB</div>
+                <div className="text-2xl font-bold text-gray-700 mb-2">🥈 Rank 4-10</div>
+                <div className="text-lg font-medium text-green-600">$100 USD BBB</div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-teal-100 to-teal-200 p-4 rounded-xl border border-teal-300">
+            <div className="bg-white border border-gray-100 p-4 rounded-xl">
               <div className="text-center">
-                <div className="text-2xl font-bold text-teal-700 mb-2">🥉 Rank 11-20</div>
-                <div className="text-lg font-bold text-gray-800">$50 USD BBB</div>
+                <div className="text-2xl font-bold text-gray-700 mb-2">🥉 Rank 11-20</div>
+                <div className="text-lg font-medium text-green-600">$50 USD BBB</div>
               </div>
             </div>
           </div>
@@ -133,88 +133,57 @@ const Quests = () => {
           </h3>
           
           {/* Desktop View - Hidden on mobile */}
-          <div className="hidden md:block bg-white rounded-xl shadow-lg overflow-hidden mb-6">
-            <div className="bg-gradient-to-r from-green-100 to-emerald-100 p-4">
-              <div className="grid grid-cols-4 gap-4 font-bold text-gray-700">
+          <div className="hidden md:block bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
+            <div className="border-b border-gray-100 p-4">
+              <div className="grid grid-cols-4 gap-4 font-medium text-gray-600 text-sm">
                 <div>Rank</div>
                 <div>Address</div>
-                <div>Deposit Amount (USDB)</div>
-                <div>Reward (BBB)</div>
+                <div>Deposit Amount</div>
+                <div>Reward</div>
               </div>
             </div>
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-80 overflow-y-auto">
               {leaderboard.map((item) => (
                 <div 
                   key={item.rank} 
-                  className={`grid grid-cols-4 gap-4 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                    item.rank <= 3 ? 'bg-green-50' : 
-                    item.rank <= 10 ? 'bg-emerald-50' : 
-                    'bg-teal-50'
-                  }`}
+                  className="grid grid-cols-4 gap-4 p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">
-                      {item.rank <= 3 ? (
-                        <span className="text-green-600">#{item.rank}</span>
-                      ) : item.rank <= 10 ? (
-                        <span className="text-emerald-600">#{item.rank}</span>
-                      ) : (
-                        <span className="text-teal-600">#{item.rank}</span>
-                      )}
-                    </span>
-                    {item.rank === 1 && <span className="text-xl">🥇</span>}
-                    {item.rank === 2 && <span className="text-xl">🥈</span>}
-                    {item.rank === 3 && <span className="text-xl">🥉</span>}
+                    <span className="font-medium text-gray-700">#{item.rank}</span>
+                    {item.rank === 1 && <span>🥇</span>}
+                    {item.rank === 2 && <span>🥈</span>}
+                    {item.rank === 3 && <span>🥉</span>}
                   </div>
                   <div className="font-mono text-sm text-gray-600">{item.address}</div>
-                  <div className="font-bold text-green-600">${item.amount}</div>
-                  <div className="font-bold text-emerald-600">{item.reward}</div>
+                  <div className="font-medium text-gray-700">${item.amount}</div>
+                  <div className="font-medium text-green-600">{item.reward}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Mobile View - Card Layout */}
-          <div className="md:hidden space-y-3 mb-6">
+          {/* Mobile View - Simple List */}
+          <div className="md:hidden space-y-4 mb-6">
             {leaderboard.map((item) => (
-              <div 
-                key={item.rank}
-                className={`rounded-xl shadow-lg border p-4 ${
-                  item.rank <= 3 ? 'bg-green-50 border-green-200' : 
-                  item.rank <= 10 ? 'bg-emerald-50 border-emerald-200' : 
-                  'bg-teal-50 border-teal-200'
-                }`}
-              >
+              <div key={item.rank} className="bg-white border border-gray-100 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <span className="font-bold text-xl">
-                        {item.rank <= 3 ? (
-                          <span className="text-green-600">#{item.rank}</span>
-                        ) : item.rank <= 10 ? (
-                          <span className="text-emerald-600">#{item.rank}</span>
-                        ) : (
-                          <span className="text-teal-600">#{item.rank}</span>
-                        )}
-                      </span>
-                      {item.rank === 1 && <span className="text-xl">🥇</span>}
-                      {item.rank === 2 && <span className="text-xl">🥈</span>}
-                      {item.rank === 3 && <span className="text-xl">🥉</span>}
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-700 text-lg">#{item.rank}</span>
+                    {item.rank === 1 && <span>🥇</span>}
+                    {item.rank === 2 && <span>🥈</span>}
+                    {item.rank === 3 && <span>🥉</span>}
                   </div>
-                  <div className="text-right">
-                    <div className="font-bold text-emerald-600 text-lg">{item.reward}</div>
-                  </div>
+                  <div className="font-medium text-green-600">{item.reward}</div>
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">Address:</span>
-                    <span className="font-mono text-sm text-gray-700">{item.address}</span>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Address</span>
+                    <span className="font-mono text-gray-600">{item.address}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">Deposit:</span>
-                    <span className="font-bold text-green-600">${item.amount} USDB</span>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Deposit</span>
+                    <span className="font-medium text-gray-700">${item.amount}</span>
                   </div>
                 </div>
               </div>
