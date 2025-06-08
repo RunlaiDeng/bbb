@@ -139,9 +139,9 @@ const MobileNav = () => {
             <span className="ml-2">Farm</span>
           </Link>
           <Link
-            href="/activity"
+            href="/anniversary"
             className={`flex items-center p-3 rounded-xl ${
-              router.pathname === "/activity" 
+              router.pathname === "/anniversary" 
                 ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
@@ -180,7 +180,7 @@ const MobileNav = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="ml-2">Activity</span>
+            <span className="ml-2">Anniversary</span>
           </Link>
           <Link
             href="/airdrophub"
@@ -384,7 +384,7 @@ const MobileNav = () => {
         <button
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-2 relative ${
-            router.pathname.startsWith("/activity") ||
+            router.pathname.startsWith("/anniversary") ||
             router.pathname === "/farm" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||

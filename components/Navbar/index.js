@@ -120,10 +120,10 @@ const Navbar = () => {
                     </li>
                     <li className="rounded-lg">
                       <Link
-                        href={"/activity"}
+                        href={"/anniversary"}
                         className="hover:text-green-600 hover:bg-green-50  rounded-lg "
                       >
-                        Activity
+                        BBB Anniversary
                       </Link>
                     </li>
                     <li className="rounded-lg">
@@ -820,11 +820,11 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                             onClick={(e) => {
-                              router.push("/activity");
+                              router.push("/anniversary");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div>Activity</div>
+                            <div>BBB Anniversary</div>
                           </div>
                           <div
                             className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
