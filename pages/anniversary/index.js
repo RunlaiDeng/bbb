@@ -131,7 +131,9 @@ const Quests = () => {
             <span className="text-2xl">📊</span>
             Live Leaderboard
           </h3>
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+          
+          {/* Desktop View - Hidden on mobile */}
+          <div className="hidden md:block bg-white rounded-xl shadow-lg overflow-hidden mb-6">
             <div className="bg-gradient-to-r from-green-100 to-emerald-100 p-4">
               <div className="grid grid-cols-4 gap-4 font-bold text-gray-700">
                 <div>Rank</div>
@@ -170,6 +172,53 @@ const Quests = () => {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Mobile View - Card Layout */}
+          <div className="md:hidden space-y-3 mb-6">
+            {leaderboard.map((item) => (
+              <div 
+                key={item.rank}
+                className={`rounded-xl shadow-lg border p-4 ${
+                  item.rank <= 3 ? 'bg-green-50 border-green-200' : 
+                  item.rank <= 10 ? 'bg-emerald-50 border-emerald-200' : 
+                  'bg-teal-50 border-teal-200'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold text-xl">
+                        {item.rank <= 3 ? (
+                          <span className="text-green-600">#{item.rank}</span>
+                        ) : item.rank <= 10 ? (
+                          <span className="text-emerald-600">#{item.rank}</span>
+                        ) : (
+                          <span className="text-teal-600">#{item.rank}</span>
+                        )}
+                      </span>
+                      {item.rank === 1 && <span className="text-xl">🥇</span>}
+                      {item.rank === 2 && <span className="text-xl">🥈</span>}
+                      {item.rank === 3 && <span className="text-xl">🥉</span>}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-emerald-600 text-lg">{item.reward}</div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-500 text-sm">Address:</span>
+                    <span className="font-mono text-sm text-gray-700">{item.address}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-500 text-sm">Deposit:</span>
+                    <span className="font-bold text-green-600">${item.amount} USDB</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Participate Button */}
