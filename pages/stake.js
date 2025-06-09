@@ -13,6 +13,7 @@ const POOL_HASH_MAP = {
   bbb: "lp-2",
   "xdc-bbb": "lp-3",
   "xdc-bpsxdc": "lp-4",
+  "xdc-usdb": "lp-5",
 };
 
 // Pool configurations (move outside component)
@@ -86,6 +87,16 @@ const POOL_CONFIGS = [
     icon: "combined",
     getTokenLink: "https://icecreamswap.com/add/XDC/0x24be372f0915b8BAf17AfA150210FFcB79C88845?chain=xdc",
     hashTag: "#xdc-bpsxdc"
+  },
+  { 
+    id: 'lp-5', 
+    pid: 5, 
+    poolType: 'lp', 
+    title: 'XDC-USDB LP Staking', 
+    symbol: 'XDC-USDB LP',
+    icon: "combined",
+    getTokenLink: "https://icecreamswap.com/v2/add/XDC/0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8?chain=xdc",
+    hashTag: "#xdc-usdb"
   },
 ];
 
@@ -230,12 +241,14 @@ const Stake = () => {
           (poolConfig.poolType === 'xdc' || poolConfig.symbol?.toLowerCase().includes("xdc"))) ||
         (searchTerm.includes("bbb") &&
           poolConfig.symbol?.toLowerCase().includes("bbb")) ||
+        (searchTerm.includes("usdb") &&
+          poolConfig.symbol?.toLowerCase().includes("usdb")) ||
         searchTerm.includes("stake") ||
         searchTerm.includes("staking") ||
         searchTerm.includes("restake") ||
         searchTerm.includes("restaking") ||
-        (searchTerm.includes("lp") && poolConfig.pid === 3) ||
-        (searchTerm.includes("icelp") && poolConfig.pid === 3);
+        (searchTerm.includes("lp") && (poolConfig.pid === 3 || poolConfig.pid === 4 || poolConfig.pid === 5)) ||
+        (searchTerm.includes("icelp") && (poolConfig.pid === 3 || poolConfig.pid === 4 || poolConfig.pid === 5));
 
       return symbolMatch || contractSymbolMatch || titleMatch || keywordMatch;
     });

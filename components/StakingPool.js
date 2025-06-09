@@ -329,6 +329,7 @@ const StakingPool = ({
           if (pid === 2) return "BBB";
           if (pid === 3) return "XDC-BBB LP";
           if (pid === 4) return "XDC-bpsXDC LP";
+          if (pid === 5) return "XDC-USDB LP";
           return tokenData?.[2]?.result || "LP";
         };
         
@@ -750,6 +751,20 @@ const StakingPool = ({
                           className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
                         />
                       </>
+                    ) : poolData.pid === 5 ? (
+                      // XDC and USDB icons for XDC-USDB LP
+                      <>
+                        <img
+                          src="/xdc.png"
+                          alt="XDC icon"
+                          className="absolute w-4 h-4 object-cover rounded-full top-0 left-0 z-10"
+                        />
+                        <img
+                          src="/usdb.png"
+                          alt="USDB icon"
+                          className="absolute w-4 h-4 object-cover rounded-full bottom-0 right-0"
+                        />
+                      </>
                     ) : (
                       // XDC and BBB icons for XDC-BBB LP (pid 3)
                       <>
@@ -861,8 +876,8 @@ const StakingPool = ({
                         : Number(formatEther(poolData.userStaked))?.toLocaleString(
                             "en-US",
                             {
-                              minimumFractionDigits: poolData.pid === 3 ? 8 : 4,
-                              maximumFractionDigits: poolData.pid === 3 ? 8 : 4,
+                              minimumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
+                              maximumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
                             }
                           )}{" "}
                       {poolData.symbol}
@@ -923,8 +938,8 @@ const StakingPool = ({
                     : Number(formatEther(poolData.totalStaked))?.toLocaleString(
                         "en-US",
                         {
-                          minimumFractionDigits: poolData.pid === 3 ? 8 : 4,
-                          maximumFractionDigits: poolData.pid === 3 ? 8 : 4,
+                          minimumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
+                          maximumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
                         }
                       )}{" "}
                   {poolData.symbol}
@@ -1038,10 +1053,10 @@ const StakingPool = ({
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50 h-14">
+            <label className="input input-bordered flex items-center gap-1 w-full bg-gray-50 h-14">
               <input
                 type="number"
-                className="grow text-base"
+                className="grow text-base min-w-0"
                 placeholder="0.00"
                 value={localState.stakeAmount}
                 onChange={(e) => {
@@ -1054,9 +1069,11 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium whitespace-nowrap">{poolConfig.symbol}</div>
+              <div className="font-medium text-sm whitespace-nowrap text-gray-600 max-w-[120px] truncate" title={poolConfig.symbol}>
+                {poolConfig.symbol}
+              </div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
+                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 ml-1 flex-shrink-0"
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
@@ -1084,8 +1101,8 @@ const StakingPool = ({
                   : Number(formatEther(poolData.balance))?.toLocaleString(
                       "en-US",
                       {
-                        minimumFractionDigits: poolData.pid === 3 ? 8 : 4,
-                        maximumFractionDigits: poolData.pid === 3 ? 8 : 4,
+                        minimumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
+                        maximumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
                       }
                     )}{" "}
                 {poolData.symbol}
@@ -1137,10 +1154,10 @@ const StakingPool = ({
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50 h-14">
+            <label className="input input-bordered flex items-center gap-1 w-full bg-gray-50 h-14">
               <input
                 type="number"
-                className="grow text-base"
+                className="grow text-base min-w-0"
                 placeholder="0.00"
                 value={localState.unstakeAmount}
                 onChange={(e) => {
@@ -1153,9 +1170,11 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium whitespace-nowrap">{poolConfig.symbol}</div>
+              <div className="font-medium text-sm whitespace-nowrap text-gray-600 max-w-[120px] truncate" title={poolConfig.symbol}>
+                {poolConfig.symbol}
+              </div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-3 py-1"
+                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 ml-1 flex-shrink-0"
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
@@ -1182,8 +1201,8 @@ const StakingPool = ({
                   : Number(formatEther(poolData.userStaked))?.toLocaleString(
                       "en-US",
                       {
-                        minimumFractionDigits: poolData.pid === 3 ? 8 : 4,
-                        maximumFractionDigits: poolData.pid === 3 ? 8 : 4,
+                        minimumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
+                        maximumFractionDigits: (poolData.pid === 3 || poolData.pid === 5) ? 8 : 4,
                       }
                     )}{" "}
                 {poolData.symbol}
