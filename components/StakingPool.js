@@ -220,9 +220,9 @@ const StakingPool = ({
     },
   });
 
-  // For XDC-BBB LP pool (pid 3), read pair data
+  // For XDC-BBB LP pool (pid 3) and XDC-USDB LP pool (pid 5), read pair data
   const createPairDataContracts = () => {
-    if (poolType !== 'lp' || pid !== 3 || !lpTokenAddress) return [];
+    if (poolType !== 'lp' || (pid !== 3 && pid !== 5) || !lpTokenAddress) return [];
     
     return [
       {
@@ -278,7 +278,7 @@ const StakingPool = ({
   const { data: pairData, refetch: refetchPairData } = useReadContracts({
     contracts: createPairDataContracts(),
     query: {
-      enabled: !!lpTokenAddress && poolType === 'lp' && pid === 3,
+      enabled: !!lpTokenAddress && poolType === 'lp' && (pid === 3 || pid === 5),
     },
   });
 
@@ -346,7 +346,7 @@ const StakingPool = ({
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
-          // For XDC-BBB LP pool
+          // For LP pools that need reserve data (XDC-BBB LP and XDC-USDB LP)
           reserves: pairData?.[0]?.result || [BigInt(0), BigInt(0), 0],
           token0: pairData?.[1]?.result,
           token1: pairData?.[2]?.result,
@@ -396,6 +396,7 @@ const StakingPool = ({
       const isNativeXdc = pool.isXdcPool === true;
       const isUsdbPool = pool.isUsdbPool === true;
       const isXdcBbbLp = pool.pid === 3;
+      const isXdcUsdbLp = pool.pid === 5;
 
       // Calculate annual rewards value in USD
       const annualRewardsUSD = Number(formatEther(annualRewards)) * bbbPrice;
@@ -423,6 +424,24 @@ const StakingPool = ({
         const bbbValue = Number(formatEther(bbbReserve)) * bbbPrice;
         const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
         const totalLpValueUSD = bbbValue + xdcValue;
+        const lpTokenPrice = totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
+        totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+      } else if (isXdcUsdbLp && pool.reserves && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+        // Special handling for XDC-USDB LP pool
+        const usdbAddress = contracts[chainId]?.usdb?.address;
+        let xdcReserve, usdbReserve;
+
+        if (pool.token0?.toLowerCase() === usdbAddress?.toLowerCase()) {
+          usdbReserve = pool.reserves[0];
+          xdcReserve = pool.reserves[1];
+        } else {
+          usdbReserve = pool.reserves[1];
+          xdcReserve = pool.reserves[0];
+        }
+
+        const usdbValue = Number(formatUnits(usdbReserve, 6)) * 1; // USDB has 6 decimals and is worth $1
+        const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
+        const totalLpValueUSD = usdbValue + xdcValue;
         const lpTokenPrice = totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
       } else if (isPsXdcPool || isBpsXdcPool) {
@@ -535,7 +554,7 @@ const StakingPool = ({
     refetchData();
     if (poolType === 'lp') {
       refetchTokenData?.();
-      if (pid === 3) {
+      if (pid === 3 || pid === 5) {
         refetchPairData?.();
       }
     }
