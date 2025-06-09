@@ -243,15 +243,15 @@ const MobileNav = () => {
           </Link>
           <Link
             href="/usdb"
-            className={`flex items-center p-3 rounded-xl ${
+            className={`flex flex-col items-center p-2 ${
               router.pathname === "/usdb" 
-                ? "bg-green-50 text-green-600 font-medium" 
-                : "hover:bg-gray-50"
+                ? "text-green-600 font-medium" 
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            <svg viewBox="0 0 24 24" width="22" height="22">
+            <svg viewBox="0 0 24 24" width="24" height="24">
               <path
-                d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z"
+                d="M12 2C13.1046 2 14 2.89543 14 4V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V4C10 2.89543 10.8954 2 12 2Z"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -259,21 +259,23 @@ const MobileNav = () => {
                 strokeLinejoin="round"
               />
               <path
-                d="M8 12H16"
+                d="M9 9C9 5.13401 9 5.13401 12 5.13401C15 5.13401 15 5.13401 15 9"
+                fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M12 8V16"
+                d="M9 15C9 18.866 9 18.866 12 18.866C15 18.866 15 18.866 15 15"
+                fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="ml-2">USDB</span>
+            <span className="text-xs mt-1">USDB</span>
           </Link>
         </div>
       </div>
@@ -358,28 +360,40 @@ const MobileNav = () => {
           <span className="text-xs mt-1">Stake</span>
         </Link>
         <Link
-          href="/ido"
+          href="/usdb"
           className={`flex flex-col items-center p-2 ${
-            router.pathname === "/ido" 
+            router.pathname === "/usdb" 
               ? "text-green-600 font-medium" 
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
-          <svg
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="5273"
-            width="24"
-            height="24"
-          >
+          <svg viewBox="0 0 24 24" width="24" height="24">
             <path
-              d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
-              fill="currentColor"
-              p-id="5274"
-            ></path>
+              d="M12 2C13.1046 2 14 2.89543 14 4V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V4C10 2.89543 10.8954 2 12 2Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9 9C9 5.13401 9 5.13401 12 5.13401C15 5.13401 15 5.13401 15 9"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M9 15C9 18.866 9 18.866 12 18.866C15 18.866 15 18.866 15 15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
-          <span className="text-xs mt-1">IDO</span>
+          <span className="text-xs mt-1">USDB</span>
         </Link>
         <button
           onClick={() => setIsEarnOpen(!isEarnOpen)}

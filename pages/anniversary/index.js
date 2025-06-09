@@ -10,6 +10,7 @@ const Quests = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [leaderboardInfo, setLeaderboardInfo] = useState(null);
+  const [isHistoryExpanded, setIsHistoryExpanded] = useState(false);
 
   // Fetch leaderboard data
   useEffect(() => {
@@ -78,8 +79,11 @@ const Quests = () => {
 
   return (
     <div className="m-auto md:w-4/5 w-96 mt-2 pb-1">
-      {/* Main Header */}
-      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300 relative overflow-hidden">
+      {/* Main Header - Clickable Banner */}
+      <div 
+        className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300 relative overflow-hidden cursor-pointer"
+        onClick={() => setIsHistoryExpanded(!isHistoryExpanded)}
+      >
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
@@ -91,71 +95,99 @@ const Quests = () => {
           <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
             🎉 BBB Anniversary Celebration 🎉
           </h1>
+          
+          {/* Click indicator */}
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <span className="text-sm opacity-80">Click to {isHistoryExpanded ? 'hide' : 'view'} BBB story</span>
+            <span className={`text-lg transform transition-transform duration-300 ${isHistoryExpanded ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </div>
         </div>
+        
+        {/* Hover effect indicator */}
+        <div className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
       </div>
 
-      {/* BBB History Story */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-8 p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            🎂 One Year of BBB
-          </h2>
-          <p className="text-gray-500">
-            A journey that started with laughter, grew with love
-          </p>
-        </div>
-
-        <div className="max-w-3xl mx-auto space-y-6 text-gray-600 leading-relaxed">
-          <p className="text-lg">
-            <span className="font-medium text-gray-800">June 10, 2024</span> -
-            It all began as a joke between colleagues. A simple meme coin
-            launched on xdc.sale with nothing but hope and humor.
-          </p>
-
-          <p>
-            But then something magical happened. The community embraced BBB with
-            open arms. From{" "}
-            <span className="font-medium text-green-600">$20,000</span> to an
-            incredible
-            <span className="font-medium text-green-600">
-              {" "}
-              $15 million
-            </span>{" "}
-            market cap - you showed us that dreams really do come true.
-          </p>
-
-          <p>
-            Together, we built more than just a token. We created an ecosystem:
-            <span className="text-gray-800 font-medium">
-              {" "}
-              BBBPump, Staking, Airdrops, Liquidity Mining, bpsXDC, and USDB
-            </span>
-            . Each product born from our shared vision of financial freedom.
-          </p>
-
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-400 my-8">
-            <p className="text-lg text-gray-700 italic">
-              &ldquo;Our vision is to increase the freedom of money globally. We
-              believe that by spreading this freedom, we can significantly
-              improve lives around the world.&rdquo;
+      {/* Collapsible BBB History Story */}
+      <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
+        isHistoryExpanded ? 'max-h-[2000px] opacity-100 mb-8' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              🎂 One Year of BBB
+            </h2>
+            <p className="text-gray-500">
+              A journey that started with laughter, grew with love
             </p>
           </div>
 
-          <p className="text-center text-lg">
-            <span className="text-red-500">❤️</span>
-            <span className="font-medium text-gray-800"> Thank you</span> to
-            everyone who believed in us, supported us, and grew with us. This
-            anniversary belongs to
-            <span className="font-medium text-gray-800"> all of us</span>.
-          </p>
+          <div className="max-w-3xl mx-auto space-y-6 text-gray-600 leading-relaxed">
+            <p className="text-lg">
+              <span className="font-medium text-gray-800">June 10, 2024</span> -
+              It all began as a joke between colleagues. A simple meme coin
+              launched on xdc.sale with nothing but hope and humor.
+            </p>
 
-          <div className="text-center pt-4">
-            <span className="text-3xl">🙏</span>
+            <p>
+              But then something magical happened. The community embraced BBB with
+              open arms. From{" "}
+              <span className="font-medium text-green-600">$20,000</span> to an
+              incredible
+              <span className="font-medium text-green-600">
+                {" "}
+                $15 million
+              </span>{" "}
+              market cap - you showed us that dreams really do come true.
+            </p>
+
+            <p>
+              Together, we built more than just a token. We created an ecosystem:
+              <span className="text-gray-800 font-medium">
+                {" "}
+                BBBPump, Staking, Airdrops, Liquidity Mining, bpsXDC, and USDB
+              </span>
+              . Each product born from our shared vision of financial freedom.
+            </p>
+
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-l-4 border-green-400 my-8">
+              <p className="text-lg text-gray-700 italic">
+                &ldquo;Our vision is to increase the freedom of money globally. We
+                believe that by spreading this freedom, we can significantly
+                improve lives around the world.&rdquo;
+              </p>
+            </div>
+
+            <p className="text-center text-lg">
+              <span className="text-red-500">❤️</span>
+              <span className="font-medium text-gray-800"> Thank you</span> to
+              everyone who believed in us, supported us, and grew with us. This
+              anniversary belongs to
+              <span className="font-medium text-gray-800"> all of us</span>.
+            </p>
+
+            <div className="text-center pt-4">
+              <span className="text-3xl">🙏</span>
+            </div>
+          </div>
+          
+          {/* Close button */}
+          <div className="text-center mt-6">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsHistoryExpanded(false);
+              }}
+              className="text-gray-500 hover:text-gray-700 transition-colors duration-200 text-sm"
+            >
+              ▲ Click to hide story
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Activity Card */}
+      {/* USDB Activity Card */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 mb-8">
         {/* Activity Header */}
         <div className="p-6 border-b border-gray-100">
@@ -165,14 +197,23 @@ const Quests = () => {
               USDB Deposit Competition
             </h2>
           </div>
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <p className="text-lg font-medium mb-2 text-gray-700">
-              📅 Event Period: June 10 - June 30, 2024
-            </p>
-            <p className="text-base text-gray-600">
-              💰 Deposit USDB to compete in rankings and win generous BBB
-              rewards!
-            </p>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-gray-100">
+            <div className="mb-4">
+              <p className="text-lg font-medium text-gray-800 mb-3">
+                💝 To thank everyone who has supported BBB, we are hosting this special USDB deposit competition!
+              </p>
+              <p className="text-base text-gray-600 mb-3">
+                Your unwavering support has been the driving force behind BBB&apos;s incredible journey from a simple meme coin to a thriving ecosystem. This event is our way of giving back to our amazing community.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <p className="text-lg font-medium mb-2 text-gray-700">
+                📅 Event Period: June 10 - June 30, 2024
+              </p>
+              <p className="text-base text-gray-600">
+                💰 Deposit USDB to compete in rankings and win generous BBB rewards!
+              </p>
+            </div>
           </div>
         </div>
 

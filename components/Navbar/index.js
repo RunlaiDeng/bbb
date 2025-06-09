@@ -68,10 +68,10 @@ const Navbar = () => {
                   Stake
                 </Link>
                 <Link
-                  href={"/ido"}
+                  href={"/usdb"}
                   className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                 >
-                  IDO
+                  USDB
                 </Link>
 
                 <div className="dropdown dropdown-hover font-bold">
@@ -739,7 +739,7 @@ const Navbar = () => {
                       <div
                         className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                         onClick={(e) => {
-                          router.push("/ido");
+                          router.push("/usdb");
                           setData({ ...data, menuItemsOpen: false });
                         }}
                       >
@@ -757,7 +757,7 @@ const Navbar = () => {
                             p-id="5274"
                           ></path>
                         </svg>
-                        <div>IDO</div>
+                        <div>USDB</div>
                       </div>
                       <div
                         tabIndex={0}
