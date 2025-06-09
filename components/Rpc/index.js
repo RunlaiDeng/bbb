@@ -247,6 +247,10 @@ const getEarnLeaderboard = async (pageNumber = 1, pageSize = 9999) => {
   return send("getEarnLeaderboard", [pageNumber, pageSize]);
 };
 
+const getUSDBDepositLeaderboard = async (pageNumber = 1, pageSize = 10, startTimestamp, endTimestamp) => {
+  return send("getUSDBDepositLeaderboard", [pageNumber, pageSize, startTimestamp, endTimestamp]);
+};
+
 const register = (leader, signature) => {
   return send("register", [leader, signature]);
 };
@@ -288,6 +292,7 @@ module.exports = {
   getEarn,
   finishTwitterTasks,
   getEarnLeaderboard,
+  getUSDBDepositLeaderboard,
   register,
   updateShareFee,
   getReferrals,
