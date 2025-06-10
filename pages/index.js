@@ -6,60 +6,6 @@ import { useAccount } from "wagmi";
 import TokenMarkets from "@/components/TokenMarkets";
 import { getXDCPrice } from "@/components/Utils";
 
-const AnniversaryBanner = memo(() => {
-  const router = useRouter();
-  const [isVisible, setIsVisible] = useState(true);
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="fixed top-16 left-0 right-0 z-40 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 shadow-lg">
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-teal-600/20"></div>
-        <div className="relative px-4 py-3">
-          <div className="flex items-center justify-between max-w-6xl mx-auto">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl animate-bounce">🎉</span>
-              <div className="text-white">
-                <span className="font-bold text-lg">BBB Anniversary Celebration</span>
-                <span className="hidden sm:inline ml-2 text-sm opacity-90">
-                  Join the USDB Deposit Competition & Win BBB Rewards!
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => router.push("/anniversary")}
-                className="bg-white/20 hover:bg-white/30 text-white font-medium px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20"
-              >
-                <span className="hidden sm:inline">Join Now</span>
-                <span className="sm:hidden">Join</span>
-                <span className="ml-1">🎁</span>
-              </button>
-              <button
-                onClick={() => setIsVisible(false)}
-                className="text-white/80 hover:text-white transition-colors p-1"
-                aria-label="Close banner"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Animated sparkles */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="sparkle sparkle1">✨</div>
-          <div className="sparkle sparkle2">⭐</div>
-          <div className="sparkle sparkle3">💫</div>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-AnniversaryBanner.displayName = "AnniversaryBanner";
-
 const WaveBackground = () => (
   <div className="wave-container fixed top-0 left-0 w-full h-full overflow-hidden">
     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white to-green-50/30" />
@@ -263,38 +209,7 @@ const HomeContent = memo(() => {
         .glow-effect:hover::before {
           opacity: 1;
         }
-        .sparkle {
-          position: absolute;
-          animation: sparkle 3s infinite;
-          font-size: 16px;
-        }
-        .sparkle1 {
-          top: 20%;
-          left: 15%;
-          animation-delay: 0s;
-        }
-        .sparkle2 {
-          top: 60%;
-          right: 20%;
-          animation-delay: 1s;
-        }
-        .sparkle3 {
-          top: 40%;
-          left: 70%;
-          animation-delay: 2s;
-        }
-        @keyframes sparkle {
-          0%, 100% {
-            opacity: 0;
-            transform: scale(0.5);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
       `}</style>
-      <AnniversaryBanner />
       <WaveBackground />
       <FloatingCoins />
       <div className="relative min-h-screen pt-32">
