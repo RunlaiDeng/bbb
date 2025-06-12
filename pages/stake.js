@@ -106,7 +106,7 @@ const POOL_CONFIGS = [
     title: '4pool Staking', 
     symbol: '4POOL',
     icon: "fourpool",
-    getTokenLink: "/4pool",
+    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-2/deposit/",
     hashTag: "#4pool"
   },
 ];
