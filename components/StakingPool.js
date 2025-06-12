@@ -13,7 +13,7 @@ import ERC20ABI from "@/abi/ERC20ABI.json";
 
 const StakingPool = ({
   pid,
-  poolType, // 'xdc', 'usdb', 'lp'
+  poolType, // 'xdc', 'usdb', 'lp', 'lpstakev2'
   poolConfig, // Configuration from POOL_CONFIGS
   data,
   setData,
@@ -38,8 +38,9 @@ const StakingPool = ({
   const [poolData, setPoolData] = useState(null);
 
   // Parameter validation
-  const hasValidParams = poolType && ['xdc', 'usdb', 'lp'].includes(poolType) && 
-    (poolType !== 'lp' || (pid !== undefined && pid !== null));
+  const hasValidParams = poolType && ['xdc', 'usdb', 'lp', 'lpstakev2'].includes(poolType) && 
+    (poolType !== 'lp' || (pid !== undefined && pid !== null)) &&
+    (poolType !== 'lpstakev2' || (pid !== undefined && pid !== null));
 
   if (!hasValidParams) {
     console.error('Invalid parameters - poolType:', poolType, 'pid:', pid);
@@ -47,6 +48,7 @@ const StakingPool = ({
 
   // Contract addresses
   const lpStakeAddress = contracts[chainId]?.lpStake?.address || "0x123";
+  const lpStakev2Address = contracts[chainId]?.lpStakev2?.address || "0x123";
   const xdcStakeAddress = contracts[chainId]?.xdcStake?.address || "0x123";
   const usdbStakeAddress = contracts[chainId]?.usdbStake?.address || "0x123";
   const usdbTokenAddress = contracts[chainId]?.usdb?.address || "0x123";
@@ -118,6 +120,28 @@ const StakingPool = ({
           ],
         },
       ];
+    } else if (poolType === 'lpstakev2') {
+      // lpstakev2 pool
+      return [
+        {
+          address: lpStakev2Address,
+          abi: LpStakeABI,
+          functionName: "poolInfo",
+          args: [pid],
+        },
+        {
+          address: lpStakev2Address,
+          abi: LpStakeABI,
+          functionName: "userInfo",
+          args: [pid, address || "0x0000000000000000000000000000000000000000"],
+        },
+        {
+          address: lpStakev2Address,
+          abi: LpStakeABI,
+          functionName: "pendingReward",
+          args: [pid, address || "0x0000000000000000000000000000000000000000"],
+        },
+      ];
     } else {
       // LP pool
       return [
@@ -154,7 +178,38 @@ const StakingPool = ({
   const lpTokenAddress = contractData?.[0]?.result?.[0]; // LP token address from poolInfo
 
   const createLpTokenContracts = () => {
-    if (poolType !== 'lp' || !lpTokenAddress) return [];
+    if ((poolType !== 'lp' && poolType !== 'lpstakev2') || !lpTokenAddress) return [];
+    
+    if (poolType === 'lpstakev2') {
+      // For lpstakev2 pools, read basic token info
+      return [
+        {
+          address: lpTokenAddress,
+          abi: ERC20ABI,
+          functionName: "balanceOf",
+          args: [address || "0x0000000000000000000000000000000000000000"],
+        },
+        {
+          address: lpTokenAddress,
+          abi: ERC20ABI,
+          functionName: "allowance",
+          args: [
+            address || "0x0000000000000000000000000000000000000000",
+            lpStakev2Address,
+          ],
+        },
+        {
+          address: lpTokenAddress,
+          abi: ERC20ABI,
+          functionName: "symbol",
+        },
+        {
+          address: lpTokenAddress,
+          abi: ERC20ABI,
+          functionName: "totalSupply",
+        },
+      ];
+    }
     
     if (pid === 2) {
       // BBB token pool
@@ -216,7 +271,7 @@ const StakingPool = ({
   const { data: tokenData, refetch: refetchTokenData } = useReadContracts({
     contracts: createLpTokenContracts(),
     query: {
-      enabled: !!lpTokenAddress && poolType === 'lp',
+      enabled: !!lpTokenAddress && (poolType === 'lp' || poolType === 'lpstakev2'),
     },
   });
 
@@ -320,6 +375,24 @@ const StakingPool = ({
           isActive: contractData[0]?.result?.[6] || false,
           tokenAddress: usdbTokenAddress,
           decimals: 6,
+        };
+      } else if (poolType === 'lpstakev2') {
+        pool = {
+          pid,
+          poolData: contractData[0]?.result,
+          userStaked: contractData[1]?.result?.[0] || BigInt(0),
+          pendingReward: contractData[2]?.result || BigInt(0),
+          totalStaked: contractData[0]?.result?.[4] || BigInt(0),
+          rewardPerBlock: contractData[0]?.result?.[5] || BigInt(0),
+          isActive: contractData[0]?.result?.[6] || false,
+          tokenAddress: lpTokenAddress,
+          symbol: poolConfig?.symbol || "4POOL",
+          balance: tokenData?.[0]?.result || BigInt(0),
+          allowance: tokenData?.[1]?.result || BigInt(0),
+          lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
+          reserves: pairData?.[0]?.result || [BigInt(0), BigInt(0), 0],
+          token0: pairData?.[1]?.result,
+          token1: pairData?.[2]?.result,
         };
       } else {
         // LP pool - need additional token data
@@ -518,6 +591,8 @@ const StakingPool = ({
     ? `xdc-${poolData.pid}`
     : poolData.isUsdbPool
     ? `usdb-${poolData.pid}`
+    : poolType === 'lpstakev2'
+    ? `lpv2-${poolData.pid}`
     : `lp-${poolData.pid}`;
   const isExpanded = data?.expandedPools?.[poolId] ?? false;
 
@@ -552,7 +627,7 @@ const StakingPool = ({
   // Refresh data
   const refreshData = () => {
     refetchData();
-    if (poolType === 'lp') {
+    if (poolType === 'lp' || poolType === 'lpstakev2') {
       refetchTokenData?.();
       if (pid === 3 || pid === 5) {
         refetchPairData?.();
@@ -669,6 +744,67 @@ const StakingPool = ({
           data: {
             address: usdbStakeAddress,
             abi: USDBStakeABI,
+            functionName: "claimReward",
+            args: [pid],
+          },
+          callback: () => {
+            refreshData();
+          },
+        },
+      };
+    } else if (poolType === 'lpstakev2') {
+      return {
+        approve: {
+          buttonName: "Approve",
+          data: {
+            address: poolData.tokenAddress,
+            abi: ERC20ABI,
+            functionName: "approve",
+            args: [lpStakev2Address, MAX_UINT256],
+          },
+          callback: () => {
+            refreshData();
+          },
+        },
+        stake: {
+          buttonName: "Stake",
+          data: {
+            address: lpStakev2Address,
+            abi: LpStakeABI,
+            functionName: "deposit",
+            args: [pid, parseEther(localState.stakeAmount || "0")],
+          },
+          callback: () => {
+            refreshData();
+            setLocalState(prev => ({
+              ...prev,
+              showStakeModal: false,
+              stakeAmount: "",
+            }));
+          },
+        },
+        unstake: {
+          buttonName: "Unstake",
+          data: {
+            address: lpStakev2Address,
+            abi: LpStakeABI,
+            functionName: "withdraw",
+            args: [pid, parseEther(localState.unstakeAmount || "0")],
+          },
+          callback: () => {
+            refreshData();
+            setLocalState(prev => ({
+              ...prev,
+              showUnstakeModal: false,
+              unstakeAmount: "",
+            }));
+          },
+        },
+        claim: {
+          buttonName: "Claim",
+          data: {
+            address: lpStakev2Address,
+            abi: LpStakeABI,
             functionName: "claimReward",
             args: [pid],
           },
@@ -799,6 +935,29 @@ const StakingPool = ({
                         />
                       </>
                     )}
+                  </div>
+                ) : poolConfig.icon === "fourpool" ? (
+                  <div className="relative w-full h-full grid grid-cols-2 grid-rows-2 gap-0">
+                    <img
+                      src="/usdb.png"
+                      alt="USDB icon"
+                      className="w-3 h-3 object-cover rounded-full"
+                    />
+                    <img
+                      src="/usdc.jpg"
+                      alt="USDC.e icon"
+                      className="w-3 h-3 object-cover rounded-full"
+                    />
+                    <img
+                      src="/usdt.jpg"
+                      alt="USDT icon"
+                      className="w-3 h-3 object-cover rounded-full"
+                    />
+                    <img
+                      src="/usdc.jpg"
+                      alt="USDC.e icon"
+                      className="w-3 h-3 object-cover rounded-full"
+                    />
                   </div>
                 ) : (
                   <img

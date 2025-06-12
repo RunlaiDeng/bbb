@@ -14,6 +14,7 @@ const POOL_HASH_MAP = {
   "xdc-bbb": "lp-3",
   "xdc-bpsxdc": "lp-4",
   "xdc-usdb": "lp-5",
+  "4pool": "lpv2-0",
 };
 
 // Pool configurations (move outside component)
@@ -97,6 +98,16 @@ const POOL_CONFIGS = [
     icon: "combined",
     getTokenLink: "https://icecreamswap.com/v2/add/XDC/0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8?chain=xdc",
     hashTag: "#xdc-usdb"
+  },
+  { 
+    id: 'lpv2-0', 
+    pid: 0, 
+    poolType: 'lpstakev2', 
+    title: '4pool Staking', 
+    symbol: '4POOL',
+    icon: "fourpool",
+    getTokenLink: "/4pool",
+    hashTag: "#4pool"
   },
 ];
 
@@ -243,6 +254,14 @@ const Stake = () => {
           poolConfig.symbol?.toLowerCase().includes("bbb")) ||
         (searchTerm.includes("usdb") &&
           poolConfig.symbol?.toLowerCase().includes("usdb")) ||
+        (searchTerm.includes("4pool") &&
+          poolConfig.poolType === 'lpstakev2') ||
+        (searchTerm.includes("fourpool") &&
+          poolConfig.poolType === 'lpstakev2') ||
+        (searchTerm.includes("usdc") &&
+          poolConfig.poolType === 'lpstakev2') ||
+        (searchTerm.includes("usdt") &&
+          poolConfig.poolType === 'lpstakev2') ||
         searchTerm.includes("stake") ||
         searchTerm.includes("staking") ||
         searchTerm.includes("restake") ||
