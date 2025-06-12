@@ -300,6 +300,7 @@ const USDB = () => {
                           const config = tokenConfigs[token];
                           const balance = getTokenBalance(token);
                           const isSelected = selectedToken === token;
+                          const contractAddress = config.getContract()?.address;
 
                           return (
                             <button
@@ -339,6 +340,37 @@ const USDB = () => {
                                   <div className="text-sm text-gray-600">
                                     {config.name}
                                   </div>
+                                  {/* 合约地址显示 */}
+                                  {contractAddress && (
+                                    <div className="flex items-center gap-1 mt-1">
+                                      <span className="text-xs text-gray-500">
+                                        {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
+                                      </span>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          navigator.clipboard.writeText(contractAddress);
+                                          // 可以添加复制成功的提示
+                                        }}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                                        title="Copy contract address"
+                                      >
+                                        <svg
+                                          className="w-3 h-3"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                          />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
 
