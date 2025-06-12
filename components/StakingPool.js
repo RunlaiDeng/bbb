@@ -337,6 +337,54 @@ const StakingPool = ({
     },
   });
 
+  // For 4pool (lpstakev2), read the 4 token balances in the pool
+  const create4PoolTokenBalanceContracts = () => {
+    if (poolType !== 'lpstakev2' || pid !== 0 || !lpTokenAddress) return [];
+    
+    const usdbAddress = contracts[chainId]?.usdb?.address;
+    const xdcUSDCAddress = contracts[chainId]?.xdcUSDC?.address;
+    const stargateUSDCAddress = contracts[chainId]?.stargateUSDC?.address;
+    const stargateUSDTAddress = contracts[chainId]?.stargateUSDT?.address;
+    
+    return [
+      // USDB balance in 4pool
+      {
+        address: usdbAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // xdcUSDC (USDC.e) balance in 4pool
+      {
+        address: xdcUSDCAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // stargateUSDC balance in 4pool
+      {
+        address: stargateUSDCAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // stargateUSDT balance in 4pool
+      {
+        address: stargateUSDTAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+    ];
+  };
+
+  const { data: fourPoolTokenBalances, refetch: refetch4PoolTokenBalances } = useReadContracts({
+    contracts: create4PoolTokenBalanceContracts(),
+    query: {
+      enabled: !!lpTokenAddress && poolType === 'lpstakev2' && pid === 0,
+    },
+  });
+
   // Process contract data into pool object
   useEffect(() => {
     if (!contractData) return;
@@ -377,6 +425,7 @@ const StakingPool = ({
           decimals: 6,
         };
       } else if (poolType === 'lpstakev2') {
+        // 4pool lpstakev2 - special handling for 4 tokens
         pool = {
           pid,
           poolData: contractData[0]?.result,
@@ -390,9 +439,13 @@ const StakingPool = ({
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
-          reserves: pairData?.[0]?.result || [BigInt(0), BigInt(0), 0],
-          token0: pairData?.[1]?.result,
-          token1: pairData?.[2]?.result,
+          // Add 4pool token balances
+          fourPoolBalances: {
+            usdb: fourPoolTokenBalances?.[0]?.result || BigInt(0),
+            xdcUSDC: fourPoolTokenBalances?.[1]?.result || BigInt(0),
+            stargateUSDC: fourPoolTokenBalances?.[2]?.result || BigInt(0),
+            stargateUSDT: fourPoolTokenBalances?.[3]?.result || BigInt(0),
+          },
         };
       } else {
         // LP pool - need additional token data
@@ -441,7 +494,7 @@ const StakingPool = ({
         isActive: false,
       });
     }
-  }, [contractData, tokenData, pairData, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
+  }, [contractData, tokenData, pairData, fourPoolTokenBalances, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
 
   // Calculate APR for this pool
   const BLOCKS_PER_YEAR = 31536000;
@@ -516,6 +569,17 @@ const StakingPool = ({
         const xdcValue = Number(formatEther(xdcReserve)) * xdcPrice;
         const totalLpValueUSD = usdbValue + xdcValue;
         const lpTokenPrice = totalLpValueUSD / Number(formatEther(pool.lpTotalSupply));
+        totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+      } else if (poolType === 'lpstakev2' && pid === 0 && pool.fourPoolBalances && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+        // Special handling for 4pool - calculate total USD value of all 4 tokens
+        // Note: Most stablecoins use 6 decimals on XDC network
+        const usdbValue = Number(formatUnits(pool.fourPoolBalances.usdb, 6)) * 1; // USDB = $1, 6 decimals
+        const xdcUSDCValue = Number(formatUnits(pool.fourPoolBalances.xdcUSDC, 6)) * 1; // USDC.e = $1, 6 decimals
+        const stargateUSDCValue = Number(formatUnits(pool.fourPoolBalances.stargateUSDC, 6)) * 1; // stargate USDC = $1, 6 decimals  
+        const stargateUSDTValue = Number(formatUnits(pool.fourPoolBalances.stargateUSDT, 6)) * 1; // stargate USDT = $1, 6 decimals
+        
+        const total4PoolValueUSD = usdbValue + xdcUSDCValue + stargateUSDCValue + stargateUSDTValue;
+        const lpTokenPrice = total4PoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
       } else if (isPsXdcPool || isBpsXdcPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -631,6 +695,9 @@ const StakingPool = ({
       refetchTokenData?.();
       if (pid === 3 || pid === 5) {
         refetchPairData?.();
+      }
+      if (poolType === 'lpstakev2' && pid === 0) {
+        refetch4PoolTokenBalances?.();
       }
     }
   };
