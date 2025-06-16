@@ -33,7 +33,7 @@ const POOL_CONFIGS = [
     id: 'usdb-2', 
     pid: 2, 
     poolType: 'usdb', 
-    title: 'USDB Staking', 
+    title: 'USDB Staking(Expired)', 
     symbol: 'USDB',
     icon: "/usdb.png",
     getTokenLink: "/usdb",
