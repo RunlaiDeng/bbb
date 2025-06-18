@@ -203,6 +203,14 @@ const Navbar = () => {
                       </li>
                       <li className="rounded-lg">
                         <Link
+                          href={"/BBBubu"}
+                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                        >
+                          BBBubu
+                        </Link>
+                      </li>
+                      <li className="rounded-lg">
+                        <Link
                           href={"/anniversary"}
                           className="hover:text-green-600 hover:bg-green-50  rounded-lg "
                         >
@@ -899,6 +907,15 @@ const Navbar = () => {
                               }}
                             >
                               <div>Farm</div>
+                            </div>
+                            <div
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                              onClick={(e) => {
+                                router.push("/BBBubu");
+                                setData({ ...data, menuItemsOpen: false });
+                              }}
+                            >
+                              <div>BBBubu</div>
                             </div>
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"

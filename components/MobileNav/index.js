@@ -139,6 +139,27 @@ const MobileNav = () => {
             <span className="ml-2">Farm</span>
           </Link>
           <Link
+            href="/BBBubu"
+            className={`flex items-center p-3 rounded-xl ${
+              router.pathname === "/BBBubu" 
+                ? "bg-green-50 text-green-600 font-medium" 
+                : "hover:bg-gray-50"
+            }`}
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path
+                d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="12" cy="12" r="3" fill="currentColor" />
+            </svg>
+            <span className="ml-2">BBBubu</span>
+          </Link>
+          <Link
             href="/anniversary"
             className={`flex items-center p-3 rounded-xl ${
               router.pathname === "/anniversary" 
@@ -400,6 +421,7 @@ const MobileNav = () => {
           className={`flex flex-col items-center p-2 relative ${
             router.pathname.startsWith("/anniversary") ||
             router.pathname === "/farm" ||
+            router.pathname === "/BBBubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/launch" ||

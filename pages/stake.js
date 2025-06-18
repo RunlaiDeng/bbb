@@ -257,8 +257,8 @@ const Stake = () => {
         searchTerm.includes("staking") ||
         searchTerm.includes("restake") ||
         searchTerm.includes("restaking") ||
-        (searchTerm.includes("lp") && (poolConfig.pid === 3 || poolConfig.pid === 4 || poolConfig.pid === 5)) ||
-        (searchTerm.includes("icelp") && (poolConfig.pid === 3 || poolConfig.pid === 4 || poolConfig.pid === 5));
+        (searchTerm.includes("lp") && poolConfig.pid === 3) ||
+        (searchTerm.includes("icelp") && poolConfig.pid === 3);
 
       return symbolMatch || contractSymbolMatch || titleMatch || keywordMatch;
     });
