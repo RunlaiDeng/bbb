@@ -12,8 +12,6 @@ const POOL_HASH_MAP = {
   bpsxdc: "lp-1",
   bbb: "lp-2",
   "xdc-bbb": "lp-3",
-  "xdc-bpsxdc": "lp-4",
-  "xdc-usdb": "lp-5",
   "4pool": "lpv2-0",
   "3xdc": "lpv2-1",
 };
@@ -79,26 +77,6 @@ const POOL_CONFIGS = [
     icon: "combined",
     getTokenLink: "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc",
     hashTag: "#xdc-bbb"
-  },
-  { 
-    id: 'lp-4', 
-    pid: 4, 
-    poolType: 'lp', 
-    title: 'XDC-bpsXDC LP Staking(Expired)', 
-    symbol: 'XDC-bpsXDC LP',
-    icon: "combined",
-    getTokenLink: "https://icecreamswap.com/add/XDC/0x24be372f0915b8BAf17AfA150210FFcB79C88845?chain=xdc",
-    hashTag: "#xdc-bpsxdc"
-  },
-  { 
-    id: 'lp-5', 
-    pid: 5, 
-    poolType: 'lp', 
-    title: 'XDC-USDB LP Staking(Expired)', 
-    symbol: 'XDC-USDB LP',
-    icon: "combined",
-    getTokenLink: "https://icecreamswap.com/v2/add/XDC/0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8?chain=xdc",
-    hashTag: "#xdc-usdb"
   },
   { 
     id: 'lpv2-0', 
