@@ -1026,6 +1026,25 @@ const StakingPool = ({
                       className="w-3 h-3 object-cover rounded-full"
                     />
                   </div>
+                ) : poolConfig.icon === "threexdc" ? (
+                  <div className="relative w-full h-full">
+                    {/* Three XDC icons arranged in a triangular pattern */}
+                    <img
+                      src="/xdc.png"
+                      alt="XDC icon"
+                      className="absolute w-3 h-3 object-cover rounded-full top-0 left-1/2 transform -translate-x-1/2 z-30"
+                    />
+                    <img
+                      src="/xdc.png"
+                      alt="XDC icon"
+                      className="absolute w-3 h-3 object-cover rounded-full bottom-0 left-0 z-20"
+                    />
+                    <img
+                      src="/xdc.png"
+                      alt="XDC icon"
+                      className="absolute w-3 h-3 object-cover rounded-full bottom-0 right-0 z-10"
+                    />
+                  </div>
                 ) : (
                   <img
                     src={poolConfig.icon}

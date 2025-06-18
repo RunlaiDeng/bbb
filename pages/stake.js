@@ -15,6 +15,7 @@ const POOL_HASH_MAP = {
   "xdc-bpsxdc": "lp-4",
   "xdc-usdb": "lp-5",
   "4pool": "lpv2-0",
+  "3xdc": "lpv2-1",
 };
 
 // Pool configurations (move outside component)
@@ -108,6 +109,16 @@ const POOL_CONFIGS = [
     icon: "fourpool",
     getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-2/deposit/",
     hashTag: "#4pool"
+  },
+  { 
+    id: 'lpv2-1', 
+    pid: 1, 
+    poolType: 'lpstakev2', 
+    title: '3xdc Staking', 
+    symbol: '3XDC',
+    icon: "threexdc",
+    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-6/deposit/",
+    hashTag: "#3xdc"
   },
 ];
 
@@ -258,6 +269,8 @@ const Stake = () => {
           poolConfig.poolType === 'lpstakev2') ||
         (searchTerm.includes("fourpool") &&
           poolConfig.poolType === 'lpstakev2') ||
+        (searchTerm.includes("3xdc") &&
+          poolConfig.symbol?.toLowerCase().includes("3xdc")) ||
         (searchTerm.includes("usdc") &&
           poolConfig.poolType === 'lpstakev2') ||
         (searchTerm.includes("usdt") &&
