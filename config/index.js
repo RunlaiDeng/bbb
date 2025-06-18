@@ -13,7 +13,6 @@ import XDCStakeABI from "../abi/XDCStakeABI.json";
 import USDBABI from "../abi/USDBABI.json";
 import USDBStakeABI from "../abi/USDBStakeABI.json";
 import BBBubuABI from "../abi/BBBubuABI.json";
-import MultiTransferABI from "../abi/MultiTransferABI.json";
 
 
 // export const dexLink =
@@ -170,7 +169,72 @@ export const contracts = {
     },
     multitransfer: {
       address: "0x79F963CdE9940B4D816bf10881716644cBc9B664",
-      abi: MultiTransferABI,
+      abi: [
+        {
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tos",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amts",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "batchTransferEther",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "recipients",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "batchTransferNFT",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tos",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amts",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "batchTransferToken",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ],
     },
   },
 };
