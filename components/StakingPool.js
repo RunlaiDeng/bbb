@@ -385,6 +385,47 @@ const StakingPool = ({
     },
   });
 
+  // For 3xdc pool (lpstakev2 pid 1), read the 3 token balances in the pool
+  const create3xdcPoolTokenBalanceContracts = () => {
+    if (poolType !== 'lpstakev2' || pid !== 1 || !lpTokenAddress) return [];
+    
+    const psxdcAddress = contracts[chainId]?.psXDC?.address;
+    const bpsxdcAddress = contracts[chainId]?.bpsXDC?.address;
+    // For XDC in the 3xdc pool, we use WETH address as proxy for native XDC
+    const wxdcAddress = contracts[chainId]?.weth?.address;
+    
+    return [
+      // psXDC balance in 3xdc pool
+      {
+        address: psxdcAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // bpsXDC balance in 3xdc pool
+      {
+        address: bpsxdcAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // WXDC balance in 3xdc pool (representing XDC)
+      {
+        address: wxdcAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+    ];
+  };
+
+  const { data: threeXdcPoolTokenBalances, refetch: refetch3xdcPoolTokenBalances } = useReadContracts({
+    contracts: create3xdcPoolTokenBalanceContracts(),
+    query: {
+      enabled: !!lpTokenAddress && poolType === 'lpstakev2' && pid === 1,
+    },
+  });
+
   // Process contract data into pool object
   useEffect(() => {
     if (!contractData) return;
@@ -425,7 +466,7 @@ const StakingPool = ({
           decimals: 6,
         };
       } else if (poolType === 'lpstakev2') {
-        // 4pool lpstakev2 - special handling for 4 tokens
+        // lpstakev2 pools - special handling for different pool types
         pool = {
           pid,
           poolData: contractData[0]?.result,
@@ -435,18 +476,29 @@ const StakingPool = ({
           rewardPerBlock: contractData[0]?.result?.[5] || BigInt(0),
           isActive: contractData[0]?.result?.[6] || false,
           tokenAddress: lpTokenAddress,
-          symbol: poolConfig?.symbol || "4POOL",
+          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : "3XDC"),
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
-          // Add 4pool token balances
-          fourPoolBalances: {
+        };
+
+        // Add pool-specific token balances
+        if (pid === 0) {
+          // 4pool token balances
+          pool.fourPoolBalances = {
             usdb: fourPoolTokenBalances?.[0]?.result || BigInt(0),
             xdcUSDC: fourPoolTokenBalances?.[1]?.result || BigInt(0),
             stargateUSDC: fourPoolTokenBalances?.[2]?.result || BigInt(0),
             stargateUSDT: fourPoolTokenBalances?.[3]?.result || BigInt(0),
-          },
-        };
+          };
+        } else if (pid === 1) {
+          // 3xdc pool token balances
+          pool.threeXdcBalances = {
+            psXDC: threeXdcPoolTokenBalances?.[0]?.result || BigInt(0),
+            bpsXDC: threeXdcPoolTokenBalances?.[1]?.result || BigInt(0),
+            wxdc: threeXdcPoolTokenBalances?.[2]?.result || BigInt(0),
+          };
+        }
       } else {
         // LP pool - need additional token data
         const getSymbol = () => {
@@ -494,7 +546,7 @@ const StakingPool = ({
         isActive: false,
       });
     }
-  }, [contractData, tokenData, pairData, fourPoolTokenBalances, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
+  }, [contractData, tokenData, pairData, fourPoolTokenBalances, threeXdcPoolTokenBalances, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
 
   // Calculate APR for this pool
   const BLOCKS_PER_YEAR = 31536000;
@@ -580,6 +632,16 @@ const StakingPool = ({
         
         const total4PoolValueUSD = usdbValue + xdcUSDCValue + stargateUSDCValue + stargateUSDTValue;
         const lpTokenPrice = total4PoolValueUSD / Number(formatEther(pool.lpTotalSupply));
+        totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+      } else if (poolType === 'lpstakev2' && pid === 1 && pool.threeXdcBalances && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+        // Special handling for 3xdc pool - calculate total USD value of all 3 tokens (psxdc, bpsxdc, wxdc)
+        // All three tokens have the same value as XDC
+        const psxdcValue = Number(formatEther(pool.threeXdcBalances.psXDC)) * xdcPrice; // psXDC = XDC price
+        const bpsxdcValue = Number(formatEther(pool.threeXdcBalances.bpsXDC)) * xdcPrice; // bpsXDC = XDC price
+        const wxdcValue = Number(formatEther(pool.threeXdcBalances.wxdc)) * xdcPrice; // WXDC = XDC price
+        
+        const total3xdcPoolValueUSD = psxdcValue + bpsxdcValue + wxdcValue;
+        const lpTokenPrice = total3xdcPoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
       } else if (isPsXdcPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -701,6 +763,9 @@ const StakingPool = ({
       }
       if (poolType === 'lpstakev2' && pid === 0) {
         refetch4PoolTokenBalances?.();
+      }
+      if (poolType === 'lpstakev2' && pid === 1) {
+        refetch3xdcPoolTokenBalances?.();
       }
     }
   };

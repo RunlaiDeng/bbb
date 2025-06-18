@@ -157,6 +157,9 @@ export const contracts = {
       address: "0x9cbf30677b51Ba2E3Fd65dF3BD9BcA5F7dace781",
       abi: LpStakeABI,
     },
+    weth: {
+      address: "0x951857744785e80e2de051c32ee7b25f9c458c42",
+    },
   },
 };
 // IDO项目额外信息
