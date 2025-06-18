@@ -33,6 +33,8 @@ const BBBubu = () => {
     swapProgress: 0,
     approveProgress: 0,
     transferProgress: 0,
+    longPressTimer: null,
+    longPressInterval: null,
   });
 
   // Generate random images and start fast rotation
@@ -333,11 +335,56 @@ const BBBubu = () => {
 
   // Handle quantity change
   const handleQuantityChange = (delta) => {
+    const maxQuantity = Number(remainingSupply); // 直接使用剩余供应量作为最大值
     setData((prev) => ({
       ...prev,
-      quantity: Math.max(1, Math.min(10, prev.quantity + delta)),
+      quantity: Math.max(1, Math.min(maxQuantity, prev.quantity + delta)),
     }));
   };
+
+  // 长按增加数量的处理函数
+  const handleLongPress = (delta) => {
+    const startLongPress = () => {
+      // 清除之前的定时器
+      if (data.longPressTimer) clearTimeout(data.longPressTimer);
+      if (data.longPressInterval) clearInterval(data.longPressInterval);
+
+      // 延迟500ms后开始快速重复
+      const timer = setTimeout(() => {
+        const interval = setInterval(() => {
+          handleQuantityChange(delta);
+        }, 100); // 每100ms增加一次
+        
+        setData(prev => ({ ...prev, longPressInterval: interval }));
+      }, 500);
+      
+      setData(prev => ({ ...prev, longPressTimer: timer }));
+    };
+
+    const stopLongPress = () => {
+      if (data.longPressTimer) {
+        clearTimeout(data.longPressTimer);
+        setData(prev => ({ ...prev, longPressTimer: null }));
+      }
+      if (data.longPressInterval) {
+        clearInterval(data.longPressInterval);
+        setData(prev => ({ ...prev, longPressInterval: null }));
+      }
+    };
+
+    return { startLongPress, stopLongPress };
+  };
+
+  // 创建长按处理器
+  const plusLongPress = handleLongPress(1);
+
+  // 清理定时器，防止内存泄漏
+  useEffect(() => {
+    return () => {
+      if (data.longPressTimer) clearTimeout(data.longPressTimer);
+      if (data.longPressInterval) clearInterval(data.longPressInterval);
+    };
+  }, [data.longPressTimer, data.longPressInterval]);
 
   // Toggle NFT selection for swap
   const toggleNFTSelection = (tokenId) => {
@@ -858,7 +905,7 @@ const BBBubu = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600">Your Balance:</span>
                 <span className="text-gray-800 font-semibold">
-                  {xdcBalance ? formatEther(xdcBalance.value) : "0"} XDC
+                  {xdcBalance ? parseFloat(formatEther(xdcBalance.value)).toFixed(2) : "0"} XDC
                 </span>
               </div>
             </div>
@@ -872,13 +919,23 @@ const BBBubu = () => {
               >
                 -
               </button>
-              <span className="text-3xl font-bold text-gray-800">
-                {data.quantity}
-              </span>
+              <div className="text-center">
+                <span className="text-3xl font-bold text-gray-800">
+                  {data.quantity}
+                </span>
+                <div className="text-xs text-gray-500 mt-1">
+                  max: {Number(remainingSupply)}
+                </div>
+              </div>
               <button
-                className="w-12 h-12 rounded-full border-2 border-gray-300 text-gray-600 text-2xl hover:bg-gray-100 hover:border-gray-400 transition-colors disabled:opacity-50"
+                className="w-12 h-12 rounded-full border-2 border-gray-300 text-gray-600 text-2xl hover:bg-gray-100 hover:border-gray-400 transition-colors disabled:opacity-50 select-none"
                 onClick={() => handleQuantityChange(1)}
-                disabled={data.isLoading || data.quantity >= 10}
+                onMouseDown={() => plusLongPress.startLongPress()}
+                onMouseUp={() => plusLongPress.stopLongPress()}
+                onMouseLeave={() => plusLongPress.stopLongPress()}
+                onTouchStart={() => plusLongPress.startLongPress()}
+                onTouchEnd={() => plusLongPress.stopLongPress()}
+                disabled={data.isLoading || data.quantity >= Number(remainingSupply)}
               >
                 +
               </button>
