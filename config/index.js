@@ -13,7 +13,7 @@ import XDCStakeABI from "../abi/XDCStakeABI.json";
 import USDBABI from "../abi/USDBABI.json";
 import USDBStakeABI from "../abi/USDBStakeABI.json";
 import BBBubuABI from "../abi/BBBubuABI.json";
-import MultiTransferABI from "../abi/MultiTransferABI.json";
+import MultiTransferABI from "../abi/multiTransferABI.json";
 
 
 // export const dexLink =
