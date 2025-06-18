@@ -516,8 +516,8 @@ const StakingPool = ({
       const xdcPrice = data?.xdcPrice || 1;
 
       // Check pool type
-      const isPsXdcPool = pool.symbol === "psXDC" || (pool.symbol && pool.symbol.includes("psXDC"));
-      const isBpsXdcPool = pool.symbol === "bpsXDC" || (pool.symbol && pool.symbol.includes("bpsXDC"));
+      const isPsXdcPool = pool.symbol === "psXDC" || (pool.symbol && pool.symbol.includes("psXDC") && !pool.symbol.includes("LP"));
+      const isBpsXdcPool = pool.symbol === "bpsXDC" || (pool.symbol && pool.symbol.includes("bpsXDC") && !pool.symbol.includes("LP"));
       const isBBBPool = pool.symbol === "BBB" || (pool.symbol && pool.symbol.includes("BBB"));
       const isNativeXdc = pool.isXdcPool === true;
       const isUsdbPool = pool.isUsdbPool === true;
@@ -581,7 +581,10 @@ const StakingPool = ({
         const total4PoolValueUSD = usdbValue + xdcUSDCValue + stargateUSDCValue + stargateUSDTValue;
         const lpTokenPrice = total4PoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
-      } else if (isPsXdcPool || isBpsXdcPool) {
+      } else if (isPsXdcPool) {
+        totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
+      } else if (isBpsXdcPool) {
+        // bpsXDC pool - use XDC price but no bonus APR
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
       } else if (isBBBPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * bbbPrice;
@@ -591,7 +594,7 @@ const StakingPool = ({
       }
 
       const bbbAPR = totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
-      const bonusAPR = isPsXdcPool || isBpsXdcPool ? 6 : 0;
+      const bonusAPR = (isPsXdcPool || isBpsXdcPool) ? 6 : 0; // Both psXDC and bpsXDC get 6% bonus
       const interestAPR = isUsdbPool && pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0;
       const totalAPR = bbbAPR + bonusAPR + interestAPR;
 
