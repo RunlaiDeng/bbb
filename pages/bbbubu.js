@@ -47,7 +47,11 @@ const BBBubu = () => {
     };
 
     const images = getRandomImages();
-    setData((prev) => ({ ...prev, backgroundImages: images }));
+    setData((prev) => ({ 
+      ...prev, 
+      backgroundImages: images,
+      imageLoading: true // Ensure loading state is true when setting new images
+    }));
 
     const interval = setInterval(() => {
       setData((prev) => ({
@@ -562,12 +566,12 @@ const BBBubu = () => {
 
         {/* Main Image Area */}
         <div className="border-2 border-gray-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-white shadow-sm">
-          {data.imageLoading && data.backgroundImages.length === 0 && (
+          {data.imageLoading ? (
             <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
               <div className="animate-spin text-6xl">🥕</div>
             </div>
-          )}
-          {data.backgroundImages.length > 0 && (
+          ) : null}
+          {data.backgroundImages.length > 0 ? (
             <Image
               src={data.backgroundImages[data.currentImageIndex]}
               alt="BBBubu NFT"
@@ -580,12 +584,11 @@ const BBBubu = () => {
                 setData((prev) => ({ ...prev, imageLoading: false }));
               }}
             />
-          )}
-          {data.backgroundImages.length === 0 && !data.imageLoading && (
+          ) : !data.imageLoading ? (
             <div className="h-full flex items-center justify-center">
               <span className="text-gray-500 text-2xl">Image</span>
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Information Section */}

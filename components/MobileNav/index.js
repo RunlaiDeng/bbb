@@ -139,9 +139,9 @@ const MobileNav = () => {
             <span className="ml-2">Farm</span>
           </Link>
           <Link
-            href="/BBBubu"
+            href="/bbbubu"
             className={`flex items-center p-3 rounded-xl ${
-              router.pathname === "/BBBubu" 
+              router.pathname === "/bbbubu" 
                 ? "bg-green-50 text-green-600 font-medium" 
                 : "hover:bg-gray-50"
             }`}
@@ -421,7 +421,7 @@ const MobileNav = () => {
           className={`flex flex-col items-center p-2 relative ${
             router.pathname.startsWith("/anniversary") ||
             router.pathname === "/farm" ||
-            router.pathname === "/BBBubu" ||
+            router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/launch" ||
