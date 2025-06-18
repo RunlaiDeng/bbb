@@ -76,8 +76,8 @@ const BBBubu = () => {
     },
   });
 
-  // Read contract data
-  const { data: contractData, refetch: refetchData } = useReadContracts({
+  // Read public contract data (doesn't require wallet connection)
+  const { data: publicData, refetch: refetchPublicData } = useReadContracts({
     contracts: [
       {
         address: bbbubuAddress,
@@ -89,6 +89,15 @@ const BBBubu = () => {
         abi: contracts[chainId]?.bbbubu?.abi || [],
         functionName: "remainingSupply",
       },
+    ],
+    query: {
+      enabled: !!chainId && !!bbbubuAddress,
+    },
+  });
+
+  // Read user-specific contract data (requires wallet connection)
+  const { data: userData, refetch: refetchUserData } = useReadContracts({
+    contracts: [
       {
         address: bbbubuAddress,
         abi: contracts[chainId]?.bbbubu?.abi || [],
@@ -126,12 +135,12 @@ const BBBubu = () => {
     },
   });
 
-  const totalSupply = contractData?.[0]?.result || 0n;
-  const remainingSupply = contractData?.[1]?.result || 0n;
-  const userBBBubuNFTs = contractData?.[2]?.result || [];
-  const userCarrotFarmerNFTs = contractData?.[3]?.result || [];
-  const isApprovedForAll = contractData?.[4]?.result || false;
-  const isApprovedForMultiTransfer = contractData?.[5]?.result || false;
+  const totalSupply = publicData?.[0]?.result || 0n;
+  const remainingSupply = publicData?.[1]?.result || 0n;
+  const userBBBubuNFTs = userData?.[0]?.result || [];
+  const userCarrotFarmerNFTs = userData?.[1]?.result || [];
+  const isApprovedForAll = userData?.[2]?.result || false;
+  const isApprovedForMultiTransfer = userData?.[3]?.result || false;
 
   const MINT_PRICE = parseEther("600");
   const totalCost = MINT_PRICE * BigInt(data.quantity);
@@ -206,7 +215,8 @@ const BBBubu = () => {
           approveProgress: 0,
           isLoading: false,
         }));
-        refetchData();
+        refetchPublicData();
+        refetchUserData();
       }, 1000);
     },
     onError: () => {
@@ -386,9 +396,10 @@ const BBBubu = () => {
         ...prev,
         approveProgress: 0,
       }));
-      refetchData();
+      refetchPublicData();
+      refetchUserData();
     }, 1000);
-  }, [refetchData]);
+  }, [refetchPublicData, refetchUserData]);
 
   // Refresh data without closing transfer modal (for transfer approve)
   const refreshDataKeepTransferModal = useCallback(() => {
@@ -402,9 +413,10 @@ const BBBubu = () => {
         ...prev,
         approveProgress: 0,
       }));
-      refetchData();
+      refetchPublicData();
+      refetchUserData();
     }, 1000);
-  }, [refetchData]);
+  }, [refetchPublicData, refetchUserData]);
 
   // Manual reset function for stuck loading states
   const resetLoadingState = () => {
@@ -436,9 +448,10 @@ const BBBubu = () => {
         showSwapModal: false,
         showMintModal: false,
       }));
-      refetchData();
+      refetchPublicData();
+      refetchUserData();
     }, 1000);
-  }, [refetchData]);
+  }, [refetchPublicData, refetchUserData]);
 
   // Refresh data for transfer without closing modal (for transfer)
   const refreshDataForTransfer = useCallback(() => {
@@ -455,9 +468,10 @@ const BBBubu = () => {
         transferAddress: "",
         showTransferModal: false,
       }));
-      refetchData();
+      refetchPublicData();
+      refetchUserData();
     }, 1000);
-  }, [refetchData]);
+  }, [refetchPublicData, refetchUserData]);
 
   // Progress Bar Component
   const ProgressBar = ({ progress }) => (
@@ -1020,7 +1034,7 @@ const BBBubu = () => {
                   Please get CarrotFarmer NFTs first to swap
                 </p>
                 <button
-                  onClick={() => refetchData()}
+                  onClick={() => refetchPublicData()}
                   className="mt-4 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   Refresh Data
