@@ -469,53 +469,6 @@ const BBBubu = () => {
     </div>
   );
 
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
-        <Head>
-          <title>BBBubu - Mystery Box NFT Collection</title>
-          <meta
-            name="description"
-            content="Mint exclusive BBBubu mystery box NFTs"
-          />
-        </Head>
-
-        <div className="w-full max-w-lg mx-auto">
-          {/* Sale Title */}
-          <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-1">
-              BBBubu NFT Sale
-            </h1>
-            <p className="text-gray-600 text-sm">
-              Exclusive Mystery Box Collection
-            </p>
-          </div>
-
-          {/* Main Image Area */}
-          <div className="border-2 border-gray-300 rounded-xl p-8 mb-6 h-96 flex items-center justify-center bg-white shadow-sm">
-            <span className="text-gray-500 text-2xl">Image</span>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-4">
-            <button
-              onClick={privyLogin}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-4 text-xl font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center"
-            >
-              Mint
-            </button>
-            <button
-              onClick={privyLogin}
-              className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-4 text-xl font-bold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center"
-            >
-              Swap
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <Head>
