@@ -204,10 +204,10 @@ const BBBubu = () => {
     },
     onError: () => {
       // Ensure loading state is reset on error
-      setData((prev) => ({ 
-        ...prev, 
-        isLoading: false, 
-        approveProgress: 0 
+      setData((prev) => ({
+        ...prev,
+        isLoading: false,
+        approveProgress: 0,
       }));
     },
     disabled: data.isLoading,
@@ -250,7 +250,7 @@ const BBBubu = () => {
       args: [
         bbbubuAddress,
         Array(data.selectedTransferTokenIds.length).fill(data.transferAddress),
-        data.selectedTransferTokenIds.map((id) => BigInt(id))
+        data.selectedTransferTokenIds.map((id) => BigInt(id)),
       ],
     },
     before: () => {
@@ -261,16 +261,16 @@ const BBBubu = () => {
     },
     onError: () => {
       // Ensure loading state is reset on transfer error
-      setData((prev) => ({ 
-        ...prev, 
-        isLoading: false, 
+      setData((prev) => ({
+        ...prev,
+        isLoading: false,
         transferProgress: 0,
-        approveProgress: 0 // Also reset approve progress if any
+        approveProgress: 0, // Also reset approve progress if any
       }));
     },
-    disabled: 
-      data.selectedTransferTokenIds.length === 0 || 
-      !data.transferAddress.trim() || 
+    disabled:
+      data.selectedTransferTokenIds.length === 0 ||
+      !data.transferAddress.trim() ||
       !data.transferAddress.match(/^0x[a-fA-F0-9]{40}$/) ||
       data.isLoading,
   };
@@ -410,6 +410,8 @@ const BBBubu = () => {
       transferProgress: 0,
     }));
   };
+
+
 
   const refreshData = useCallback(() => {
     setData((prev) => ({
@@ -694,7 +696,9 @@ const BBBubu = () => {
                   }`}
                   onClick={() => toggleTransferNFTSelection(tokenId.toString())}
                 >
-                  {data.selectedTransferTokenIds.includes(tokenId.toString()) && (
+                  {data.selectedTransferTokenIds.includes(
+                    tokenId.toString()
+                  ) && (
                     <div className="absolute top-2 right-2 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
                       <span className="text-white text-xs">✓</span>
                     </div>
@@ -944,7 +948,9 @@ const BBBubu = () => {
                             }}
                           />
                         </div>
-                        <span className="text-[10px] text-center">Farm #{tokenId.toString()}</span>
+                        <span className="text-[10px] text-center">
+                          Farm #{tokenId.toString()}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -1024,7 +1030,9 @@ const BBBubu = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Transfer BBBubu NFTs</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Transfer BBBubu NFTs
+              </h2>
               <button
                 onClick={() =>
                   setData((prev) => ({
@@ -1043,13 +1051,17 @@ const BBBubu = () => {
             {/* Progress Bar */}
             {data.transferProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Transferring...</div>
+                <div className="text-gray-600 text-sm mb-1">
+                  Transferring...
+                </div>
                 <ProgressBar progress={data.transferProgress} />
               </div>
             )}
             {data.approveProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Approving for Transfer...</div>
+                <div className="text-gray-600 text-sm mb-1">
+                  Approving for Transfer...
+                </div>
                 <ProgressBar progress={data.approveProgress} />
               </div>
             )}
@@ -1069,18 +1081,25 @@ const BBBubu = () => {
                 <span className="text-gray-600">Transfer Approval:</span>
                 <span
                   className={`font-semibold text-xs ${
-                    isApprovedForMultiTransfer ? "text-green-600" : "text-red-600"
+                    isApprovedForMultiTransfer
+                      ? "text-green-600"
+                      : "text-red-600"
                   }`}
                 >
-                  {isApprovedForMultiTransfer ? "✅ Approved" : "❌ Not Approved"}
+                  {isApprovedForMultiTransfer
+                    ? "✅ Approved"
+                    : "❌ Not Approved"}
                 </span>
               </div>
               {data.isLoading && (
                 <div className="flex justify-between mb-2">
                   <span className="text-gray-600">Status:</span>
                   <span className="text-blue-600 text-xs font-semibold">
-                    {data.approveProgress > 0 ? "Approving..." : 
-                     data.transferProgress > 0 ? "Transferring..." : "Processing..."}
+                    {data.approveProgress > 0
+                      ? "Approving..."
+                      : data.transferProgress > 0
+                      ? "Transferring..."
+                      : "Processing..."}
                   </span>
                 </div>
               )}
@@ -1112,9 +1131,13 @@ const BBBubu = () => {
               {data.transferAddress && (
                 <div className="mt-2">
                   {data.transferAddress.match(/^0x[a-fA-F0-9]{40}$/) ? (
-                    <span className="text-xs text-green-600">✓ Valid address format</span>
+                    <span className="text-xs text-green-600">
+                      ✓ Valid address format
+                    </span>
                   ) : (
-                    <span className="text-xs text-red-600">⚠ Invalid address format</span>
+                    <span className="text-xs text-red-600">
+                      ⚠ Invalid address format
+                    </span>
                   )}
                 </div>
               )}
@@ -1123,11 +1146,13 @@ const BBBubu = () => {
             {/* Warning */}
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
               <p className="text-yellow-800 text-sm">
-                <span className="font-semibold">⚠️ Warning:</span> Please double-check the recipient address. 
-                NFT transfers cannot be reversed!
+                <span className="font-semibold">⚠️ Warning:</span> Please
+                double-check the recipient address. NFT transfers cannot be
+                reversed!
               </p>
               <p className="text-yellow-700 text-xs mt-1">
-                Using secure batch transfer contract for efficient multi-NFT transfers.
+                Using secure batch transfer contract for efficient multi-NFT
+                transfers.
               </p>
             </div>
 
