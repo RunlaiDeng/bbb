@@ -22,6 +22,8 @@ const BBBubu = () => {
     currentImageIndex: 0,
     backgroundImages: [],
     imageLoading: true,
+    farmImageLoading: {},
+    bbbubuImageLoading: {},
     showSwapModal: false,
     showMintModal: false,
     showTransferModal: false,
@@ -51,6 +53,7 @@ const BBBubu = () => {
       setData((prev) => ({
         ...prev,
         currentImageIndex: (prev.currentImageIndex + 1) % images.length,
+        imageLoading: true,
       }));
     }, 200);
 
@@ -714,15 +717,36 @@ const BBBubu = () => {
                       <span className="text-white text-xs">✓</span>
                     </div>
                   )}
-                  <div className="mb-2">
+                  <div className="mb-2 relative">
+                    {data.bbbubuImageLoading[tokenId.toString()] !== false && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="animate-spin text-2xl">🥕</div>
+                      </div>
+                    )}
                     <Image
                       src={`https://benybadboy.b-cdn.net/bbbhero/${tokenId.toString()}.jpg`}
                       alt={`BBBubu #${tokenId.toString()}`}
                       width={80}
                       height={80}
                       className="mx-auto rounded-lg object-cover"
+                      onLoad={() => 
+                        setData(prev => ({
+                          ...prev,
+                          bbbubuImageLoading: {
+                            ...prev.bbbubuImageLoading,
+                            [tokenId.toString()]: false
+                          }
+                        }))
+                      }
                       onError={(e) => {
                         e.target.src = "/bbb.jpg";
+                        setData(prev => ({
+                          ...prev,
+                          bbbubuImageLoading: {
+                            ...prev.bbbubuImageLoading,
+                            [tokenId.toString()]: false
+                          }
+                        }));
                       }}
                     />
                   </div>
@@ -947,15 +971,36 @@ const BBBubu = () => {
                         onClick={() => toggleNFTSelection(tokenId.toString())}
                         disabled={data.isLoading}
                       >
-                        <div className="mb-1">
+                        <div className="mb-1 relative">
+                          {data.farmImageLoading[tokenId.toString()] !== false && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="animate-spin text-lg">🥕</div>
+                            </div>
+                          )}
                           <Image
                             src={`/farmer0/carrotFarmer.png`}
                             alt={`Farm #${tokenId.toString()}`}
                             width={40}
                             height={40}
                             className="rounded object-cover"
+                            onLoad={() => 
+                              setData(prev => ({
+                                ...prev,
+                                farmImageLoading: {
+                                  ...prev.farmImageLoading,
+                                  [tokenId.toString()]: false
+                                }
+                              }))
+                            }
                             onError={(e) => {
                               e.target.src = "/bbb.jpg";
+                              setData(prev => ({
+                                ...prev,
+                                farmImageLoading: {
+                                  ...prev.farmImageLoading,
+                                  [tokenId.toString()]: false
+                                }
+                              }));
                             }}
                           />
                         </div>
