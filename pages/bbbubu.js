@@ -53,7 +53,6 @@ const BBBubu = () => {
       setData((prev) => ({
         ...prev,
         currentImageIndex: (prev.currentImageIndex + 1) % images.length,
-        imageLoading: true,
       }));
     }, 200);
 
@@ -489,12 +488,7 @@ const BBBubu = () => {
           </div>
 
           {/* Main Image Area */}
-          <div className="border-2 border-gray-300 rounded-xl p-8 mb-6 h-96 flex items-center justify-center bg-white shadow-sm relative">
-            {data.imageLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-                <div className="animate-spin text-6xl">🥕</div>
-              </div>
-            )}
+          <div className="border-2 border-gray-300 rounded-xl p-8 mb-6 h-96 flex items-center justify-center bg-white shadow-sm">
             <span className="text-gray-500 text-2xl">Image</span>
           </div>
 
@@ -568,7 +562,7 @@ const BBBubu = () => {
 
         {/* Main Image Area */}
         <div className="border-2 border-gray-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-white shadow-sm">
-          {data.imageLoading && (
+          {data.imageLoading && data.backgroundImages.length === 0 && (
             <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
               <div className="animate-spin text-6xl">🥕</div>
             </div>
