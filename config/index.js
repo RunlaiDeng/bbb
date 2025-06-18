@@ -13,7 +13,7 @@ import XDCStakeABI from "../abi/XDCStakeABI.json";
 import USDBABI from "../abi/USDBABI.json";
 import USDBStakeABI from "../abi/USDBStakeABI.json";
 import BBBubuABI from "../abi/BBBubuABI.json";
-import multiTransferABI from "../abi/multiTransferABI.json";
+import MultiTransferABI from "../abi/MultiTransferABI.json";
 
 
 // export const dexLink =
@@ -170,7 +170,7 @@ export const contracts = {
     },
     multitransfer: {
       address: "0x79F963CdE9940B4D816bf10881716644cBc9B664",
-      abi: multiTransferABI,
+      abi: MultiTransferABI,
     },
   },
 };
