@@ -22,6 +22,7 @@ const BBBubu = () => {
     currentImageIndex: 0,
     backgroundImages: [],
     imageLoading: true,
+    imagesPreloaded: {},
     farmImageLoading: {},
     bbbubuImageLoading: {},
     showSwapModal: false,
@@ -47,11 +48,49 @@ const BBBubu = () => {
     };
 
     const images = getRandomImages();
+    
+    // Preload all images
+    const preloadImages = async () => {
+      const preloadPromises = images.map((src, index) => {
+        return new Promise((resolve) => {
+          const img = new window.Image();
+          img.onload = () => {
+            setData(prev => ({
+              ...prev,
+              imagesPreloaded: {
+                ...prev.imagesPreloaded,
+                [index]: true
+              }
+            }));
+            resolve();
+          };
+          img.onerror = () => {
+            setData(prev => ({
+              ...prev,
+              imagesPreloaded: {
+                ...prev.imagesPreloaded,
+                [index]: true
+              }
+            }));
+            resolve();
+          };
+          img.src = src;
+        });
+      });
+
+      // Wait for first image to load before hiding loading state
+      await preloadPromises[0];
+      setData(prev => ({ ...prev, imageLoading: false }));
+    };
+
     setData((prev) => ({ 
       ...prev, 
       backgroundImages: images,
-      imageLoading: true // Ensure loading state is true when setting new images
+      imageLoading: true,
+      imagesPreloaded: {}
     }));
+
+    preloadImages();
 
     const interval = setInterval(() => {
       setData((prev) => ({
@@ -533,29 +572,31 @@ const BBBubu = () => {
 
         {/* Main Image Area */}
         <div className="border-2 border-gray-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-white shadow-sm">
-          {data.imageLoading ? (
+          {data.imageLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
               <div className="animate-spin text-6xl">🥕</div>
             </div>
-          ) : null}
-          {data.backgroundImages.length > 0 ? (
+          )}
+          {data.backgroundImages.length > 0 && (
             <Image
               src={data.backgroundImages[data.currentImageIndex]}
               alt="BBBubu NFT"
               fill
-              className="object-cover"
+              className="object-cover transition-opacity duration-200"
               priority
-              onLoad={() => setData((prev) => ({ ...prev, imageLoading: false }))}
+              style={{
+                opacity: data.imagesPreloaded[data.currentImageIndex] ? 1 : 0.8
+              }}
               onError={(e) => {
                 e.target.src = "/bbb.jpg";
-                setData((prev) => ({ ...prev, imageLoading: false }));
               }}
             />
-          ) : !data.imageLoading ? (
+          )}
+          {!data.imageLoading && data.backgroundImages.length === 0 && (
             <div className="h-full flex items-center justify-center">
               <span className="text-gray-500 text-2xl">Image</span>
             </div>
-          ) : null}
+          )}
         </div>
 
         {/* Information Section */}

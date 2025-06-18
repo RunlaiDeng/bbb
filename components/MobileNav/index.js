@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const MobileNav = () => {
   const router = useRouter();
@@ -146,17 +147,15 @@ const MobileNav = () => {
                 : "hover:bg-gray-50"
             }`}
           >
-            <svg viewBox="0 0 24 24" width="22" height="22">
-              <path
-                d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className="w-[22px] h-[22px] relative">
+              <Image
+                src="/bbb.jpg"
+                alt="BBBubu"
+                width={22}
+                height={22}
+                className="rounded object-cover"
               />
-              <circle cx="12" cy="12" r="3" fill="currentColor" />
-            </svg>
+            </div>
             <span className="ml-2">BBBubu</span>
           </Link>
           <Link
@@ -270,32 +269,15 @@ const MobileNav = () => {
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            <svg viewBox="0 0 24 24" width="24" height="24">
-              <path
-                d="M12 2C13.1046 2 14 2.89543 14 4V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V4C10 2.89543 10.8954 2 12 2Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div className="w-6 h-6 relative">
+              <Image
+                src="/usdb.png"
+                alt="USDB"
+                width={24}
+                height={24}
+                className="rounded object-cover"
               />
-              <path
-                d="M9 9C9 5.13401 9 5.13401 12 5.13401C15 5.13401 15 5.13401 15 9"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M9 15C9 18.866 9 18.866 12 18.866C15 18.866 15 18.866 15 15"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            </div>
             <span className="text-xs mt-1">USDB</span>
           </Link>
         </div>
@@ -388,32 +370,15 @@ const MobileNav = () => {
               : "text-gray-500 hover:text-gray-700"
           }`}
         >
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path
-              d="M12 2C13.1046 2 14 2.89543 14 4V20C14 21.1046 13.1046 22 12 22C10.8954 22 10 21.1046 10 20V4C10 2.89543 10.8954 2 12 2Z"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="w-6 h-6 relative">
+            <Image
+              src="/usdb.png"
+              alt="USDB"
+              width={24}
+              height={24}
+              className="rounded object-cover"
             />
-            <path
-              d="M9 9C9 5.13401 9 5.13401 12 5.13401C15 5.13401 15 5.13401 15 9"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9 15C9 18.866 9 18.866 12 18.866C15 18.866 15 18.866 15 15"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          </div>
           <span className="text-xs mt-1">USDB</span>
         </Link>
         <button
