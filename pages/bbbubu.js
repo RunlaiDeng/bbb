@@ -21,6 +21,7 @@ const BBBubu = () => {
     transferAddress: "",
     currentImageIndex: 0,
     backgroundImages: [],
+    imageLoading: true,
     showSwapModal: false,
     showMintModal: false,
     showTransferModal: false,
@@ -411,8 +412,6 @@ const BBBubu = () => {
     }));
   };
 
-
-
   const refreshData = useCallback(() => {
     setData((prev) => ({
       ...prev,
@@ -487,7 +486,12 @@ const BBBubu = () => {
           </div>
 
           {/* Main Image Area */}
-          <div className="border-2 border-gray-300 rounded-xl p-8 mb-6 h-96 flex items-center justify-center bg-white shadow-sm">
+          <div className="border-2 border-gray-300 rounded-xl p-8 mb-6 h-96 flex items-center justify-center bg-white shadow-sm relative">
+            {data.imageLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+                <div className="animate-spin text-6xl">🥕</div>
+              </div>
+            )}
             <span className="text-gray-500 text-2xl">Image</span>
           </div>
 
@@ -561,6 +565,11 @@ const BBBubu = () => {
 
         {/* Main Image Area */}
         <div className="border-2 border-gray-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-white shadow-sm">
+          {data.imageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+              <div className="animate-spin text-6xl">🥕</div>
+            </div>
+          )}
           {data.backgroundImages.length > 0 && (
             <Image
               src={data.backgroundImages[data.currentImageIndex]}
@@ -568,12 +577,14 @@ const BBBubu = () => {
               fill
               className="object-cover"
               priority
+              onLoad={() => setData((prev) => ({ ...prev, imageLoading: false }))}
               onError={(e) => {
                 e.target.src = "/bbb.jpg";
+                setData((prev) => ({ ...prev, imageLoading: false }));
               }}
             />
           )}
-          {data.backgroundImages.length === 0 && (
+          {data.backgroundImages.length === 0 && !data.imageLoading && (
             <div className="h-full flex items-center justify-center">
               <span className="text-gray-500 text-2xl">Image</span>
             </div>
