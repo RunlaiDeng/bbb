@@ -236,16 +236,6 @@ const USDB = () => {
 
   return (
     <>
-      <Head>
-        <title>USDB - Synthetic USD | BBBPump</title>
-        <meta
-          name="description"
-          content="USDB is a synthetic USD that provides 6%+ annual yield and BBB token rewards through delta hedging strategies."
-        />
-        <link rel="icon" href="/favicon-usdb.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/usdb-icon.svg" />
-      </Head>
-
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
         {/* Hero Section */}
         <div className="relative overflow-hidden">
