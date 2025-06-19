@@ -19,10 +19,23 @@ const USDB = () => {
   const [selectedToken, setSelectedToken] = useState("USDC_XDC");
   const [copiedAddress, setCopiedAddress] = useState(null);
 
+  // sUSDB states
+  const [sUSDBAmount, setSUSDBAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [activeTab, setActiveTab] = useState("deposit"); // deposit, withdraw, manage
+
+  // 添加客户端挂载状态
+  const [isMounted, setIsMounted] = useState(false);
+
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const privyLogin = usePrivyLogin();
   const router = useRouter();
+
+  // 检查客户端是否已挂载
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // 复制地址后清除提示
   useEffect(() => {
@@ -149,6 +162,53 @@ const USDB = () => {
     }
   };
 
+  // sUSDB 相关数据获取
+  const { data: sUSDBBalance, refetch: refetchSUSDBBalance } = useBalance({
+    address,
+    token: contracts[chainId]?.sUSDB?.address,
+    query: {
+      enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
+    },
+  });
+
+  // 获取用户的待领取奖励
+  const { data: pendingRewards, refetch: refetchPendingRewards } = useReadContract({
+    address: contracts[chainId]?.sUSDB?.address,
+    abi: contracts[chainId]?.sUSDB?.abi,
+    functionName: "getPendingRewards",
+    args: [address],
+    query: {
+      enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
+    },
+  });
+
+  // 获取用户的活跃提取请求
+  const { data: activeWithdrawals, refetch: refetchActiveWithdrawals } =
+    useReadContract({
+      address: contracts[chainId]?.sUSDB?.address,
+      abi: contracts[chainId]?.sUSDB?.abi,
+      functionName: "getActiveWithdrawalRequests",
+      args: [address],
+      query: {
+        enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
+      },
+    });
+
+  // 获取USDB对sUSDB的授权额度
+  const { data: usdbAllowance, refetch: refetchUSDBAllowance } =
+    useReadContract({
+      address: contracts[chainId]?.usdb?.address,
+      abi: contracts[chainId]?.usdb?.abi,
+      functionName: "allowance",
+      args: [address, contracts[chainId]?.sUSDB?.address],
+      query: {
+        enabled:
+          !!address &&
+          !!contracts[chainId]?.usdb?.address &&
+          !!contracts[chainId]?.sUSDB?.address,
+      },
+    });
+
   const handleMaxClick = () => {
     if (tokenBalance) {
       setAmount(formatUnits(tokenBalance.value, tokenBalance.decimals));
@@ -159,6 +219,46 @@ const USDB = () => {
     const value = e.target.value;
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
       setAmount(value);
+    }
+  };
+
+  // sUSDB 相关辅助函数
+  const handleSUSDBMaxClick = () => {
+    if (usdbBalance) {
+      setSUSDBAmount(formatUnits(usdbBalance.value, usdbBalance.decimals));
+    }
+  };
+
+  const handleSUSDBAmountChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || /^\d*\.?\d*$/.test(value)) {
+      setSUSDBAmount(value);
+    }
+  };
+
+  const handleWithdrawMaxClick = () => {
+    if (sUSDBBalance) {
+      setWithdrawAmount(formatUnits(sUSDBBalance.value, sUSDBBalance.decimals));
+    }
+  };
+
+  const handleWithdrawAmountChange = (e) => {
+    const value = e.target.value;
+    if (value === "" || /^\d*\.?\d*$/.test(value)) {
+      setWithdrawAmount(value);
+    }
+  };
+
+  // 检查USDB授权
+  const needsUSDBApproval = () => {
+    if (!sUSDBAmount || !usdbBalance) return false;
+    try {
+      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
+      if (amountWei <= 0) return false;
+      if (usdbAllowance === undefined || usdbAllowance === null) return true;
+      return usdbAllowance < amountWei;
+    } catch {
+      return true;
     }
   };
 
@@ -187,6 +287,26 @@ const USDB = () => {
     }
   };
 
+  const isValidSUSDBAmount = () => {
+    if (!sUSDBAmount || !usdbBalance) return false;
+    try {
+      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
+      return amountWei > 0 && amountWei <= usdbBalance.value;
+    } catch {
+      return false;
+    }
+  };
+
+  const isValidWithdrawAmount = () => {
+    if (!withdrawAmount || !sUSDBBalance) return false;
+    try {
+      const amountWei = parseUnits(withdrawAmount, sUSDBBalance.decimals);
+      return amountWei > 0 && amountWei <= sUSDBBalance.value;
+    } catch {
+      return false;
+    }
+  };
+
   // 格式化USDB数量显示 (6位小数)
   const formatUsdbAmount = (value) => {
     if (!value) return "0.00";
@@ -208,9 +328,19 @@ const USDB = () => {
         "USDB is a synthetic USD that uses delta hedging on Bitcoin, Ethereum, and Solana spot assets while holding liquid stablecoins like USDC, USDT, USDe, and USDtb to achieve stability.",
     },
     {
+      question: "What is sUSDB?",
+      answer:
+        "sUSDB is staked USDB that allows you to earn additional USDB rewards automatically. You can deposit USDB at a 1:1 ratio to receive sUSDB, which automatically accumulates USDB rewards over time. Withdrawals require a 7-day waiting period for security.",
+    },
+    {
       question: "How do I earn yields?",
       answer:
-        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 5%+ base annual yield plus 10-1000% BBB token rewards.",
+        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 5%+ base annual yield. sUSDB holders automatically earn additional USDB rewards on top of these base yields.",
+    },
+    {
+      question: "What is the 7-day withdrawal period for sUSDB?",
+      answer:
+        "When you request to withdraw sUSDB, there's a 7-day waiting period before you can execute the withdrawal. This security measure helps protect the protocol. You can cancel your withdrawal request at any time to restore your sUSDB tokens.",
     },
     {
       question: "What is Delta Hedging?",
@@ -218,119 +348,252 @@ const USDB = () => {
         "Delta hedging is a risk management strategy that uses perpetual contracts and deliverable futures to hedge spot assets, reducing price volatility risk while capturing funding rate yields.",
     },
     {
-      question: "How are BBB rewards calculated?",
+      question: "How do sUSDB rewards work?",
       answer:
-        "BBB rewards are based on your staking amount and holding time, ranging from 10% to 1000% depending on market conditions and protocol parameters.",
+        "sUSDB automatically accumulates USDB rewards over time. Simply hold sUSDB in your wallet and rewards will accrue automatically. You can claim your accumulated USDB rewards at any time through the interface.",
     },
     {
       question: "How is fund security ensured?",
       answer:
-        "USDB is backed by a diversified portfolio of crypto assets and liquid stablecoins, using advanced risk management strategies with all assets undergoing strict security audits.",
+        "USDB is backed by a diversified portfolio of crypto assets and liquid stablecoins, using advanced risk management strategies with all assets undergoing strict security audits. sUSDB adds an additional layer of time-delayed withdrawals for enhanced security.",
     },
     {
-      question: "How do I participate in USDB?",
+      question: "How do I participate in USDB and sUSDB?",
       answer:
-        "Connect your wallet, select the amount you want to stake, confirm the transaction and start earning yields. You can view yields and withdraw at any time.",
+        "Connect your wallet, buy USDB with stablecoins, then convert your USDB to sUSDB to start earning automatic USDB rewards. You can claim rewards, view yields and manage withdrawals at any time.",
     },
   ];
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-        {/* Hero Section */}
+    isMounted && (
+      <>
+        <Head>
+          <title>USDB & sUSDB - Synthetic USD Staking | BBBPump</title>
+          <meta
+            name="description"
+            content="Earn yields with USDB and sUSDB. Deposit stablecoins to get USDB, then stake to sUSDB for additional rewards. Delta hedging strategy with 5%+ yields and BBB token rewards."
+          />
+          <meta
+            name="keywords"
+            content="USDB, sUSDB, staking, synthetic USD, delta hedging, yield farming, BBB rewards"
+          />
+          <meta
+            property="og:title"
+            content="USDB & sUSDB - Synthetic USD Staking"
+          />
+          <meta
+            property="og:description"
+            content="Stake USDB to earn enhanced rewards with sUSDB. Flexible withdrawal options with 7-day waiting period."
+          />
+          <meta property="og:image" content="/usdb.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta
+            name="twitter:title"
+            content="USDB & sUSDB - Synthetic USD Staking"
+          />
+          <meta
+            name="twitter:description"
+            content="Earn additional rewards by staking your USDB to sUSDB"
+          />
+        </Head>
+
+              <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
+        {/* Token Balances Section */}
+        {isMounted && isConnected && (
+          <div className="pt-20 pb-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Token Balances</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* USDB Card */}
+                <div className="bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center p-2">
+                        <img
+                          src="/usdb.png"
+                          alt="USDB Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-gray-900 text-xl font-semibold">USDB</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        document.getElementById('buy-usdb-section')?.scrollIntoView({ 
+                          behavior: 'smooth' 
+                        });
+                      }}
+                      className="flex items-center gap-1 text-green-600 hover:text-green-700 transition-colors text-sm font-medium"
+                    >
+                      Buy
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <div className="text-gray-600 text-sm mb-1">Balance</div>
+                    <div className="text-gray-900 text-2xl font-bold">
+                      ${usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* sUSDB Card */}
+                <div className="bg-white/80 backdrop-blur-sm border border-purple-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center p-2">
+                        <img
+                          src="/susdb.png"
+                          alt="sUSDB Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-gray-900 text-xl font-semibold">sUSDB</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        document.getElementById('susdb-section')?.scrollIntoView({ 
+                          behavior: 'smooth' 
+                        });
+                      }}
+                      className="flex items-center gap-1 text-purple-600 hover:text-purple-700 transition-colors text-sm font-medium"
+                    >
+                      Earn
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <div className="text-gray-600 text-sm mb-1">Balance</div>
+                    <div className="text-gray-900 text-2xl font-bold">
+                      ${sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rewards Section */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Rewards</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                {/* USDB Rewards Card */}
+                <div className="bg-white/80 backdrop-blur-sm border border-yellow-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center p-2">
+                        <img
+                          src="/usdb.png"
+                          alt="USDB Rewards Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-gray-900 text-xl font-semibold">USDB Rewards</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        document.getElementById('susdb-section')?.scrollIntoView({ 
+                          behavior: 'smooth' 
+                        });
+                      }}
+                      className="flex items-center gap-1 text-yellow-600 hover:text-yellow-700 transition-colors text-sm font-medium"
+                    >
+                      Claim
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div>
+                    <div className="text-gray-600 text-sm mb-1">Balance</div>
+                    <div className="text-gray-900 text-2xl font-bold">
+                      ${pendingRewards ? formatUsdbAmount(pendingRewards) : "0.00"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+                {/* Hero Section */}
         <div className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-green-600/5 to-emerald-600/5"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
             <div className="text-center">
-              <div className="inline-flex items-center gap-3 mb-6">
-                <div className="w-16 h-16">
-                  <img
-                    src="/usdb.png"
-                    alt="USDB Logo"
-                    className="w-full h-full drop-shadow-lg"
-                  />
-                </div>
-                <h1 className="text-6xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  USDB
-                </h1>
-              </div>
-
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-                Synthetic USD providing stable digital asset solutions through
-                delta hedging strategies
-              </p>
-
-              {/* Key Features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
-                <div className="bg-gradient-to-r from-green-100 to-emerald-100 backdrop-blur-sm rounded-2xl p-6 transition-all">
-                  <div className="text-3xl font-bold text-green-600 mb-2">
-                    {data.currentApr}%+
-                  </div>
-                  <div className="text-sm text-gray-600">Base Annual Yield</div>
-                </div>
-                <div className="bg-gradient-to-r from-green-100 to-emerald-100 backdrop-blur-sm rounded-2xl p-6  transition-all">
-                  <div className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent mb-2">
-                    10-1000%
-                  </div>
-                  <div className="text-sm text-gray-600">BBB Token Rewards</div>
-                </div>
-              </div>
               {/* <LiFiWidget integrator="Your dApp/company name" config={widgetConfig} /> */}
-              {/* CTA Section */}
-              <div className="flex justify-center">
-                <div className="w-full max-w-md">
-                  {/* Deposit Stable Coin Section */}
-                  <div className="bg-white rounded-2xl p-6 shadow-lg">
-                    {/* 主标题 */}
-                    <div className="text-center mb-6">
-                      <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                        Buy USDB
-                      </h2>
-                      <p className="text-sm text-gray-600">
-                        Select a stable coin to deposit and receive USDB
-                      </p>
+              
+              {/* Buy USDB Section */}
+              <div id="buy-usdb-section" className="max-w-6xl mx-auto">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center p-2">
+                      <img
+                        src="/usdb.png"
+                        alt="USDB Logo"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      Buy USDB
+                    </h2>
+                  </div>
+                  <p className="text-gray-600">
+                    Select a stable coin to deposit and receive USDB at 1:1 ratio
+                  </p>
+                </div>
 
-                    {/* 代币选择器 */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                  {/* Token Selection & Information */}
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-fit">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                      Available Tokens
+                    </h3>
+
+                                          {/* 代币选择器 */}
                     <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Select Token
-                      </label>
                       <div className="space-y-3">
                         {Object.keys(tokenConfigs).map((token) => {
                           const config = tokenConfigs[token];
                           const balance = getTokenBalance(token);
                           const isSelected = selectedToken === token;
-                          const contractAddress = config.getContract()?.address;
+                          const contractAddress =
+                            config.getContract()?.address;
 
                           return (
                             <button
                               key={token}
                               onClick={() => setSelectedToken(token)}
-                              className={`w-full p-4 border rounded-xl flex items-center justify-between transition-all ${
+                              className={`w-full p-5 border-2 rounded-2xl flex items-center justify-between transition-all duration-300 ${
                                 isSelected
-                                  ? "border-green-500 bg-green-50"
-                                  : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+                                  ? "border-green-500 bg-gradient-to-r from-green-50 to-emerald-50 shadow-lg transform scale-[1.02]"
+                                  : "border-gray-200 hover:border-green-300 hover:bg-gray-50 hover:shadow-md"
                               }`}
                             >
-                              {/* 左侧：图标和代币信息 */}
-                              <div className="flex items-center gap-3">
+                                                              {/* 左侧：图标和代币信息 */}
+                              <div className="flex items-center gap-4">
                                 <div
-                                  className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
+                                  className={`w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg ${
                                     isSelected
-                                      ? "bg-green-200"
+                                      ? "bg-gradient-to-r from-green-100 to-emerald-100 ring-2 ring-green-500"
                                       : config.iconBg
                                   }`}
                                 >
                                   <img
                                     src={config.icon}
                                     alt={`${config.symbol} Logo`}
-                                    className="w-8 h-8 rounded-full object-cover"
+                                    className="w-9 h-9 rounded-xl object-cover"
                                   />
                                 </div>
                                 <div className="text-left">
                                   <div
-                                    className={`font-bold text-lg ${
+                                    className={`font-bold text-xl ${
                                       isSelected
                                         ? "text-green-700"
                                         : "text-gray-900"
@@ -338,22 +601,27 @@ const USDB = () => {
                                   >
                                     {config.symbol}
                                   </div>
-                                  <div className="text-sm text-gray-600">
+                                  <div className="text-sm text-gray-500 font-medium">
                                     {config.name}
                                   </div>
-                                  {/* 合约地址显示 */}
+                                                                      {/* 合约地址显示 */}
                                   {contractAddress && (
-                                    <div className="flex items-center gap-1 mt-1">
-                                      <span className="text-xs text-gray-500">
-                                        {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
-                                      </span>
+                                    <div className="flex items-center gap-2 mt-2">
+                                      <div className="bg-gray-100 rounded-md px-2 py-1">
+                                        <span className="text-xs text-gray-600 font-mono">
+                                          {contractAddress.slice(0, 6)}...
+                                          {contractAddress.slice(-4)}
+                                        </span>
+                                      </div>
                                       <button
                                         onClick={(e) => {
                                           e.stopPropagation();
-                                          navigator.clipboard.writeText(contractAddress);
+                                          navigator.clipboard.writeText(
+                                            contractAddress
+                                          );
                                           setCopiedAddress(contractAddress);
                                         }}
-                                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                                        className="p-1 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-all duration-200"
                                         title="Copy contract address"
                                       >
                                         {copiedAddress === contractAddress ? (
@@ -388,15 +656,15 @@ const USDB = () => {
                                       </button>
                                     </div>
                                   )}
+                                  </div>
                                 </div>
-                              </div>
 
-                              {/* 右侧：余额信息 */}
+                                                              {/* 右侧：余额信息 */}
                               <div className="text-right">
-                                {isConnected && balance ? (
+                                {isMounted && isConnected && balance ? (
                                   <>
                                     <div
-                                      className={`font-semibold ${
+                                      className={`font-bold text-lg ${
                                         isSelected
                                           ? "text-green-700"
                                           : "text-gray-900"
@@ -407,10 +675,10 @@ const USDB = () => {
                                           balance.value,
                                           balance.decimals
                                         )
-                                      ).toFixed(6)}
+                                      ).toFixed(4)}
                                     </div>
-                                    <div className="text-sm text-gray-500">
-                                      US$
+                                    <div className="text-sm text-gray-500 font-medium">
+                                      ≈ $
                                       {(
                                         parseFloat(
                                           formatUnits(
@@ -422,130 +690,204 @@ const USDB = () => {
                                     </div>
                                   </>
                                 ) : (
-                                  <div className="text-sm text-gray-400">
-                                    {isConnected ? "0.000000" : "-- --"}
+                                  <div className="text-sm text-gray-400 font-medium">
+                                    {isMounted && isConnected
+                                      ? "0.0000"
+                                      : "-- --"}
                                   </div>
                                 )}
 
                                 {/* 选中标记 */}
                                 {isSelected && (
-                                  <div className="mt-1">
-                                    <svg
-                                      className="w-4 h-4 text-green-600 ml-auto"
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
+                                  <div className="mt-2">
+                                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center ml-auto">
+                                      <svg
+                                        className="w-4 h-4 text-white"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                    </div>
                                   </div>
                                 )}
                               </div>
-                            </button>
-                          );
-                        })}
+                              </button>
+                            );
+                                                  })}
                       </div>
                     </div>
 
+                    {/* Token Information */}
+                    {isMounted && isConnected && tokenBalance && (
+                      <div className="bg-gray-50 rounded-xl p-4">
+                        <h4 className="font-semibold text-gray-800 mb-3">Selected Token Info</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Your Balance:</span>
+                            <span className="font-medium">
+                              {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)} {tokenConfigs[selectedToken]?.symbol}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">USD Value:</span>
+                            <span className="font-medium">
+                              ≈ ${(parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)) * 0.999).toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Exchange Rate:</span>
+                            <span className="font-medium">1:1 to USDB</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Deposit Amount & Actions */}
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-fit">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                      Deposit Amount
+                    </h3>
+
                     {/* 输入金额 */}
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Deposit Amount
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          value={amount}
-                          onChange={handleAmountChange}
-                          placeholder="0.0"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-lg"
-                          disabled={!isConnected}
-                        />
-                        <button
-                          onClick={handleMaxClick}
-                          disabled={!isConnected}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-600 hover:text-green-700 font-medium text-sm disabled:text-gray-400 disabled:cursor-not-allowed"
-                        >
-                          MAX
-                        </button>
+                    <div className="mb-4">
+                      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={amount}
+                            onChange={handleAmountChange}
+                            placeholder="0.0"
+                            className="w-full px-6 py-4 border-0 bg-white rounded-xl focus:ring-2 focus:ring-green-500 text-2xl font-bold text-gray-900 placeholder-gray-400 shadow-sm"
+                            disabled={!isMounted || !isConnected}
+                          />
+                          <button
+                            onClick={handleMaxClick}
+                            disabled={!isMounted || !isConnected}
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-sm rounded-lg hover:from-green-600 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-md"
+                          >
+                            MAX
+                          </button>
+                        </div>
+                        {tokenBalance && amount && (
+                          <div className="mt-3 flex justify-between text-sm text-gray-600">
+                            <span>Available: {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)}</span>
+                            <span>≈ ${(parseFloat(amount || "0") * 0.999).toFixed(2)}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* 操作按钮 */}
                     <div className="space-y-3">
-                      {isConnected ? (
+                      {isMounted && isConnected ? (
                         <>
                           {needsApproval() ? (
-                            <WriteButton
-                              data={{
-                                address: getTokenConfig()?.address,
-                                abi: getTokenConfig()?.abi,
-                                functionName: "approve",
-                                args: [
-                                  contracts[chainId]?.usdb?.address,
-                                  maxUint256,
-                                ],
-                              }}
-                              callback={() => {
-                                // Approve成功后刷新allowance
-                                refetchAllowance();
-                              }}
-                              className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center"
-                              buttonName="Approve"
-                            />
+                            <>
+                              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                    </svg>
+                                  </div>
+                                  <div>
+                                    <div className="font-semibold text-blue-800">Approval Required</div>
+                                    <div className="text-sm text-blue-700">First approve spending to proceed with deposit</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <WriteButton
+                                data={{
+                                  address: getTokenConfig()?.address,
+                                  abi: getTokenConfig()?.abi,
+                                  functionName: "approve",
+                                  args: [
+                                    contracts[chainId]?.usdb?.address,
+                                    maxUint256,
+                                  ],
+                                }}
+                                callback={() => {
+                                  // Approve成功后刷新allowance
+                                  refetchAllowance();
+                                }}
+                                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-2xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-300 text-center text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                                buttonName="Approve Token"
+                              />
+                            </>
                           ) : (
-                            <WriteButton
-                              data={{
-                                address: contracts[chainId]?.usdb?.address,
-                                abi: contracts[chainId]?.usdb?.abi,
-                                functionName: "deposit",
-                                args: [
-                                  getTokenConfig()?.address,
-                                  parseUnits(
-                                    amount || "0",
-                                    tokenBalance?.decimals || 18
-                                  ),
-                                ],
-                              }}
-                              callback={() => {
-                                setAmount("");
-                                // 刷新USDB余额和代币余额
-                                refetchUsdbBalance();
-                                refetchTokenBalance();
-                                // 延迟一下再刷新，确保链上状态已更新
-                                setTimeout(() => {
+                            <>
+                              {amount && (
+                                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                      </div>
+                                      <div>
+                                        <div className="font-semibold text-green-800">You will receive</div>
+                                        <div className="text-sm text-green-700">{amount} USDB tokens</div>
+                                      </div>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-lg font-bold text-green-800">{amount}</div>
+                                      <div className="text-xs text-green-600">USDB</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              <WriteButton
+                                data={{
+                                  address: contracts[chainId]?.usdb?.address,
+                                  abi: contracts[chainId]?.usdb?.abi,
+                                  functionName: "deposit",
+                                  args: [
+                                    getTokenConfig()?.address,
+                                    parseUnits(
+                                      amount || "0",
+                                      tokenBalance?.decimals || 18
+                                    ),
+                                  ],
+                                }}
+                                callback={() => {
+                                  setAmount("");
+                                  // 刷新USDB余额和代币余额
                                   refetchUsdbBalance();
                                   refetchTokenBalance();
-                                }, 2000);
-                              }}
-                              disabled={!isValidAmount()}
-                              className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 text-center"
-                              buttonName="Deposit"
-                            />
+                                  // 延迟一下再刷新，确保链上状态已更新
+                                  setTimeout(() => {
+                                    refetchUsdbBalance();
+                                    refetchTokenBalance();
+                                  }, 2000);
+                                }}
+                                disabled={!isValidAmount()}
+                                className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 cursor-pointer transition-all duration-300 text-center text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:hover:scale-100"
+                                buttonName="Buy USDB"
+                              />
+                            </>
                           )}
-
-                          {/* 提示信息 */}
-                          <div className="text-xs text-gray-500 text-center">
-                            {needsApproval()
-                              ? "First approve spending, then you can deposit to receive USDB tokens"
-                              : "You will receive USDB tokens equivalent to your deposit"}
-                          </div>
                         </>
                       ) : (
                         <>
                           <button
                             onClick={privyLogin}
-                            className="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                            className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                           >
-                            Connect Wallet
+                            Connect Wallet to Start
                           </button>
                           
                           {/* 提示信息 */}
-                          <div className="text-xs text-gray-500 text-center">
-                            Connect your wallet to deposit and receive USDB tokens
+                          <div className="text-center">
+                            <div className="text-sm text-gray-600">
+                              Connect your wallet to deposit and receive USDB tokens
+                            </div>
                           </div>
                         </>
                       )}
@@ -553,541 +895,1003 @@ const USDB = () => {
                   </div>
                 </div>
               </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* USDB Holdings Section */}
-        {isConnected && (
-          <div className="py-16 bg-gradient-to-r from-green-50 to-emerald-50">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Your USDB Holdings
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Current balance in your wallet
-                </p>
-
-                <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl p-6 mb-6">
-                  <div className="flex items-center justify-center gap-4">
-                    <div className="w-12 h-12">
+          {/* sUSDB Section */}
+          {isMounted && (
+            <div id="susdb-section" className="py-16 bg-gradient-to-r from-purple-50 to-indigo-50">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center p-2">
                       <img
-                        src="/usdb.png"
-                        alt="USDB Logo"
-                        className="w-full h-full drop-shadow-md"
+                        src="/susdb.png"
+                        alt="sUSDB Logo"
+                        className="w-full h-full object-contain"
                       />
                     </div>
-                    <div className="text-left">
-                      <div className="text-3xl font-bold text-gray-900">
-                        {usdbBalance
-                          ? formatUsdbAmount(usdbBalance.value)
-                          : "0.00"}
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      sUSDB - Staked USDB
+                    </h2>
+                  </div>
+                  <p className="text-gray-600">
+                    Stake your USDB to earn additional rewards with flexible
+                    withdrawal options
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* sUSDB Balance & Rewards */}
+                  <div className="lg:col-span-1">
+                    {/* Balance Overview */}
+                    <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                        Your sUSDB Portfolio
+                      </h3>
+
+                      {/* sUSDB Balance */}
+                      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-5 mb-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center p-2">
+                              <img
+                                src="/susdb.png"
+                                alt="sUSDB Logo"
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <div>
+                              <div className="text-2xl font-bold text-gray-900">
+                                {sUSDBBalance
+                                  ? formatUsdbAmount(sUSDBBalance.value)
+                                  : "0.00"}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                sUSDB Balance
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-semibold text-purple-600">
+                              ≈ $
+                              {sUSDBBalance
+                                ? formatUsdbAmount(sUSDBBalance.value)
+                                : "0.00"}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              USD Value
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600">USDB</div>
+
+                      {/* Pending Rewards */}
+                      <div className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-5 mb-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center p-2">
+                              <img
+                                src="/usdb.png"
+                                alt="USDB Rewards Logo"
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <div>
+                              <div className="text-xl font-bold text-gray-900">
+                                {pendingRewards
+                                  ? formatUsdbAmount(pendingRewards)
+                                  : "0.00"}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                Pending USDB Rewards
+                              </div>
+                            </div>
+                          </div>
+                          <WriteButton
+                            data={{
+                              address: contracts[chainId]?.sUSDB?.address,
+                              abi: contracts[chainId]?.sUSDB?.abi,
+                              functionName: "claimRewards",
+                              args: [],
+                            }}
+                            callback={() => {
+                              refetchSUSDBBalance();
+                              refetchUsdbBalance();
+                              refetchPendingRewards();
+                            }}
+                            disabled={!pendingRewards || pendingRewards <= 0}
+                            className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 cursor-pointer text-sm shadow-lg"
+                            buttonName="Claim"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Quick Stats */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-gray-50 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-green-600">
+                            5%+
+                          </div>
+                          <div className="text-xs text-gray-600">Base APY</div>
+                        </div>
+                        <div className="bg-gray-50 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-purple-600">
+                            24/7
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Auto Rewards
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Active Withdrawals */}
+                    {activeWithdrawals &&
+                      activeWithdrawals[0] &&
+                      activeWithdrawals[0].length > 0 && (
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                            Active Withdrawals
+                          </h3>
+                          <div className="space-y-3">
+                            {activeWithdrawals[0].map((withdrawal, index) => {
+                              const requestIndex = activeWithdrawals[1][index];
+                              const unlockTime =
+                                Number(withdrawal.unlockTime) * 1000;
+                              const now = Date.now();
+                              const canExecute = now >= unlockTime;
+                              const timeLeft = unlockTime - now;
+
+                              return (
+                                <div
+                                  key={index}
+                                  className="bg-gray-50 rounded-lg p-3"
+                                >
+                                  <div className="flex justify-between items-center mb-2">
+                                    <span className="font-medium">
+                                      {formatUsdbAmount(withdrawal.amount)}{" "}
+                                      sUSDB
+                                    </span>
+                                    <span
+                                      className={`text-sm px-2 py-1 rounded ${
+                                        canExecute
+                                          ? "bg-green-100 text-green-800"
+                                          : "bg-yellow-100 text-yellow-800"
+                                      }`}
+                                    >
+                                      {canExecute
+                                        ? "Ready"
+                                        : `${Math.ceil(
+                                            timeLeft / (1000 * 60 * 60 * 24)
+                                          )} days left`}
+                                    </span>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    {canExecute ? (
+                                      <WriteButton
+                                        data={{
+                                          address:
+                                            contracts[chainId]?.sUSDB?.address,
+                                          abi: contracts[chainId]?.sUSDB?.abi,
+                                          functionName: "executeWithdrawal",
+                                          args: [requestIndex],
+                                        }}
+                                        callback={() => {
+                                          refetchSUSDBBalance();
+                                          refetchUsdbBalance();
+                                          refetchActiveWithdrawals();
+                                          refetchPendingRewards();
+                                        }}
+                                        className="flex-1 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 cursor-pointer text-sm text-center"
+                                        buttonName="Execute"
+                                      />
+                                    ) : null}
+                                    <WriteButton
+                                      data={{
+                                        address:
+                                          contracts[chainId]?.sUSDB?.address,
+                                        abi: contracts[chainId]?.sUSDB?.abi,
+                                        functionName: "cancelWithdrawal",
+                                        args: [requestIndex],
+                                      }}
+                                      callback={() => {
+                                        refetchSUSDBBalance();
+                                        refetchActiveWithdrawals();
+                                        refetchPendingRewards();
+                                      }}
+                                      className="flex-1 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 cursor-pointer text-sm text-center"
+                                      buttonName="Cancel"
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="lg:col-span-1">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg">
+                      {/* Tab Navigation */}
+                      <div className="flex border-b border-gray-200 mb-6">
+                        <button
+                          onClick={() => setActiveTab("deposit")}
+                          className={`flex-1 py-3 font-medium border-b-2 transition-colors text-center ${
+                            activeTab === "deposit"
+                              ? "border-purple-500 text-purple-600 bg-purple-50"
+                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <svg
+                              className="w-4 h-4"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Deposit
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => setActiveTab("withdraw")}
+                          className={`flex-1 py-3 font-medium border-b-2 transition-colors text-center ${
+                            activeTab === "withdraw"
+                              ? "border-purple-500 text-purple-600 bg-purple-50"
+                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <svg
+                              className="w-4 h-4"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Withdraw
+                          </div>
+                        </button>
+                      </div>
+
+                      {/* Deposit Tab */}
+                      {activeTab === "deposit" && (
+                        <div>
+                          <div className="text-center mb-6">
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                              <h3 className="text-xl font-semibold text-gray-900">
+                                Deposit USDB →
+                              </h3>
+                              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
+                                <img
+                                  src="/susdb.png"
+                                  alt="sUSDB Logo"
+                                  className="w-full h-full object-contain"
+                                />
+                              </div>
+                              <h3 className="text-xl font-semibold text-gray-900">
+                                sUSDB
+                              </h3>
+                            </div>
+                            <p className="text-gray-600 text-sm">
+                              1:1 exchange ratio • Start earning USDB rewards
+                              automatically
+                            </p>
+                          </div>
+
+                          {/* Amount Input Card */}
+                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                            <div className="flex justify-between items-center mb-2">
+                              <label className="text-sm font-medium text-gray-700">
+                                Amount to Deposit
+                              </label>
+                              <div className="text-sm text-gray-500">
+                                Available:{" "}
+                                {usdbBalance
+                                  ? formatUsdbAmount(usdbBalance.value)
+                                  : "0.00"}{" "}
+                                USDB
+                              </div>
+                            </div>
+                            <div className="relative">
+                              <input
+                                type="text"
+                                value={sUSDBAmount}
+                                onChange={handleSUSDBAmountChange}
+                                placeholder="0.0"
+                                disabled={!isMounted || !isConnected}
+                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-purple-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                              />
+                              <button
+                                onClick={handleSUSDBMaxClick}
+                                disabled={!isMounted || !isConnected}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-purple-100 text-purple-600 hover:bg-purple-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                              >
+                                MAX
+                              </button>
+                            </div>
+                            {sUSDBAmount && (
+                              <div className="mt-2 text-sm text-gray-600">
+                                You will receive: {sUSDBAmount} sUSDB
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="space-y-4">
+                            {isMounted && isConnected ? (
+                              <>
+                                {needsUSDBApproval() ? (
+                              <>
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                  <div className="flex items-center gap-2 text-blue-800 text-sm">
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    First approve USDB spending to proceed with
+                                    deposit
+                                  </div>
+                                </div>
+                                <WriteButton
+                                  data={{
+                                    address: contracts[chainId]?.usdb?.address,
+                                    abi: contracts[chainId]?.usdb?.abi,
+                                    functionName: "approve",
+                                    args: [
+                                      contracts[chainId]?.sUSDB?.address,
+                                      maxUint256,
+                                    ],
+                                  }}
+                                  callback={() => {
+                                    refetchUSDBAllowance();
+                                  }}
+                                  className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center shadow-lg"
+                                  buttonName="Approve USDB"
+                                />
+                              </>
+                            ) : (
+                              <WriteButton
+                                data={{
+                                  address: contracts[chainId]?.sUSDB?.address,
+                                  abi: contracts[chainId]?.sUSDB?.abi,
+                                  functionName: "deposit",
+                                  args: [
+                                    parseUnits(
+                                      sUSDBAmount || "0",
+                                      usdbBalance?.decimals || 6
+                                    ),
+                                  ],
+                                }}
+                                callback={() => {
+                                  setSUSDBAmount("");
+                                  refetchSUSDBBalance();
+                                  refetchUsdbBalance();
+                                  refetchPendingRewards();
+                                }}
+                                disabled={!isValidSUSDBAmount()}
+                                className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg"
+                                buttonName="Deposit & Start Earning"
+                              />
+                            )}
+                              </>
+                            ) : (
+                              <button
+                                onClick={privyLogin}
+                                className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-200 text-center shadow-lg"
+                              >
+                                Connect Wallet to Start Staking
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Withdraw Tab */}
+                      {activeTab === "withdraw" && (
+                        <div>
+                          <div className="text-center mb-6">
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                              Request Withdrawal
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                              7-day waiting period • Cancel anytime to restore
+                              sUSDB
+                            </p>
+                          </div>
+
+                          {/* Amount Input Card */}
+                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                            <div className="flex justify-between items-center mb-2">
+                              <label className="text-sm font-medium text-gray-700">
+                                Amount to Withdraw
+                              </label>
+                              <div className="text-sm text-gray-500">
+                                Available:{" "}
+                                {sUSDBBalance
+                                  ? formatUsdbAmount(sUSDBBalance.value)
+                                  : "0.00"}{" "}
+                                sUSDB
+                              </div>
+                            </div>
+                            <div className="relative">
+                              <input
+                                type="text"
+                                value={withdrawAmount}
+                                onChange={handleWithdrawAmountChange}
+                                placeholder="0.0"
+                                disabled={!isMounted || !isConnected}
+                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-red-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                              />
+                              <button
+                                onClick={handleWithdrawMaxClick}
+                                disabled={!isMounted || !isConnected}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-red-100 text-red-600 hover:bg-red-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                              >
+                                MAX
+                              </button>
+                            </div>
+                            {withdrawAmount && (
+                              <div className="mt-2 text-sm text-gray-600">
+                                You will receive: {withdrawAmount} USDB (after 7
+                                days)
+                              </div>
+                            )}
+                          </div>
+
+                          {isMounted && isConnected ? (
+                            <WriteButton
+                              data={{
+                                address: contracts[chainId]?.sUSDB?.address,
+                                abi: contracts[chainId]?.sUSDB?.abi,
+                                functionName: "requestWithdrawal",
+                                args: [
+                                  parseUnits(
+                                    withdrawAmount || "0",
+                                    sUSDBBalance?.decimals || 6
+                                  ),
+                                ],
+                              }}
+                              callback={() => {
+                                setWithdrawAmount("");
+                                refetchSUSDBBalance();
+                                refetchActiveWithdrawals();
+                                refetchPendingRewards();
+                              }}
+                              disabled={!isValidWithdrawAmount()}
+                              className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg mb-4"
+                              buttonName="Request Withdrawal"
+                            />
+                          ) : (
+                            <button
+                              onClick={privyLogin}
+                              className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 transition-all duration-200 text-center shadow-lg mb-4"
+                            >
+                              Connect Wallet to Withdraw
+                            </button>
+                          )}
+
+                          <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                            <div className="flex items-start gap-3">
+                              <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center mt-0.5">
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                              <div>
+                                <h4 className="font-semibold text-amber-800 mb-1">
+                                  Important Notes
+                                </h4>
+                                <ul className="text-sm text-amber-700 space-y-1">
+                                  <li>
+                                    • 7-day waiting period before execution
+                                  </li>
+                                  <li>
+                                    • Cancel anytime to restore your sUSDB
+                                  </li>
+                                  <li>
+                                    • Rewards stop accruing during withdrawal
+                                    period
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-
-                {/* 估算收益 */}
-                {usdbBalance &&
-                  parseFloat(formatUsdbAmount(usdbBalance.value)) > 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4">
-                        <div className="text-lg font-semibold text-green-700">
-                          ~
-                          {(
-                            parseFloat(formatUsdbAmount(usdbBalance.value)) *
-                            0.05
-                          ).toFixed(2)}{" "}
-                          USDB
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          Estimated Annual Yield (5%)
-                        </div>
-                      </div>
-                      <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4">
-                        <div className="text-lg font-semibold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                          BBB Rewards
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          10-1000% Additional Rewards
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                {/* Stake按钮 */}
-                <div className="mt-6">
-                  <button
-                    onClick={() => router.push("/stake#usdb")}
-                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
-                  >
-                    Stake USDB
-                  </button>
-                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* What is USDB Section */}
-        <div className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                What is USDB?
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                USDB is an innovative synthetic USD solution providing stability
-                and yield for digital currencies
-              </p>
-            </div>
+          {/* What is USDB Section */}
+          <div className="py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                  What is USDB?
+                </h2>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  USDB is an innovative synthetic USD solution providing
+                  stability and yield for digital currencies
+                </p>
+              </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    Synthetic USD Solution
-                  </h3>
-                  <p className="text-gray-600">
-                    USDB provides a crypto-native scalable solution for currency
-                    through advanced delta hedging strategies implementing risk
-                    management across major digital assets.
-                  </p>
-                </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      Synthetic USD Solution
+                    </h3>
+                    <p className="text-gray-600">
+                      USDB provides a crypto-native scalable solution for
+                      currency through advanced delta hedging strategies
+                      implementing risk management across major digital assets.
+                    </p>
+                  </div>
 
-                <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-2xl">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    Delta Hedging Strategy
-                  </h3>
-                  <p className="text-gray-600">
-                    Uses perpetual contracts and deliverable futures to hedge
-                    Bitcoin, Ethereum, and Solana spot assets while holding
-                    liquid stablecoins like USDC, USDT, USDe, and USDtb.
-                  </p>
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-gray-700">
-                        <strong>80% of funds</strong> allocated for arbitrage
-                        opportunities
-                      </span>
+                  <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      Delta Hedging Strategy
+                    </h3>
+                    <p className="text-gray-600">
+                      Uses perpetual contracts and deliverable futures to hedge
+                      Bitcoin, Ethereum, and Solana spot assets while holding
+                      liquid stablecoins like USDC, USDT, USDe, and USDtb.
+                    </p>
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span className="text-sm text-gray-700">
+                          <strong>80% of funds</strong> allocated for arbitrage
+                          opportunities
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                        <span className="text-sm text-gray-700">
+                          <strong>20% of funds</strong> reserved for liquidity
+                          provision
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                      <span className="text-sm text-gray-700">
-                        <strong>20% of funds</strong> reserved for liquidity
-                        provision
-                      </span>
-                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      Yield Generation
+                    </h3>
+                    <p className="text-gray-600">
+                      Backing assets generate funding through hedged perpetual
+                      contracts and stablecoin rewards, creating sustainable
+                      yields for holders.
+                    </p>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    Yield Generation
-                  </h3>
-                  <p className="text-gray-600">
-                    Backing assets generate funding through hedged perpetual
-                    contracts and stablecoin rewards, creating sustainable
-                    yields for holders.
-                  </p>
-                </div>
-              </div>
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-8 rounded-3xl">
+                    <svg viewBox="0 0 400 300" className="w-full h-auto">
+                      <defs>
+                        <linearGradient
+                          id="coinGradient"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="100%"
+                        >
+                          <stop
+                            offset="0%"
+                            style={{ stopColor: "#10b981", stopOpacity: 1 }}
+                          />
+                          <stop
+                            offset="100%"
+                            style={{ stopColor: "#059669", stopOpacity: 1 }}
+                          />
+                        </linearGradient>
+                      </defs>
 
-              <div className="relative">
-                <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-8 rounded-3xl">
-                  <svg viewBox="0 0 400 300" className="w-full h-auto">
-                    <defs>
-                      <linearGradient
-                        id="coinGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
+                      {/* Central USDB */}
+                      <circle
+                        cx="200"
+                        cy="150"
+                        r="40"
+                        fill="url(#coinGradient)"
+                        opacity="0.9"
                       >
-                        <stop
-                          offset="0%"
-                          style={{ stopColor: "#10b981", stopOpacity: 1 }}
+                        <animate
+                          attributeName="r"
+                          values="40;45;40"
+                          dur="3s"
+                          repeatCount="indefinite"
                         />
-                        <stop
-                          offset="100%"
-                          style={{ stopColor: "#059669", stopOpacity: 1 }}
+                      </circle>
+                      <text
+                        x="200"
+                        y="155"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="16"
+                        fontWeight="bold"
+                      >
+                        USDB
+                      </text>
+
+                      {/* Surrounding assets */}
+                      {/* Bitcoin */}
+                      <circle
+                        cx="120"
+                        cy="80"
+                        r="25"
+                        fill="#f7931a"
+                        opacity="0.8"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          values="0 120 80;360 120 80"
+                          dur="8s"
+                          repeatCount="indefinite"
                         />
-                      </linearGradient>
-                    </defs>
+                      </circle>
+                      <text
+                        x="120"
+                        y="85"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="12"
+                        fontWeight="bold"
+                      >
+                        BTC
+                      </text>
 
-                    {/* Central USDB */}
-                    <circle
-                      cx="200"
-                      cy="150"
-                      r="40"
-                      fill="url(#coinGradient)"
-                      opacity="0.9"
-                    >
-                      <animate
-                        attributeName="r"
-                        values="40;45;40"
-                        dur="3s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="200"
-                      y="155"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="16"
-                      fontWeight="bold"
-                    >
-                      USDB
-                    </text>
+                      {/* Ethereum */}
+                      <circle
+                        cx="280"
+                        cy="80"
+                        r="25"
+                        fill="#627eea"
+                        opacity="0.8"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          values="0 280 80;-360 280 80"
+                          dur="6s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      <text
+                        x="280"
+                        y="85"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="12"
+                        fontWeight="bold"
+                      >
+                        ETH
+                      </text>
 
-                    {/* Surrounding assets */}
-                    {/* Bitcoin */}
-                    <circle
-                      cx="120"
-                      cy="80"
-                      r="25"
-                      fill="#f7931a"
-                      opacity="0.8"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        values="0 120 80;360 120 80"
-                        dur="8s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="120"
-                      y="85"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="12"
-                      fontWeight="bold"
-                    >
-                      BTC
-                    </text>
+                      {/* Solana */}
+                      <circle
+                        cx="320"
+                        cy="200"
+                        r="25"
+                        fill="#9945ff"
+                        opacity="0.8"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          values="0 320 200;360 320 200"
+                          dur="7s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      <text
+                        x="320"
+                        y="205"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="12"
+                        fontWeight="bold"
+                      >
+                        SOL
+                      </text>
 
-                    {/* Ethereum */}
-                    <circle
-                      cx="280"
-                      cy="80"
-                      r="25"
-                      fill="#627eea"
-                      opacity="0.8"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        values="0 280 80;-360 280 80"
-                        dur="6s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="280"
-                      y="85"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="12"
-                      fontWeight="bold"
-                    >
-                      ETH
-                    </text>
+                      {/* Stablecoins */}
+                      <circle
+                        cx="80"
+                        cy="200"
+                        r="20"
+                        fill="#2775ca"
+                        opacity="0.8"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          values="0 80 200;-360 80 200"
+                          dur="5s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      <text
+                        x="80"
+                        y="205"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="10"
+                        fontWeight="bold"
+                      >
+                        USDC
+                      </text>
 
-                    {/* Solana */}
-                    <circle
-                      cx="320"
-                      cy="200"
-                      r="25"
-                      fill="#9945ff"
-                      opacity="0.8"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        values="0 320 200;360 320 200"
-                        dur="7s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="320"
-                      y="205"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="12"
-                      fontWeight="bold"
-                    >
-                      SOL
-                    </text>
+                      <circle
+                        cx="200"
+                        cy="250"
+                        r="20"
+                        fill="#26a17b"
+                        opacity="0.8"
+                      >
+                        <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          values="0 200 250;360 200 250"
+                          dur="4s"
+                          repeatCount="indefinite"
+                        />
+                      </circle>
+                      <text
+                        x="200"
+                        y="255"
+                        textAnchor="middle"
+                        fill="white"
+                        fontSize="10"
+                        fontWeight="bold"
+                      >
+                        USDT
+                      </text>
 
-                    {/* Stablecoins */}
-                    <circle
-                      cx="80"
-                      cy="200"
-                      r="20"
-                      fill="#2775ca"
-                      opacity="0.8"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        values="0 80 200;-360 80 200"
-                        dur="5s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="80"
-                      y="205"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="10"
-                      fontWeight="bold"
-                    >
-                      USDC
-                    </text>
-
-                    <circle
-                      cx="200"
-                      cy="250"
-                      r="20"
-                      fill="#26a17b"
-                      opacity="0.8"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        values="0 200 250;360 200 250"
-                        dur="4s"
-                        repeatCount="indefinite"
-                      />
-                    </circle>
-                    <text
-                      x="200"
-                      y="255"
-                      textAnchor="middle"
-                      fill="white"
-                      fontSize="10"
-                      fontWeight="bold"
-                    >
-                      USDT
-                    </text>
-
-                    {/* Connection lines */}
-                    <line
-                      x1="160"
-                      y1="120"
-                      x2="120"
-                      y2="80"
-                      stroke="#10b981"
-                      strokeWidth="2"
-                      opacity="0.5"
-                    >
-                      <animate
-                        attributeName="opacity"
-                        values="0.3;0.8;0.3"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      />
-                    </line>
-                    <line
-                      x1="240"
-                      y1="120"
-                      x2="280"
-                      y2="80"
-                      stroke="#10b981"
-                      strokeWidth="2"
-                      opacity="0.5"
-                    >
-                      <animate
-                        attributeName="opacity"
-                        values="0.8;0.3;0.8"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      />
-                    </line>
-                    <line
-                      x1="240"
-                      y1="180"
-                      x2="320"
-                      y2="200"
-                      stroke="#059669"
-                      strokeWidth="2"
-                      opacity="0.5"
-                    >
-                      <animate
-                        attributeName="opacity"
-                        values="0.3;0.8;0.3"
-                        dur="2.5s"
-                        repeatCount="indefinite"
-                      />
-                    </line>
-                    <line
-                      x1="160"
-                      y1="180"
-                      x2="80"
-                      y2="200"
-                      stroke="#059669"
-                      strokeWidth="2"
-                      opacity="0.5"
-                    >
-                      <animate
-                        attributeName="opacity"
-                        values="0.8;0.3;0.8"
-                        dur="2.5s"
-                        repeatCount="indefinite"
-                      />
-                    </line>
-                    <line
-                      x1="200"
-                      y1="190"
-                      x2="200"
-                      y2="230"
-                      stroke="#10b981"
-                      strokeWidth="2"
-                      opacity="0.5"
-                    >
-                      <animate
-                        attributeName="opacity"
-                        values="0.5;1;0.5"
-                        dur="1.5s"
-                        repeatCount="indefinite"
-                      />
-                    </line>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* How to Participate Section */}
-        <div className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                How to Participate
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Start earning USDB yields in three simple steps
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-white font-bold text-2xl">1</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Connect Wallet
-                </h3>
-                <p className="text-gray-600">
-                  Connect your Web3 wallet to the BBBPump platform, supporting
-                  multiple mainstream wallets.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-white font-bold text-2xl">2</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Choose Amount
-                </h3>
-                <p className="text-gray-600">
-                  Enter the amount of USDB you want to stake, and the system
-                  will display expected yield rates and BBB rewards.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-white font-bold text-2xl">3</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Start Earning
-                </h3>
-                <p className="text-gray-600">
-                  Confirm the transaction and immediately start earning 5%+ base
-                  yields and BBB token rewards.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center mt-12">
-              <button
-                onClick={() => router.push("/stake#usdb")}
-                className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
-              >
-                {isConnected
-                  ? "Start Participating"
-                  : "Connect Wallet to Participate"}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="py-20 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl text-gray-600">
-                Common questions and answers about USDB
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {faqData.map((faq, index) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl overflow-hidden"
-                >
-                  <button
-                    onClick={() => toggleFaq(index)}
-                    className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-green-100 transition-colors"
-                  >
-                    <span className="font-semibold text-gray-900">
-                      {faq.question}
-                    </span>
-                    <svg
-                      className={`w-5 h-5 text-green-600 transform transition-transform ${
-                        data.expandedFaq === index ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
+                      {/* Connection lines */}
+                      <line
+                        x1="160"
+                        y1="120"
+                        x2="120"
+                        y2="80"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        opacity="0.5"
+                      >
+                        <animate
+                          attributeName="opacity"
+                          values="0.3;0.8;0.3"
+                          dur="2s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                      <line
+                        x1="240"
+                        y1="120"
+                        x2="280"
+                        y2="80"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        opacity="0.5"
+                      >
+                        <animate
+                          attributeName="opacity"
+                          values="0.8;0.3;0.8"
+                          dur="2s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                      <line
+                        x1="240"
+                        y1="180"
+                        x2="320"
+                        y2="200"
+                        stroke="#059669"
+                        strokeWidth="2"
+                        opacity="0.5"
+                      >
+                        <animate
+                          attributeName="opacity"
+                          values="0.3;0.8;0.3"
+                          dur="2.5s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                      <line
+                        x1="160"
+                        y1="180"
+                        x2="80"
+                        y2="200"
+                        stroke="#059669"
+                        strokeWidth="2"
+                        opacity="0.5"
+                      >
+                        <animate
+                          attributeName="opacity"
+                          values="0.8;0.3;0.8"
+                          dur="2.5s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
+                      <line
+                        x1="200"
+                        y1="190"
+                        x2="200"
+                        y2="230"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        opacity="0.5"
+                      >
+                        <animate
+                          attributeName="opacity"
+                          values="0.5;1;0.5"
+                          dur="1.5s"
+                          repeatCount="indefinite"
+                        />
+                      </line>
                     </svg>
-                  </button>
-                  {data.expandedFaq === index && (
-                    <div className="px-6 pb-4">
-                      <p className="text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              ))}
+              </div>
+            </div>
+          </div>
+
+          {/* How to Participate Section */}
+          <div className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                  How to Participate
+                </h2>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Start earning USDB yields in three simple steps
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white font-bold text-2xl">1</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    Connect Wallet
+                  </h3>
+                  <p className="text-gray-600">
+                    Connect your Web3 wallet to the BBBPump platform, supporting
+                    multiple mainstream wallets.
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white font-bold text-2xl">2</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    Get USDB & Convert to sUSDB
+                  </h3>
+                  <p className="text-gray-600">
+                    First buy USDB with stablecoins, then convert your USDB to
+                    sUSDB. Holding sUSDB automatically earns you additional USDB
+                    rewards.
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-white font-bold text-2xl">3</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    Start Earning
+                  </h3>
+                  <p className="text-gray-600">
+                    Confirm the transaction and immediately start earning 5%+
+                    base yields. Your sUSDB automatically accumulates USDB
+                    rewards.
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-center mt-12">
+                <button
+                  onClick={() => router.push("/stake#usdb")}
+                  className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
+                >
+                  {isMounted && isConnected
+                    ? "Start Participating"
+                    : "Connect Wallet to Participate"}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="py-20 bg-white">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                  Frequently Asked Questions
+                </h2>
+                <p className="text-xl text-gray-600">
+                  Common questions and answers about USDB
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {faqData.map((faq, index) => (
+                  <div
+                    key={index}
+                    className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl overflow-hidden"
+                  >
+                    <button
+                      onClick={() => toggleFaq(index)}
+                      className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-green-100 transition-colors"
+                    >
+                      <span className="font-semibold text-gray-900">
+                        {faq.question}
+                      </span>
+                      <svg
+                        className={`w-5 h-5 text-green-600 transform transition-transform ${
+                          data.expandedFaq === index ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+                    {data.expandedFaq === index && (
+                      <div className="px-6 pb-4">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 

@@ -13,8 +13,8 @@ import XDCStakeABI from "../abi/XDCStakeABI.json";
 import USDBABI from "../abi/USDBABI.json";
 import USDBStakeABI from "../abi/USDBStakeABI.json";
 import BBBubuABI from "../abi/BBBubuABI.json";
-
-
+import mTransferABI from "../abi/mTransferABI.json";
+import sUSDBABI from "../abi/sUSDBABI.json";
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const dexLink = "/swap/bbb";
@@ -169,72 +169,11 @@ export const contracts = {
     },
     multitransfer: {
       address: "0x79F963CdE9940B4D816bf10881716644cBc9B664",
-      abi: [
-        {
-          "inputs": [
-            {
-              "internalType": "address[]",
-              "name": "tos",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "amts",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "batchTransferEther",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "nftContract",
-              "type": "address"
-            },
-            {
-              "internalType": "address[]",
-              "name": "recipients",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "batchTransferNFT",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "internalType": "address[]",
-              "name": "tos",
-              "type": "address[]"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "amts",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "batchTransferToken",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ],
+      abi: mTransferABI,
+    },
+    sUSDB: {
+      address: "0x6983A62EbEB76799c2bcAb8eF10F36Ea91c6Cfc1",
+      abi: sUSDBABI,
     },
   },
 };

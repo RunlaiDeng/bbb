@@ -87,7 +87,7 @@ const WriteButton = (props) => {
         disabled={
           (props?.disabled || !write || isLoading || isStarted || !props?.data) && !txSuccess
         }
-        style={{ minWidth: 112 }}
+        style={{ minWidth: 112, cursor: 'pointer' }}
         onClick={async () => {
           if (!isConnected) {
             alert("please connect wallet");
