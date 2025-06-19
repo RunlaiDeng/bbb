@@ -19,10 +19,7 @@ const BBBubu = () => {
     selectedTokenIds: [],
     selectedTransferTokenIds: [],
     transferAddress: "",
-    currentImageIndex: 0,
-    backgroundImages: [],
     imageLoading: true,
-    imagesPreloaded: {},
     farmImageLoading: {},
     bbbubuImageLoading: {},
     showSwapModal: false,
@@ -37,71 +34,20 @@ const BBBubu = () => {
     longPressInterval: null,
   });
 
-  // Generate random images and start fast rotation
+  // Single image loading effect
   useEffect(() => {
-    const getRandomImages = () => {
-      const count = 5;
-      const images = [];
-      for (let i = 0; i < count; i++) {
-        const randomId = Math.floor(Math.random() * 10000);
-        images.push(`https://benybadboy.b-cdn.net/bbbhero/${randomId}.jpg`);
-      }
-      return images;
-    };
-
-    const images = getRandomImages();
+    // Use a default image or specific image
+    const staticImage = "/bbbubu.gif"; // You can change this to any specific image
     
-    // Preload all images
-    const preloadImages = async () => {
-      const preloadPromises = images.map((src, index) => {
-        return new Promise((resolve) => {
-          const img = new window.Image();
-          img.onload = () => {
-            setData(prev => ({
-              ...prev,
-              imagesPreloaded: {
-                ...prev.imagesPreloaded,
-                [index]: true
-              }
-            }));
-            resolve();
-          };
-          img.onerror = () => {
-            setData(prev => ({
-              ...prev,
-              imagesPreloaded: {
-                ...prev.imagesPreloaded,
-                [index]: true
-              }
-            }));
-            resolve();
-          };
-          img.src = src;
-        });
-      });
-
-      // Wait for first image to load before hiding loading state
-      await preloadPromises[0];
+    // Preload the static image
+    const img = new window.Image();
+    img.onload = () => {
       setData(prev => ({ ...prev, imageLoading: false }));
     };
-
-    setData((prev) => ({ 
-      ...prev, 
-      backgroundImages: images,
-      imageLoading: true,
-      imagesPreloaded: {}
-    }));
-
-    preloadImages();
-
-    const interval = setInterval(() => {
-      setData((prev) => ({
-        ...prev,
-        currentImageIndex: (prev.currentImageIndex + 1) % images.length,
-      }));
-    }, 200);
-
-    return () => clearInterval(interval);
+    img.onerror = () => {
+      setData(prev => ({ ...prev, imageLoading: false }));
+    };
+    img.src = staticImage;
   }, []);
 
   // Contract addresses
@@ -624,26 +570,19 @@ const BBBubu = () => {
               <div className="animate-spin text-6xl">🥕</div>
             </div>
           )}
-          {data.backgroundImages.length > 0 && (
-            <Image
-              src={data.backgroundImages[data.currentImageIndex]}
-              alt="BBBubu NFT"
-              fill
-              className="object-cover transition-opacity duration-200"
-              priority
-              style={{
-                opacity: data.imagesPreloaded[data.currentImageIndex] ? 1 : 0.8
-              }}
-              onError={(e) => {
-                e.target.src = "/bbb.jpg";
-              }}
-            />
-          )}
-          {!data.imageLoading && data.backgroundImages.length === 0 && (
-            <div className="h-full flex items-center justify-center">
-              <span className="text-gray-500 text-2xl">Image</span>
-            </div>
-          )}
+          <Image
+            src="/bbbubu.gif"
+            alt="BBBubu NFT"
+            fill
+            className="object-cover"
+            priority
+            style={{
+              opacity: data.imageLoading ? 0.8 : 1
+            }}
+            onError={(e) => {
+              e.target.src = "/bbb.jpg";
+            }}
+          />
         </div>
 
         {/* Information Section */}
