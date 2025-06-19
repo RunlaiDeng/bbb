@@ -155,6 +155,12 @@ const Navbar = () => {
                   >
                     USDB
                   </Link>
+                  <Link
+                    href={"/lend"}
+                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                  >
+                    Lend
+                  </Link>
 
                   <div className="dropdown dropdown-hover font-bold">
                     <div

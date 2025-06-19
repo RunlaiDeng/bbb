@@ -275,6 +275,38 @@ const MobileNav = () => {
             </div>
             <span className="ml-3 font-medium">bpsXDC</span>
           </Link>
+
+          <Link
+            href="/lend"
+            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+              router.pathname === "/lend" 
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
+                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+            }`}
+          >
+            <div className={`p-2 rounded-xl ${
+              router.pathname === "/lend" ? "bg-green-100" : "bg-gray-100"
+            }`}>
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 10V14M10 12H14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <span className="ml-3 font-medium">Lend</span>
+          </Link>
         </div>
       </div>
       
@@ -403,7 +435,8 @@ const MobileNav = () => {
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/bbbstake" ||
-            router.pathname === "/bpsXDC"
+            router.pathname === "/bpsXDC" ||
+            router.pathname === "/lend"
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
@@ -415,7 +448,8 @@ const MobileNav = () => {
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/bbbstake" ||
-            router.pathname === "/bpsXDC" ? "bg-green-100" : "bg-transparent"
+            router.pathname === "/bpsXDC" ||
+            router.pathname === "/lend" ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg
               viewBox="0 0 1024 1024"
