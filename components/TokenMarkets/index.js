@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 import { useRouter } from "next/router";
 import { getPool, handleSrc } from "../Utils";
-import { bbbInfo, contracts } from "@/config";
+import { bbbInfo, usdbInfo, contracts, markets } from "@/config";
 import { useFollow } from "../Context/follow";
 import { useChainId, useReadContracts } from "wagmi";
 import Image from "next/image";
@@ -28,18 +28,57 @@ const TokenMarkets = (props) => {
       price: Number(bbbPool?.base_token_price_usd || 0)?.toFixed(4),
       changeH24: bbbPool?.price_change_percentage?.h24 || 0,
     };
-    let findTokens = {};
-    // if (show == 1) {
-    //   const followList = Object.keys(follow).filter((key) => follow[key]);
-    //   if (followList?.length > 0) {
-    //     findTokens = await rpc.getTokens(undefined, 1, pageSize, followList);
-    //   }
-    // }
-    // if (show == 2) {
-    //   findTokens = await rpc.getTokens(undefined, 1, pageSize);
-    // }
 
-    setData({ ...data, tokenList: findTokens?.list, bbb });
+    // Get USDB pool data
+    const usdbPool = await getPool(usdbInfo.address);
+    const usdb = {
+      price: Number(usdbPool?.base_token_price_usd || 0)?.toFixed(4),
+      changeH24: usdbPool?.price_change_percentage?.h24 || 0,
+    };
+
+    let findTokens = {};
+    
+    // Show followed tokens in watchlist tab
+    if (show == 1) {
+      const followedTokens = markets.filter(market => follow?.[market.symbol]);
+      if (followedTokens.length > 0) {
+        const followedWithPools = await Promise.all(
+          followedTokens.map(async (market) => {
+            const pool = await getPool(market.address);
+            return {
+              token: market.address,
+              symbol: market.symbol,
+              name: market.name,
+              imageUrl: market.imageUrl,
+              price: pool?.base_token_price_usd || 0,
+              priceChangeH24: (pool?.price_change_percentage?.h24 || 0) / 100,
+            };
+          })
+        );
+        findTokens = { list: followedWithPools };
+      }
+    }
+    
+    // Show markets tokens in trending tab
+    if (show == 2) {
+      // Get pool data for each market token
+      const marketsWithPools = await Promise.all(
+        markets.map(async (market) => {
+          const pool = await getPool(market.address);
+          return {
+            token: market.address,
+            symbol: market.symbol,
+            name: market.name,
+            imageUrl: market.imageUrl,
+            price: pool?.base_token_price_usd || 0,
+            priceChangeH24: (pool?.price_change_percentage?.h24 || 0) / 100,
+          };
+        })
+      );
+      findTokens = { list: marketsWithPools };
+    }
+
+    setData({ ...data, tokenList: findTokens?.list, bbb, usdb });
   }
   useEffect(() => {
     fetchData();
@@ -51,26 +90,15 @@ const TokenMarkets = (props) => {
   const bbbPrice = data?.bbb?.price;
   const bbbPriceChange24h = data?.bbb?.changeH24;
 
+  const usdbPrice = data?.usdb?.price;
+  const usdbPriceChange24h = data?.usdb?.changeH24;
+
   const showList = tokenList?.length > 0;
   const chainId = useChainId();
 
   const mbbb = contracts[chainId]?.mbbbv2;
-  const showBBB = bbbPrice && bbbPriceChange24h;
-  let searchTokens = [];
-
-  searchTokens = tokenList?.map((item) => {
-    return {
-      ...mbbb,
-      functionName: "getDropTokenByAddress",
-      args: [item?.token],
-    };
-  });
-
-  const { data: reads0 } = useReadContracts({
-    contracts: searchTokens,
-  });
-
-  const drops = reads0?.map((item) => item?.result);
+  const showBBB = false;
+  const showUSDB = false;
 
   return (
     <>
@@ -159,7 +187,7 @@ const TokenMarkets = (props) => {
                   <tr
                     className="hover cursor-pointer"
                     onClick={() => {
-                      router.push("/swap/bbb");
+                      router.push("/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1");
                     }}
                   >
                     <td className="flex items-center gap-1">
@@ -213,19 +241,80 @@ const TokenMarkets = (props) => {
                   </tr>
                 )}
 
+                {showUSDB && (
+                  <tr
+                    className="hover cursor-pointer"
+                    onClick={() => {
+                      router.push("/swap/" + usdbInfo.address);
+                    }}
+                  >
+                    <td className="flex items-center gap-1">
+                      {showBar && (
+                        <svg
+                          viewBox="0 0 1024 1024"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          p-id="5267"
+                          width="16"
+                          height="16"
+                        >
+                          <path
+                            d="M785.352203 933.397493c-4.074805 0-8.151657-0.970094-11.833513-3.007497l-261.311471-142.488225L250.942821 930.388972c-8.343015 4.559852-18.527982 3.8814-26.28669-1.599428-7.760754-5.5279-11.640108-14.987343-10.088776-24.347524l47.578622-285.365306L72.563154 429.470355c-6.594185-6.547113-8.971325-16.295128-6.110161-25.122167 2.814092-8.850575 10.379395-15.397688 19.546172-16.949021l285.512662-47.577598 118.529557-236.989529c4.172019-8.391111 12.803607-13.701047 22.165836-13.701047 9.359158 0 17.992793 5.309936 22.163789 13.701047l118.529557 236.989529 285.511639 47.577598c9.217942 1.551332 16.73208 8.051373 19.593244 16.949021 2.813069 8.875135 0.48607 18.575054-6.109138 25.122167L762.264369 619.077737l47.577598 285.365306c1.50119 9.360182-2.37714 18.819624-10.087753 24.347524C795.487028 931.797042 790.394033 933.397493 785.352203 933.397493z"
+                            p-id="5268"
+                            fill="#0e932e"
+                          ></path>
+                        </svg>
+                      )}
+                      <div className="w-6 h-6 flex items-center justify-center overflow-hidden ">
+                        <Image
+                          height={400}
+                          width={400}
+                          src={"/usdb.png"}
+                          alt={""}
+                          className="object-cover w-full h-full"
+                          loading="lazy"
+                          priority={false}
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <div>USDB</div>
+                        <div className="text-xs text-gray-500">
+                          {usdbInfo.address.slice(-6)}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="text-right">
+                      <div>${usdbPrice}</div>
+                      <div
+                        className={
+                          usdbPriceChange24h >= 0
+                            ? "text-green-700"
+                            : "text-red-700"
+                        }
+                      >
+                        {usdbPriceChange24h >= 0 ? "+" : ""}
+                        {Number(usdbPriceChange24h)?.toFixed(2)}%
+                      </div>
+                    </td>
+                  </tr>
+                )}
+
                 {showList ? (
                   tokenList?.map((item, index) => {
-                    const isFollowed = follow?.[item?.index];
-                    const price = (
+                    const isFollowed = follow?.[item?.symbol];
+                    // For both watchlist and trending, price is already in USD
+                    const price = (show == 1 || show == 2) ? Number(item?.price || 0)?.toFixed(4) : (
                       (xdcPrice * Number(item?.price || 0) * 2) /
                       1e18
                     )?.toFixed(4);
-                    const changeH24 = (
-                      100 *
-                      ((1 + xdcPriceChangeH24) *
-                        (1 + Number(item?.priceChangeH24)) -
-                        1)
-                    )?.toFixed(2);
+                    const changeH24 = (show == 1 || show == 2) ? 
+                      Number(item?.priceChangeH24 * 100)?.toFixed(2) :
+                      (
+                        100 *
+                        ((1 + xdcPriceChangeH24) *
+                          (1 + Number(item?.priceChangeH24)) -
+                          1)
+                      )?.toFixed(2);
                     return (
                       <tr
                         key={index}
@@ -247,7 +336,7 @@ const TokenMarkets = (props) => {
                                 type="checkbox"
                                 checked={isFollowed}
                                 onClick={(e) => {
-                                  setFollow(item?.index, e.target.checked);
+                                  setFollow(item?.symbol, e.target.checked);
                                 }}
                               />
 
@@ -287,19 +376,17 @@ const TokenMarkets = (props) => {
                               </div>
                             </label>
                           )}
-                          {
-                            <div className="w-6 h-6 flex items-center justify-center overflow-hidden ">
-                              <Image
-                                height={400}
-                                width={400}
-                                src={handleSrc(drops?.[index]?.imageUrl)}
-                                alt={""}
-                                className="object-cover w-full h-full"
-                                loading="lazy"
-                                priority={false}
-                              />
-                            </div>
-                          }
+                          <div className="w-6 h-6 overflow-hidden rounded">
+                            <Image
+                              height={24}
+                              width={24}
+                              src={(show == 1 || show == 2) ? item?.imageUrl : handleSrc(item?.imageUrl)}
+                              alt={item?.symbol || ""}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              priority={false}
+                            />
+                          </div>
                           <div className="flex flex-col">
                             <div>{item?.symbol}</div>
                             <div className="text-xs text-gray-500">
@@ -324,7 +411,7 @@ const TokenMarkets = (props) => {
                 ) : (
                   <tr>
                     <td colSpan="2" className="text-center py-4 text-gray-500">
-                      No data available
+                      {show == 1 ? "No tokens in watchlist. Star tokens from trending to add them here." : "No data available"}
                     </td>
                   </tr>
                 )}

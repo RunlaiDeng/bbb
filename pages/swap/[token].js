@@ -1,4 +1,4 @@
-import { bbbInfo, contracts } from "@/config";
+import { bbbInfo, contracts, markets } from "@/config";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
@@ -28,10 +28,12 @@ const Swap = () => {
   const [data, setData] = useState({});
   const [mount, setMount] = useState(false);
   const [price, setPrice] = useState({});
+  const { width: windowWidth } = useWindowSize();
+  const { address } = useAccount();
+  const [type, setType] = useState("chart");
 
-  if (token == "bbb") {
-    token = bbb.address;
-  }
+  // Find token in markets configuration
+  const marketToken = markets.find(market => market.address?.toLowerCase() === token?.toLowerCase());
 
   async function fetchData() {
     setMount(false);
@@ -49,6 +51,10 @@ const Swap = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setType("chart");
+  }, [windowWidth, token]);
+
   const tokenContract = {
     address: token,
     abi: erc20Abi,
@@ -56,17 +62,12 @@ const Swap = () => {
 
   const { data: reads0 } = useReadContracts({
     contracts: [
-      {
-        ...mbbb,
-        functionName: "getDropTokenByAddress",
-        args: [token],
-      },
       { ...tokenContract, functionName: "totalSupply" },
     ],
   });
 
-  const dropToken = reads0?.[0]?.result;
-  const totalSupply = reads0?.[1]?.result;
+  const totalSupply = reads0?.[0]?.result;
+  
   let name;
   let symbol;
   let imageUrl;
@@ -82,55 +83,27 @@ const Swap = () => {
   let xdcAmount;
   let maxXdc;
 
-  let graduate;
-  if (token == bbb.address || inputPoolAddress) {
-    graduate = 1n;
-  } else {
-    graduate = dropToken?.removed;
+  // Always treat as graduate = true
+  let graduate = true;
+
+  // Get token info from markets configuration if available
+  if (marketToken) {
+    name = marketToken.name;
+    symbol = marketToken.symbol;
+    imageUrl = marketToken.imageUrl;
+    description = marketToken.description;
+    website = marketToken.website?.replace("https://", "");
+    telegram = marketToken.tg?.replace("https://t.me/", "");
+    twitter = marketToken.x?.replace("https://x.com/", "");
+    coingecko = marketToken.coingecko;
+    cmc = marketToken.cmc;
+    index = marketToken.symbol;
+    deployer = marketToken.deployer;
+    createTime = marketToken.createTime;
   }
-
-  if (token == bbb.address) {
-    name = bbbInfo.name;
-    symbol = bbbInfo.symbol;
-    imageUrl = bbbInfo.imageUrl;
-    description = bbbInfo.description;
-    website = bbbInfo.website?.replace("https://", "");
-    telegram = bbbInfo.tg?.replace("https://t.me/", "");
-    twitter = bbbInfo.x?.replace("https://x.com/", "");
-    cmc = bbbInfo.cmc;
-    index = symbol;
-    deployer = bbbInfo.deployer;
-    createTime = bbbInfo.createTime;
-  } else if (ido) {
-
-  } else {
-    name = dropToken?.name;
-    symbol = dropToken?.symbol;
-    imageUrl = dropToken?.imageUrl;
-    description = dropToken?.description;
-    website = dropToken?.website;
-    telegram = dropToken?.telegram;
-    twitter = dropToken?.twitter;
-    index = dropToken?.index;
-    deployer = dropToken?.deployer;
-    createTime = getDate(dropToken?.createTime);
-    xdcAmount = dropToken?.xdcAmount;
-    maxXdc = dropToken?.maxXdc;
-  }
-
-  const { width: windowWidth } = useWindowSize();
-
-  const { address } = useAccount();
 
   const isBBB = token == bbbInfo.address;
   const canUpdate = address == deployer && !isBBB;
-
-  async function fetchNonGraduate() {
-    if (token) {
-      const findToken = await rpc.getTokens(1, 1, 1, [token]);
-      setData({ ...data, tokenInfo: findToken?.list?.[0] });
-    }
-  }
 
   async function fetchGraduate() {
     if (token) {
@@ -153,12 +126,21 @@ const Swap = () => {
   }
 
   useEffect(() => {
-    if (graduate) {
-      fetchGraduate();
-    } else {
-      fetchNonGraduate();
-    }
-  }, [graduate, token]);
+    // Always fetch graduate data since graduate is always true
+    fetchGraduate();
+  }, [token]);
+
+  // If token not found in markets configuration, don't display it
+  if (!marketToken) {
+    return (
+      <>
+        <Loading />
+        <div className="text-center mt-10 text-gray-600">
+          Token {token} not found in configuration
+        </div>
+      </>
+    );
+  }
 
   const tokenInfo = data?.tokenInfo;
   const pool = data?.pool;
@@ -168,15 +150,11 @@ const Swap = () => {
   let showData;
   let showRLD;
 
-  if (graduate) {
-    const pool = data?.pool;
-    poolCap = pool?.cap;
-    poolAddress = pool?.address || inputPoolAddress;
-    showData = pool != undefined && xdcPrice != undefined;
-  } else {
-    showData = dropToken != undefined && xdcPrice != undefined;
-    showRLD = true;
-  }
+  // Always use graduate logic
+  const poolData = data?.pool;
+  poolCap = poolData?.cap;
+  poolAddress = poolData?.address || inputPoolAddress;
+  showData = poolData != undefined && xdcPrice != undefined;
 
   const tInfo = {
     token,
@@ -283,20 +261,10 @@ const Swap = () => {
     xdcPriceChangeH24,
   };
 
-  const [type, setType] = useState("chart");
-
-  useEffect(() => {
-    setType("chart");
-  }, [windowWidth, token]);
-
   return showData ? (
     <>
       <div className="bg-white rounded-2xl shadow-lg p-2 m-2">
-        {graduate ? (
-          <TokenHeadPool {...tHeadPool} />
-        ) : (
-          <TokenHeadFun {...tHeadFun} />
-        )}
+        <TokenHeadPool {...tHeadPool} />
       </div>
       <div className="m-auto grid lg:grid-cols-5 gap-4 lg:h-[960px] p-2">
         {windowWidth > 1024 && (
@@ -374,57 +342,34 @@ const Swap = () => {
               </div>
             </div>
           </div>
-          {graduate && (
-            <>
-              <div className="h-[300px] lg:h-[450px]">
-                {type == "chart" && <TokenChartPool {...tChartPool} />}
-                {type == "info" && <TokenInfo {...tInfo} />}
-                {type == "chat" && <TokenChat {...tChat} />}
-                {type == "trades" && <TokenTradePool {...tTradePool} />}
-                {type == "markets" && <TokenMarkets {...tMarkets} />}
-              </div>
-              <div className="divider my-1"></div>
-              <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
-                <button 
-                  onClick={() => router.push({
-                    pathname: '/swap',
-                    query: {
-                      fromChain: '50',
-                      toChain: '50',
-                      fromToken: '0x0000000000000000000000000000000000000000',
-                      toToken: token
-                    }
-                  })}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
-                >
-                  Swap
-                </button>
-              </div>
-            </>
-          )}
-          {!graduate && (
-            <>
-              <div className="h-[300px] lg:h-[450px]">
-                {type == "chart" && <TokenChartFun {...tChartFun} />}
-                {type == "info" && <TokenInfo {...tInfo} />}
-                {type == "chat" && <TokenChat {...tChat} />}
-                {type == "trades" && <TokenTradeFun {...tTradeFun} />}
-                {type == "markets" && <TokenMarkets {...tMarkets} />}
-              </div>
-              <div className="divider my-1"></div>
-              <div className=" bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
-                <TokenSwapFun {...tSwapFun} />
-              </div>
-            </>
-          )}
+          <div className="h-[300px] lg:h-[450px]">
+            {type == "chart" && <TokenChartPool {...tChartPool} />}
+            {type == "info" && <TokenInfo {...tInfo} />}
+            {type == "chat" && <TokenChat {...tChat} />}
+            {type == "trades" && <TokenTradePool {...tTradePool} />}
+            {type == "markets" && <TokenMarkets {...tMarkets} />}
+          </div>
+          <div className="divider my-1"></div>
+          <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+            <button 
+              onClick={() => router.push({
+                pathname: '/swap',
+                query: {
+                  fromChain: '50',
+                  toChain: '50',
+                  fromToken: '0x0000000000000000000000000000000000000000',
+                  toToken: token
+                }
+              })}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
+            >
+              Swap
+            </button>
+          </div>
         </div>
         {windowWidth > 1024 && (
           <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
-            {graduate ? (
-              <TokenTradePool {...tTradePool} />
-            ) : (
-              <TokenTradeFun {...tTradeFun} />
-            )}
+            <TokenTradePool {...tTradePool} />
           </div>
         )}
       </div>

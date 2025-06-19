@@ -6,6 +6,7 @@ import copy from "copy-to-clipboard";
 import { useAccount, useWatchAsset } from "wagmi";
 import usePrivyLogin from "../Hook/usePrivyLogin";
 import { useNotification } from "../Context/notice";
+
 const TokenHead = (props) => {
   const {
     name,
@@ -19,6 +20,7 @@ const TokenHead = (props) => {
     telegram,
     twitter,
   } = props;
+  
   const { isConnected } = useAccount();
   const { watchAsset } = useWatchAsset();
   const privyLogin = usePrivyLogin();
@@ -106,8 +108,8 @@ const TokenHead = (props) => {
             <Image
               height={400}
               width={400}
-              src={handleSrc(imageUrl)}
-              alt={""}
+              src={imageUrl}
+              alt={symbol || ""}
               className="object-cover w-full h-full"
               loading="lazy"
               priority={false}

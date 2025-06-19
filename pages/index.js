@@ -236,7 +236,7 @@ const HomeContent = memo(() => {
                   <button
                     className="btn sm:btn-lg mt-8 mx-4 w-72 sm:w-96 text-green-700 transition-all duration-300 transform hover:scale-105 glow-effect"
                     onClick={() => {
-                      router.push("/swap/bbb");
+                      router.push("/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1");
                     }}
                     aria-label="Try Now"
                     type="button"

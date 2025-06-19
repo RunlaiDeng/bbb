@@ -138,7 +138,7 @@ const Navbar = () => {
                     Swap
                   </Link>
                   <Link
-                    href={"/swap/bbb"}
+                    href={"/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
                     Markets
@@ -176,14 +176,7 @@ const Navbar = () => {
                           Merch
                         </Link>
                       </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/launch"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          Launch
-                        </Link>
-                      </li>
+
                       <li className="rounded-lg">
                         <Link
                           href={"/bbbstake"}
@@ -251,7 +244,13 @@ const Navbar = () => {
                     <div
                       className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                       onClick={() => {
-                        router.push("/deposit");
+                        router.push({
+                          pathname: '/swap',
+                          query: {
+                            toChain: '50',
+                            toToken: '0x0000000000000000000000000000000000000000'
+                          }
+                        });
                       }}
                     >
                       <svg
@@ -801,7 +800,7 @@ const Navbar = () => {
                         <div
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={(e) => {
-                            router.push("/swap/bbb");
+                            router.push("/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1");
                             setData({ ...data, menuItemsOpen: false });
                           }}
                         >
@@ -880,15 +879,7 @@ const Navbar = () => {
                             >
                               <div>Stake</div>
                             </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/launch");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>Launch</div>
-                            </div>
+
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {

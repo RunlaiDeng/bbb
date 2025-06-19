@@ -17,7 +17,7 @@ import mTransferABI from "../abi/mTransferABI.json";
 import sUSDBABI from "../abi/sUSDBABI.json";
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
-export const dexLink = "/swap/bbb";
+export const dexLink = "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1";
 export const xswapDexLink =
   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =
@@ -193,24 +193,44 @@ export const idos = {
 
 export const icecreamswap = "0x2a9a2D31819cD71B60F25729Bc60a2D7E7545233";
 
-export const bbbInfo = {
-  name: "Beny Bad Boy",
-  symbol: "BBB",
-  imageUrl: "/bbb.jpg",
-  description:
-    "$BBB isn't just a meme; it's the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we're rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
-  x: "https://x.com/bbbpump",
-  cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
-  coingecko:
-    "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
-  tg: "https://t.me/bbbpump",
-  website: "https://bbbpump.fun",
-  youtube: "https://www.youtube.com/@bbbpump",
-  substack: "https://bbbpump.substack.com/",
-  createTime: "09/06/24",
-  deployer: "0x2475Dcd4Fe333bE814Ef7C8f8CE8A1E9B5FcDEA0",
-  address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
-};
+export const markets = [
+  {
+    name: "Beny Bad Boy",
+    symbol: "BBB",
+    imageUrl: "/bbb.jpg",
+    description:
+      "$BBB isn't just a meme; it's the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we're rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
+    x: "https://x.com/bbbpump",
+    cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
+    coingecko:
+      "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
+    tg: "https://t.me/bbbpump",
+    website: "https://bbbpump.fun",
+    youtube: "https://www.youtube.com/@bbbpump",
+    substack: "https://bbbpump.substack.com/",
+    createTime: "09/06/24",
+    deployer: "0x2475Dcd4Fe333bE814Ef7C8f8CE8A1E9B5FcDEA0",
+    address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
+  },
+  {
+    name: "USDB",
+    symbol: "USDB",
+    imageUrl: "/usdb.png",
+    description: "USDB token",
+    address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
+  },
+  {
+    name: "bpsXDC",
+    symbol: "bpsXDC",
+    imageUrl: "/xdc.png",
+    description: "bpsXDC token",
+    address: "0x24be372f0915b8BAf17AfA150210FFcB79C88845",
+  },
+];
+
+// Keep backward compatibility
+export const bbbInfo = markets[0];
+export const usdbInfo = markets[1];
 
 export const mux = {
   ws: "ws://127.0.0.1:4000/",
