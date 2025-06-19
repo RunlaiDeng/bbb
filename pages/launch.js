@@ -19,7 +19,7 @@ import {
   useReadContracts,
 } from "wagmi";
 import WriteButton from "@/components/WriteButton";
-import { track } from "@vercel/analytics";
+
 import { useRouter } from "next/router";
 
 const Launch = () => {
@@ -99,7 +99,7 @@ const Launch = () => {
       value: totalCost,
     },
     before: () => {
-      track("laucnh");
+
     },
     callback: async (confirm, txHash) => {
       if (confirm) {

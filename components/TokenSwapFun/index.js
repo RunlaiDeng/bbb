@@ -5,7 +5,7 @@ import { deleteSame, getXDCPrice, handleSrc } from "../Utils";
 import WriteButton from "../WriteButton";
 import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
 import { contracts } from "@/config";
-import { track } from "@vercel/analytics";
+
 import Image from "next/image";
 const TokenSwapFun = (props) => {
   const [mount, setMount] = useState(false);
@@ -140,7 +140,7 @@ const TokenSwapFun = (props) => {
       value: data?.buyAmount,
     },
     before: () => {
-      track("buy");
+  
     },
     callback: () => {
       refetch();

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { erc20Abi, formatEther, parseEther } from "viem";
 import Image from "next/image";
-import { track } from "@vercel/analytics";
+
 import { icecreamswap, xswapDexLink } from "@/config";
 import { useAccount, useBalance, useReadContracts } from "wagmi";
 import SendButton from "@/components/SendButton";
@@ -158,7 +158,7 @@ const TokenSwap = (props) => {
     disabled: disableBuy,
     data: buyTx,
     before: () => {
-      track("buy");
+ 
     },
     callback: () => {
       refetch();

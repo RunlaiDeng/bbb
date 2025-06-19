@@ -6,7 +6,6 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
-import { Analytics } from "@vercel/analytics/react";
 import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import { http } from "wagmi";
 import Head from "next/head";
@@ -95,7 +94,6 @@ const MyApp = ({ Component, pageProps }) => {
           </PrivyProvider>
         </FollowProvider>
       </NotificationProvider>
-      <Analytics />
     </>
   );
 };
