@@ -399,7 +399,7 @@ const USDB = () => {
 
               <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
         {/* Token Balances Section */}
-        {isMounted && isConnected && (
+        {isMounted && (
           <div className="pt-20 pb-8">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Token Balances</h2>
@@ -436,8 +436,11 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      ${usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"}
+                      ${isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"}
                     </div>
+                    {!isConnected && (
+                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
+                    )}
                   </div>
                 </div>
 
@@ -472,8 +475,11 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      ${sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"}
+                      ${isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"}
                     </div>
+                    {!isConnected && (
+                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -513,8 +519,11 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      ${pendingRewards ? formatUsdbAmount(pendingRewards) : "0.00"}
+                      ${isConnected && pendingRewards ? formatUsdbAmount(pendingRewards) : "0.00"}
                     </div>
+                    {!isConnected && (
+                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view rewards</div>
+                    )}
                   </div>
                 </div>
               </div>
