@@ -29,15 +29,15 @@ const TokenMarkets = (props) => {
       changeH24: bbbPool?.price_change_percentage?.h24 || 0,
     };
     let findTokens = {};
-    if (show == 1) {
-      const followList = Object.keys(follow).filter((key) => follow[key]);
-      if (followList?.length > 0) {
-        findTokens = await rpc.getTokens(undefined, 1, pageSize, followList);
-      }
-    }
-    if (show == 2) {
-      findTokens = await rpc.getTokens(undefined, 1, pageSize);
-    }
+    // if (show == 1) {
+    //   const followList = Object.keys(follow).filter((key) => follow[key]);
+    //   if (followList?.length > 0) {
+    //     findTokens = await rpc.getTokens(undefined, 1, pageSize, followList);
+    //   }
+    // }
+    // if (show == 2) {
+    //   findTokens = await rpc.getTokens(undefined, 1, pageSize);
+    // }
 
     setData({ ...data, tokenList: findTokens?.list, bbb });
   }

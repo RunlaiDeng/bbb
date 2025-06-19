@@ -219,7 +219,7 @@ const HomeContent = memo(() => {
               <div className="text-center sm:text-left sm:pt-24">
                 <h1 className="text-green-700 font-bold sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-800 animate-pulse">
                   {address
-                    ? "Discuss Everything Crypto On BBBPump.fun"
+                    ? "Discuss Everything Crypto On BBBFI.COM"
                     : "Next generation exchange and all is on blockchain"}
                 </h1>
                 {!address && (

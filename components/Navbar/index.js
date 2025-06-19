@@ -132,17 +132,16 @@ const Navbar = () => {
 
                 <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
                   <Link
-                    href={buyXDCLink}
-                    target="_blank"
+                    href={"/swap"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
-                    Buy XDC
+                    Swap
                   </Link>
                   <Link
                     href={"/swap/bbb"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
-                    Trade
+                    Markets
                   </Link>
                   <Link
                     href={"/stake"}

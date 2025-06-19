@@ -302,7 +302,7 @@ const MobileNav = () => {
           <span className="text-xs mt-1">Home</span>
         </Link>
         <Link
-          href="/swap/bbb"
+          href="/swap"
           className={`flex flex-col items-center p-2 ${
             router.pathname.startsWith("/swap")
               ? "text-green-600 font-medium"
@@ -328,7 +328,7 @@ const MobileNav = () => {
               p-id="4275"
             ></path>
           </svg>
-          <span className="text-xs mt-1">Trade</span>
+          <span className="text-xs mt-1">Swap</span>
         </Link>
         <Link
           href="/stake"
@@ -361,6 +361,39 @@ const MobileNav = () => {
             />
           </svg>
           <span className="text-xs mt-1">Stake</span>
+        </Link>
+        <Link
+          href="/swap/bbb"
+          className={`flex flex-col items-center p-2 ${
+            router.pathname === "/swap/bbb" 
+              ? "text-green-600 font-medium" 
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              d="M3 12L21 12"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M3 6L21 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M3 18L21 18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <circle cx="9" cy="12" r="1" fill="currentColor"/>
+            <circle cx="15" cy="6" r="1" fill="currentColor"/>
+            <circle cx="12" cy="18" r="1" fill="currentColor"/>
+          </svg>
+          <span className="text-xs mt-1">Markets</span>
         </Link>
         <Link
           href="/usdb"
