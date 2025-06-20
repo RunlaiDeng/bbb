@@ -172,7 +172,7 @@ export const contracts = {
       abi: mTransferABI,
     },
     sUSDB: {
-      address: "",
+      address: "0x",
       abi: sUSDBABI,
     },
   },
