@@ -375,7 +375,7 @@ const USDB = () => {
     {
       question: "What is sUSDB?",
       answer:
-        "sUSDB is staked USDB that allows you to earn additional USDB rewards automatically. The exchange rate between USDB and sUSDB increases over time, representing accumulated rewards. Withdrawals require a 7-day waiting period for security.",
+        "sUSDB is staked USDB that allows you to earn automatic compound interest rewards. Simply holding sUSDB earns you rewards through a dynamic exchange rate mechanism. The exchange rate is based on the ratio between USDB holdings and sUSDB supply in the contract - as arbitrage profits are converted to USDB and deposited into the sUSDB contract, this changes the ratio and users automatically benefit.",
     },
     {
       question: "How do I earn yields?",
@@ -390,7 +390,7 @@ const USDB = () => {
     {
       question: "How does the dynamic exchange rate work?",
       answer:
-        "The exchange rate between sUSDB and USDB increases over time as rewards are automatically compounded. When you deposit USDB, you receive sUSDB at the current rate. When you withdraw, your sUSDB is converted back to USDB at the then-current rate, capturing all accumulated rewards.",
+        "The sUSDB exchange rate is determined by the ratio of USDB holdings to sUSDB supply within the smart contract. As the protocol generates arbitrage profits, these are automatically converted to USDB and deposited into the sUSDB contract, increasing the USDB-to-sUSDB ratio. This means each sUSDB becomes worth more USDB over time, providing automatic compound returns to all sUSDB holders without any manual action required.",
     },
     {
       question: "What is Delta Hedging?",
@@ -400,7 +400,12 @@ const USDB = () => {
     {
       question: "How do sUSDB rewards work?",
       answer:
-        "sUSDB rewards are automatically compounded into the exchange rate. Simply hold sUSDB in your wallet and the value increases over time relative to USDB. There's no need to manually claim rewards - they're built into the token itself.",
+        "sUSDB rewards work through automatic compound interest - simply holding sUSDB in your wallet earns you rewards. The protocol's arbitrage profits are converted to USDB and automatically deposited into the sUSDB contract, which increases the exchange rate ratio. This means your sUSDB becomes worth more USDB over time without any manual claiming or restaking required.",
+    },
+    {
+      question: "What makes the sUSDB exchange rate increase?",
+      answer:
+        "The sUSDB exchange rate is based on the ratio between total USDB holdings and total sUSDB supply in the smart contract. When the protocol generates arbitrage profits, these profits are automatically converted to USDB and deposited into the sUSDB contract. This increases the USDB holdings while keeping sUSDB supply constant, thus improving the exchange rate and benefiting all sUSDB holders automatically.",
     },
     {
       question: "How is fund security ensured?",
@@ -410,7 +415,7 @@ const USDB = () => {
     {
       question: "How do I participate in USDB and sUSDB?",
       answer:
-        "Connect your wallet, buy USDB with stablecoins, then convert your USDB to sUSDB to start earning automatic rewards. The exchange rate will automatically increase over time, capturing your rewards without any action needed.",
+        "Simply connect your wallet and deposit USDB to receive sUSDB tokens. Once you hold sUSDB, you automatically start earning compound interest as arbitrage profits are deposited into the contract, increasing the value of each sUSDB token. No additional actions required - just hold and earn.",
     },
   ];
 
@@ -1811,12 +1816,10 @@ const USDB = () => {
                     <span className="text-white font-bold text-2xl">2</span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    Get USDB & Convert to sUSDB
+                    Deposit USDB to Get sUSDB
                   </h3>
                   <p className="text-gray-600">
-                    First buy USDB with stablecoins, then convert your USDB to
-                    sUSDB. Holding sUSDB automatically earns you additional USDB
-                    rewards.
+                    Simply deposit your USDB to receive sUSDB tokens. The dynamic exchange rate ensures you automatically earn compound interest as arbitrage profits are deposited into the contract.
                   </p>
                 </div>
 
@@ -1825,12 +1828,10 @@ const USDB = () => {
                     <span className="text-white font-bold text-2xl">3</span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    Start Earning
+                    Hold & Earn Automatically
                   </h3>
                   <p className="text-gray-600">
-                    Confirm the transaction and immediately start earning 5%+
-                    base yields. Your sUSDB automatically accumulates USDB
-                    rewards.
+                    Just hold sUSDB in your wallet and earn automatic compound interest. As arbitrage profits flow into the contract, your sUSDB becomes worth more USDB over time - no manual actions required.
                   </p>
                 </div>
               </div>
