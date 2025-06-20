@@ -935,41 +935,41 @@ const USDB = () => {
 
           {/* sUSDB Section */}
           {isMounted && (
-            <div id="susdb-section" className="py-16 bg-gradient-to-r from-purple-50 to-indigo-50">
+            <div id="susdb-section" className="py-8 sm:py-16 bg-gradient-to-r from-purple-50 to-indigo-50">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center p-2">
+                <div className="text-center mb-6 md:mb-8">
+                  <div className="flex flex-col sm:inline-flex sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 md:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-2xl flex items-center justify-center p-2">
                       <img
                         src="/susdb.png"
                         alt="sUSDB Logo"
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left">
                       sUSDB - Staked USDB
                     </h2>
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 text-sm sm:text-base px-4 sm:px-0">
                     Stake your USDB to earn additional rewards with flexible
                     withdrawal options
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                   {/* sUSDB Balance & Rewards */}
-                  <div className="lg:col-span-1">
+                  <div className="lg:col-span-1 order-1">
                     {/* Balance Overview */}
-                    <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6">
+                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                         Your sUSDB Portfolio
                       </h3>
 
                       {/* sUSDB Balance */}
-                      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-5 mb-4">
-                        <div className="flex items-center justify-between">
+                      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-4 sm:p-5 mb-4">
+                        <div className="flex items-start justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center p-2">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center p-2">
                               <img
                                 src="/susdb.png"
                                 alt="sUSDB Logo"
@@ -977,7 +977,7 @@ const USDB = () => {
                               />
                             </div>
                             <div>
-                              <div className="text-2xl font-bold text-gray-900">
+                              <div className="text-xl sm:text-2xl font-bold text-gray-900">
                                 {sUSDBBalance
                                   ? formatUsdbAmount(sUSDBBalance.value)
                                   : "0.00"}
@@ -1003,24 +1003,24 @@ const USDB = () => {
 
                       {/* Exchange Rate Info */}
                       <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-4 mb-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                              <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0 flex-1">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21l3-3m-3 3l-3-3m3 3V9a4 4 0 118 0v1.586a3 3 0 01-1.293 2.707L12 16" />
                               </svg>
                             </div>
-                            <div>
-                              <div className="text-lg font-bold text-gray-900">
+                            <div className="min-w-0">
+                              <div className="text-sm sm:text-base font-bold text-gray-900 whitespace-nowrap">
                                 1 sUSDB = {formatExchangeRate()} USDB
                               </div>
-                              <div className="text-sm text-gray-600">
+                              <div className="text-xs text-gray-600">
                                 Current exchange rate
                               </div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-sm font-semibold text-indigo-600 bg-white/60 px-2 py-1 rounded-lg">
+                          <div className="flex-shrink-0">
+                            <div className="text-xs font-semibold text-indigo-600 bg-white/60 px-2 py-1 rounded-lg whitespace-nowrap">
                               Auto-Compound
                             </div>
                           </div>
@@ -1028,15 +1028,15 @@ const USDB = () => {
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3">
                         <div className="bg-gray-50 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-green-600">
+                          <div className="text-base sm:text-lg font-bold text-green-600">
                             5%+
                           </div>
                           <div className="text-xs text-gray-600">Base APY</div>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-purple-600">
+                          <div className="text-base sm:text-lg font-bold text-purple-600">
                             24/7
                           </div>
                           <div className="text-xs text-gray-600">
@@ -1133,21 +1133,21 @@ const USDB = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="lg:col-span-1">
-                    <div className="bg-white rounded-2xl p-6 shadow-lg">
+                  <div className="lg:col-span-1 order-2">
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg">
                       {/* Tab Navigation */}
-                      <div className="flex border-b border-gray-200 mb-6">
+                      <div className="flex border-b border-gray-200 mb-4 sm:mb-6">
                         <button
                           onClick={() => setActiveTab("deposit")}
-                          className={`flex-1 py-3 font-medium border-b-2 transition-colors text-center ${
+                          className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
                             activeTab === "deposit"
                               ? "border-purple-500 text-purple-600 bg-purple-50"
                               : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                           }`}
                         >
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1 sm:gap-2">
                             <svg
-                              className="w-4 h-4"
+                              className="w-3 h-3 sm:w-4 sm:h-4"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -1157,20 +1157,20 @@ const USDB = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Deposit
+                            <span className="text-sm sm:text-base">Deposit</span>
                           </div>
                         </button>
                         <button
                           onClick={() => setActiveTab("withdraw")}
-                          className={`flex-1 py-3 font-medium border-b-2 transition-colors text-center ${
+                          className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
                             activeTab === "withdraw"
                               ? "border-purple-500 text-purple-600 bg-purple-50"
                               : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                           }`}
                         >
-                          <div className="flex items-center justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1 sm:gap-2">
                             <svg
-                              className="w-4 h-4"
+                              className="w-3 h-3 sm:w-4 sm:h-4"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -1180,7 +1180,7 @@ const USDB = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            Withdraw
+                            <span className="text-sm sm:text-base">Withdraw</span>
                           </div>
                         </button>
                       </div>
