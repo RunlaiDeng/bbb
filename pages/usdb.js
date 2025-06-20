@@ -1031,7 +1031,7 @@ const USDB = () => {
                       <div className="grid grid-cols-2 gap-2 sm:gap-3">
                         <div className="bg-gray-50 rounded-lg p-3 text-center relative group">
                           <div className="text-base sm:text-lg font-bold text-green-600">
-                            0%+
+                            4%+
                           </div>
                           <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
                             Base APY
@@ -1049,7 +1049,7 @@ const USDB = () => {
                               </svg>
                               {/* Tooltip */}
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-64 z-10">
-                                <div className="font-semibold mb-1">sUSDB APY: 0.00%</div>
+                                <div className="font-semibold mb-1">sUSDB APY: 4.00%</div>
                                 <div className="text-gray-300 text-xs leading-relaxed mb-2">
                                   Trailing one-week daily average of protocol return transferred into the staking rewards distributor contract, divided by average staked USDB each day, annualized with weekly compounding. This figure does not represent or guarantee future results.
                                 </div>
