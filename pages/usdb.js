@@ -209,6 +209,28 @@ const USDB = () => {
       },
     });
 
+  // 获取USDB总供应量
+  const { data: usdbTotalSupply } = useReadContract({
+    address: contracts[chainId]?.usdb?.address,
+    abi: contracts[chainId]?.usdb?.abi,
+    functionName: "totalSupply",
+    args: [],
+    query: {
+      enabled: !!contracts[chainId]?.usdb?.address,
+    },
+  });
+
+  // 获取sUSDB总供应量
+  const { data: sUSDBTotalSupply } = useReadContract({
+    address: contracts[chainId]?.sUSDB?.address,
+    abi: contracts[chainId]?.sUSDB?.abi,
+    functionName: "totalSupply",
+    args: [],
+    query: {
+      enabled: !!contracts[chainId]?.sUSDB?.address,
+    },
+  });
+
   const handleMaxClick = () => {
     if (tokenBalance) {
       setAmount(formatUnits(tokenBalance.value, tokenBalance.decimals));
@@ -552,6 +574,63 @@ const USDB = () => {
               </div>
 
 
+            </div>
+          </div>
+        )}
+
+        {/* Total Supply Section */}
+        {isMounted && (
+          <div className="pb-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="bg-white/90 backdrop-blur-sm border border-blue-200/30 rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Total Supply Statistics</h2>
+                  </div>
+                  <div className="text-blue-600 text-sm font-medium bg-blue-50 px-3 py-1 rounded-lg">
+                    Live Data
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center p-1">
+                        <img
+                          src="/usdb.png"
+                          alt="USDB Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-gray-900 text-lg font-semibold">USDB Total Supply</span>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {usdbTotalSupply ? `${formatUsdbAmount(usdbTotalSupply)} USDB` : "Loading..."}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
+                        <img
+                          src="/susdb.png"
+                          alt="sUSDB Logo"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <span className="text-gray-900 text-lg font-semibold">sUSDB Total Supply</span>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900">
+                      {sUSDBTotalSupply ? `${formatUsdbAmount(sUSDBTotalSupply)} sUSDB` : "Loading..."}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
