@@ -171,14 +171,14 @@ const USDB = () => {
     },
   });
 
-  // 获取用户的待领取奖励
-  const { data: pendingRewards, refetch: refetchPendingRewards } = useReadContract({
+  // 获取 sUSDB 汇率
+  const { data: exchangeRate, refetch: refetchExchangeRate } = useReadContract({
     address: contracts[chainId]?.sUSDB?.address,
     abi: contracts[chainId]?.sUSDB?.abi,
-    functionName: "getPendingRewards",
-    args: [address],
+    functionName: "getExchangeRate",
+    args: [],
     query: {
-      enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
+      enabled: !!contracts[chainId]?.sUSDB?.address,
     },
   });
 
@@ -249,6 +249,40 @@ const USDB = () => {
     }
   };
 
+  // 计算动态转换
+  const calculateSUSDBFromUSDB = (usdbAmount) => {
+    if (!usdbAmount || !exchangeRate) return "0";
+    try {
+      const usdbWei = parseUnits(usdbAmount, 6); // USDB is 6 decimals
+      const sUSDBWei = (usdbWei * BigInt(1e6)) / exchangeRate; // exchangeRate is in 1e6 format
+      return formatUnits(sUSDBWei, 6); // sUSDB is also 6 decimals
+    } catch {
+      return "0";
+    }
+  };
+
+  const calculateUSDBFromSUSDB = (sUSDBAmount) => {
+    if (!sUSDBAmount || !exchangeRate) return "0";
+    try {
+      const sUSDBWei = parseUnits(sUSDBAmount, 6); // sUSDB is 6 decimals
+      const usdbWei = (sUSDBWei * exchangeRate) / BigInt(1e6); // exchangeRate is in 1e6 format
+      return formatUnits(usdbWei, 6); // USDB is 6 decimals
+    } catch {
+      return "0";
+    }
+  };
+
+  // 获取当前 sUSDB 价值（以 USDB 计算）
+  const getSUSDBValueInUSDB = () => {
+    if (!sUSDBBalance || !exchangeRate) return "0.00";
+    try {
+      const usdbValue = (sUSDBBalance.value * exchangeRate) / BigInt(1e6);
+      return formatUnits(usdbValue, 6);
+    } catch {
+      return "0.00";
+    }
+  };
+
   // 检查USDB授权
   const needsUSDBApproval = () => {
     if (!sUSDBAmount || !usdbBalance) return false;
@@ -314,6 +348,17 @@ const USDB = () => {
     return parseFloat(formatted).toFixed(2);
   };
 
+  // 格式化汇率显示
+  const formatExchangeRate = () => {
+    if (!exchangeRate) return "1.0000";
+    try {
+      const rate = formatUnits(exchangeRate, 6);
+      return parseFloat(rate).toFixed(4);
+    } catch {
+      return "1.0000";
+    }
+  };
+
   const toggleFaq = (index) => {
     setData((prev) => ({
       ...prev,
@@ -330,17 +375,22 @@ const USDB = () => {
     {
       question: "What is sUSDB?",
       answer:
-        "sUSDB is staked USDB that allows you to earn additional USDB rewards automatically. You can deposit USDB at a 1:1 ratio to receive sUSDB, which automatically accumulates USDB rewards over time. Withdrawals require a 7-day waiting period for security.",
+        "sUSDB is staked USDB that allows you to earn additional USDB rewards automatically. The exchange rate between USDB and sUSDB increases over time, representing accumulated rewards. Withdrawals require a 7-day waiting period for security.",
     },
     {
       question: "How do I earn yields?",
       answer:
-        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 5%+ base annual yield. sUSDB holders automatically earn additional USDB rewards on top of these base yields.",
+        "USDB's backing assets generate funding through hedged perpetual contracts and stablecoin rewards, producing 5%+ base annual yield. sUSDB holders automatically earn rewards through an increasing exchange rate - no manual claiming required.",
     },
     {
       question: "What is the 7-day withdrawal period for sUSDB?",
       answer:
         "When you request to withdraw sUSDB, there's a 7-day waiting period before you can execute the withdrawal. This security measure helps protect the protocol. You can cancel your withdrawal request at any time to restore your sUSDB tokens.",
+    },
+    {
+      question: "How does the dynamic exchange rate work?",
+      answer:
+        "The exchange rate between sUSDB and USDB increases over time as rewards are automatically compounded. When you deposit USDB, you receive sUSDB at the current rate. When you withdraw, your sUSDB is converted back to USDB at the then-current rate, capturing all accumulated rewards.",
     },
     {
       question: "What is Delta Hedging?",
@@ -350,7 +400,7 @@ const USDB = () => {
     {
       question: "How do sUSDB rewards work?",
       answer:
-        "sUSDB automatically accumulates USDB rewards over time. Simply hold sUSDB in your wallet and rewards will accrue automatically. You can claim your accumulated USDB rewards at any time through the interface.",
+        "sUSDB rewards are automatically compounded into the exchange rate. Simply hold sUSDB in your wallet and the value increases over time relative to USDB. There's no need to manually claim rewards - they're built into the token itself.",
     },
     {
       question: "How is fund security ensured?",
@@ -360,7 +410,7 @@ const USDB = () => {
     {
       question: "How do I participate in USDB and sUSDB?",
       answer:
-        "Connect your wallet, buy USDB with stablecoins, then convert your USDB to sUSDB to start earning automatic USDB rewards. You can claim rewards, view yields and manage withdrawals at any time.",
+        "Connect your wallet, buy USDB with stablecoins, then convert your USDB to sUSDB to start earning automatic rewards. The exchange rate will automatically increase over time, capturing your rewards without any action needed.",
     },
   ];
 
@@ -404,9 +454,9 @@ const USDB = () => {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Token Balances</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {/* USDB Card */}
-                <div className="bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
+                <div className="bg-white/90 backdrop-blur-sm border border-green-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center p-2">
@@ -436,7 +486,10 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      ${isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"}
+                      {isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"} USDB
+                    </div>
+                    <div className="text-gray-500 text-sm mt-1">
+                      ≈ ${isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"} USD
                     </div>
                     {!isConnected && (
                       <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
@@ -445,7 +498,7 @@ const USDB = () => {
                 </div>
 
                 {/* sUSDB Card */}
-                <div className="bg-white/80 backdrop-blur-sm border border-purple-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
+                <div className="bg-white/90 backdrop-blur-sm border border-purple-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center p-2">
@@ -475,8 +528,19 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      ${isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"}
+                      {isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"} sUSDB
                     </div>
+                    <div className="text-gray-500 text-sm mt-1">
+                      ≈ ${isConnected && sUSDBBalance ? getSUSDBValueInUSDB() : "0.00"} USD
+                    </div>
+                    {isConnected && sUSDBBalance && parseFloat(getSUSDBValueInUSDB()) > parseFloat(formatUsdbAmount(sUSDBBalance.value)) && (
+                      <div className="text-indigo-600 text-xs mt-1 flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L9 4.414 2.707 10.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Auto-Compounding
+                      </div>
+                    )}
                     {!isConnected && (
                       <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
                     )}
@@ -484,49 +548,7 @@ const USDB = () => {
                 </div>
               </div>
 
-              {/* Rewards Section */}
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Rewards</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-                {/* USDB Rewards Card */}
-                <div className="bg-white/80 backdrop-blur-sm border border-yellow-200/50 rounded-2xl p-6 relative group hover:bg-white/90 transition-all duration-300 shadow-lg">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center p-2">
-                        <img
-                          src="/usdb.png"
-                          alt="USDB Rewards Logo"
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <span className="text-gray-900 text-xl font-semibold">USDB Rewards</span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        document.getElementById('susdb-section')?.scrollIntoView({ 
-                          behavior: 'smooth' 
-                        });
-                      }}
-                      className="flex items-center gap-1 text-yellow-600 hover:text-yellow-700 transition-colors text-sm font-medium"
-                    >
-                      Claim
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  <div>
-                    <div className="text-gray-600 text-sm mb-1">Balance</div>
-                    <div className="text-gray-900 text-2xl font-bold">
-                      ${isConnected && pendingRewards ? formatUsdbAmount(pendingRewards) : "0.00"}
-                    </div>
-                    {!isConnected && (
-                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view rewards</div>
-                    )}
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
         )}
@@ -976,44 +998,29 @@ const USDB = () => {
                         </div>
                       </div>
 
-                      {/* Pending Rewards */}
-                      <div className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-5 mb-4">
+                      {/* Exchange Rate Info */}
+                      <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-4 mb-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center p-2">
-                              <img
-                                src="/usdb.png"
-                                alt="USDB Rewards Logo"
-                                className="w-full h-full object-contain"
-                              />
+                            <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                              <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21l3-3m-3 3l-3-3m3 3V9a4 4 0 118 0v1.586a3 3 0 01-1.293 2.707L12 16" />
+                              </svg>
                             </div>
                             <div>
-                              <div className="text-xl font-bold text-gray-900">
-                                {pendingRewards
-                                  ? formatUsdbAmount(pendingRewards)
-                                  : "0.00"}
+                              <div className="text-lg font-bold text-gray-900">
+                                1 sUSDB = {formatExchangeRate()} USDB
                               </div>
                               <div className="text-sm text-gray-600">
-                                Pending USDB Rewards
+                                Current exchange rate
                               </div>
                             </div>
                           </div>
-                          <WriteButton
-                            data={{
-                              address: contracts[chainId]?.sUSDB?.address,
-                              abi: contracts[chainId]?.sUSDB?.abi,
-                              functionName: "claimRewards",
-                              args: [],
-                            }}
-                            callback={() => {
-                              refetchSUSDBBalance();
-                              refetchUsdbBalance();
-                              refetchPendingRewards();
-                            }}
-                            disabled={!pendingRewards || pendingRewards <= 0}
-                            className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-lg hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 cursor-pointer text-sm shadow-lg"
-                            buttonName="Claim"
-                          />
+                          <div className="text-right">
+                            <div className="text-sm font-semibold text-indigo-600 bg-white/60 px-2 py-1 rounded-lg">
+                              Auto-Compound
+                            </div>
+                          </div>
                         </div>
                       </div>
 
@@ -1060,7 +1067,7 @@ const USDB = () => {
                                 >
                                   <div className="flex justify-between items-center mb-2">
                                     <span className="font-medium">
-                                      {formatUsdbAmount(withdrawal.amount)}{" "}
+                                      {formatUsdbAmount(withdrawal.sUSDBAmount)}{" "}
                                       sUSDB
                                     </span>
                                     <span
@@ -1091,7 +1098,7 @@ const USDB = () => {
                                           refetchSUSDBBalance();
                                           refetchUsdbBalance();
                                           refetchActiveWithdrawals();
-                                          refetchPendingRewards();
+                                          refetchExchangeRate();
                                         }}
                                         className="flex-1 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 cursor-pointer text-sm text-center"
                                         buttonName="Execute"
@@ -1108,7 +1115,7 @@ const USDB = () => {
                                       callback={() => {
                                         refetchSUSDBBalance();
                                         refetchActiveWithdrawals();
-                                        refetchPendingRewards();
+                                        refetchExchangeRate();
                                       }}
                                       className="flex-1 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 cursor-pointer text-sm text-center"
                                       buttonName="Cancel"
@@ -1178,7 +1185,7 @@ const USDB = () => {
                       {/* Deposit Tab */}
                       {activeTab === "deposit" && (
                         <div>
-                          <div className="text-center mb-6">
+                                                      <div className="text-center mb-6">
                             <div className="flex items-center justify-center gap-2 mb-2">
                               <h3 className="text-xl font-semibold text-gray-900">
                                 Deposit USDB →
@@ -1195,8 +1202,7 @@ const USDB = () => {
                               </h3>
                             </div>
                             <p className="text-gray-600 text-sm">
-                              1:1 exchange ratio • Start earning USDB rewards
-                              automatically
+                              Current rate: 1 USDB = {exchangeRate ? (1 / parseFloat(formatExchangeRate())).toFixed(4) : "0.0000"} sUSDB • Auto-compounding rewards
                             </p>
                           </div>
 
@@ -1233,7 +1239,7 @@ const USDB = () => {
                             </div>
                             {sUSDBAmount && (
                               <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {sUSDBAmount} sUSDB
+                                You will receive: {calculateSUSDBFromUSDB(sUSDBAmount)} sUSDB
                               </div>
                             )}
                           </div>
@@ -1294,7 +1300,7 @@ const USDB = () => {
                                   setSUSDBAmount("");
                                   refetchSUSDBBalance();
                                   refetchUsdbBalance();
-                                  refetchPendingRewards();
+                                  refetchExchangeRate();
                                 }}
                                 disabled={!isValidSUSDBAmount()}
                                 className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg"
@@ -1360,8 +1366,7 @@ const USDB = () => {
                             </div>
                             {withdrawAmount && (
                               <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {withdrawAmount} USDB (after 7
-                                days)
+                                You will receive: {calculateUSDBFromSUSDB(withdrawAmount)} USDB (after 7 days)
                               </div>
                             )}
                           </div>
@@ -1383,7 +1388,7 @@ const USDB = () => {
                                 setWithdrawAmount("");
                                 refetchSUSDBBalance();
                                 refetchActiveWithdrawals();
-                                refetchPendingRewards();
+                                refetchExchangeRate();
                               }}
                               disabled={!isValidWithdrawAmount()}
                               className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg mb-4"
@@ -1905,3 +1910,4 @@ const USDB = () => {
 };
 
 export default USDB;
+

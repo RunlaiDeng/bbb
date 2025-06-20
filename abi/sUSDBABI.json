@@ -94,17 +94,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "ERC20InvalidUnderlying",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "owner",
         "type": "address"
       }
@@ -126,17 +115,6 @@
   {
     "inputs": [],
     "name": "ReentrancyGuardReentrantCall",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "SafeERC20FailedOperation",
     "type": "error"
   },
   {
@@ -168,6 +146,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newExchangeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "AssetsDeposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "user",
@@ -176,7 +173,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "usdbAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "sUSDBAmount",
         "type": "uint256"
       }
     ],
@@ -200,38 +203,6 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardClaimed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardDeposited",
     "type": "event"
   },
   {
@@ -271,7 +242,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "sUSDBAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "usdbAmount",
         "type": "uint256"
       },
       {
@@ -296,7 +273,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "sUSDBAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "usdbAmount",
         "type": "uint256"
       },
       {
@@ -327,7 +310,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "usdbAmount",
         "type": "uint256"
       },
       {
@@ -343,19 +326,6 @@
   {
     "inputs": [],
     "name": "WITHDRAWAL_DELAY",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "accumulatedRewardPerShare",
     "outputs": [
       {
         "internalType": "uint256",
@@ -447,10 +417,54 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "claimRewards",
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "compoundYield",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "sharesAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "convertToAssets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "usdbAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "convertToShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -470,42 +484,12 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "usdbAmount",
         "type": "uint256"
       }
     ],
     "name": "deposit",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "depositFor",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -513,11 +497,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "usdbAmount",
         "type": "uint256"
       }
     ],
-    "name": "depositRewards",
+    "name": "depositWithPauseCheck",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -567,7 +551,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "usdbAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sUSDBAmount",
             "type": "uint256"
           },
           {
@@ -631,7 +620,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "usdbAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sUSDBAmount",
             "type": "uint256"
           },
           {
@@ -703,7 +697,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "usdbAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sUSDBAmount",
             "type": "uint256"
           },
           {
@@ -731,6 +730,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getExchangeRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -744,7 +756,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "usdbAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sUSDBAmount",
             "type": "uint256"
           },
           {
@@ -766,38 +783,6 @@
         "internalType": "uint256[]",
         "name": "indices",
         "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getPendingRewards",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getTotalPendingRewards",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -830,7 +815,12 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "usdbAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sUSDBAmount",
             "type": "uint256"
           },
           {
@@ -898,19 +888,13 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "pendingRewards",
+    "inputs": [],
+    "name": "paused",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "bool",
         "name": "",
-        "type": "uint256"
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -927,11 +911,24 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "sUSDBAmount",
         "type": "uint256"
       }
     ],
     "name": "requestWithdrawal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_paused",
+        "type": "bool"
+      }
+    ],
+    "name": "setPaused",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -951,7 +948,7 @@
   },
   {
     "inputs": [],
-    "name": "totalRewards",
+    "name": "totalAssets",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1055,19 +1052,13 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "userRewardDebt",
+    "inputs": [],
+    "name": "usdbToken",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "contract IERC20",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -1093,19 +1084,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawTo",
+    "inputs": [],
+    "name": "verifyContractState",
     "outputs": [
       {
         "internalType": "bool",
@@ -1113,7 +1093,30 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "verifyExchangeRateIntegrity",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1133,7 +1136,12 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "usdbAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "sUSDBAmount",
         "type": "uint256"
       },
       {
