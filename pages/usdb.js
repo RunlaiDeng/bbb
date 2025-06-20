@@ -1029,11 +1029,38 @@ const USDB = () => {
 
                       {/* Quick Stats */}
                       <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                        <div className="bg-gray-50 rounded-lg p-3 text-center">
+                        <div className="bg-gray-50 rounded-lg p-3 text-center relative group">
                           <div className="text-base sm:text-lg font-bold text-green-600">
-                            5%+
+                            0%+
                           </div>
-                          <div className="text-xs text-gray-600">Base APY</div>
+                          <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
+                            Base APY
+                            <div className="relative">
+                              <svg 
+                                className="w-3 h-3 text-gray-400 hover:text-gray-600 cursor-help transition-colors" 
+                                fill="currentColor" 
+                                viewBox="0 0 20 20"
+                              >
+                                <path 
+                                  fillRule="evenodd" 
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" 
+                                  clipRule="evenodd" 
+                                />
+                              </svg>
+                              {/* Tooltip */}
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-64 z-10">
+                                <div className="font-semibold mb-1">sUSDB APY: 0.00%</div>
+                                <div className="text-gray-300 text-xs leading-relaxed mb-2">
+                                  Trailing one-week daily average of protocol return transferred into the staking rewards distributor contract, divided by average staked USDB each day, annualized with weekly compounding. This figure does not represent or guarantee future results.
+                                </div>
+                                <div className="text-gray-400 text-xs">
+                                  Last Updated: 18 Jun 25
+                                </div>
+                                {/* Arrow */}
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3 text-center">
                           <div className="text-base sm:text-lg font-bold text-purple-600">
