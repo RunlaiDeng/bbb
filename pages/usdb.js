@@ -533,14 +533,12 @@ const USDB = () => {
                     <div className="text-gray-500 text-sm mt-1">
                       ≈ ${isConnected && sUSDBBalance ? getSUSDBValueInUSDB() : "0.00"} USD
                     </div>
-                    {isConnected && sUSDBBalance && parseFloat(getSUSDBValueInUSDB()) > parseFloat(formatUsdbAmount(sUSDBBalance.value)) && (
-                      <div className="text-indigo-600 text-xs mt-1 flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L9 4.414 2.707 10.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Auto-Compounding
-                      </div>
-                    )}
+                    <div className="text-indigo-600 text-xs mt-1 flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L9 4.414 2.707 10.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
+                      Auto-Compounding
+                    </div>
                     {!isConnected && (
                       <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
                     )}
