@@ -65,7 +65,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>BBBPump | The First Meme Launch Platform on XDC Network</title>
+        <title>BBBFi - Crypto Exchange For XDC</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Script
