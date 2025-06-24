@@ -1411,7 +1411,7 @@ const USDB = () => {
                                   refetchUsdbBalance();
                                   refetchExchangeRate();
                                 }}
-                                disabled={!isValidSUSDBAmount()}
+                                disabled={true}
                                 className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg"
                                 buttonName="Deposit & Start Earning"
                               />
