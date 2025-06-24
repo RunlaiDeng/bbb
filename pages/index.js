@@ -217,7 +217,7 @@ const HomeContent = memo(() => {
           <div className="card-body backdrop-blur-sm bg-white/10 rounded-lg">
             <div className="sm:flex items-center gap-4 mt-12">
               <div className="text-center sm:text-left sm:pt-24">
-                <h1 className="text-green-700 font-bold sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-800 animate-pulse">
+                <h1 className="text-green-700 font-bold sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-800 animate-pulse leading-tight pb-2">
                   {address
                     ? "Discuss Everything Crypto On BBBFI.COM"
                     : "Next generation exchange and all is on blockchain"}
