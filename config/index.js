@@ -176,7 +176,7 @@ export const contracts = {
       abi: sUSDBABI,
     },
     sUSDBV2: {
-      address: "0x8EbB37e9883451ebfE12ab89d7FbA869793fd68a",
+      address: "0x1416ceC451561105B70623CDfb70e521293E919a",
       abi: sUSDBABI,
     },
   },
