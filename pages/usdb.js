@@ -617,11 +617,11 @@ const USDB = () => {
           <title>USDB & sUSDB - Synthetic USD Staking | BBBPump</title>
           <meta
             name="description"
-            content="Earn yields with USDB and sUSDB. Deposit stablecoins to get USDB, then stake to sUSDB for additional rewards. Delta hedging strategy with 5%+ yields and BBB token rewards."
+            content="Earn yields with USDB and sUSDB. Deposit stablecoins to get USDB, then stake to sUSDB for automatic compound rewards. Delta hedging strategy with 5%+ yields."
           />
           <meta
             name="keywords"
-            content="USDB, sUSDB, staking, synthetic USD, delta hedging, yield farming, BBB rewards"
+            content="USDB, sUSDB, staking, synthetic USD, delta hedging, yield farming, auto-compound rewards"
           />
           <meta
             property="og:title"
@@ -629,7 +629,7 @@ const USDB = () => {
           />
           <meta
             property="og:description"
-            content="Stake USDB to earn enhanced rewards with sUSDB. Flexible withdrawal options with 7-day waiting period."
+            content="Stake USDB to earn automatic compound rewards with sUSDB. Flexible withdrawal options with 7-day waiting period."
           />
           <meta property="og:image" content="/usdb.png" />
           <meta name="twitter:card" content="summary_large_image" />
@@ -639,7 +639,7 @@ const USDB = () => {
           />
           <meta
             name="twitter:description"
-            content="Earn additional rewards by staking your USDB to sUSDB"
+            content="Earn automatic compound rewards by staking your USDB to sUSDB"
           />
         </Head>
 
@@ -2709,10 +2709,10 @@ const USDB = () => {
                     <span className="text-white font-bold text-2xl">2</span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    Deposit USDB to Get sUSDB
+                    Stake USDB to Get sUSDB
                   </h3>
                   <p className="text-gray-600">
-                    Simply deposit your USDB to receive sUSDB tokens. The dynamic exchange rate ensures you automatically earn compound interest as arbitrage profits are deposited into the contract.
+                    Simply stake your USDB to receive sUSDB tokens. The dynamic exchange rate ensures you automatically earn compound interest as arbitrage profits are deposited into the contract.
                   </p>
                 </div>
 
@@ -2731,12 +2731,16 @@ const USDB = () => {
 
               <div className="text-center mt-12">
                 <button
-                  onClick={() => router.push("/stake#usdb")}
+                  onClick={() => {
+                    document.getElementById('susdbv2-section')?.scrollIntoView({ 
+                      behavior: 'smooth' 
+                    });
+                  }}
                   className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
                 >
                   {isMounted && isConnected
-                    ? "Start Participating"
-                    : "Connect Wallet to Participate"}
+                    ? "Start Staking"
+                    : "Connect Wallet to Start Staking"}
                 </button>
               </div>
             </div>
