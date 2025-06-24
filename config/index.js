@@ -175,6 +175,10 @@ export const contracts = {
       address: "0xeA5cD2C82551f81F7298e74B291182Bd429237F6",
       abi: sUSDBABI,
     },
+    sUSDBV2: {
+      address: "0x8EbB37e9883451ebfE12ab89d7FbA869793fd68a",
+      abi: sUSDBABI,
+    },
   },
 };
 // IDO项目额外信息
