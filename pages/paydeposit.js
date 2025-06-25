@@ -235,17 +235,17 @@ const PayDeposit = () => {
                 {address && (
                                       <div className="grid grid-cols-2 gap-4">
                     {/* XDC Balance */}
-                    <div className="bg-white rounded-lg p-4 border">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600">
+                    <div className="bg-white rounded-lg p-3 border">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-medium text-gray-600 mb-1">
                             XDC Balance
                           </p>
-                          <p className="text-2xl font-bold text-gray-900">
+                          <p className="text-sm font-bold text-gray-900 break-all leading-tight">
                             {balanceLoading ? (
-                              <span className="text-lg">Loading...</span>
+                              <span className="text-sm">Loading...</span>
                             ) : balanceError ? (
-                              <span className="text-lg text-red-500">
+                              <span className="text-sm text-red-500">
                                 Error
                               </span>
                             ) : (
@@ -255,9 +255,9 @@ const PayDeposit = () => {
                             )}
                           </p>
                         </div>
-                        <div className="p-2 bg-green-100 rounded-full">
+                        <div className="p-1.5 bg-green-100 rounded-full flex-shrink-0">
                           <svg
-                            className="w-6 h-6 text-green-600"
+                            className="w-5 h-5 text-green-600"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -274,17 +274,17 @@ const PayDeposit = () => {
                     </div>
 
                     {/* EUR Value */}
-                    <div className="bg-white rounded-lg p-4 border">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600">
+                    <div className="bg-white rounded-lg p-3 border">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-medium text-gray-600 mb-1">
                             EUR Value
                           </p>
-                          <p className="text-2xl font-bold text-gray-900">
+                          <p className="text-sm font-bold text-gray-900 break-all leading-tight">
                             {priceLoading || balanceLoading ? (
-                              <span className="text-lg">Loading...</span>
+                              <span className="text-sm">Loading...</span>
                             ) : balanceError ? (
-                              <span className="text-lg text-red-500">
+                              <span className="text-sm text-red-500">
                                 Error
                               </span>
                             ) : (
@@ -296,9 +296,9 @@ const PayDeposit = () => {
                             )}
                           </p>
                         </div>
-                        <div className="p-2 bg-purple-100 rounded-full">
+                        <div className="p-1.5 bg-purple-100 rounded-full flex-shrink-0">
                           <svg
-                            className="w-6 h-6 text-purple-600"
+                            className="w-5 h-5 text-purple-600"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
