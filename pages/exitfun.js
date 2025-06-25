@@ -17,6 +17,7 @@ const ExitFromFun = () => {
   const [xdcPrice, setXdcPrice] = useState(0);
   const [tokenIndex, setTokenIndex] = useState(null);
   const [isValidToken, setIsValidToken] = useState(false);
+  const [isLiquidityRemoved, setIsLiquidityRemoved] = useState(false);
 
   // Get XDC price
   useEffect(() => {
@@ -65,7 +66,7 @@ const ExitFromFun = () => {
       : [],
   });
 
-  // Read token mapping to get index
+  // Read token mapping to get index and token info
   const { data: mappingReads, refetch: refetchMapping } = useReadContracts({
     contracts:
       tokenContract && mbbbv2
@@ -73,6 +74,11 @@ const ExitFromFun = () => {
             {
               ...mbbbv2,
               functionName: "tokenMapping",
+              args: [tokenAddress],
+            },
+            {
+              ...mbbbv2,
+              functionName: "getDropTokenByAddress",
               args: [tokenAddress],
             },
           ]
@@ -99,20 +105,29 @@ const ExitFromFun = () => {
   const tokenDecimals = tokenReads?.[3]?.result || 18;
 
   const mappedIndex = mappingReads?.[0]?.result;
+  const dropTokenInfo = mappingReads?.[1]?.result;
   const sellXDCAmount = sellReads?.[0]?.result || 0n;
 
-  // Update token index when mapping changes
+  // Update token index and liquidity status when mapping changes
   useEffect(() => {
     if (mappedIndex !== undefined) {
       if (mappedIndex > 0) {
         setTokenIndex(Number(mappedIndex));
         setIsValidToken(true);
+        
+        // Check if liquidity is removed
+        if (dropTokenInfo && dropTokenInfo.removed > 0) {
+          setIsLiquidityRemoved(true);
+        } else {
+          setIsLiquidityRemoved(false);
+        }
       } else {
         setTokenIndex(null);
         setIsValidToken(false);
+        setIsLiquidityRemoved(false);
       }
     }
-  }, [mappedIndex]);
+  }, [mappedIndex, dropTokenInfo]);
 
   // Handle token address input
   const handleTokenAddressChange = (e) => {
@@ -122,6 +137,7 @@ const ExitFromFun = () => {
     setSellPercentage(0);
     setTokenIndex(null);
     setIsValidToken(false);
+    setIsLiquidityRemoved(false);
   };
 
   // Handle percentage change
@@ -248,8 +264,29 @@ const ExitFromFun = () => {
               </div>
             )}
 
+            {/* Liquidity Removed Notice */}
+            {isValidToken && isLiquidityRemoved && (
+              <div className="alert alert-info mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h3 className="font-bold">Liquidity Removed!</h3>
+                  <div className="text-sm">This token&apos;s liquidity has been removed from the Fun platform. You can trade it on other DEXs.</div>
+                </div>
+                <div>
+                  <button 
+                    className="btn btn-primary btn-sm"
+                    onClick={() => window.open(`https://icecreamswap.com/swap?chain=xdc&inputCurrency=${tokenAddress}&outputCurrency=XDC`, '_blank')}
+                  >
+                    Trade on IceCreamSwap
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Sell Interface */}
-            {isValidToken && tokenBalance > 0 && (
+            {isValidToken && !isLiquidityRemoved && tokenBalance > 0 && (
               <>
                 {/* Percentage Buttons */}
                 <div className="mb-4">
@@ -337,7 +374,7 @@ const ExitFromFun = () => {
             )}
 
             {/* No Balance Message */}
-            {isValidToken && tokenBalance === 0n && (
+            {isValidToken && !isLiquidityRemoved && tokenBalance === 0n && (
               <div className="alert alert-warning">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
