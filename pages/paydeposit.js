@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useBalance } from "wagmi";
+import { formatEther } from "viem";
 import rpc from "@/components/Rpc";
 import Loading from "@/components/Loading";
 import { getXDCPrice } from "@/components/Utils";
@@ -13,8 +15,12 @@ const PayDeposit = () => {
   const [error, setError] = useState("");
   const [xdcPrice, setXdcPrice] = useState(0);
   const [eurPrice, setEurPrice] = useState(0);
-  const [addressBalance, setAddressBalance] = useState("0");
   const [priceLoading, setPriceLoading] = useState(false);
+
+  // 使用 wagmi 获取地址余额
+  const { data: balanceData, isLoading: balanceLoading, error: balanceError } = useBalance({
+    address: address,
+  });
 
   useEffect(() => {
     if (id) {
@@ -22,12 +28,6 @@ const PayDeposit = () => {
       fetchPrices();
     }
   }, [id]);
-
-  useEffect(() => {
-    if (address) {
-      fetchAddressBalance();
-    }
-  }, [address]);
 
   const fetchAddress = async () => {
     try {
@@ -82,20 +82,7 @@ const PayDeposit = () => {
     }
   };
 
-  const fetchAddressBalance = async () => {
-    try {
-      // 这里可以调用RPC方法获取地址余额
-      // 如果没有相应的RPC方法，可以使用区块链查询或设为默认值
-      // const balance = await rpc.getBalance(address);
-      // setAddressBalance(balance || "0");
-      
-      // 暂时设置为示例值，你可以根据实际的RPC方法调整
-      setAddressBalance("100.5");
-    } catch (err) {
-      console.error("Error fetching address balance:", err);
-      setAddressBalance("0");
-    }
-  };
+
 
   if (!id) {
     return (
@@ -206,7 +193,13 @@ const PayDeposit = () => {
                           <div>
                             <p className="text-sm font-medium text-gray-600">XDC Balance</p>
                             <p className="text-2xl font-bold text-gray-900">
-                              {parseFloat(addressBalance).toLocaleString()} XDC
+                              {balanceLoading ? (
+                                <span className="text-lg">Loading...</span>
+                              ) : balanceError ? (
+                                <span className="text-lg text-red-500">Error</span>
+                              ) : (
+                                `${parseFloat(formatEther(balanceData?.value || 0)).toLocaleString()} XDC`
+                              )}
                             </p>
                           </div>
                           <div className="p-2 bg-green-100 rounded-full">
@@ -223,10 +216,12 @@ const PayDeposit = () => {
                           <div>
                             <p className="text-sm font-medium text-gray-600">USD Value</p>
                             <p className="text-2xl font-bold text-gray-900">
-                              {priceLoading ? (
+                              {priceLoading || balanceLoading ? (
                                 <span className="text-lg">Loading...</span>
+                              ) : balanceError ? (
+                                <span className="text-lg text-red-500">Error</span>
                               ) : (
-                                `$${(parseFloat(addressBalance || 0) * (Number(xdcPrice) || 0)).toFixed(2)}`
+                                `$${(parseFloat(formatEther(balanceData?.value || 0)) * (Number(xdcPrice) || 0)).toFixed(2)}`
                               )}
                             </p>
                           </div>
@@ -244,10 +239,12 @@ const PayDeposit = () => {
                           <div>
                             <p className="text-sm font-medium text-gray-600">EUR Value</p>
                             <p className="text-2xl font-bold text-gray-900">
-                              {priceLoading ? (
+                              {priceLoading || balanceLoading ? (
                                 <span className="text-lg">Loading...</span>
+                              ) : balanceError ? (
+                                <span className="text-lg text-red-500">Error</span>
                               ) : (
-                                `€${(parseFloat(addressBalance || 0) * (Number(eurPrice) || 0)).toFixed(2)}`
+                                `€${(parseFloat(formatEther(balanceData?.value || 0)) * (Number(eurPrice) || 0)).toFixed(2)}`
                               )}
                             </p>
                           </div>
