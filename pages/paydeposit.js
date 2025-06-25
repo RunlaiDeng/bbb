@@ -14,9 +14,42 @@ const PayDeposit = () => {
   const [xdcPrice, setXdcPrice] = useState(0);
   const [eurPrice, setEurPrice] = useState(0);
   const [priceLoading, setPriceLoading] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // 获取支付金额，如果为空则默认为0
   const payAmount = parseFloat(payamount) || 0;
+
+  const copyToClipboard = async (text) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        // 备用方案：使用旧的方式复制
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+      }
+      
+      // 显示复制成功状态
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+      
+      // 触觉反馈 (仅在支持的设备上)
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    } catch (err) {
+      console.error('复制失败:', err);
+      alert('复制失败，请手动复制地址');
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -136,27 +169,32 @@ const PayDeposit = () => {
                       Deposit Address
                     </label>
                     <div className="relative">
-                      <input
-                        type="text"
-                        value={address}
-                        readOnly
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 font-mono text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                        placeholder="Address will appear here..."
-                      />
-                      {address && (
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(address);
-                            // You can add a notification here
-                          }}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none"
-                          title="Copy address"
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                          </svg>
-                        </button>
-                      )}
+                      <div className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-gray-50 font-mono text-xs sm:text-sm min-h-[3rem] flex items-center break-all leading-relaxed">
+                        <span className="text-gray-700">
+                          {address || "Address will appear here..."}
+                        </span>
+                      </div>
+                                              {address && (
+                          <button
+                            onClick={() => copyToClipboard(address)}
+                            className={`absolute right-3 top-3 p-1 focus:outline-none rounded transition-colors ${
+                              copySuccess 
+                                ? 'text-green-600 bg-green-100' 
+                                : 'text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-100'
+                            }`}
+                            title={copySuccess ? "已复制!" : "复制地址"}
+                          >
+                            {copySuccess ? (
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                            ) : (
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                              </svg>
+                            )}
+                          </button>
+                        )}
                     </div>
                   </div>
 
@@ -182,7 +220,7 @@ const PayDeposit = () => {
                 {address && (
                   <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
                     <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                               {/* XDC Amount */}
                         <div className="bg-white rounded-lg p-4 border">
                           <div className="flex items-center justify-between">
