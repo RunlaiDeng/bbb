@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useBalance } from "wagmi";
-import { formatEther } from "viem";
 import rpc from "@/components/Rpc";
 import Loading from "@/components/Loading";
 import { getXDCPrice } from "@/components/Utils";
@@ -9,7 +7,7 @@ import { QRCodeSVG } from "qrcode.react";
 
 const PayDeposit = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, payamount } = router.query;
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,10 +15,8 @@ const PayDeposit = () => {
   const [eurPrice, setEurPrice] = useState(0);
   const [priceLoading, setPriceLoading] = useState(false);
 
-  // 使用 wagmi 获取地址余额
-  const { data: balanceData, isLoading: balanceLoading, error: balanceError } = useBalance({
-    address: address,
-  });
+  // 获取支付金额，如果为空则默认为0
+  const payAmount = parseFloat(payamount) || 0;
 
   useEffect(() => {
     if (id) {
@@ -182,26 +178,20 @@ const PayDeposit = () => {
                   )}
                 </div>
 
-                {/* Balance Information */}
+                {/* Payment Information */}
                 {address && (
                   <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Balance Information</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* XDC Balance */}
-                      <div className="bg-white rounded-lg p-4 border">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-gray-600">XDC Balance</p>
-                            <p className="text-2xl font-bold text-gray-900">
-                              {balanceLoading ? (
-                                <span className="text-lg">Loading...</span>
-                              ) : balanceError ? (
-                                <span className="text-lg text-red-500">Error</span>
-                              ) : (
-                                `${parseFloat(formatEther(balanceData?.value || 0)).toLocaleString()} XDC`
-                              )}
-                            </p>
-                          </div>
+                                              {/* XDC Amount */}
+                        <div className="bg-white rounded-lg p-4 border">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-gray-600">Payment Amount</p>
+                              <p className="text-2xl font-bold text-gray-900">
+                                {payAmount.toLocaleString()} XDC
+                              </p>
+                            </div>
                           <div className="p-2 bg-green-100 rounded-full">
                             <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
@@ -215,15 +205,13 @@ const PayDeposit = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm font-medium text-gray-600">USD Value</p>
-                            <p className="text-2xl font-bold text-gray-900">
-                              {priceLoading || balanceLoading ? (
-                                <span className="text-lg">Loading...</span>
-                              ) : balanceError ? (
-                                <span className="text-lg text-red-500">Error</span>
-                              ) : (
-                                `$${(parseFloat(formatEther(balanceData?.value || 0)) * (Number(xdcPrice) || 0)).toFixed(2)}`
-                              )}
-                            </p>
+                                                          <p className="text-2xl font-bold text-gray-900">
+                                {priceLoading ? (
+                                  <span className="text-lg">Loading...</span>
+                                ) : (
+                                  `$${(payAmount * (Number(xdcPrice) || 0)).toFixed(2)}`
+                                )}
+                              </p>
                           </div>
                           <div className="p-2 bg-blue-100 rounded-full">
                             <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,15 +226,13 @@ const PayDeposit = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-sm font-medium text-gray-600">EUR Value</p>
-                            <p className="text-2xl font-bold text-gray-900">
-                              {priceLoading || balanceLoading ? (
-                                <span className="text-lg">Loading...</span>
-                              ) : balanceError ? (
-                                <span className="text-lg text-red-500">Error</span>
-                              ) : (
-                                `€${(parseFloat(formatEther(balanceData?.value || 0)) * (Number(eurPrice) || 0)).toFixed(2)}`
-                              )}
-                            </p>
+                                                          <p className="text-2xl font-bold text-gray-900">
+                                {priceLoading ? (
+                                  <span className="text-lg">Loading...</span>
+                                ) : (
+                                  `€${(payAmount * (Number(eurPrice) || 0)).toFixed(2)}`
+                                )}
+                              </p>
                           </div>
                           <div className="p-2 bg-purple-100 rounded-full">
                             <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
