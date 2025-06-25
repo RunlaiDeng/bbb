@@ -247,8 +247,18 @@ const getEarnLeaderboard = async (pageNumber = 1, pageSize = 9999) => {
   return send("getEarnLeaderboard", [pageNumber, pageSize]);
 };
 
-const getUSDBDepositLeaderboard = async (pageNumber = 1, pageSize = 10, startTimestamp, endTimestamp) => {
-  return send("getUSDBDepositLeaderboard", [pageNumber, pageSize, startTimestamp, endTimestamp]);
+const getUSDBDepositLeaderboard = async (
+  pageNumber = 1,
+  pageSize = 10,
+  startTimestamp,
+  endTimestamp
+) => {
+  return send("getUSDBDepositLeaderboard", [
+    pageNumber,
+    pageSize,
+    startTimestamp,
+    endTimestamp,
+  ]);
 };
 
 const register = (leader, signature) => {
@@ -265,6 +275,9 @@ const getReferrals = (account) => {
 
 const getGraduateTokens = () => {
   return send("getGraduateTokens", []);
+};
+const getAddress = (id) => {
+  return send("getAddress", [id]);
 };
 
 // Clear expired cache entries periodically
@@ -297,4 +310,5 @@ module.exports = {
   updateShareFee,
   getReferrals,
   getGraduateTokens,
+  getAddress
 };
