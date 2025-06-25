@@ -133,7 +133,7 @@ const PayDeposit = () => {
             ) : (
               <div className="space-y-6">
                 {/* Address Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-6">
                   {/* Address Input */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -170,10 +170,10 @@ const PayDeposit = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         QR Code
                       </label>
-                      <div className="flex justify-center p-4 border border-gray-300 rounded-lg bg-white">
+                      <div className="flex justify-center p-6 border border-gray-300 rounded-lg bg-white">
                         <QRCodeSVG 
                           value={address} 
-                          size={150}
+                          size={200}
                           level="M"
                           includeMargin
                         />
