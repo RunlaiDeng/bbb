@@ -92,6 +92,16 @@ const POOL_CONFIGS = [
     id: 'lpv2-1', 
     pid: 1, 
     poolType: 'lpstakev2', 
+    title: '3xdc Staking(Expired)', 
+    symbol: '3XDC',
+    icon: "threexdc",
+    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-6/deposit/",
+    hashTag: "#3xdc"
+  },
+  { 
+    id: 'lpv2-2', 
+    pid: 2, 
+    poolType: 'lpstakev2', 
     title: '3xdc Staking', 
     symbol: '3XDC',
     icon: "threexdc",
