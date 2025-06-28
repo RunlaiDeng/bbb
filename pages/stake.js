@@ -22,7 +22,7 @@ const POOL_CONFIGS = [
     id: 'xdc-0', 
     pid: 0, 
     poolType: 'xdc', 
-    title: 'XDC Staking', 
+    title: 'XDC Staking (Expired)', 
     symbol: 'XDC',
     icon: "/xdc.png",
     getTokenLink: "https://faucet.blockpi.io/xdc",
@@ -88,16 +88,7 @@ const POOL_CONFIGS = [
     getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-2/deposit/",
     hashTag: "#4pool"
   },
-  { 
-    id: 'lpv2-1', 
-    pid: 1, 
-    poolType: 'lpstakev2', 
-    title: '3xdc Staking(Expired)', 
-    symbol: '3XDC',
-    icon: "threexdc",
-    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-6/deposit/",
-    hashTag: "#3xdc"
-  },
+
   { 
     id: 'lpv2-2', 
     pid: 2, 
@@ -105,7 +96,7 @@ const POOL_CONFIGS = [
     title: '3xdc Staking', 
     symbol: '3XDC',
     icon: "threexdc",
-    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-6/deposit/",
+    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-7/deposit/",
     hashTag: "#3xdc"
   },
 ];
