@@ -104,8 +104,8 @@ const POOL_CONFIGS = [
     id: 'lpv2-3', 
     pid: 3, 
     poolType: 'lpstakev2', 
-    title: 'XDC-BBB LP Staking', 
-    symbol: 'XDC-BBB LP',
+    title: 'BBBXDC Staking', 
+    symbol: 'BBBXDC',
     icon: "combined",
     getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-twocrypto-0/deposit/",
     hashTag: "#xdc-bbb-v2"
