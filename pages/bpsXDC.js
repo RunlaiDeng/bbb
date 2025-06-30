@@ -203,7 +203,7 @@ const BpsXDC = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold">{psXDCSymbol} Staking</h2>
           <div className="text-green-600 font-bold text-lg">
-            6% APR
+            0% APR
           </div>
         </div>
 

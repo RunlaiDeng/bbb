@@ -656,7 +656,7 @@ const StakingPool = ({
       }
 
       const bbbAPR = totalStakedUSD > 0 ? (annualRewardsUSD / totalStakedUSD) * 100 : 0;
-      const bonusAPR = (isPsXdcPool || isBpsXdcPool) ? 6 : 0; // Both psXDC and bpsXDC get 6% bonus
+      const bonusAPR = (isPsXdcPool || isBpsXdcPool) ? 0 : 0; // Both psXDC and bpsXDC bonus set to 0
       const interestAPR = isUsdbPool && pool.annualInterestRate ? Number(pool.annualInterestRate) / 100 : 0;
       const totalAPR = bbbAPR + bonusAPR + interestAPR;
 
@@ -732,7 +732,7 @@ const StakingPool = ({
       return `BBB ${apr.bbbAPR}% + USDB ${interestRate.toFixed(2)}%`;
     }
     if (poolData.symbol === "psXDC" || poolData.symbol === "bpsXDC") {
-      return `${poolData.symbol} 6% + BBB ${apr.bbbAPR}%`;
+      return `${poolData.symbol} 0% + BBB ${apr.bbbAPR}%`;
     }
     return `BBB ${apr.bbbAPR}%`;
   };
