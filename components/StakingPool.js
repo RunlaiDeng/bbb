@@ -426,6 +426,38 @@ const StakingPool = ({
     },
   });
 
+  // For BBBXDC pool (lpstakev2 pid 3), read the 2 token balances in the pool
+  const createBBBXDCPoolTokenBalanceContracts = () => {
+    if (poolType !== 'lpstakev2' || pid !== 3 || !lpTokenAddress) return [];
+    
+    const bbbAddress = contracts[chainId]?.bbb?.address;
+    const wxdcAddress = contracts[chainId]?.weth?.address;
+    
+    return [
+      // BBB balance in BBBXDC pool
+      {
+        address: bbbAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+      // WXDC balance in BBBXDC pool
+      {
+        address: wxdcAddress,
+        abi: ERC20ABI,
+        functionName: "balanceOf",
+        args: [lpTokenAddress],
+      },
+    ];
+  };
+
+  const { data: bbbxdcPoolTokenBalances, refetch: refetchBBBXDCPoolTokenBalances } = useReadContracts({
+    contracts: createBBBXDCPoolTokenBalanceContracts(),
+    query: {
+      enabled: !!lpTokenAddress && poolType === 'lpstakev2' && pid === 3,
+    },
+  });
+
   // Process contract data into pool object
   useEffect(() => {
     if (!contractData) return;
@@ -476,7 +508,7 @@ const StakingPool = ({
           rewardPerBlock: contractData[0]?.result?.[5] || BigInt(0),
           isActive: contractData[0]?.result?.[6] || false,
           tokenAddress: lpTokenAddress,
-          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : "3XDC"),
+          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : pid === 1 ? "3XDC" : pid === 3 ? "BBBXDC" : "LP"),
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
@@ -497,6 +529,12 @@ const StakingPool = ({
             psXDC: threeXdcPoolTokenBalances?.[0]?.result || BigInt(0),
             bpsXDC: threeXdcPoolTokenBalances?.[1]?.result || BigInt(0),
             wxdc: threeXdcPoolTokenBalances?.[2]?.result || BigInt(0),
+          };
+        } else if (pid === 3) {
+          // BBBXDC pool token balances
+          pool.bbbxdcBalances = {
+            bbb: bbbxdcPoolTokenBalances?.[0]?.result || BigInt(0),
+            wxdc: bbbxdcPoolTokenBalances?.[1]?.result || BigInt(0),
           };
         }
       } else {
@@ -546,7 +584,7 @@ const StakingPool = ({
         isActive: false,
       });
     }
-  }, [contractData, tokenData, pairData, fourPoolTokenBalances, threeXdcPoolTokenBalances, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
+  }, [contractData, tokenData, pairData, fourPoolTokenBalances, threeXdcPoolTokenBalances, bbbxdcPoolTokenBalances, xdcBalance, poolType, pid, lpTokenAddress, usdbTokenAddress]);
 
   // Calculate APR for this pool
   const BLOCKS_PER_YEAR = 31536000;
@@ -642,6 +680,14 @@ const StakingPool = ({
         
         const total3xdcPoolValueUSD = psxdcValue + bpsxdcValue + wxdcValue;
         const lpTokenPrice = total3xdcPoolValueUSD / Number(formatEther(pool.lpTotalSupply));
+        totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+      } else if (poolType === 'lpstakev2' && pid === 3 && pool.bbbxdcBalances && pool.lpTotalSupply && pool.lpTotalSupply > 0) {
+        // Special handling for BBBXDC pool - calculate total USD value of BBB and WXDC tokens
+        const bbbValue = Number(formatEther(pool.bbbxdcBalances.bbb)) * bbbPrice; // BBB token value
+        const wxdcValue = Number(formatEther(pool.bbbxdcBalances.wxdc)) * xdcPrice; // WXDC = XDC price
+        
+        const totalBBBXDCPoolValueUSD = bbbValue + wxdcValue;
+        const lpTokenPrice = totalBBBXDCPoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
       } else if (isPsXdcPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -766,6 +812,9 @@ const StakingPool = ({
       }
       if (poolType === 'lpstakev2' && pid === 1) {
         refetch3xdcPoolTokenBalances?.();
+      }
+      if (poolType === 'lpstakev2' && pid === 3) {
+        refetchBBBXDCPoolTokenBalances?.();
       }
     }
   };
