@@ -49,16 +49,7 @@ const POOL_CONFIGS = [
     getTokenLink: "https://primestaking.xyz/xdc-liquid-staking",
     hashTag: "#psxdc"
   },
-  { 
-    id: 'lp-1', 
-    pid: 1, 
-    poolType: 'lp', 
-    title: 'bpsXDC ReStaking (Expired)', 
-    symbol: 'bpsXDC',
-    icon: "/xdc.png",
-    getTokenLink: "/bpsXDC",
-    hashTag: "#bpsxdc"
-  },
+
   { 
     id: 'lp-2', 
     pid: 2, 
@@ -69,16 +60,7 @@ const POOL_CONFIGS = [
     getTokenLink: "/buy",
     hashTag: "#bbb"
   },
-  { 
-    id: 'lp-3', 
-    pid: 3, 
-    poolType: 'lp', 
-    title: 'XDC-BBB LP Staking (Expired)', 
-    symbol: 'XDC-BBB LP',
-    icon: "combined",
-    getTokenLink: "https://icecreamswap.com/add/XDC/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1?chain=xdc",
-    hashTag: "#xdc-bbb"
-  },
+
   { 
     id: 'lpv2-0', 
     pid: 0, 
@@ -90,16 +72,7 @@ const POOL_CONFIGS = [
     hashTag: "#4pool"
   },
 
-  { 
-    id: 'lpv2-2', 
-    pid: 2, 
-    poolType: 'lpstakev2', 
-    title: '3xdc Staking (Expired)', 
-    symbol: '3XDC',
-    icon: "threexdc",
-    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-7/deposit/",
-    hashTag: "#3xdc"
-  },
+
   { 
     id: 'lpv2-3', 
     pid: 3, 
