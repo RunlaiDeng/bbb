@@ -9,11 +9,8 @@ const POOL_HASH_MAP = {
   usdb: "usdb-1",
   "usdb-expired": "usdb-0",
   psxdc: "lp-0",
-  bpsxdc: "lp-1",
   bbb: "lp-2",
-  "xdc-bbb": "lp-3",
   "4pool": "lpv2-0",
-  "3xdc": "lpv2-1",
   "xdc-bbb-v2": "lpv2-3",
 };
 
