@@ -19,10 +19,7 @@ const USDB = () => {
   const [selectedToken, setSelectedToken] = useState("USDC_XDC");
   const [copiedAddress, setCopiedAddress] = useState(null);
 
-  // sUSDB states (expired)
-  const [sUSDBAmount, setSUSDBAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [activeTab, setActiveTab] = useState("deposit"); // deposit, withdraw, manage
+
 
   // sUSDB V2 states
   const [sUSDBV2Amount, setSUSDBV2Amount] = useState("");
@@ -167,52 +164,7 @@ const USDB = () => {
     }
   };
 
-  // sUSDB 相关数据获取
-  const { data: sUSDBBalance, refetch: refetchSUSDBBalance } = useBalance({
-    address,
-    token: contracts[chainId]?.sUSDB?.address,
-    query: {
-      enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
-    },
-  });
 
-  // 获取 sUSDB 汇率
-  const { data: exchangeRate, refetch: refetchExchangeRate } = useReadContract({
-    address: contracts[chainId]?.sUSDB?.address,
-    abi: contracts[chainId]?.sUSDB?.abi,
-    functionName: "getExchangeRate",
-    args: [],
-    query: {
-      enabled: !!contracts[chainId]?.sUSDB?.address,
-    },
-  });
-
-  // 获取用户的活跃提取请求
-  const { data: activeWithdrawals, refetch: refetchActiveWithdrawals } =
-    useReadContract({
-      address: contracts[chainId]?.sUSDB?.address,
-      abi: contracts[chainId]?.sUSDB?.abi,
-      functionName: "getActiveWithdrawalRequests",
-      args: [address],
-      query: {
-        enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
-      },
-    });
-
-  // 获取USDB对sUSDB的授权额度
-  const { data: usdbAllowance, refetch: refetchUSDBAllowance } =
-    useReadContract({
-      address: contracts[chainId]?.usdb?.address,
-      abi: contracts[chainId]?.usdb?.abi,
-      functionName: "allowance",
-      args: [address, contracts[chainId]?.sUSDB?.address],
-      query: {
-        enabled:
-          !!address &&
-          !!contracts[chainId]?.usdb?.address &&
-          !!contracts[chainId]?.sUSDB?.address,
-      },
-    });
 
   // sUSDB V2 相关数据获取
   const { data: sUSDBV2Balance, refetch: refetchSUSDBV2Balance } = useBalance({
@@ -283,16 +235,7 @@ const USDB = () => {
     },
   });
 
-  // 获取sUSDB总供应量
-  const { data: sUSDBTotalSupply } = useReadContract({
-    address: contracts[chainId]?.sUSDB?.address,
-    abi: contracts[chainId]?.sUSDB?.abi,
-    functionName: "totalSupply",
-    args: [],
-    query: {
-      enabled: !!contracts[chainId]?.sUSDB?.address,
-    },
-  });
+
 
   const handleMaxClick = () => {
     if (tokenBalance) {
@@ -307,32 +250,7 @@ const USDB = () => {
     }
   };
 
-  // sUSDB 相关辅助函数
-  const handleSUSDBMaxClick = () => {
-    if (usdbBalance) {
-      setSUSDBAmount(formatUnits(usdbBalance.value, usdbBalance.decimals));
-    }
-  };
 
-  const handleSUSDBAmountChange = (e) => {
-    const value = e.target.value;
-    if (value === "" || /^\d*\.?\d*$/.test(value)) {
-      setSUSDBAmount(value);
-    }
-  };
-
-  const handleWithdrawMaxClick = () => {
-    if (sUSDBBalance) {
-      setWithdrawAmount(formatUnits(sUSDBBalance.value, sUSDBBalance.decimals));
-    }
-  };
-
-  const handleWithdrawAmountChange = (e) => {
-    const value = e.target.value;
-    if (value === "" || /^\d*\.?\d*$/.test(value)) {
-      setWithdrawAmount(value);
-    }
-  };
 
   // sUSDB V2 相关辅助函数
   const handleSUSDBV2MaxClick = () => {
@@ -361,39 +279,7 @@ const USDB = () => {
     }
   };
 
-  // 计算动态转换
-  const calculateSUSDBFromUSDB = (usdbAmount) => {
-    if (!usdbAmount || !exchangeRate) return "0";
-    try {
-      const usdbWei = parseUnits(usdbAmount, 6); // USDB is 6 decimals
-      const sUSDBWei = (usdbWei * BigInt(1e6)) / exchangeRate; // exchangeRate is in 1e6 format
-      return formatUnits(sUSDBWei, 6); // sUSDB is also 6 decimals
-    } catch {
-      return "0";
-    }
-  };
 
-  const calculateUSDBFromSUSDB = (sUSDBAmount) => {
-    if (!sUSDBAmount || !exchangeRate) return "0";
-    try {
-      const sUSDBWei = parseUnits(sUSDBAmount, 6); // sUSDB is 6 decimals
-      const usdbWei = (sUSDBWei * exchangeRate) / BigInt(1e6); // exchangeRate is in 1e6 format
-      return formatUnits(usdbWei, 6); // USDB is 6 decimals
-    } catch {
-      return "0";
-    }
-  };
-
-  // 获取当前 sUSDB 价值（以 USDB 计算）
-  const getSUSDBValueInUSDB = () => {
-    if (!sUSDBBalance || !exchangeRate) return "0.00";
-    try {
-      const usdbValue = (sUSDBBalance.value * exchangeRate) / BigInt(1e6);
-      return formatUnits(usdbValue, 6);
-    } catch {
-      return "0.00";
-    }
-  };
 
   // sUSDB V2 相关计算函数
   const calculateSUSDBV2FromUSDB = (usdbAmount) => {
@@ -429,18 +315,7 @@ const USDB = () => {
     }
   };
 
-  // 检查USDB授权
-  const needsUSDBApproval = () => {
-    if (!sUSDBAmount || !usdbBalance) return false;
-    try {
-      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
-      if (amountWei <= 0) return false;
-      if (usdbAllowance === undefined || usdbAllowance === null) return true;
-      return usdbAllowance < amountWei;
-    } catch {
-      return true;
-    }
-  };
+
 
   // 检查USDB V2授权
   const needsUSDBV2Approval = () => {
@@ -480,25 +355,7 @@ const USDB = () => {
     }
   };
 
-  const isValidSUSDBAmount = () => {
-    if (!sUSDBAmount || !usdbBalance) return false;
-    try {
-      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
-      return amountWei > 0 && amountWei <= usdbBalance.value;
-    } catch {
-      return false;
-    }
-  };
 
-  const isValidWithdrawAmount = () => {
-    if (!withdrawAmount || !sUSDBBalance) return false;
-    try {
-      const amountWei = parseUnits(withdrawAmount, sUSDBBalance.decimals);
-      return amountWei > 0 && amountWei <= sUSDBBalance.value;
-    } catch {
-      return false;
-    }
-  };
 
   // sUSDB V2 验证函数
   const isValidSUSDBV2Amount = () => {
@@ -528,16 +385,7 @@ const USDB = () => {
     return parseFloat(formatted).toFixed(2);
   };
 
-  // 格式化汇率显示
-  const formatExchangeRate = () => {
-    if (!exchangeRate) return "1.0000";
-    try {
-      const rate = formatUnits(exchangeRate, 6);
-      return parseFloat(rate).toFixed(4);
-    } catch {
-      return "1.0000";
-    }
-  };
+
 
   // 格式化汇率显示 V2
   const formatExchangeRateV2 = () => {
@@ -650,7 +498,7 @@ const USDB = () => {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Token Balances</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {/* USDB Card */}
                 <div className="bg-white/90 backdrop-blur-sm border border-green-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
@@ -693,56 +541,7 @@ const USDB = () => {
                   </div>
                 </div>
 
-                {/* sUSDB Card (Expired) */}
-                <div className="bg-white/90 backdrop-blur-sm border border-purple-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center p-2">
-                        <img
-                          src="/susdb.png"
-                          alt="sUSDB Logo"
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-gray-900 text-xl font-semibold">sUSDB</span>
-                        <span className="text-red-500 text-xs font-medium">(Expired)</span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => {
-                        document.getElementById('susdb-section')?.scrollIntoView({ 
-                          behavior: 'smooth' 
-                        });
-                      }}
-                      className="flex items-center gap-1 text-purple-600 hover:text-purple-700 transition-colors text-sm font-medium"
-                    >
-                      Manage
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  <div>
-                    <div className="text-gray-600 text-sm mb-1">Balance</div>
-                    <div className="text-gray-900 text-2xl font-bold">
-                      {isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"} sUSDB
-                    </div>
-                    <div className="text-gray-500 text-sm mt-1">
-                      ≈ ${isConnected && sUSDBBalance ? getSUSDBValueInUSDB() : "0.00"} USD
-                    </div>
-                    <div className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                      Contract Expired
-                    </div>
-                    {!isConnected && (
-                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
-                    )}
-                  </div>
-                </div>
+
 
                 {/* sUSDB V2 Card */}
                 <div className="bg-white/90 backdrop-blur-sm border border-indigo-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
@@ -820,7 +619,7 @@ const USDB = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center p-1">
@@ -837,24 +636,7 @@ const USDB = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
-                        <img
-                          src="/susdb.png"
-                          alt="sUSDB Logo"
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-gray-900 text-lg font-semibold">sUSDB Total Supply</span>
-                        <span className="text-red-500 text-xs font-medium">(Expired)</span>
-                      </div>
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900">
-                      {sUSDBTotalSupply ? `${formatUsdbAmount(sUSDBTotalSupply)} sUSDB` : "Loading..."}
-                    </div>
-                  </div>
+
 
                   <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
@@ -1799,548 +1581,7 @@ const USDB = () => {
             </div>
           )}
 
-          {/* sUSDB Section (Expired) */}
-          {isMounted && (
-            <div id="susdb-section" className="py-8 sm:py-16 bg-gradient-to-r from-purple-50 to-indigo-50">
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-6 md:mb-8">
-                  <div className="flex flex-col sm:inline-flex sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 md:mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-2xl flex items-center justify-center p-2">
-                      <img
-                        src="/susdb.png"
-                        alt="sUSDB Logo"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left">
-                      sUSDB - Staked USDB (Expired)
-                    </h2>
-                  </div>
-                  <p className="text-gray-600 text-sm sm:text-base px-4 sm:px-0">
-                    Stake your USDB to earn additional rewards with flexible
-                    withdrawal options
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                  {/* sUSDB Balance & Rewards */}
-                  <div className="lg:col-span-1 order-1">
-                    {/* Balance Overview */}
-                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6">
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
-                        Your sUSDB Portfolio
-                      </h3>
-
-                      {/* sUSDB Balance */}
-                      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl p-4 sm:p-5 mb-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center p-2">
-                              <img
-                                src="/susdb.png"
-                                alt="sUSDB Logo"
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                            <div>
-                              <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                                {sUSDBBalance
-                                  ? formatUsdbAmount(sUSDBBalance.value)
-                                  : "0.00"}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                sUSDB Balance
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-lg font-semibold text-purple-600">
-                              ≈ $
-                              {sUSDBBalance
-                                ? formatUsdbAmount(sUSDBBalance.value)
-                                : "0.00"}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              USD Value
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Exchange Rate Info */}
-                      <div className="bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl p-4 mb-4">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0 flex-1">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21l3-3m-3 3l-3-3m3 3V9a4 4 0 118 0v1.586a3 3 0 01-1.293 2.707L12 16" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-sm sm:text-base font-bold text-gray-900 whitespace-nowrap">
-                                1 sUSDB = {formatExchangeRate()} USDB
-                              </div>
-                              <div className="text-xs text-gray-600">
-                                Current exchange rate
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex-shrink-0">
-                            <div className="text-xs font-semibold text-indigo-600 bg-white/60 px-2 py-1 rounded-lg whitespace-nowrap">
-                              Auto-Compound
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Quick Stats */}
-                      <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                        <div className="bg-gray-50 rounded-lg p-3 text-center relative group">
-                          <div className="text-base sm:text-lg font-bold text-green-600">
-                            4%+
-                          </div>
-                          <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
-                            Base APY
-                            <div className="relative">
-                              <svg 
-                                className="w-3 h-3 text-gray-400 hover:text-gray-600 cursor-help transition-colors" 
-                                fill="currentColor" 
-                                viewBox="0 0 20 20"
-                              >
-                                <path 
-                                  fillRule="evenodd" 
-                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" 
-                                  clipRule="evenodd" 
-                                />
-                              </svg>
-                              {/* Tooltip */}
-                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-64 z-10">
-                                <div className="font-semibold mb-1">sUSDB APY: 4.00%</div>
-                                <div className="text-gray-300 text-xs leading-relaxed mb-2">
-                                  Trailing one-week daily average of protocol return transferred into the staking rewards distributor contract, divided by average staked USDB each day, annualized with weekly compounding. This figure does not represent or guarantee future results.
-                                </div>
-                                <div className="text-gray-400 text-xs">
-                                  Last Updated: 18 Jun 25
-                                </div>
-                                {/* Arrow */}
-                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 text-center">
-                          <div className="text-base sm:text-lg font-bold text-purple-600">
-                            24/7
-                          </div>
-                          <div className="text-xs text-gray-600">
-                            Auto Rewards
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Active Withdrawals */}
-                    {activeWithdrawals &&
-                      activeWithdrawals[0] &&
-                      activeWithdrawals[0].length > 0 && (
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                            Active Withdrawals
-                          </h3>
-                          <div className="space-y-3">
-                            {activeWithdrawals[0].map((withdrawal, index) => {
-                              const requestIndex = activeWithdrawals[1][index];
-                              const unlockTime =
-                                Number(withdrawal.unlockTime) * 1000;
-                              const now = Date.now();
-                              const canExecute = now >= unlockTime;
-                              const timeLeft = unlockTime - now;
-
-                              return (
-                                <div
-                                  key={index}
-                                  className="bg-gray-50 rounded-lg p-3"
-                                >
-                                  <div className="flex justify-between items-center mb-2">
-                                    <span className="font-medium">
-                                      {formatUsdbAmount(withdrawal.sUSDBAmount)}{" "}
-                                      sUSDB
-                                    </span>
-                                    <span
-                                      className={`text-sm px-2 py-1 rounded ${
-                                        canExecute
-                                          ? "bg-green-100 text-green-800"
-                                          : "bg-yellow-100 text-yellow-800"
-                                      }`}
-                                    >
-                                      {canExecute
-                                        ? "Ready"
-                                        : `${Math.ceil(
-                                            timeLeft / (1000 * 60 * 60 * 24)
-                                          )} days left`}
-                                    </span>
-                                  </div>
-                                  <div className="flex gap-2">
-                                    {canExecute ? (
-                                      <WriteButton
-                                        data={{
-                                          address:
-                                            contracts[chainId]?.sUSDB?.address,
-                                          abi: contracts[chainId]?.sUSDB?.abi,
-                                          functionName: "executeWithdrawal",
-                                          args: [requestIndex],
-                                        }}
-                                        callback={() => {
-                                          refetchSUSDBBalance();
-                                          refetchUsdbBalance();
-                                          refetchActiveWithdrawals();
-                                          refetchExchangeRate();
-                                        }}
-                                        className="flex-1 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 cursor-pointer text-sm text-center"
-                                        buttonName="Execute"
-                                      />
-                                    ) : null}
-                                    <WriteButton
-                                      data={{
-                                        address:
-                                          contracts[chainId]?.sUSDB?.address,
-                                        abi: contracts[chainId]?.sUSDB?.abi,
-                                        functionName: "cancelWithdrawal",
-                                        args: [requestIndex],
-                                      }}
-                                      callback={() => {
-                                        refetchSUSDBBalance();
-                                        refetchActiveWithdrawals();
-                                        refetchExchangeRate();
-                                      }}
-                                      className="flex-1 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 cursor-pointer text-sm text-center"
-                                      buttonName="Cancel"
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="lg:col-span-1 order-2">
-                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg">
-                      {/* Tab Navigation */}
-                      <div className="flex border-b border-gray-200 mb-4 sm:mb-6">
-                        <button
-                          onClick={() => setActiveTab("deposit")}
-                          className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
-                            activeTab === "deposit"
-                              ? "border-purple-500 text-purple-600 bg-purple-50"
-                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                          }`}
-                        >
-                          <div className="flex items-center justify-center gap-1 sm:gap-2">
-                            <svg
-                              className="w-3 h-3 sm:w-4 sm:h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <span className="text-sm sm:text-base">Deposit</span>
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => setActiveTab("withdraw")}
-                          className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
-                            activeTab === "withdraw"
-                              ? "border-purple-500 text-purple-600 bg-purple-50"
-                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                          }`}
-                        >
-                          <div className="flex items-center justify-center gap-1 sm:gap-2">
-                            <svg
-                              className="w-3 h-3 sm:w-4 sm:h-4"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <span className="text-sm sm:text-base">Withdraw</span>
-                          </div>
-                        </button>
-                      </div>
-
-                      {/* Deposit Tab */}
-                      {activeTab === "deposit" && (
-                        <div>
-                                                      <div className="text-center mb-6">
-                            <div className="flex items-center justify-center gap-2 mb-2">
-                              <h3 className="text-xl font-semibold text-gray-900">
-                                Deposit USDB →
-                              </h3>
-                              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
-                                <img
-                                  src="/susdb.png"
-                                  alt="sUSDB Logo"
-                                  className="w-full h-full object-contain"
-                                />
-                              </div>
-                              <h3 className="text-xl font-semibold text-gray-900">
-                                sUSDB
-                              </h3>
-                            </div>
-                            <p className="text-gray-600 text-sm">
-                              Current rate: 1 USDB = {exchangeRate ? (1 / parseFloat(formatExchangeRate())).toFixed(4) : "0.0000"} sUSDB • Auto-compounding rewards
-                            </p>
-                          </div>
-
-                          {/* Amount Input Card */}
-                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <label className="text-sm font-medium text-gray-700">
-                                Amount to Deposit
-                              </label>
-                              <div className="text-sm text-gray-500">
-                                Available:{" "}
-                                {usdbBalance
-                                  ? formatUsdbAmount(usdbBalance.value)
-                                  : "0.00"}{" "}
-                                USDB
-                              </div>
-                            </div>
-                            <div className="relative">
-                              <input
-                                type="text"
-                                value={sUSDBAmount}
-                                onChange={handleSUSDBAmountChange}
-                                placeholder="0.0"
-                                disabled={!isMounted || !isConnected}
-                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-purple-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                              />
-                              <button
-                                onClick={handleSUSDBMaxClick}
-                                disabled={!isMounted || !isConnected}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-purple-100 text-purple-600 hover:bg-purple-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-                              >
-                                MAX
-                              </button>
-                            </div>
-                            {sUSDBAmount && (
-                              <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {calculateSUSDBFromUSDB(sUSDBAmount)} sUSDB
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="space-y-4">
-                            {isMounted && isConnected ? (
-                              <>
-                                {needsUSDBApproval() ? (
-                              <>
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                  <div className="flex items-center gap-2 text-blue-800 text-sm">
-                                    <svg
-                                      className="w-4 h-4"
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
-                                    First approve USDB spending to proceed with
-                                    deposit
-                                  </div>
-                                </div>
-                                <WriteButton
-                                  data={{
-                                    address: contracts[chainId]?.usdb?.address,
-                                    abi: contracts[chainId]?.usdb?.abi,
-                                    functionName: "approve",
-                                    args: [
-                                      contracts[chainId]?.sUSDB?.address,
-                                      maxUint256,
-                                    ],
-                                  }}
-                                  callback={() => {
-                                    refetchUSDBAllowance();
-                                  }}
-                                  className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center shadow-lg"
-                                  buttonName="Approve USDB"
-                                />
-                              </>
-                            ) : (
-                              <WriteButton
-                                data={{
-                                  address: contracts[chainId]?.sUSDB?.address,
-                                  abi: contracts[chainId]?.sUSDB?.abi,
-                                  functionName: "deposit",
-                                  args: [
-                                    parseUnits(
-                                      sUSDBAmount || "0",
-                                      usdbBalance?.decimals || 6
-                                    ),
-                                  ],
-                                }}
-                                callback={() => {
-                                  setSUSDBAmount("");
-                                  refetchSUSDBBalance();
-                                  refetchUsdbBalance();
-                                  refetchExchangeRate();
-                                }}
-                                disabled={true}
-                                className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg"
-                                buttonName="Deposit & Start Earning"
-                              />
-                            )}
-                              </>
-                            ) : (
-                              <button
-                                onClick={privyLogin}
-                                className="w-full px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-200 text-center shadow-lg"
-                              >
-                                Connect Wallet to Start Staking
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Withdraw Tab */}
-                      {activeTab === "withdraw" && (
-                        <div>
-                          <div className="text-center mb-6">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                              Request Withdrawal
-                            </h3>
-                            <p className="text-gray-600 text-sm">
-                              7-day waiting period • Cancel anytime to restore
-                              sUSDB
-                            </p>
-                          </div>
-
-                          {/* Amount Input Card */}
-                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                            <div className="flex justify-between items-center mb-2">
-                              <label className="text-sm font-medium text-gray-700">
-                                Amount to Withdraw
-                              </label>
-                              <div className="text-sm text-gray-500">
-                                Available:{" "}
-                                {sUSDBBalance
-                                  ? formatUsdbAmount(sUSDBBalance.value)
-                                  : "0.00"}{" "}
-                                sUSDB
-                              </div>
-                            </div>
-                            <div className="relative">
-                              <input
-                                type="text"
-                                value={withdrawAmount}
-                                onChange={handleWithdrawAmountChange}
-                                placeholder="0.0"
-                                disabled={!isMounted || !isConnected}
-                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-red-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                              />
-                              <button
-                                onClick={handleWithdrawMaxClick}
-                                disabled={!isMounted || !isConnected}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-red-100 text-red-600 hover:bg-red-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-                              >
-                                MAX
-                              </button>
-                            </div>
-                            {withdrawAmount && (
-                              <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {calculateUSDBFromSUSDB(withdrawAmount)} USDB (after 7 days)
-                              </div>
-                            )}
-                          </div>
-
-                          {isMounted && isConnected ? (
-                            <WriteButton
-                              data={{
-                                address: contracts[chainId]?.sUSDB?.address,
-                                abi: contracts[chainId]?.sUSDB?.abi,
-                                functionName: "requestWithdrawal",
-                                args: [
-                                  parseUnits(
-                                    withdrawAmount || "0",
-                                    sUSDBBalance?.decimals || 6
-                                  ),
-                                ],
-                              }}
-                              callback={() => {
-                                setWithdrawAmount("");
-                                refetchSUSDBBalance();
-                                refetchActiveWithdrawals();
-                                refetchExchangeRate();
-                              }}
-                              disabled={!isValidWithdrawAmount()}
-                              className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg mb-4"
-                              buttonName="Request Withdrawal"
-                            />
-                          ) : (
-                            <button
-                              onClick={privyLogin}
-                              className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 transition-all duration-200 text-center shadow-lg mb-4"
-                            >
-                              Connect Wallet to Withdraw
-                            </button>
-                          )}
-
-                          <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                            <div className="flex items-start gap-3">
-                              <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center mt-0.5">
-                                <svg
-                                  className="w-3 h-3 text-white"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                              <div>
-                                <h4 className="font-semibold text-amber-800 mb-1">
-                                  Important Notes
-                                </h4>
-                                <ul className="text-sm text-amber-700 space-y-1">
-                                  <li>
-                                    • 7-day waiting period before execution
-                                  </li>
-                                  <li>
-                                    • Cancel anytime to restore your sUSDB
-                                  </li>
-                                  <li>
-                                    • Rewards stop accruing during withdrawal
-                                    period
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          
 
           {/* What is USDB Section */}
           <div className="py-20 bg-white">
