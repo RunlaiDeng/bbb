@@ -6,8 +6,6 @@ import StakingPool from "@/components/StakingPool";
 // Process pool ids for hash navigation (move outside component to avoid dependency issues)
 const POOL_HASH_MAP = {
   xdc: "xdc-0",
-  usdb: "usdb-1",
-  "usdb-expired": "usdb-0",
   psxdc: "lp-0",
   bbb: "lp-2",
   "4pool": "lpv2-0",
@@ -25,16 +23,6 @@ const POOL_CONFIGS = [
     icon: "/xdc.png",
     getTokenLink: "https://faucet.blockpi.io/xdc",
     hashTag: "#xdc"
-  },
-  { 
-    id: 'usdb-2', 
-    pid: 2, 
-    poolType: 'usdb', 
-    title: 'USDB Staking(Expired)', 
-    symbol: 'USDB',
-    icon: "/usdb.png",
-    getTokenLink: "/usdb",
-    hashTag: "#usdb"
   },
   { 
     id: 'lp-0', 
