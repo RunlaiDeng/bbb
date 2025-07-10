@@ -15,6 +15,8 @@ import USDBStakeABI from "../abi/USDBStakeABI.json";
 import BBBubuABI from "../abi/BBBubuABI.json";
 import mTransferABI from "../abi/mTransferABI.json";
 import sUSDBABI from "../abi/sUSDBABI.json";
+import lendABI from "../abi/LendABI.json";
+
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const dexLink = "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1";
@@ -178,6 +180,10 @@ export const contracts = {
     sUSDBV2: {
       address: "0x1416ceC451561105B70623CDfb70e521293E919a",
       abi: sUSDBABI,
+    },
+    lend: {
+      address: "0xC4e19A8A5407C4657939b60083Bd0d7D21DB5f4e",
+      abi: lendABI,
     },
   },
 };
