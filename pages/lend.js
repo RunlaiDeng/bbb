@@ -206,6 +206,14 @@ const Lend = () => {
       query: { enabled: !!(lendContract && supportedAssets.length > 0) },
     });
 
+  // 获取平台手续费率
+  const { data: protocolFeeRateData } = useReadContracts({
+    contracts: lendContract
+      ? [{ ...lendContract, functionName: "protocolFeeRate" }]
+      : [],
+    query: { enabled: !!lendContract },
+  });
+
   // ESC键关闭弹窗
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -244,9 +252,9 @@ const Lend = () => {
             // 从储备数据获取利率信息
             const reserve = reserveData?.[index]?.result;
 
-            // 获取 scaled values 和 indexes
-            const scaledTotalSupply = reserve?.[8] || 0n; // scaledTotalSupply
-            const scaledTotalVariableDebt = reserve?.[9] || 0n; // scaledTotalVariableDebt
+            // 获取 scaled values 和 indexes (根据新ABI结构)
+            const scaledTotalSupply = reserve?.[7] || 0n; // scaledTotalSupply
+            const scaledTotalVariableDebt = reserve?.[8] || 0n; // scaledTotalVariableDebt
             const liquidityIndex = reserve?.[4] || parseEther("1"); // liquidityIndex，默认为1e18
             const variableBorrowIndex = reserve?.[5] || parseEther("1"); // variableBorrowIndex，默认为1e18
 
@@ -256,6 +264,28 @@ const Lend = () => {
               scaledTotalVariableDebt,
               variableBorrowIndex
             );
+
+            // 计算利用率和供应利率
+            const borrowAPY = reserve?.[6] || 0n;
+            const utilizationRate = actualTotalSupply > 0n ? 
+              (actualTotalBorrow * parseUnits("1", 27)) / actualTotalSupply : 0n;
+            
+            // 获取平台手续费率（以万分之几为单位）
+            const protocolFeeRate = protocolFeeRateData?.[0]?.result || 500n; // 默认5%
+            // 计算给存款者的比例：(1 - 平台手续费/10000)
+            const depositorsShare = parseUnits("1", 27) - (protocolFeeRate * parseUnits("1", 23)); // 10000 = 1e4, 27-4=23
+            // 供应利率 = 借贷利率 * 利用率 * (1 - 平台手续费/10000)
+            const supplyAPY = rayMul(rayMul(borrowAPY, utilizationRate), depositorsShare);
+
+            // 添加调试信息（开发时启用）
+            if (process.env.NODE_ENV === "development") {
+              console.log(`${asset.symbol} Rate Calculation (Connected):`);
+              console.log("Protocol Fee Rate (basis points):", protocolFeeRate.toString());
+              console.log("Depositors Share:", formatUnits(depositorsShare, 27));
+              console.log("Utilization Rate:", formatUnits(utilizationRate, 27));
+              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log("Supply APY:", formatAPY(supplyAPY) + "%");
+            }
 
             processedAssets.push({
               ...asset,
@@ -269,9 +299,9 @@ const Lend = () => {
               scaledTotalVariableDebt: scaledTotalVariableDebt,
               liquidityIndex: liquidityIndex,
               variableBorrowIndex: variableBorrowIndex,
-              utilizationRate: 0n, // 需要计算
-              supplyAPY: reserve?.[6] || 0n, // currentLiquidityRate
-              borrowAPY: reserve?.[7] || 0n, // currentVariableBorrowRate
+              utilizationRate: utilizationRate,
+              supplyAPY: supplyAPY,
+              borrowAPY: borrowAPY,
               balance: balance,
               allowance: allowance,
               price: assetPrice,
@@ -297,9 +327,9 @@ const Lend = () => {
             const reserve = reserveData[index].result;
             const assetPrice = assetPricesData[index]?.result || 0n;
 
-            // 获取 scaled values 和 indexes
-            const scaledTotalSupply = reserve[8] || 0n; // scaledTotalSupply
-            const scaledTotalVariableDebt = reserve[9] || 0n; // scaledTotalVariableDebt
+            // 获取 scaled values 和 indexes (根据新ABI结构)
+            const scaledTotalSupply = reserve[7] || 0n; // scaledTotalSupply
+            const scaledTotalVariableDebt = reserve[8] || 0n; // scaledTotalVariableDebt
             const liquidityIndex = reserve[4] || parseEther("1"); // liquidityIndex，默认为1e18
             const variableBorrowIndex = reserve[5] || parseEther("1"); // variableBorrowIndex，默认为1e18
 
@@ -309,6 +339,28 @@ const Lend = () => {
               scaledTotalVariableDebt,
               variableBorrowIndex
             );
+
+            // 计算利用率和供应利率
+            const borrowAPY = reserve[6] || 0n;
+            const utilizationRate = actualTotalSupply > 0n ? 
+              (actualTotalBorrow * parseUnits("1", 27)) / actualTotalSupply : 0n;
+            
+            // 获取平台手续费率（以万分之几为单位）
+            const protocolFeeRate = protocolFeeRateData?.[0]?.result || 500n; // 默认5%
+            // 计算给存款者的比例：(1 - 平台手续费/10000)
+            const depositorsShare = parseUnits("1", 27) - (protocolFeeRate * parseUnits("1", 23)); // 10000 = 1e4, 27-4=23
+            // 供应利率 = 借贷利率 * 利用率 * (1 - 平台手续费/10000)
+            const supplyAPY = rayMul(rayMul(borrowAPY, utilizationRate), depositorsShare);
+
+            // 添加调试信息（开发时启用）
+            if (process.env.NODE_ENV === "development") {
+              console.log(`${asset.symbol} Rate Calculation (Not Connected):`);
+              console.log("Protocol Fee Rate (basis points):", protocolFeeRate.toString());
+              console.log("Depositors Share:", formatUnits(depositorsShare, 27));
+              console.log("Utilization Rate:", formatUnits(utilizationRate, 27));
+              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log("Supply APY:", formatAPY(supplyAPY) + "%");
+            }
 
             processedAssets.push({
               ...asset,
@@ -322,9 +374,9 @@ const Lend = () => {
               scaledTotalVariableDebt: scaledTotalVariableDebt,
               liquidityIndex: liquidityIndex,
               variableBorrowIndex: variableBorrowIndex,
-              utilizationRate: 0n, // 需要计算
-              supplyAPY: reserve[6] || 0n, // currentLiquidityRate
-              borrowAPY: reserve[7] || 0n, // currentVariableBorrowRate
+              utilizationRate: utilizationRate,
+              supplyAPY: supplyAPY,
+              borrowAPY: borrowAPY,
               balance: 0n,
               allowance: 0n,
               price: assetPrice,
@@ -350,6 +402,7 @@ const Lend = () => {
     isConnected,
     reserveData,
     assetPricesData,
+    protocolFeeRateData,
   ]);
 
   // Helper functions
