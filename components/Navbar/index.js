@@ -15,8 +15,10 @@ const AnniversaryBanner = ({ router }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 shadow-lg cursor-pointer"
-         onClick={() => router.push("/anniversary")}>
+    <div
+      className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 shadow-lg cursor-pointer"
+      onClick={() => router.push("/anniversary")}
+    >
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-teal-600/20"></div>
         <div className="relative px-4 py-3">
@@ -24,7 +26,9 @@ const AnniversaryBanner = ({ router }) => {
             <div className="flex items-center gap-3">
               <span className="text-2xl animate-bounce">🎉</span>
               <div className="text-white">
-                <span className="font-bold text-lg">BBB Anniversary Celebration</span>
+                <span className="font-bold text-lg">
+                  BBB Anniversary Celebration
+                </span>
                 <span className="hidden sm:inline ml-2 text-sm opacity-90">
                   Join the USDB Deposit Competition & Win BBB Rewards!
                 </span>
@@ -44,7 +48,7 @@ const AnniversaryBanner = ({ router }) => {
             </div>
           </div>
         </div>
-        
+
         {/* Animated sparkles */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="sparkle sparkle1">✨</div>
@@ -52,7 +56,7 @@ const AnniversaryBanner = ({ router }) => {
           <div className="sparkle sparkle3">💫</div>
         </div>
       </div>
-      
+
       <style jsx>{`
         .sparkle {
           position: absolute;
@@ -75,7 +79,8 @@ const AnniversaryBanner = ({ router }) => {
           animation-delay: 2s;
         }
         @keyframes sparkle {
-          0%, 100% {
+          0%,
+          100% {
             opacity: 0;
             transform: scale(0.5);
           }
@@ -115,7 +120,6 @@ const Navbar = () => {
     mount && (
       <>
         <div className="w-full">
-          <AnniversaryBanner router={router} />
           <div className="w-full h-18">
             <div className="navbar items-center font-bold">
               <div className="navbar-start">
@@ -209,26 +213,10 @@ const Navbar = () => {
                       </li>
                       <li className="rounded-lg">
                         <Link
-                          href={"/anniversary"}
-                          className="hover:text-green-600 hover:bg-green-50  rounded-lg "
-                        >
-                          BBB Anniversary
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
                           href={"/airdrophub"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg"
                         >
                           Airdrop Hub
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/bpsXDC"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          bpsXDC
                         </Link>
                       </li>
                       <li className="rounded-lg">
@@ -251,11 +239,12 @@ const Navbar = () => {
                       className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                       onClick={() => {
                         router.push({
-                          pathname: '/swap',
+                          pathname: "/swap",
                           query: {
-                            toChain: '50',
-                            toToken: '0x0000000000000000000000000000000000000000'
-                          }
+                            toChain: "50",
+                            toToken:
+                              "0x0000000000000000000000000000000000000000",
+                          },
                         });
                       }}
                     >
@@ -800,13 +789,20 @@ const Navbar = () => {
                             setData({ ...data, menuItemsOpen: false });
                           }}
                         >
-                          <Image src={"/xdc.png"} height={20} width={20} alt="" />
+                          <Image
+                            src={"/xdc.png"}
+                            height={20}
+                            width={20}
+                            alt=""
+                          />
                           <div>Buy XDC</div>
                         </div>
                         <div
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={(e) => {
-                            router.push("/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1");
+                            router.push(
+                              "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
+                            );
                             setData({ ...data, menuItemsOpen: false });
                           }}
                         >
@@ -913,15 +909,7 @@ const Navbar = () => {
                             >
                               <div>BBBubu</div>
                             </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/anniversary");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>BBB Anniversary</div>
-                            </div>
+
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {
