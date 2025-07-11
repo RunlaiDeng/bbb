@@ -646,14 +646,18 @@ const Lend = () => {
   const getMaxWithdrawAmount = (asset) => {
     if (!asset) return 0n;
 
-    // 如果没有连接钱包或没有用户数据，返回用户全部供应余额
+    // 🔸 首先获取合约可用流动性限制
+    const availableLiquidity = getAvailableLiquidity(asset);
+    const userSupplied = asset.userSupplied || 0n;
+
+    // 如果没有连接钱包或没有用户数据，返回 min(用户供应余额, 合约可用流动性)
     if (!isConnected || !userData) {
-      return asset.userSupplied || 0n;
+      return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
     }
 
-    // 如果用户没有借款，可以提现全部余额
+    // 如果用户没有借款，返回 min(用户供应余额, 合约可用流动性)
     if (!userData.totalDebtValueUSD || userData.totalDebtValueUSD === 0n) {
-      return asset.userSupplied || 0n;
+      return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
     }
 
     // 如果健康因子已经很低或无限大，处理特殊情况
@@ -663,7 +667,7 @@ const Lend = () => {
       userData.healthFactor ===
         BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
     ) {
-      return asset.userSupplied || 0n;
+      return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
     }
 
     try {
@@ -676,9 +680,9 @@ const Lend = () => {
         formatUnits(userData.totalDebtValueUSD, 18)
       );
 
-      // 如果健康因子已经很高，可以提现更多
+      // 如果健康因子已经很高，返回 min(用户供应余额, 合约可用流动性)
       if (currentHealthFactor >= 10) {
-        return asset.userSupplied || 0n;
+        return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
       }
 
       // 设置安全的健康因子阈值（1.05，留5%安全边际）
@@ -731,10 +735,15 @@ const Lend = () => {
       );
       const maxWithdrawTokens = parseUnits(tokenString, asset.decimals);
 
-      // 确保不超过用户的供应余额
-      const userSupplied = asset.userSupplied || 0n;
-      const finalAmount =
-        maxWithdrawTokens < userSupplied ? maxWithdrawTokens : userSupplied;
+      // 🔸 确保不超过三个限制：健康因子、用户余额、合约流动性
+      const healthFactorLimit = maxWithdrawTokens;
+      const userBalanceLimit = userSupplied;
+      const liquidityLimit = availableLiquidity;
+      
+      // 取三者最小值作为最终可提取金额
+      let finalAmount = healthFactorLimit;
+      if (userBalanceLimit < finalAmount) finalAmount = userBalanceLimit;
+      if (liquidityLimit < finalAmount) finalAmount = liquidityLimit;
 
       // 添加调试信息（开发时启用）
       if (process.env.NODE_ENV === "development") {
@@ -744,14 +753,10 @@ const Lend = () => {
         console.log("Total Debt USD:", totalDebtUSD);
         console.log("Max Withdrawable USD:", maxWithdrawableUSDForAsset);
         console.log("Asset Price:", assetPrice);
-        console.log(
-          "Max Withdrawable Tokens:",
-          formatUnits(finalAmount, asset.decimals)
-        );
-        console.log(
-          "User Supplied:",
-          formatUnits(userSupplied, asset.decimals)
-        );
+        console.log("Health Factor Limit:", formatUnits(healthFactorLimit, asset.decimals));
+        console.log("User Balance Limit:", formatUnits(userBalanceLimit, asset.decimals));
+        console.log("Liquidity Limit:", formatUnits(liquidityLimit, asset.decimals));
+        console.log("Final Amount:", formatUnits(finalAmount, asset.decimals));
       }
 
       return finalAmount;
@@ -762,8 +767,8 @@ const Lend = () => {
         "Asset:",
         asset.symbol
       );
-      // 发生错误时返回用户供应余额，但这可能不安全
-      return asset.userSupplied || 0n;
+      // 发生错误时返回 min(用户供应余额, 合约可用流动性)，确保安全
+      return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
     }
   };
 
@@ -1768,16 +1773,37 @@ const Lend = () => {
                         />
                         {actions.withdraw?.disabled && (
                           <p className="text-sm text-red-500 text-center">
-                            {!amount
-                              ? "Please enter withdraw amount"
-                              : safeParseAmount(
-                                  amount,
-                                  selectedAssetData.decimals
-                                ) > getMaxWithdrawAmount(selectedAssetData)
-                              ? userData?.totalDebtValueUSD && userData.totalDebtValueUSD > 0n
-                                ? "Amount would make health factor too low"
-                                : "Amount exceeds supplied balance"
-                              : "Please enter valid amount"}
+                            {(() => {
+                              if (!amount) return "Please enter withdraw amount";
+                              
+                              const requestedAmount = safeParseAmount(amount, selectedAssetData.decimals);
+                              const maxWithdrawAmount = getMaxWithdrawAmount(selectedAssetData);
+                              
+                              if (requestedAmount <= maxWithdrawAmount) {
+                                return "Please enter valid amount";
+                              }
+
+                              // 检查具体是什么限制了提取
+                              const availableLiquidity = getAvailableLiquidity(selectedAssetData);
+                              const userSupplied = selectedAssetData.userSupplied || 0n;
+                              
+                              // 如果请求金额超过合约流动性
+                              if (requestedAmount > availableLiquidity) {
+                                return `Insufficient liquidity in contract (Available: ${formatNumber(availableLiquidity, selectedAssetData.decimals, 4)} ${selectedAssetData.symbol})`;
+                              }
+                              
+                              // 如果请求金额超过用户供应余额
+                              if (requestedAmount > userSupplied) {
+                                return "Amount exceeds your supplied balance";
+                              }
+                              
+                              // 如果有债务且健康因子限制
+                              if (userData?.totalDebtValueUSD && userData.totalDebtValueUSD > 0n) {
+                                return "Amount would make health factor too low";
+                              }
+                              
+                              return "Amount exceeds maximum withdrawable";
+                            })()}
                           </p>
                         )}
                       </>
@@ -1836,6 +1862,44 @@ const Lend = () => {
                           </span>
                         </div>
                       </>
+                    )}
+
+                    {activeTab === "withdraw" && (
+                      <>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">Supply APY:</span>
+                          <span className="font-medium text-green-600">
+                            {formatAPY(selectedAssetData?.supplyAPY)}%
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-start">
+                          <span className="text-gray-600">
+                            Available Liquidity:
+                          </span>
+                          <span className="font-medium text-right">
+                            {formatLiquidity(selectedAssetData).tokens}{" "}
+                            {selectedAssetData?.symbol}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-start">
+                          <span className="text-gray-600">
+                            Your Supplied:
+                          </span>
+                          <span className="font-medium text-right">
+                            {formatNumber(selectedAssetData?.userSupplied || 0n, selectedAssetData?.decimals, 4)}{" "}
+                            {selectedAssetData?.symbol}
+                          </span>
+                        </div>
+                      </>
+                    )}
+
+                    {activeTab === "repay" && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Borrow APY:</span>
+                        <span className="font-medium text-red-600">
+                          {formatAPY(selectedAssetData?.borrowAPY)}%
+                        </span>
+                      </div>
                     )}
 
                     {amount && selectedAssetData && (
