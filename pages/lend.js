@@ -986,8 +986,8 @@ const Lend = () => {
 
       <div className="min-h-screen bg-white">
         <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl">
-          <div className="">
-            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl">
+          <div className="mb-6">
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 text-green-600">Lending & Borrowing</h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-600">
                 Supply assets to earn interest and use them as collateral to
@@ -1011,7 +1011,7 @@ const Lend = () => {
             </div>
           )}
 
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* User Dashboard */}
             {isConnected && userData && (
               <div className="aave-card p-4 sm:p-6">
@@ -1145,9 +1145,9 @@ const Lend = () => {
                     </button>
                   </div>
 
-                  <div className="space-y-2">
-                    {/* Desktop Table Header */}
-                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
+                  <div className="space-y-3">
+                    {/* Desktop Table Header - Only visible on desktop */}
+                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
                       <div>Asset</div>
                       <div className="text-right">Wallet balance</div>
                       <div className="text-right">APY</div>
@@ -1160,20 +1160,25 @@ const Lend = () => {
                       .map((asset) => (
                         <div
                           key={`supply-${asset.address}`}
-                          className="sm:grid sm:grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
                         >
                           {/* Mobile Card Layout */}
-                          <div className="sm:hidden space-y-3">
+                          <div className="sm:hidden space-y-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center">
                                 <img
                                   src={asset.icon}
                                   alt={asset.symbol}
-                                  className="w-8 h-8 rounded-full mr-3"
+                                  className="w-10 h-10 rounded-full mr-3"
                                 />
-                                <span className="font-semibold text-gray-900">
-                                  {asset.symbol}
-                                </span>
+                                <div>
+                                  <div className="font-semibold text-gray-900 text-base">
+                                    {asset.symbol}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    Can be collateral ✓
+                                  </div>
+                                </div>
                               </div>
                               <button
                                 onClick={() => {
@@ -1181,23 +1186,24 @@ const Lend = () => {
                                   setActiveTab("supply");
                                   setAmount("");
                                 }}
-                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+                                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                               >
                                 Supply
                               </button>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                              <div>
-                                <span className="text-gray-600">Balance: </span>
-                                <span className="font-medium">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-gray-50 rounded-lg p-3">
+                                <div className="text-xs text-gray-500 mb-1">Wallet Balance</div>
+                                <div className="font-semibold text-gray-900">
                                   {formatNumber(asset.balance, asset.decimals, 4)}
-                                </span>
+                                </div>
+                                <div className="text-xs text-gray-500">{asset.symbol}</div>
                               </div>
-                              <div>
-                                <span className="text-gray-600">APY: </span>
-                                <span className="font-medium text-green-600">
+                              <div className="bg-gray-50 rounded-lg p-3">
+                                <div className="text-xs text-gray-500 mb-1">Supply APY</div>
+                                <div className="font-semibold text-green-600">
                                   {formatAPY(asset.supplyAPY)}%
-                                </span>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -1343,9 +1349,9 @@ const Lend = () => {
                     </span>
                   </div>
 
-                  <div className="space-y-2">
-                    {/* Desktop Table Header */}
-                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
+                  <div className="space-y-3">
+                    {/* Desktop Table Header - Only visible on desktop */}
+                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
                       <div>Asset</div>
                       <div className="text-right">Available</div>
                       <div className="text-right">APY, variable</div>
@@ -1356,20 +1362,25 @@ const Lend = () => {
                     {assetsList.map((asset) => (
                       <div
                         key={`borrow-${asset.address}`}
-                        className="sm:grid sm:grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
                       >
                         {/* Mobile Card Layout */}
-                        <div className="sm:hidden space-y-3">
+                        <div className="sm:hidden space-y-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
                               <img
                                 src={asset.icon}
                                 alt={asset.symbol}
-                                className="w-8 h-8 rounded-full mr-3"
+                                className="w-10 h-10 rounded-full mr-3"
                               />
-                              <span className="font-semibold text-gray-900">
-                                {asset.symbol}
-                              </span>
+                              <div>
+                                <div className="font-semibold text-gray-900 text-base">
+                                  {asset.symbol}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  Variable APY
+                                </div>
+                              </div>
                             </div>
                             <button
                               onClick={() => {
@@ -1378,27 +1389,28 @@ const Lend = () => {
                                 setAmount("");
                               }}
                               disabled={getMaxBorrowAmount(asset) <= 0n}
-                              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+                              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                             >
                               Borrow
                             </button>
                           </div>
-                          <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                              <span className="text-gray-600">Available: </span>
-                              <span className="font-medium">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 mb-1">Available</div>
+                              <div className="font-semibold text-gray-900">
                                 {formatNumber(
                                   getMaxBorrowAmount(asset),
                                   asset.decimals,
                                   4
                                 )}
-                              </span>
+                              </div>
+                              <div className="text-xs text-gray-500">{asset.symbol}</div>
                             </div>
-                            <div>
-                              <span className="text-gray-600">APY: </span>
-                              <span className="font-medium text-red-600">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 mb-1">APY Variable</div>
+                              <div className="font-semibold text-red-600">
                                 {formatAPY(asset.borrowAPY)}%
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1467,10 +1479,10 @@ const Lend = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-green-600 mb-3 sm:mb-4">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                     Please, connect your wallet
                   </h3>
-                  <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
+                  <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
                     Please connect your wallet to see your supplies, borrowings, and open positions.
                   </p>
                   <button
@@ -1491,7 +1503,7 @@ const Lend = () => {
       {/* Transaction Modal Popup */}
       {activeTab && selectedAsset && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
           onClick={() => {
             setActiveTab("");
             setSelectedAsset("");
@@ -1499,9 +1511,14 @@ const Lend = () => {
           }}
         >
           <div
-            className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Mobile Drag Indicator */}
+            <div className="sm:hidden flex justify-center pt-3 pb-2">
+              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+            </div>
+            
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
               <div className="flex items-center space-x-3">
@@ -1540,7 +1557,7 @@ const Lend = () => {
 
             {/* Modal Content */}
             <div className="p-4 sm:p-6">
-              <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 <div className="space-y-4 sm:space-y-6">
                   {/* Amount Input */}
                   <div>
@@ -1744,7 +1761,7 @@ const Lend = () => {
                 </div>
 
                 {/* Transaction Overview */}
-                <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
+                <div className="bg-gray-50 rounded-xl p-4 sm:p-6 order-first md:order-last">
                   <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">
                     Transaction Overview
                   </h4>
