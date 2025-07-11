@@ -1503,7 +1503,7 @@ const Lend = () => {
       {/* Transaction Modal Popup */}
       {activeTab && selectedAsset && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-[9999] p-0 sm:p-4"
           onClick={() => {
             setActiveTab("");
             setSelectedAsset("");
@@ -1511,7 +1511,7 @@ const Lend = () => {
           }}
         >
           <div
-            className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto mb-16 sm:mb-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Mobile Drag Indicator */}
