@@ -185,6 +185,10 @@ export const contracts = {
       address: "0xABC8AA43120ff0f53749e9d8B525f50da489e0d9",
       abi: lendABI,
     },
+    lendold: {
+      address: "0x14109a0FCBeAc16F9248bF14E5d8D133Adcf98f6",
+      abi: lendABI,
+    },
   },
 };
 // IDO项目额外信息
