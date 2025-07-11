@@ -182,7 +182,7 @@ export const contracts = {
       abi: sUSDBABI,
     },
     lend: {
-      address: "0x3A07466e33cA1134859be9D292C31505f98cfAf2",
+      address: "0x14109a0FCBeAc16F9248bF14E5d8D133Adcf98f6",
       abi: lendABI,
     },
   },

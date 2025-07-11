@@ -33,7 +33,7 @@ const Lend = () => {
   const [userData, setUserData] = useState(null);
   const [assetsList, setAssetsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showZeroBalances, setShowZeroBalances] = useState(false);
+
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const chainId = useChainId();
@@ -781,8 +781,7 @@ const Lend = () => {
         },
         disabled:
           !amount ||
-          parsedAmount <= 0n ||
-          parsedAmount > selectedAssetData.userBorrowed,
+          parsedAmount <= 0n,
       },
       withdraw: {
         buttonName: "Withdraw",
@@ -937,8 +936,9 @@ const Lend = () => {
               </div>
             )}
 
-            {/* Aave-style layout: Supplies and Borrows on top */}
-            <div className="grid lg:grid-cols-2 gap-6">
+            {/* Show lending interface only when connected */}
+            {isConnected ? (
+              <div className="grid lg:grid-cols-2 gap-6">
               <div className="space-y-6">
                 {/* Your Supplies */}
                 <div className="aave-card p-6">
@@ -1027,17 +1027,7 @@ const Lend = () => {
                     </button>
                   </div>
 
-                  <div className="mb-4">
-                    <label className="flex items-center text-sm text-gray-600">
-                      <input
-                        type="checkbox"
-                        checked={showZeroBalances}
-                        onChange={(e) => setShowZeroBalances(e.target.checked)}
-                        className="mr-2"
-                      />
-                      Show assets with 0 balance
-                    </label>
-                  </div>
+
 
                   <div className="space-y-2">
                     <div className="grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
@@ -1049,7 +1039,7 @@ const Lend = () => {
                     </div>
 
                     {assetsList
-                      .filter((asset) => showZeroBalances || asset.balance > 0n)
+                      .filter((asset) => asset.balance > 0n)
                       .map((asset) => (
                         <div
                           key={`supply-${asset.address}`}
@@ -1077,17 +1067,13 @@ const Lend = () => {
                           <div className="text-right">
                             <button
                               onClick={() => {
-                                if (!isConnected) {
-                                  privyLogin();
-                                  return;
-                                }
                                 setSelectedAsset(asset.address);
                                 setActiveTab("supply");
                                 setAmount("");
                               }}
                               className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                             >
-                              {isConnected ? "Supply" : "Connect to Supply"}
+                              Supply
                             </button>
                           </div>
                         </div>
@@ -1243,20 +1229,14 @@ const Lend = () => {
                         <div className="text-right">
                           <button
                             onClick={() => {
-                              if (!isConnected) {
-                                privyLogin();
-                                return;
-                              }
                               setSelectedAsset(asset.address);
                               setActiveTab("borrow");
                               setAmount("");
                             }}
-                            disabled={
-                              isConnected && getMaxBorrowAmount(asset) <= 0n
-                            }
+                            disabled={getMaxBorrowAmount(asset) <= 0n}
                             className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                           >
-                            {isConnected ? "Borrow" : "Connect to Borrow"}
+                            Borrow
                           </button>
                         </div>
                         <div className="text-right">
@@ -1269,29 +1249,40 @@ const Lend = () => {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            ) : (
+              /* Connect Wallet Interface */
+              <div className="flex items-center justify-center min-h-[60vh]">
+                <div className="text-center max-w-md mx-auto">
+                  <div className="mb-8 flex justify-center">
+                    <div className="w-24 h-24 bg-slate-600 rounded-full flex items-center justify-center">
+                      <svg 
+                        className="w-12 h-12 text-white" 
+                        fill="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm6 15a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v12z"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Please, connect your wallet
+                  </h3>
+                  <p className="text-gray-300 mb-8">
+                    Please connect your wallet to see your supplies, borrowings, and open positions.
+                  </p>
+                  <button
+                    onClick={privyLogin}
+                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
+                  >
+                    Connect wallet
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Connect Wallet Banner for non-connected users */}
-          {!isConnected && (
-            <div className="text-center mt-8">
-              <div className="aave-card p-6 max-w-2xl mx-auto bg-blue-50 border-blue-200">
-                <h3 className="text-lg font-semibold mb-2 text-blue-900">
-                  Connect Your Wallet
-                </h3>
-                <p className="text-blue-700 mb-4">
-                  Connect your wallet to start supplying assets and borrowing on
-                  our lending protocol.
-                </p>
-                <button
-                  onClick={privyLogin}
-                  className="bg-blue-600 text-white py-2 px-6 rounded-xl hover:bg-blue-700 transition-colors font-semibold"
-                >
-                  Connect Wallet
-                </button>
-              </div>
-            </div>
-          )}
+
         </div>
       </div>
 
@@ -1513,11 +1504,6 @@ const Lend = () => {
                           <p className="text-sm text-red-500 text-center">
                             {!amount
                               ? "Please enter repay amount"
-                              : safeParseAmount(
-                                  amount,
-                                  selectedAssetData.decimals
-                                ) > selectedAssetData.userBorrowed
-                              ? "Amount exceeds borrowed balance"
                               : "Please enter valid amount"}
                           </p>
                         )}
