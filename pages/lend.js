@@ -13,7 +13,7 @@ import { contracts } from "@/config";
 import Head from "next/head";
 
 const BUTTON_STYLES = {
-  base: "aave-button font-semibold py-3 px-6 rounded-xl transition-all duration-200 flex items-center justify-center min-h-[48px] relative",
+  base: "aave-button font-semibold py-3 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-200 flex items-center justify-center min-h-[44px] sm:min-h-[48px] relative text-sm sm:text-base",
   approve: "bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg",
   supply:
     "bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg",
@@ -984,12 +984,12 @@ const Lend = () => {
         `}</style>
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4 py-6 max-w-7xl">
+      <div className="min-h-screen bg-white">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl">
           <div className="">
-            <div className="aave-gradient  p-8 rounded-2xl">
-              <h1 className="text-4xl font-bold mb-4">Lending & Borrowing</h1>
-              <p className=" text-lg">
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 text-green-600">Lending & Borrowing</h1>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600">
                 Supply assets to earn interest and use them as collateral to
                 borrow other assets
               </p>
@@ -998,12 +998,12 @@ const Lend = () => {
 
           {/* Refresh Indicator - Fixed to bottom right */}
           {isRefreshing && (
-            <div className="fixed bottom-6 right-6 z-50 max-w-sm">
-              <div className="bg-white border border-blue-200 rounded-xl p-4 flex items-center space-x-3 shadow-lg">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 max-w-xs sm:max-w-sm">
+              <div className="bg-white border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center space-x-2 sm:space-x-3 shadow-lg">
+                <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-blue-600"></div>
                 <div className="text-blue-800">
-                  <div className="font-medium text-sm">Updating data...</div>
-                  <div className="text-xs text-blue-600">
+                  <div className="font-medium text-xs sm:text-sm">Updating data...</div>
+                  <div className="text-xs text-blue-600 hidden sm:block">
                     Refreshing balances and borrowing amounts
                   </div>
                 </div>
@@ -1014,14 +1014,14 @@ const Lend = () => {
           <div className="space-y-8">
             {/* User Dashboard */}
             {isConnected && userData && (
-              <div className="aave-card px-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              <div className="aave-card p-4 sm:p-6">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                   Account Overview
                 </h2>
-                <div className="flex gap-8">
+                <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-8">
                   <div className="text-left">
-                    <div className="text-sm text-gray-600 mb-1">Net Worth</div>
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-xs sm:text-sm text-gray-600 mb-1">Net Worth</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                       $
                       {formatNumber(
                         userData.totalCollateralValueUSD -
@@ -1032,11 +1032,11 @@ const Lend = () => {
                     </div>
                   </div>
                   <div className="text-left">
-                    <div className="text-sm text-gray-600 mb-1">
+                    <div className="text-xs sm:text-sm text-gray-600 mb-1">
                       Health Factor
                     </div>
                     <div
-                      className={`text-2xl font-bold ${getHealthFactorColor(
+                      className={`text-lg sm:text-xl md:text-2xl font-bold ${getHealthFactorColor(
                         userData.healthFactor
                       )}`}
                     >
@@ -1063,13 +1063,13 @@ const Lend = () => {
 
             {/* Show lending interface only when connected */}
             {isConnected ? (
-              <div className="grid lg:grid-cols-2 gap-6">
-              <div className="space-y-6">
-                {/* Your Supplies */}
-                <div className="aave-card p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                    Your supplies
-                  </h2>
+              <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+                              <div className="space-y-4 sm:space-y-6">
+                  {/* Your Supplies */}
+                  <div className="aave-card p-4 sm:p-6">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
+                      Your supplies
+                    </h2>
                   {assetsList.some((asset) => asset.userSupplied > 0n) ? (
                     <div className="space-y-3">
                       {assetsList
@@ -1077,85 +1077,77 @@ const Lend = () => {
                         .map((asset) => (
                           <div
                             key={`user-supply-${asset.address}`}
-                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                            className="p-3 sm:p-4 bg-gray-50 rounded-lg"
                           >
-                            <div className="flex items-center">
-                              <img
-                                src={asset.icon}
-                                alt={asset.symbol}
-                                className="w-8 h-8 rounded-full mr-3"
-                              />
-                              <div>
-                                <div className="font-semibold text-gray-900">
-                                  {asset.symbol}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {formatNumber(
-                                    asset.userSupplied,
-                                    asset.decimals,
-                                    4
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                              <div className="text-right">
-                                <div className="font-semibold text-gray-900">
-                                  $
-                                  {calculateUSDValue(
-                                    asset.userSupplied,
-                                    asset
-                                  ).toFixed(2)}
-                                </div>
-                                <div className="text-sm text-green-600">
-                                  {formatAPY(asset.supplyAPY)}% APY
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-center flex-1 min-w-0">
+                                <img
+                                  src={asset.icon}
+                                  alt={asset.symbol}
+                                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-3 flex-shrink-0"
+                                />
+                                <div className="min-w-0 flex-1">
+                                  <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    {asset.symbol}
+                                  </div>
+                                  <div className="text-xs sm:text-sm text-gray-500 truncate">
+                                    {formatNumber(
+                                      asset.userSupplied,
+                                      asset.decimals,
+                                      4
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                              {isConnected ? (
+                              <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                                <div className="text-right">
+                                  <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    $
+                                    {calculateUSDValue(
+                                      asset.userSupplied,
+                                      asset
+                                    ).toFixed(2)}
+                                  </div>
+                                  <div className="text-xs sm:text-sm text-green-600">
+                                    {formatAPY(asset.supplyAPY)}% APY
+                                  </div>
+                                </div>
                                 <button
                                   onClick={() => {
                                     setSelectedAsset(asset.address);
                                     setActiveTab("withdraw");
                                     setAmount("");
                                   }}
-                                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap"
                                 >
                                   Withdraw
                                 </button>
-                              ) : (
-                                <button
-                                  onClick={privyLogin}
-                                  className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-                                >
-                                  Connect
-                                </button>
-                              )}
+                              </div>
                             </div>
                           </div>
                         ))}
                     </div>
                   ) : (
-                    <div className="text-center text-gray-500 py-8">
+                    <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
                       Nothing supplied yet
                     </div>
                   )}
                 </div>
 
                 {/* Assets to Supply */}
-                <div className="aave-card p-6">
+                <div className="aave-card p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
                       Assets to supply
                     </h2>
-                    <button className="text-sm text-gray-500 hover:text-gray-700">
+                    <button className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 hidden sm:block">
                       Hide —
                     </button>
                   </div>
 
-
-
                   <div className="space-y-2">
-                    <div className="grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
+                    {/* Desktop Table Header */}
+                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
                       <div>Asset</div>
                       <div className="text-right">Wallet balance</div>
                       <div className="text-right">APY</div>
@@ -1168,8 +1160,251 @@ const Lend = () => {
                       .map((asset) => (
                         <div
                           key={`supply-${asset.address}`}
-                          className="grid grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                          className="sm:grid sm:grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
                         >
+                          {/* Mobile Card Layout */}
+                          <div className="sm:hidden space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center">
+                                <img
+                                  src={asset.icon}
+                                  alt={asset.symbol}
+                                  className="w-8 h-8 rounded-full mr-3"
+                                />
+                                <span className="font-semibold text-gray-900">
+                                  {asset.symbol}
+                                </span>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  setSelectedAsset(asset.address);
+                                  setActiveTab("supply");
+                                  setAmount("");
+                                }}
+                                className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+                              >
+                                Supply
+                              </button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <span className="text-gray-600">Balance: </span>
+                                <span className="font-medium">
+                                  {formatNumber(asset.balance, asset.decimals, 4)}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-gray-600">APY: </span>
+                                <span className="font-medium text-green-600">
+                                  {formatAPY(asset.supplyAPY)}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Desktop Table Layout */}
+                          <div className="hidden sm:contents">
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-8 h-8 rounded-full mr-3"
+                              />
+                              <span className="font-semibold text-gray-900">
+                                {asset.symbol}
+                              </span>
+                            </div>
+                            <div className="text-right font-medium">
+                              {formatNumber(asset.balance, asset.decimals, 6)}
+                            </div>
+                            <div className="text-right font-medium text-green-600">
+                              {formatAPY(asset.supplyAPY)}%
+                            </div>
+                            <div className="text-right">
+                              <span className="text-green-600">✓</span>
+                            </div>
+                            <div className="text-right">
+                              <button
+                                onClick={() => {
+                                  setSelectedAsset(asset.address);
+                                  setActiveTab("supply");
+                                  setAmount("");
+                                }}
+                                className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                              >
+                                Supply
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4 sm:space-y-6">
+                {/* Your Borrows */}
+                <div className="aave-card p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Your borrows
+                    </h2>
+                  </div>
+                  {assetsList.some((asset) => asset.userBorrowed > 0n) ? (
+                    <div className="space-y-3">
+                      {assetsList
+                        .filter((asset) => asset.userBorrowed > 0n)
+                        .map((asset) => (
+                          <div
+                            key={`user-borrow-${asset.address}`}
+                            className="p-3 sm:p-4 bg-gray-50 rounded-lg"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-center flex-1 min-w-0">
+                                <img
+                                  src={asset.icon}
+                                  alt={asset.symbol}
+                                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-3 flex-shrink-0"
+                                />
+                                <div className="min-w-0 flex-1">
+                                  <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    {asset.symbol}
+                                  </div>
+                                  <div className="text-xs sm:text-sm text-gray-500 truncate">
+                                    {formatNumber(
+                                      asset.userBorrowed,
+                                      asset.decimals,
+                                      4
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                                <div className="text-right">
+                                  <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    $
+                                    {calculateUSDValue(
+                                      asset.userBorrowed,
+                                      asset
+                                    ).toFixed(2)}
+                                  </div>
+                                  <div className="text-xs sm:text-sm text-red-600">
+                                    {formatAPY(asset.borrowAPY)}% APY
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => {
+                                    setSelectedAsset(asset.address);
+                                    setActiveTab("repay");
+                                    setAmount("");
+                                  }}
+                                  className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap"
+                                >
+                                  Repay
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                      Nothing borrowed yet
+                    </div>
+                  )}
+                </div>
+
+                {/* Assets to Borrow */}
+                <div className="aave-card p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Assets to borrow
+                    </h2>
+                    <button className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 hidden sm:block">
+                      Hide —
+                    </button>
+                  </div>
+
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+                    <svg
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-xs sm:text-sm text-blue-700">
+                      To borrow you need to supply any asset to be used as
+                      collateral.
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {/* Desktop Table Header */}
+                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
+                      <div>Asset</div>
+                      <div className="text-right">Available</div>
+                      <div className="text-right">APY, variable</div>
+                      <div></div>
+                      <div></div>
+                    </div>
+
+                    {assetsList.map((asset) => (
+                      <div
+                        key={`borrow-${asset.address}`}
+                        className="sm:grid sm:grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        {/* Mobile Card Layout */}
+                        <div className="sm:hidden space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-8 h-8 rounded-full mr-3"
+                              />
+                              <span className="font-semibold text-gray-900">
+                                {asset.symbol}
+                              </span>
+                            </div>
+                            <button
+                              onClick={() => {
+                                setSelectedAsset(asset.address);
+                                setActiveTab("borrow");
+                                setAmount("");
+                              }}
+                              disabled={getMaxBorrowAmount(asset) <= 0n}
+                              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors"
+                            >
+                              Borrow
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-gray-600">Available: </span>
+                              <span className="font-medium">
+                                {formatNumber(
+                                  getMaxBorrowAmount(asset),
+                                  asset.decimals,
+                                  4
+                                )}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-gray-600">APY: </span>
+                              <span className="font-medium text-red-600">
+                                {formatAPY(asset.borrowAPY)}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Desktop Table Layout */}
+                        <div className="hidden sm:contents">
                           <div className="flex items-center">
                             <img
                               src={asset.icon}
@@ -1181,193 +1416,35 @@ const Lend = () => {
                             </span>
                           </div>
                           <div className="text-right font-medium">
-                            {formatNumber(asset.balance, asset.decimals, 6)}
-                          </div>
-                          <div className="text-right font-medium text-green-600">
-                            {formatAPY(asset.supplyAPY)}%
+                            {formatNumber(
+                              getMaxBorrowAmount(asset),
+                              asset.decimals,
+                              6
+                            )}
                           </div>
                           <div className="text-right">
-                            <span className="text-green-600">✓</span>
+                            <div className="font-medium text-red-600">
+                              {formatAPY(asset.borrowAPY)}%
+                            </div>
                           </div>
                           <div className="text-right">
                             <button
                               onClick={() => {
                                 setSelectedAsset(asset.address);
-                                setActiveTab("supply");
+                                setActiveTab("borrow");
                                 setAmount("");
                               }}
-                              className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                              disabled={getMaxBorrowAmount(asset) <= 0n}
+                              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                             >
-                              Supply
+                              Borrow
                             </button>
                           </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                {/* Your Borrows */}
-                <div className="aave-card p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Your borrows
-                    </h2>
-                  </div>
-                  {assetsList.some((asset) => asset.userBorrowed > 0n) ? (
-                    <div className="space-y-3">
-                      {assetsList
-                        .filter((asset) => asset.userBorrowed > 0n)
-                        .map((asset) => (
-                          <div
-                            key={`user-borrow-${asset.address}`}
-                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                          >
-                            <div className="flex items-center">
-                              <img
-                                src={asset.icon}
-                                alt={asset.symbol}
-                                className="w-8 h-8 rounded-full mr-3"
-                              />
-                              <div>
-                                <div className="font-semibold text-gray-900">
-                                  {asset.symbol}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {formatNumber(
-                                    asset.userBorrowed,
-                                    asset.decimals,
-                                    4
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                              <div className="text-right">
-                                <div className="font-semibold text-gray-900">
-                                  $
-                                  {calculateUSDValue(
-                                    asset.userBorrowed,
-                                    asset
-                                  ).toFixed(2)}
-                                </div>
-                                <div className="text-sm text-red-600">
-                                  {formatAPY(asset.borrowAPY)}% APY
-                                </div>
-                              </div>
-                              {isConnected ? (
-                                <button
-                                  onClick={() => {
-                                    setSelectedAsset(asset.address);
-                                    setActiveTab("repay");
-                                    setAmount("");
-                                  }}
-                                  className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-                                >
-                                  Repay
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={privyLogin}
-                                  className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-                                >
-                                  Connect
-                                </button>
-                              )}
-                            </div>
+                          <div className="text-right">
+                            <button className="text-gray-500 hover:text-gray-700 text-sm font-medium hidden lg:block">
+                              Details
+                            </button>
                           </div>
-                        ))}
-                    </div>
-                  ) : (
-                    <div className="text-center text-gray-500 py-8">
-                      Nothing borrowed yet
-                    </div>
-                  )}
-                </div>
-
-                {/* Assets to Borrow */}
-                <div className="aave-card p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Assets to borrow
-                    </h2>
-                    <button className="text-sm text-gray-500 hover:text-gray-700">
-                      Hide —
-                    </button>
-                  </div>
-
-                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
-                    <svg
-                      className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="text-sm text-blue-700">
-                      To borrow you need to supply any asset to be used as
-                      collateral.
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2">
-                      <div>Asset</div>
-                      <div className="text-right">Available</div>
-                      <div className="text-right">APY, variable</div>
-                      <div></div>
-                      <div></div>
-                    </div>
-
-                    {assetsList.map((asset) => (
-                      <div
-                        key={`borrow-${asset.address}`}
-                        className="grid grid-cols-5 gap-4 items-center p-3 hover:bg-gray-50 rounded-lg transition-colors"
-                      >
-                        <div className="flex items-center">
-                          <img
-                            src={asset.icon}
-                            alt={asset.symbol}
-                            className="w-8 h-8 rounded-full mr-3"
-                          />
-                          <span className="font-semibold text-gray-900">
-                            {asset.symbol}
-                          </span>
-                        </div>
-                        <div className="text-right font-medium">
-                          {formatNumber(
-                            getMaxBorrowAmount(asset),
-                            asset.decimals,
-                            6
-                          )}
-                        </div>
-                        <div className="text-right">
-                          <div className="font-medium text-red-600">
-                            {formatAPY(asset.borrowAPY)}%
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <button
-                            onClick={() => {
-                              setSelectedAsset(asset.address);
-                              setActiveTab("borrow");
-                              setAmount("");
-                            }}
-                            disabled={getMaxBorrowAmount(asset) <= 0n}
-                            className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
-                          >
-                            Borrow
-                          </button>
-                        </div>
-                        <div className="text-right">
-                          <button className="text-gray-500 hover:text-gray-700 text-sm font-medium">
-                            Details
-                          </button>
                         </div>
                       </div>
                     ))}
@@ -1377,12 +1454,12 @@ const Lend = () => {
               </div>
             ) : (
               /* Connect Wallet Interface */
-              <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="text-center max-w-md mx-auto">
-                  <div className="mb-8 flex justify-center">
-                    <div className="w-24 h-24 bg-slate-600 rounded-full flex items-center justify-center">
+              <div className="flex items-center justify-center min-h-[50vh] sm:min-h-[60vh] px-4">
+                <div className="text-center max-w-sm sm:max-w-md mx-auto">
+                  <div className="mb-6 sm:mb-8 flex justify-center">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-600 rounded-full flex items-center justify-center">
                       <svg 
-                        className="w-12 h-12 text-white" 
+                        className="w-10 h-10 sm:w-12 sm:h-12 text-white" 
                         fill="currentColor" 
                         viewBox="0 0 24 24"
                       >
@@ -1390,15 +1467,15 @@ const Lend = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">
+                  <h3 className="text-xl sm:text-2xl font-bold text-green-600 mb-3 sm:mb-4">
                     Please, connect your wallet
                   </h3>
-                  <p className="text-gray-300 mb-8">
+                  <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
                     Please connect your wallet to see your supplies, borrowings, and open positions.
                   </p>
                   <button
                     onClick={privyLogin}
-                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
+                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
                   >
                     Connect wallet
                   </button>
@@ -1414,7 +1491,7 @@ const Lend = () => {
       {/* Transaction Modal Popup */}
       {activeTab && selectedAsset && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
           onClick={() => {
             setActiveTab("");
             setSelectedAsset("");
@@ -1422,18 +1499,18 @@ const Lend = () => {
           }}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
               <div className="flex items-center space-x-3">
                 <img
                   src={selectedAssetData?.icon}
                   alt={selectedAssetData?.symbol}
-                  className="w-8 h-8 rounded-full"
+                  className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
                 />
-                <h3 className="text-xl font-bold text-gray-900 capitalize">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 capitalize">
                   {activeTab} {selectedAssetData?.symbol}
                 </h3>
               </div>
@@ -1443,10 +1520,10 @@ const Lend = () => {
                   setSelectedAsset("");
                   setAmount("");
                 }}
-                className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="text-gray-400 hover:text-gray-600 p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1462,9 +1539,9 @@ const Lend = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-6">
+            <div className="p-4 sm:p-6">
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Amount Input */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -1488,15 +1565,15 @@ const Lend = () => {
                           }
                         }}
                         placeholder="0.00"
-                        className="w-full p-4 pr-20 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-lg font-semibold"
+                        className="w-full p-3 sm:p-4 pr-16 sm:pr-20 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base sm:text-lg font-semibold"
                       />
-                      <div className="absolute right-4 top-4 text-gray-500 font-medium">
+                      <div className="absolute right-3 sm:right-4 top-3 sm:top-4 text-gray-500 font-medium text-sm sm:text-base">
                         {selectedAssetData?.symbol}
                       </div>
                     </div>
 
                     {selectedAssetData && (
-                      <div className="mt-3 flex items-center justify-between text-sm">
+                      <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm space-y-2 sm:space-y-0">
                         <span className="text-gray-600">
                           Available:{" "}
                           {formatNumber(
@@ -1529,7 +1606,7 @@ const Lend = () => {
                             );
                             setAmount(formattedValue.replace(/,/g, ""));
                           }}
-                          className="text-blue-600 hover:text-blue-700 font-semibold"
+                          className="text-blue-600 hover:text-blue-700 font-semibold px-3 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors text-xs sm:text-sm self-start sm:self-center"
                         >
                           MAX
                         </button>
@@ -1538,7 +1615,7 @@ const Lend = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="space-y-3">
+                  <div className="space-y-3 sm:space-y-4">
                     {activeTab === "supply" && selectedAssetData && (
                       <>
                         {selectedAssetData.allowance <
@@ -1667,12 +1744,12 @@ const Lend = () => {
                 </div>
 
                 {/* Transaction Overview */}
-                <div className="bg-gray-50 rounded-xl p-6">
-                  <h4 className="font-semibold text-gray-900 mb-4">
+                <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
+                  <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">
                     Transaction Overview
                   </h4>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
+                  <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
+                    <div className="flex justify-between items-center">
                       <span className="text-gray-600">Asset:</span>
                       <div className="flex items-center space-x-2">
                         <img
@@ -1685,14 +1762,14 @@ const Lend = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="text-gray-600">Amount:</span>
-                      <span className="font-medium">
+                      <span className="font-medium text-right">
                         {amount || "0"} {selectedAssetData?.symbol}
                       </span>
                     </div>
                     {activeTab === "supply" && (
-                      <div className="flex justify-between">
+                      <div className="flex justify-between items-center">
                         <span className="text-gray-600">Supply APY:</span>
                         <span className="font-medium text-green-600">
                           {formatAPY(selectedAssetData?.supplyAPY)}%
@@ -1701,17 +1778,17 @@ const Lend = () => {
                     )}
                     {activeTab === "borrow" && (
                       <>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                           <span className="text-gray-600">Borrow APY:</span>
                           <span className="font-medium text-red-600">
                             {formatAPY(selectedAssetData?.borrowAPY)}%
                           </span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-start">
                           <span className="text-gray-600">
                             Available Liquidity:
                           </span>
-                          <span className="font-medium">
+                          <span className="font-medium text-right">
                             {formatLiquidity(selectedAssetData).tokens}{" "}
                             {selectedAssetData?.symbol}
                           </span>
@@ -1720,8 +1797,8 @@ const Lend = () => {
                     )}
 
                     {amount && selectedAssetData && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <div className="flex justify-between">
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
+                        <div className="flex justify-between items-center">
                           <span className="text-gray-600">USD Value:</span>
                           <span className="font-medium">
                             $
