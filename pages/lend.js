@@ -206,6 +206,20 @@ const Lend = () => {
       query: { enabled: !!(lendContract && supportedAssets.length > 0) },
     });
 
+  // 获取动态利率数据（不需要连接钱包）
+  const { data: assetRatesData, refetch: refetchAssetRatesData } =
+    useReadContracts({
+      contracts:
+        supportedAssets.length > 0
+          ? supportedAssets.map((asset) => ({
+              ...lendContract,
+              functionName: "getAssetRates",
+              args: [asset.address],
+            }))
+          : [],
+      query: { enabled: !!(lendContract && supportedAssets.length > 0) },
+    });
+
   // 获取平台手续费率
   const { data: protocolFeeRateData } = useReadContracts({
     contracts: lendContract
@@ -233,8 +247,9 @@ const Lend = () => {
   useEffect(() => {
     const assetsLoaded = supportedAssets.length > 0;
     const pricesLoaded = assetPricesData && assetPricesData.length > 0;
+    const ratesLoaded = assetRatesData && assetRatesData.length > 0;
 
-    if (assetsLoaded) {
+    if (assetsLoaded && ratesLoaded) {
       if (isConnected && contractData && contractData.length > 0) {
         // 连接钱包时的完整数据处理
         const accountData = contractData[0]?.result;
@@ -249,7 +264,7 @@ const Lend = () => {
             const allowance = contractData[contractIndex + 3]?.result || 0n;
             const assetPrice = contractData[contractIndex + 4]?.result || 0n;
 
-            // 从储备数据获取利率信息
+            // 从储备数据获取基础信息
             const reserve = reserveData?.[index]?.result;
 
             // 获取 scaled values 和 indexes (根据新ABI结构)
@@ -265,26 +280,23 @@ const Lend = () => {
               variableBorrowIndex
             );
 
-            // 计算利用率和供应利率
-            const borrowAPY = reserve?.[6] || 0n;
-            const utilizationRate = actualTotalSupply > 0n ? 
-              (actualTotalBorrow * parseUnits("1", 27)) / actualTotalSupply : 0n;
-            
-            // 获取平台手续费率（以万分之几为单位）
-            const protocolFeeRate = protocolFeeRateData?.[0]?.result || 500n; // 默认5%
-            // 计算给存款者的比例：(1 - 平台手续费/10000)
-            const depositorsShare = parseUnits("1", 27) - (protocolFeeRate * parseUnits("1", 23)); // 10000 = 1e4, 27-4=23
-            // 供应利率 = 借贷利率 * 利用率 * (1 - 平台手续费/10000)
-            const supplyAPY = rayMul(rayMul(borrowAPY, utilizationRate), depositorsShare);
+            // ✅ 使用新的动态利率方式
+            const rates = assetRatesData?.[index]?.result;
+            const supplyAPY = rates?.[0] || 0n;              // supplyRate (ray格式)
+            const borrowAPY = rates?.[1] || 0n;              // borrowRate (ray格式)
+            const utilizationRate = rates?.[2] || 0n;        // utilizationRate (ray格式)
+            const supplyRatePercent = rates?.[3] || 0n;      // supplyRatePercent
+            const borrowRatePercent = rates?.[4] || 0n;      // borrowRatePercent
+            const utilizationPercent = rates?.[5] || 0n;     // utilizationPercent
 
             // 添加调试信息（开发时启用）
             if (process.env.NODE_ENV === "development") {
-              console.log(`${asset.symbol} Rate Calculation (Connected):`);
-              console.log("Protocol Fee Rate (basis points):", protocolFeeRate.toString());
-              console.log("Depositors Share:", formatUnits(depositorsShare, 27));
-              console.log("Utilization Rate:", formatUnits(utilizationRate, 27));
-              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log(`${asset.symbol} Dynamic Rate Data (Connected):`);
               console.log("Supply APY:", formatAPY(supplyAPY) + "%");
+              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log("Utilization Rate:", formatAPY(utilizationRate) + "%");
+              console.log("Supply Rate Percent:", supplyRatePercent.toString());
+              console.log("Borrow Rate Percent:", borrowRatePercent.toString());
             }
 
             processedAssets.push({
@@ -300,8 +312,11 @@ const Lend = () => {
               liquidityIndex: liquidityIndex,
               variableBorrowIndex: variableBorrowIndex,
               utilizationRate: utilizationRate,
-              supplyAPY: supplyAPY,
-              borrowAPY: borrowAPY,
+              supplyAPY: supplyAPY,                    // Ray格式利率
+              borrowAPY: borrowAPY,                    // Ray格式利率  
+              supplyRatePercent: supplyRatePercent,    // 百分比格式
+              borrowRatePercent: borrowRatePercent,    // 百分比格式
+              utilizationPercent: utilizationPercent, // 百分比格式
               balance: balance,
               allowance: allowance,
               price: assetPrice,
@@ -318,7 +333,7 @@ const Lend = () => {
         });
 
         setAssetsList(processedAssets);
-      } else if (reserveData && assetPricesData && reserveData.length > 0) {
+      } else if (reserveData && assetPricesData && assetRatesData && reserveData.length > 0) {
         // 未连接钱包时的基础数据处理
         let processedAssets = [];
 
@@ -340,26 +355,23 @@ const Lend = () => {
               variableBorrowIndex
             );
 
-            // 计算利用率和供应利率
-            const borrowAPY = reserve[6] || 0n;
-            const utilizationRate = actualTotalSupply > 0n ? 
-              (actualTotalBorrow * parseUnits("1", 27)) / actualTotalSupply : 0n;
-            
-            // 获取平台手续费率（以万分之几为单位）
-            const protocolFeeRate = protocolFeeRateData?.[0]?.result || 500n; // 默认5%
-            // 计算给存款者的比例：(1 - 平台手续费/10000)
-            const depositorsShare = parseUnits("1", 27) - (protocolFeeRate * parseUnits("1", 23)); // 10000 = 1e4, 27-4=23
-            // 供应利率 = 借贷利率 * 利用率 * (1 - 平台手续费/10000)
-            const supplyAPY = rayMul(rayMul(borrowAPY, utilizationRate), depositorsShare);
+            // ✅ 使用新的动态利率方式
+            const rates = assetRatesData?.[index]?.result;
+            const supplyAPY = rates?.[0] || 0n;              // supplyRate (ray格式)
+            const borrowAPY = rates?.[1] || 0n;              // borrowRate (ray格式)
+            const utilizationRate = rates?.[2] || 0n;        // utilizationRate (ray格式)
+            const supplyRatePercent = rates?.[3] || 0n;      // supplyRatePercent
+            const borrowRatePercent = rates?.[4] || 0n;      // borrowRatePercent
+            const utilizationPercent = rates?.[5] || 0n;     // utilizationPercent
 
             // 添加调试信息（开发时启用）
             if (process.env.NODE_ENV === "development") {
-              console.log(`${asset.symbol} Rate Calculation (Not Connected):`);
-              console.log("Protocol Fee Rate (basis points):", protocolFeeRate.toString());
-              console.log("Depositors Share:", formatUnits(depositorsShare, 27));
-              console.log("Utilization Rate:", formatUnits(utilizationRate, 27));
-              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log(`${asset.symbol} Dynamic Rate Data (Not Connected):`);
               console.log("Supply APY:", formatAPY(supplyAPY) + "%");
+              console.log("Borrow APY:", formatAPY(borrowAPY) + "%");
+              console.log("Utilization Rate:", formatAPY(utilizationRate) + "%");
+              console.log("Supply Rate Percent:", supplyRatePercent.toString());
+              console.log("Borrow Rate Percent:", borrowRatePercent.toString());
             }
 
             processedAssets.push({
@@ -375,8 +387,11 @@ const Lend = () => {
               liquidityIndex: liquidityIndex,
               variableBorrowIndex: variableBorrowIndex,
               utilizationRate: utilizationRate,
-              supplyAPY: supplyAPY,
-              borrowAPY: borrowAPY,
+              supplyAPY: supplyAPY,                    // Ray格式利率
+              borrowAPY: borrowAPY,                    // Ray格式利率
+              supplyRatePercent: supplyRatePercent,    // 百分比格式
+              borrowRatePercent: borrowRatePercent,    // 百分比格式
+              utilizationPercent: utilizationPercent, // 百分比格式
               balance: 0n,
               allowance: 0n,
               price: assetPrice,
@@ -402,6 +417,7 @@ const Lend = () => {
     isConnected,
     reserveData,
     assetPricesData,
+    assetRatesData,
     protocolFeeRateData,
   ]);
 
@@ -416,8 +432,14 @@ const Lend = () => {
 
   const formatAPY = (value) => {
     if (!value) return "0.00";
-    // 新合约的利率已经是以 ray (1e27) 为单位的年利率
+    // 格式化 ray (1e27) 格式的利率为百分比
     return (Number(formatUnits(value, 27)) * 100).toFixed(2);
+  };
+
+  const formatAPYFromPercent = (value) => {
+    if (!value) return "0.00";
+    // 直接格式化百分比数值 (getAssetRates 返回的 xxxRatePercent 字段)
+    return (Number(value) / 100).toFixed(2);
   };
 
   // 创建资产价格映射（备用价格源，主要价格从 asset.price 获取）
@@ -818,6 +840,9 @@ const Lend = () => {
           }
           if (refetchAssetPricesData) {
             promises.push(refetchAssetPricesData());
+          }
+          if (refetchAssetRatesData) {
+            promises.push(refetchAssetRatesData());
           }
 
           if (promises.length > 0) {
