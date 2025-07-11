@@ -620,6 +620,131 @@ const Lend = () => {
     }
   };
 
+  // 计算基于健康因子的最大提现金额
+  const getMaxWithdrawAmount = (asset) => {
+    if (!asset) return 0n;
+
+    // 如果没有连接钱包或没有用户数据，返回用户全部供应余额
+    if (!isConnected || !userData) {
+      return asset.userSupplied || 0n;
+    }
+
+    // 如果用户没有借款，可以提现全部余额
+    if (!userData.totalDebtValueUSD || userData.totalDebtValueUSD === 0n) {
+      return asset.userSupplied || 0n;
+    }
+
+    // 如果健康因子已经很低或无限大，处理特殊情况
+    if (
+      !userData.healthFactor ||
+      userData.healthFactor === 0n ||
+      userData.healthFactor ===
+        BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+    ) {
+      return asset.userSupplied || 0n;
+    }
+
+    try {
+      // 获取当前的USD值
+      const currentHealthFactor = Number(formatEther(userData.healthFactor));
+      const totalCollateralUSD = Number(
+        formatUnits(userData.totalCollateralValueUSD, 18)
+      );
+      const totalDebtUSD = Number(
+        formatUnits(userData.totalDebtValueUSD, 18)
+      );
+
+      // 如果健康因子已经很高，可以提现更多
+      if (currentHealthFactor >= 10) {
+        return asset.userSupplied || 0n;
+      }
+
+      // 设置安全的健康因子阈值（1.05，留5%安全边际）
+      const safeHealthFactorThreshold = 1.05;
+
+      // 如果当前健康因子已经低于安全阈值，不允许提现
+      if (currentHealthFactor <= safeHealthFactorThreshold) {
+        return 0n;
+      }
+
+      // 获取资产价格
+      const assetPrice = getTokenPrice(asset.symbol, asset.address, asset);
+      if (assetPrice <= 0) {
+        console.warn(`Invalid price for ${asset.symbol}:`, assetPrice);
+        return asset.userSupplied || 0n;
+      }
+
+      // 计算用户当前该资产的USD价值
+      const userAssetSuppliedUSD = calculateUSDValue(
+        asset.userSupplied || 0n,
+        asset
+      );
+
+      // 假设抵押品的清算阈值为85%（这是一个典型值，实际应该从合约获取）
+      const liquidationThreshold = 0.85;
+
+      // 计算为了维持安全健康因子，最多可以减少多少USD的抵押品
+      // 新健康因子 = (总抵押品 - 提现金额) * 清算阈值 / 总债务 >= 安全阈值
+      // 解得：提现金额 <= 总抵押品 - (总债务 * 安全阈值 / 清算阈值)
+      const maxWithdrawableUSD =
+        totalCollateralUSD -
+        (totalDebtUSD * safeHealthFactorThreshold) / liquidationThreshold;
+
+      // 确保不超过用户该资产的供应余额
+      const maxWithdrawableUSDForAsset = Math.min(
+        maxWithdrawableUSD,
+        userAssetSuppliedUSD
+      );
+
+      if (maxWithdrawableUSDForAsset <= 0) {
+        return 0n;
+      }
+
+      // 转换为代币数量
+      const maxWithdrawableTokens = maxWithdrawableUSDForAsset / assetPrice;
+
+      // 确保不超过小数精度
+      const tokenString = Math.max(0, maxWithdrawableTokens).toFixed(
+        asset.decimals
+      );
+      const maxWithdrawTokens = parseUnits(tokenString, asset.decimals);
+
+      // 确保不超过用户的供应余额
+      const userSupplied = asset.userSupplied || 0n;
+      const finalAmount =
+        maxWithdrawTokens < userSupplied ? maxWithdrawTokens : userSupplied;
+
+      // 添加调试信息（开发时启用）
+      if (process.env.NODE_ENV === "development") {
+        console.log(`${asset.symbol} Max Withdraw Calculation:`);
+        console.log("Current Health Factor:", currentHealthFactor);
+        console.log("Total Collateral USD:", totalCollateralUSD);
+        console.log("Total Debt USD:", totalDebtUSD);
+        console.log("Max Withdrawable USD:", maxWithdrawableUSDForAsset);
+        console.log("Asset Price:", assetPrice);
+        console.log(
+          "Max Withdrawable Tokens:",
+          formatUnits(finalAmount, asset.decimals)
+        );
+        console.log(
+          "User Supplied:",
+          formatUnits(userSupplied, asset.decimals)
+        );
+      }
+
+      return finalAmount;
+    } catch (error) {
+      console.warn(
+        "Error calculating max withdraw amount:",
+        error,
+        "Asset:",
+        asset.symbol
+      );
+      // 发生错误时返回用户供应余额，但这可能不安全
+      return asset.userSupplied || 0n;
+    }
+  };
+
   const safeParseAmount = (value, decimals = 18) => {
     if (!value || value === "" || isNaN(Number(value))) return 0n;
     const cleanValue = value.toString().replace(/,/g, "").trim();
@@ -799,7 +924,7 @@ const Lend = () => {
         disabled:
           !amount ||
           parsedAmount <= 0n ||
-          parsedAmount > selectedAssetData.userSupplied,
+          parsedAmount > getMaxWithdrawAmount(selectedAssetData),
       },
     };
   };
@@ -1381,7 +1506,7 @@ const Lend = () => {
                               ? getMaxBorrowAmount(selectedAssetData)
                               : activeTab === "repay"
                               ? selectedAssetData.userBorrowed
-                              : selectedAssetData.userSupplied,
+                              : getMaxWithdrawAmount(selectedAssetData),
                             selectedAssetData.decimals,
                             4
                           )}{" "}
@@ -1396,7 +1521,7 @@ const Lend = () => {
                                 ? getMaxBorrowAmount(selectedAssetData)
                                 : activeTab === "repay"
                                 ? selectedAssetData.userBorrowed
-                                : selectedAssetData.userSupplied;
+                                : getMaxWithdrawAmount(selectedAssetData);
                             const formattedValue = formatNumber(
                               maxValue,
                               selectedAssetData.decimals,
@@ -1529,8 +1654,10 @@ const Lend = () => {
                               : safeParseAmount(
                                   amount,
                                   selectedAssetData.decimals
-                                ) > selectedAssetData.userSupplied
-                              ? "Amount exceeds supplied balance"
+                                ) > getMaxWithdrawAmount(selectedAssetData)
+                              ? userData?.totalDebtValueUSD && userData.totalDebtValueUSD > 0n
+                                ? "Amount would make health factor too low"
+                                : "Amount exceeds supplied balance"
                               : "Please enter valid amount"}
                           </p>
                         )}
