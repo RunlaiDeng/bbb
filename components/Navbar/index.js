@@ -219,14 +219,6 @@ const Navbar = () => {
                           Airdrop Hub
                         </Link>
                       </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/usdb"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          USDB
-                        </Link>
-                      </li>
                     </ul>
                   </div>
                 </div>
