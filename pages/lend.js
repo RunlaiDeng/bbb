@@ -1178,18 +1178,14 @@ const Lend = () => {
                     <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
                       Assets to supply
                     </h2>
-                    <button className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 hidden sm:block">
-                      Hide —
-                    </button>
                   </div>
 
                   <div className="space-y-3">
                     {/* Desktop Table Header - Only visible on desktop */}
-                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
                       <div>Asset</div>
-                      <div className="text-right">Wallet balance</div>
+                      <div className="text-right">Total supply</div>
                       <div className="text-right">APY</div>
-                      <div className="text-right">Can be collateral</div>
                       <div></div>
                     </div>
 
@@ -1204,7 +1200,7 @@ const Lend = () => {
                             }
                             router.push(`/asset/${asset.address}`);
                           }}
-                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
+                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
                         >
                           {/* Mobile Card Layout */}
                           <div className="sm:hidden space-y-4">
@@ -1218,9 +1214,6 @@ const Lend = () => {
                                                               <div>
                                 <div className="font-semibold text-gray-900 text-base">
                                   {asset.symbol}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  Can be collateral ✓
                                 </div>
                               </div>
                               </div>
@@ -1237,11 +1230,10 @@ const Lend = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                               <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-500 mb-1">Wallet Balance</div>
+                                <div className="text-xs text-gray-500 mb-1">Total Supply</div>
                                 <div className="font-semibold text-gray-900">
-                                  {formatNumber(asset.balance, asset.decimals, 4)}
+                                  {formatNumber(asset.totalSupply, asset.decimals, 2)}
                                 </div>
-                                <div className="text-xs text-gray-500">{asset.symbol}</div>
                               </div>
                               <div className="bg-gray-50 rounded-lg p-3">
                                 <div className="text-xs text-gray-500 mb-1">Supply APY</div>
@@ -1264,14 +1256,13 @@ const Lend = () => {
                                 {asset.symbol}
                               </span>
                             </div>
-                            <div className="text-right font-medium">
-                              {formatNumber(asset.balance, asset.decimals, 6)}
+                            <div className="text-right">
+                              <div className="font-medium text-gray-900">
+                                {formatNumber(asset.totalSupply, asset.decimals, 2)}
+                              </div>
                             </div>
                             <div className="text-right font-medium text-green-600">
                               {formatAPY(asset.supplyAPY)}%
-                            </div>
-                            <div className="text-right">
-                              <span className="text-green-600">✓</span>
                             </div>
                             <div className="text-right">
                               <button
@@ -1370,9 +1361,6 @@ const Lend = () => {
                     <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
                       Assets to borrow
                     </h2>
-                    <button className="text-xs sm:text-sm text-gray-500 hover:text-gray-700 hidden sm:block">
-                      Hide —
-                    </button>
                   </div>
 
                   <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
@@ -1397,7 +1385,7 @@ const Lend = () => {
                     {/* Desktop Table Header - Only visible on desktop */}
                     <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
                       <div>Asset</div>
-                      <div className="text-right">Available</div>
+                      <div className="text-right">Total borrowed</div>
                       <div className="text-right">APY, variable</div>
                       <div></div>
                     </div>
@@ -1446,15 +1434,14 @@ const Lend = () => {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div className="bg-gray-50 rounded-lg p-3">
-                              <div className="text-xs text-gray-500 mb-1">Available</div>
+                              <div className="text-xs text-gray-500 mb-1">Total Borrowed</div>
                               <div className="font-semibold text-gray-900">
                                 {formatNumber(
-                                  getMaxBorrowAmount(asset),
+                                  asset.totalBorrow,
                                   asset.decimals,
-                                  4
+                                  2
                                 )}
                               </div>
-                              <div className="text-xs text-gray-500">{asset.symbol}</div>
                             </div>
                             <div className="bg-gray-50 rounded-lg p-3">
                               <div className="text-xs text-gray-500 mb-1">APY Variable</div>
@@ -1477,13 +1464,15 @@ const Lend = () => {
                                 {asset.symbol}
                               </span>
                             </div>
-                          <div className="text-right font-medium">
-                            {formatNumber(
-                              getMaxBorrowAmount(asset),
-                              asset.decimals,
-                              6
-                            )}
-                          </div>
+                                                     <div className="text-right">
+                             <div className="font-medium text-gray-900">
+                                {formatNumber(
+                                  asset.totalBorrow,
+                                  asset.decimals,
+                                  2
+                                )}
+                             </div>
+                           </div>
                           <div className="text-right">
                             <div className="font-medium text-red-600">
                               {formatAPY(asset.borrowAPY)}%
@@ -1645,7 +1634,9 @@ const Lend = () => {
                               : activeTab === "borrow"
                               ? getMaxBorrowAmount(selectedAssetData)
                               : activeTab === "repay"
-                              ? selectedAssetData.userBorrowed
+                              ? selectedAssetData.userBorrowed < selectedAssetData.balance
+                                ? selectedAssetData.userBorrowed
+                                : selectedAssetData.balance
                               : getMaxWithdrawAmount(selectedAssetData),
                             selectedAssetData.decimals,
                             4
@@ -1660,7 +1651,9 @@ const Lend = () => {
                                 : activeTab === "borrow"
                                 ? getMaxBorrowAmount(selectedAssetData)
                                 : activeTab === "repay"
-                                ? selectedAssetData.userBorrowed
+                                ? selectedAssetData.userBorrowed < selectedAssetData.balance
+                                  ? selectedAssetData.userBorrowed
+                                  : selectedAssetData.balance
                                 : getMaxWithdrawAmount(selectedAssetData);
                             const formattedValue = formatNumber(
                               maxValue,
