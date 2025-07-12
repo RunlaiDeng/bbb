@@ -1194,7 +1194,6 @@ const Lend = () => {
                     </div>
 
                     {assetsList
-                      .filter((asset) => asset.balance > 0n)
                       .map((asset) => (
                         <div
                           key={`supply-${asset.address}`}
