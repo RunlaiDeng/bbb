@@ -233,13 +233,6 @@ export const markets = [
     description: "USDB token",
     address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
   },
-  {
-    name: "bpsXDC",
-    symbol: "bpsXDC",
-    imageUrl: "/xdc.png",
-    description: "bpsXDC token",
-    address: "0x24be372f0915b8BAf17AfA150210FFcB79C88845",
-  },
 ];
 
 // Keep backward compatibility
