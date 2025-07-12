@@ -136,7 +136,7 @@ const Navbar = () => {
 
                 <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
                   <Link
-                    href={"/swap"}
+                    href={"/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
                     Swap

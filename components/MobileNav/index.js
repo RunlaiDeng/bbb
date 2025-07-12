@@ -158,54 +158,7 @@ const MobileNav = () => {
             <span className="ml-3 font-medium">BBBubu</span>
           </Link>
 
-          <Link
-            href="/anniversary"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/anniversary" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/anniversary" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 2L2 7L12 12L22 7L12 2Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 17L12 22L22 17"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 12L12 17L22 12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 22V12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Anniversary</span>
-          </Link>
+
 
           <Link
             href="/airdrophub"
@@ -245,36 +198,7 @@ const MobileNav = () => {
             <span className="ml-3 font-medium">Airdrop Hub</span>
           </Link>
 
-          <Link
-            href="/bpsXDC"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/bpsXDC" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/bpsXDC" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">bpsXDC</span>
-          </Link>
+
 
           <Link
             href="/lend"
@@ -334,7 +258,7 @@ const MobileNav = () => {
         </Link>
 
         <Link
-          href="/swap"
+          href="/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
             router.pathname.startsWith("/swap")
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
@@ -429,26 +353,22 @@ const MobileNav = () => {
         <button
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] relative ${
-            router.pathname.startsWith("/anniversary") ||
             router.pathname === "/farm" ||
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/bbbstake" ||
-            router.pathname === "/bpsXDC" ||
             router.pathname === "/lend"
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
         >
           <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname.startsWith("/anniversary") ||
             router.pathname === "/farm" ||
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
             router.pathname === "/bbbstake" ||
-            router.pathname === "/bpsXDC" ||
             router.pathname === "/lend" ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg
