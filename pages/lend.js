@@ -11,6 +11,8 @@ import WriteButton from "@/components/WriteButton";
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 import { contracts } from "@/config";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const BUTTON_STYLES = {
   base: "aave-button font-semibold py-3 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-200 flex items-center justify-center min-h-[44px] sm:min-h-[48px] relative text-sm sm:text-base",
@@ -39,6 +41,7 @@ const Lend = () => {
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const privyLogin = usePrivyLogin();
+  const router = useRouter();
 
   // Ray Math functions (AAVE V3 style)
   const RAY = parseUnits("1", 27); // 1e27
@@ -1195,7 +1198,14 @@ const Lend = () => {
                       .map((asset) => (
                         <div
                           key={`supply-${asset.address}`}
-                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
+                          onClick={(e) => {
+                            // 如果点击的是按钮，不跳转
+                            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                              return;
+                            }
+                            router.push(`/asset/${asset.address}`);
+                          }}
+                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
                         >
                           {/* Mobile Card Layout */}
                           <div className="sm:hidden space-y-4">
@@ -1206,14 +1216,14 @@ const Lend = () => {
                                   alt={asset.symbol}
                                   className="w-10 h-10 rounded-full mr-3"
                                 />
-                                <div>
-                                  <div className="font-semibold text-gray-900 text-base">
-                                    {asset.symbol}
-                                  </div>
-                                  <div className="text-xs text-gray-500">
-                                    Can be collateral ✓
-                                  </div>
+                                                              <div>
+                                <div className="font-semibold text-gray-900 text-base">
+                                  {asset.symbol}
                                 </div>
+                                <div className="text-xs text-gray-500">
+                                  Can be collateral ✓
+                                </div>
+                              </div>
                               </div>
                               <button
                                 onClick={() => {
@@ -1396,7 +1406,14 @@ const Lend = () => {
                     {assetsList.map((asset) => (
                       <div
                         key={`borrow-${asset.address}`}
-                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
+                        onClick={(e) => {
+                          // 如果点击的是按钮，不跳转
+                          if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                            return;
+                          }
+                          router.push(`/asset/${asset.address}`);
+                        }}
+                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
                       >
                         {/* Mobile Card Layout */}
                         <div className="sm:hidden space-y-4">
@@ -1451,16 +1468,16 @@ const Lend = () => {
                         
                         {/* Desktop Table Layout */}
                         <div className="hidden sm:contents">
-                          <div className="flex items-center">
-                            <img
-                              src={asset.icon}
-                              alt={asset.symbol}
-                              className="w-8 h-8 rounded-full mr-3"
-                            />
-                            <span className="font-semibold text-gray-900">
-                              {asset.symbol}
-                            </span>
-                          </div>
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-8 h-8 rounded-full mr-3"
+                              />
+                              <span className="font-semibold text-gray-900">
+                                {asset.symbol}
+                              </span>
+                            </div>
                           <div className="text-right font-medium">
                             {formatNumber(
                               getMaxBorrowAmount(asset),
