@@ -326,10 +326,12 @@ const Lend = () => {
         });
 
         setUserData({
-          totalCollateralValueUSD: accountData?.[0] || 0n,
-          totalDebtValueUSD: accountData?.[1] || 0n,
-          availableBorrowsUSD: accountData?.[2] || 0n,
-          healthFactor: accountData?.[5] || 0n, // healthFactor is at index 5
+          totalCollateralBase: accountData?.[0] || 0n,    // totalCollateralBase
+          totalDebtBase: accountData?.[1] || 0n,          // totalDebtBase
+          availableBorrowsBase: accountData?.[2] || 0n,   // availableBorrowsBase
+          currentLiquidationThreshold: accountData?.[3] || 0n, // currentLiquidationThreshold
+          ltv: accountData?.[4] || 0n,                    // ltv
+          healthFactor: accountData?.[5] || 0n,           // healthFactor
         });
 
         setAssetsList(processedAssets);
@@ -400,9 +402,11 @@ const Lend = () => {
         });
 
         setUserData({
-          totalCollateralValueUSD: 0n,
-          totalDebtValueUSD: 0n,
-          availableBorrowsUSD: 0n,
+          totalCollateralBase: 0n,
+          totalDebtBase: 0n,
+          availableBorrowsBase: 0n,
+          currentLiquidationThreshold: 0n,
+          ltv: 0n,
           healthFactor: 0n,
         });
 
@@ -578,13 +582,13 @@ const Lend = () => {
     if (!asset) return 0n;
 
     // 如果没有连接钱包或没有用户数据，返回合约可用流动性
-    if (!isConnected || !userData?.availableBorrowsUSD) {
+    if (!isConnected || !userData) {
       return getAvailableLiquidity(asset);
     }
 
-    // availableBorrowsUSD 是以18位小数存储的USD值
+    // ✅ 基于 availableBorrowsBase 计算 - 这是以18位小数存储的USD值
     const availableBorrowsInUSD = Number(
-      formatUnits(userData.availableBorrowsUSD, 18)
+      formatUnits(userData.availableBorrowsBase || 0n, 18)
     );
 
     // 防止科学记数法和处理极小值
@@ -603,7 +607,7 @@ const Lend = () => {
         return 0n;
       }
 
-      // 根据USD额度和代币价格计算可借款的代币数量
+      // 基于 availableBorrowsBase (USD格式) 和代币价格计算可借款的代币数量
       const maxTokensByCredit = availableBorrowsInUSD / tokenPrice;
 
       // 确保不超过小数精度
@@ -613,6 +617,7 @@ const Lend = () => {
       // 添加调试信息（可以在开发时启用）
       if (process.env.NODE_ENV === "development") {
         console.log(`${asset.symbol} Max Borrow Calculation:`);
+        console.log("✅ Using availableBorrowsBase from getUserAccountData");
         console.log("Available Borrows USD:", availableBorrowsInUSD);
         console.log("Token Price:", tokenPrice);
         console.log(
@@ -656,7 +661,7 @@ const Lend = () => {
     }
 
     // 如果用户没有借款，返回 min(用户供应余额, 合约可用流动性)
-    if (!userData.totalDebtValueUSD || userData.totalDebtValueUSD === 0n) {
+    if (!userData.totalDebtBase || userData.totalDebtBase === 0n) {
       return userSupplied < availableLiquidity ? userSupplied : availableLiquidity;
     }
 
@@ -674,10 +679,10 @@ const Lend = () => {
       // 获取当前的USD值
       const currentHealthFactor = Number(formatEther(userData.healthFactor));
       const totalCollateralUSD = Number(
-        formatUnits(userData.totalCollateralValueUSD, 18)
+        formatUnits(userData.totalCollateralBase, 18)
       );
       const totalDebtUSD = Number(
-        formatUnits(userData.totalDebtValueUSD, 18)
+        formatUnits(userData.totalDebtBase, 18)
       );
 
       // 如果健康因子已经很高，返回 min(用户供应余额, 合约可用流动性)
@@ -1054,8 +1059,8 @@ const Lend = () => {
                     <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
                       $
                       {formatNumber(
-                        userData.totalCollateralValueUSD -
-                          userData.totalDebtValueUSD,
+                        userData.totalCollateralBase -
+                          userData.totalDebtBase,
                         18,
                         2
                       )}
@@ -1381,18 +1386,17 @@ const Lend = () => {
 
                   <div className="space-y-3">
                     {/* Desktop Table Header - Only visible on desktop */}
-                    <div className="hidden sm:grid grid-cols-5 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
                       <div>Asset</div>
                       <div className="text-right">Available</div>
                       <div className="text-right">APY, variable</div>
-                      <div></div>
                       <div></div>
                     </div>
 
                     {assetsList.map((asset) => (
                       <div
                         key={`borrow-${asset.address}`}
-                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-5 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
+                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none"
                       >
                         {/* Mobile Card Layout */}
                         <div className="sm:hidden space-y-4">
@@ -1482,11 +1486,7 @@ const Lend = () => {
                               Borrow
                             </button>
                           </div>
-                          <div className="text-right">
-                            <button className="text-gray-500 hover:text-gray-700 text-sm font-medium hidden lg:block">
-                              Details
-                            </button>
-                          </div>
+
                         </div>
                       </div>
                     ))}
@@ -1798,7 +1798,7 @@ const Lend = () => {
                               }
                               
                               // 如果有债务且健康因子限制
-                              if (userData?.totalDebtValueUSD && userData.totalDebtValueUSD > 0n) {
+                              if (userData?.totalDebtBase && userData.totalDebtBase > 0n) {
                                 return "Amount would make health factor too low";
                               }
                               
