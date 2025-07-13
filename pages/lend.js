@@ -1363,23 +1363,25 @@ const Lend = () => {
                     </h2>
                   </div>
 
-                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="text-xs sm:text-sm text-blue-700">
-                      To borrow you need to supply any asset to be used as
-                      collateral.
-                    </span>
-                  </div>
+                  {/* Show info banner only when user has no supplied assets */}
+                  {!assetsList.some((asset) => asset.userSupplied > 0n) && (
+                    <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+                      <svg
+                        className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span className="text-xs text-blue-700">
+                        To borrow you need to supply any asset to be used as collateral.
+                      </span>
+                    </div>
+                  )}
 
                   <div className="space-y-3">
                     {/* Desktop Table Header - Only visible on desktop */}
