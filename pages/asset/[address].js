@@ -380,72 +380,7 @@ const AssetDetail = () => {
             </div>
           </div>
 
-          {/* User Position (if connected) */}
-          {isConnected && userData && (
-            <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Your Position</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">Wallet Balance</div>
-                  <div className="text-xl font-bold text-gray-900">
-                    {formatNumber(userData.balance, assetData.decimals)} {assetData.symbol}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    ${formatUSDValue(userData.balance, assetData.price, assetData.decimals)}
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">Supplied</div>
-                  <div className="text-xl font-bold text-green-600">
-                    {formatNumber(userData.userSupplied, assetData.decimals)} {assetData.symbol}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    ${formatUSDValue(userData.userSupplied, assetData.price, assetData.decimals)}
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">Borrowed</div>
-                  <div className="text-xl font-bold text-red-600">
-                    {formatNumber(userData.userBorrowed, assetData.decimals)} {assetData.symbol}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    ${formatUSDValue(userData.userBorrowed, assetData.price, assetData.decimals)}
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-sm text-gray-600 mb-2">Available to Borrow</div>
-                  <div className="text-xl font-bold text-purple-600">
-                    ${formatNumber(userData.availableBorrowsBase, 18, 2)}
-                  </div>
-                  <div className="text-sm text-gray-500">USD Value</div>
-                </div>
-              </div>
-            </div>
-          )}
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/lend" className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
-              Supply {assetData.symbol}
-            </Link>
-            <Link href="/lend" className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
-              Borrow {assetData.symbol}
-            </Link>
-            {isConnected && userData && userData.userSupplied > 0n && (
-              <Link href="/lend" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
-                Withdraw {assetData.symbol}
-              </Link>
-            )}
-            {isConnected && userData && userData.userBorrowed > 0n && (
-              <Link href="/lend" className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
-                Repay {assetData.symbol}
-              </Link>
-            )}
-          </div>
         </div>
       </div>
     </>
