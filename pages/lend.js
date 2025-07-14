@@ -1308,10 +1308,10 @@ const Lend = () => {
                       Your borrows
                     </h2>
                   </div>
-                  {assetsList.some((asset) => asset.userBorrowed > 0n) ? (
+                  {assetsList.some((asset) => asset.userBorrowed > 0n && Number(formatUnits(asset.userBorrowed, asset.decimals)) >= 0.0001) ? (
                     <div className="space-y-3">
                       {assetsList
-                        .filter((asset) => asset.userBorrowed > 0n)
+                        .filter((asset) => asset.userBorrowed > 0n && Number(formatUnits(asset.userBorrowed, asset.decimals)) >= 0.0001)
                         .map((asset) => (
                           <div
                             key={`user-borrow-${asset.address}`}
