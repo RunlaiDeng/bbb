@@ -350,6 +350,27 @@ const MobileNav = () => {
           <span className="text-xs mt-1 font-medium">USDB</span>
         </Link>
 
+        <Link
+          href="/ido"
+          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
+            router.pathname === "/ido" 
+              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+          }`}
+        >
+          <div className={`p-2 rounded-xl transition-colors ${
+            router.pathname === "/ido" ? "bg-green-100" : "bg-transparent"
+          }`}>
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path
+                d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <span className="text-xs mt-1 font-medium">IDO</span>
+        </Link>
+
         <button
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] relative ${
