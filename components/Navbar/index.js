@@ -148,24 +148,6 @@ const Navbar = () => {
                     Markets
                   </Link>
                   <Link
-                    href={"/stake"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    Stake
-                  </Link>
-                  <Link
-                    href={"/usdb"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    USDB
-                  </Link>
-                  <Link
-                    href={"/lend"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    Lend
-                  </Link>
-                  <Link
                     href={"/ido"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
@@ -186,19 +168,42 @@ const Navbar = () => {
                     >
                       <li className="rounded-lg">
                         <Link
+                          href={"/stake"}
+                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                        >
+                          Stake
+                        </Link>
+                      </li>
+                      <li className="rounded-lg">
+                        <Link
+                          href={"/usdb"}
+                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                        >
+                          USDB
+                        </Link>
+                      </li>
+                      <li className="rounded-lg">
+                        <Link
+                          href={"/lend"}
+                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                        >
+                          Lend
+                        </Link>
+                      </li>
+                      <li className="rounded-lg">
+                        <Link
                           href={"/merch"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                         >
                           Merch
                         </Link>
                       </li>
-
                       <li className="rounded-lg">
                         <Link
                           href={"/bbbstake"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                         >
-                          BBB Stake
+                          mBBB
                         </Link>
                       </li>
                       <li className="rounded-lg">
@@ -828,29 +833,6 @@ const Navbar = () => {
                         <div
                           className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                           onClick={(e) => {
-                            router.push("/usdb");
-                            setData({ ...data, menuItemsOpen: false });
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            p-id="5273"
-                            width="20"
-                            height="20"
-                          >
-                            <path
-                              d="M864 96H160c-52.8 0-96 43.2-96 96v640c0 52.8 43.2 96 96 96h704c52.8 0 96-43.2 96-96V192c0-52.8-43.2-96-96-96z m-416 64h128v64H448v-64z m-192 0h128v64H256v-64z m640 672c0 17.6-14.4 32-32 32H160c-17.6 0-32-14.4-32-32V384h768v448z m0-512H128v-32c0-17.6 14.4-32 32-32h32v64h64v-64h128v64h64v-64h128v64h64v-64h32c17.6 0 32 14.4 32 32v32z"
-                              fill="#515151"
-                              p-id="5274"
-                            ></path>
-                          </svg>
-                          <div>USDB</div>
-                        </div>
-                        <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                          onClick={(e) => {
                             router.push("/ido");
                             setData({ ...data, menuItemsOpen: false });
                           }}
@@ -894,21 +876,39 @@ const Navbar = () => {
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {
-                                router.push("/Stake");
+                                router.push("/stake");
                                 setData({ ...data, menuItemsOpen: false });
                               }}
                             >
                               <div>Stake</div>
                             </div>
+                            <div
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                              onClick={(e) => {
+                                router.push("/usdb");
+                                setData({ ...data, menuItemsOpen: false });
+                              }}
+                            >
+                              <div>USDB</div>
+                            </div>
+                            <div
+                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                              onClick={(e) => {
+                                router.push("/lend");
+                                setData({ ...data, menuItemsOpen: false });
+                              }}
+                            >
+                              <div>Lend</div>
+                            </div>
 
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {
-                                router.push("/stake");
+                                router.push("/bbbstake");
                                 setData({ ...data, menuItemsOpen: false });
                               }}
                             >
-                              <div>BBB Stake</div>
+                              <div>mBBB</div>
                             </div>
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
@@ -937,15 +937,6 @@ const Navbar = () => {
                               }}
                             >
                               <div>Airdrop Hub</div>
-                            </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/usdb");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>USDB</div>
                             </div>
                           </div>
                         </div>

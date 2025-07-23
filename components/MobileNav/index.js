@@ -26,6 +26,97 @@ const MobileNav = () => {
       >
         <div className="grid grid-cols-2 gap-4 p-6">
           <Link
+            href="/stake"
+            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+              router.pathname === "/stake" 
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
+                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+            }`}
+          >
+            <div className={`p-2 rounded-xl ${
+              router.pathname === "/stake" ? "bg-green-100" : "bg-gray-100"
+            }`}>
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M3 3H21V21H3V3Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M3 9H21"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M9 21V9"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            <span className="ml-3 font-medium">Stake</span>
+          </Link>
+
+          <Link
+            href="/usdb"
+            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+              router.pathname === "/usdb" 
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
+                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+            }`}
+          >
+            <div className={`p-2 rounded-xl overflow-hidden ${
+              router.pathname === "/usdb" ? "bg-green-100" : "bg-gray-100"
+            }`}>
+              <Image
+                src="/usdb.png"
+                alt="USDB"
+                width={20}
+                height={20}
+                className="rounded-lg object-cover"
+              />
+            </div>
+            <span className="ml-3 font-medium">USDB</span>
+          </Link>
+
+          <Link
+            href="/lend"
+            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+              router.pathname === "/lend" 
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
+                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+            }`}
+          >
+            <div className={`p-2 rounded-xl ${
+              router.pathname === "/lend" ? "bg-green-100" : "bg-gray-100"
+            }`}>
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path
+                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 10V14M10 12H14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <span className="ml-3 font-medium">Lend</span>
+          </Link>
+
+          <Link
             href="/merch"
             className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
               router.pathname === "/merch" 
@@ -92,7 +183,7 @@ const MobileNav = () => {
                 />
               </svg>
             </div>
-            <span className="ml-3 font-medium">BBB Stake</span>
+            <span className="ml-3 font-medium">mBBB</span>
           </Link>
 
           <Link
@@ -329,28 +420,6 @@ const MobileNav = () => {
         </Link>
 
         <Link
-          href="/usdb"
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
-            router.pathname === "/usdb" 
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
-          }`}
-        >
-          <div className={`p-2 rounded-xl transition-colors overflow-hidden ${
-            router.pathname === "/usdb" ? "bg-green-100" : "bg-transparent"
-          }`}>
-            <Image
-              src="/usdb.png"
-              alt="USDB"
-              width={22}
-              height={22}
-              className="rounded-lg object-cover"
-            />
-          </div>
-          <span className="text-xs mt-1 font-medium">USDB</span>
-        </Link>
-
-        <Link
           href="/ido"
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
             router.pathname === "/ido" 
@@ -374,23 +443,27 @@ const MobileNav = () => {
         <button
           onClick={() => setIsEarnOpen(!isEarnOpen)}
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] relative ${
+            router.pathname === "/stake" ||
+            router.pathname === "/usdb" ||
+            router.pathname === "/lend" ||
             router.pathname === "/farm" ||
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
-            router.pathname === "/bbbstake" ||
-            router.pathname === "/lend"
+            router.pathname === "/bbbstake"
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
         >
           <div className={`p-2 rounded-xl transition-colors ${
+            router.pathname === "/stake" ||
+            router.pathname === "/usdb" ||
+            router.pathname === "/lend" ||
             router.pathname === "/farm" ||
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
-            router.pathname === "/bbbstake" ||
-            router.pathname === "/lend" ? "bg-green-100" : "bg-transparent"
+            router.pathname === "/bbbstake" ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg
               viewBox="0 0 1024 1024"
