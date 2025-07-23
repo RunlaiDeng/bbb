@@ -123,7 +123,7 @@ export const contracts = {
       abi: LpStakeABI,
     },
     idoContract: {
-      address: "0xac9aC25ebc5A99d205263dc1C4fcf4Cfb7e2aBc6",
+      address: "0x528001976DB208844CC5998cE7Bb7e635819D9f7",
       abi: IDOABI,
     },
     psXDC: {

@@ -67,21 +67,15 @@ const IdoDetail = () => {
           projectToken: campaignData[0],
           tokenName: campaignData[1],
           tokenSymbol: campaignData[2],
-          tokenPrice: campaignData[3],
-          totalTokensForSale: campaignData[4],
-          totalTokensSold: campaignData[5],
-          saleStartTime: Number(campaignData[6]),
-          saleEndTime: Number(campaignData[7]),
-          isActive: campaignData[8],
-          liquidityAdded: campaignData[9],
-          liquidityPair: campaignData[10],
-          ethCollected: campaignData[11],
+          tokenImage: campaignData[3],
+          creator: campaignData[4],
+          saleStartTime: Number(campaignData[5]),
+          saleEndTime: Number(campaignData[6]),
+          liquidityAdded: campaignData[7],
+          liquidityPair: campaignData[8],
+          ethCollected: campaignData[9],
           userPurchase,
           claimable,
-          progress:
-            campaignData[4] > 0n
-              ? Number((campaignData[5] * 10000n) / campaignData[4]) / 100
-              : 0,
         });
       } catch (error) {
         console.error("Error fetching campaign:", error);
@@ -94,18 +88,13 @@ const IdoDetail = () => {
   }, [id, address, publicClient, idoContract, refreshTrigger]);
 
   // Calculate time remaining
-  const getTimeStatus = (startTime, endTime, isActive, liquidityAdded) => {
+  const getTimeStatus = (startTime, endTime, liquidityAdded) => {
     // Get current time in seconds since epoch to match contract timestamps
     const now = Math.floor(Date.now() / 1000);
 
     // If liquidity is added, the sale is considered ended regardless of time
     if (liquidityAdded) {
       return { status: "ended", timeRemaining: "0" };
-    }
-
-    // If campaign is not active, it cannot be live
-    if (!isActive) {
-      return { status: "inactive", timeRemaining: "0" };
     }
 
     if (now < startTime) {
@@ -174,6 +163,15 @@ const IdoDetail = () => {
     };
   };
 
+  // Handle finalize sale - only creator can finalize
+  const handleFinalizeSale = () => {
+    return {
+      ...idoContract,
+      functionName: "finalizeSale",
+      args: [Number(id)],
+    };
+  };
+
   const handleSuccess = () => {
     setPurchaseInput("");
     setRefreshTrigger((prev) => prev + 1);
@@ -208,12 +206,14 @@ const IdoDetail = () => {
   const timeStatus = getTimeStatus(
     campaign.saleStartTime,
     campaign.saleEndTime,
-    campaign.isActive,
     campaign.liquidityAdded
   );
 
-  // Default image if no custom image is available
-  const campaignImage = idos?.[campaign.id]?.image || "/logo.png";
+  // Use tokenImage from contract, fallback to config or default
+  const campaignImage = campaign.tokenImage || idos?.[campaign.id]?.image || "/logo.png";
+  
+  // Check if current user is the creator
+  const isCreator = address && address.toLowerCase() === campaign.creator.toLowerCase();
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -244,13 +244,12 @@ const IdoDetail = () => {
         {/* Left Column - Token Info */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-            <div className="w-full aspect-square bg-gradient-to-r from-green-100 to-emerald-100 flex items-center justify-center p-8">
+            <div className="w-full aspect-square bg-gradient-to-r from-green-100 to-emerald-100 relative overflow-hidden">
               <Image
                 src={campaignImage}
                 alt={campaign.tokenName}
-                height={200}
-                width={200}
-                className="max-w-full max-h-full object-contain"
+                fill
+                className="object-cover"
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = "/logo.png";
@@ -270,9 +269,7 @@ const IdoDetail = () => {
                       ? "bg-green-100 text-green-800"
                       : timeStatus.status === "upcoming"
                       ? "bg-yellow-100 text-yellow-800"
-                      : timeStatus.status === "ended"
-                      ? "bg-gray-100 text-gray-800"
-                      : "bg-red-100 text-red-800"
+                      : "bg-gray-100 text-gray-800"
                   }`}
                 >
                   <span
@@ -281,53 +278,40 @@ const IdoDetail = () => {
                         ? "bg-green-500 animate-pulse"
                         : timeStatus.status === "upcoming"
                         ? "bg-yellow-500"
-                        : timeStatus.status === "ended"
-                        ? "bg-gray-500"
-                        : "bg-red-500"
+                        : "bg-gray-500"
                     }`}
                   ></span>
                   <span className="capitalize">{timeStatus.status}</span>
                 </span>
               </div>
 
-              {getIdoInfo(campaign.id).description && (
-                <div className="mb-4">
-                  <p className="text-sm text-gray-500 mb-1">Description</p>
-                  <p className="text-gray-700">
-                    {getIdoInfo(campaign.id).description}
+              {/* Creator Info */}
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-500 mb-1">Created by</p>
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-gray-800">
+                    {campaign.creator.slice(0, 6)}...{campaign.creator.slice(-4)}
                   </p>
+                  {isCreator && (
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                      You
+                    </span>
+                  )}
                 </div>
-              )}
+                <a
+                  href={`https://xdcscan.com/address/${campaign.creator}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-green-600 hover:text-green-700"
+                >
+                  View on XDCScan
+                </a>
+              </div>
 
-              {getIdoInfo(campaign.id).website && (
-                <div className="mb-4">
-                  <p className="text-sm text-gray-500 mb-1">Website</p>
-                  <a
-                    href={getIdoInfo(campaign.id).website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-700 hover:underline"
-                  >
-                    {getIdoInfo(campaign.id).website}
-                  </a>
-                </div>
-              )}
+
 
               <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Token Price</p>
-                  <p className="font-medium">
-                    {formatEther(campaign.tokenPrice)} XDC
-                  </p>
-                </div>
 
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Sale Period</p>
-                  <p className="font-medium">
-                    {formatDate(campaign.saleStartTime)} -{" "}
-                    {formatDate(campaign.saleEndTime)}
-                  </p>
-                </div>
 
                 {timeStatus.status === "live" && (
                   <div>
@@ -347,6 +331,8 @@ const IdoDetail = () => {
                   </div>
                 )}
 
+
+
                 {campaign.liquidityAdded && campaign.liquidityPair && (
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Liquidity Pair</p>
@@ -357,7 +343,23 @@ const IdoDetail = () => {
                         rel="noopener noreferrer"
                         className="text-green-600 hover:text-green-700"
                       >
-                        {campaign.liquidityPair}
+                        {campaign.liquidityPair.slice(0, 10)}...{campaign.liquidityPair.slice(-8)}
+                      </a>
+                    </p>
+                  </div>
+                )}
+
+                {campaign.projectToken && campaign.projectToken !== "0x0000000000000000000000000000000000000000" && (
+                  <div>
+                    <p className="text-sm text-gray-500 mb-1">Token Contract</p>
+                    <p className="font-medium break-all">
+                      <a
+                        href={`https://xdcscan.com/address/${campaign.projectToken}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-green-600 hover:text-green-700"
+                      >
+                        {campaign.projectToken.slice(0, 10)}...{campaign.projectToken.slice(-8)}
                       </a>
                     </p>
                   </div>
@@ -371,54 +373,13 @@ const IdoDetail = () => {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mb-8">
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-6">Sale Progress</h2>
-
-              <div className="mb-6">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-600">Progress</span>
-                  <span className="font-medium">
-                    {campaign.progress.toFixed(2)}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div
-                    className="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full"
-                    style={{ width: `${Math.min(campaign.progress, 100)}%` }}
-                    title={`${formatEther(
-                      campaign.totalTokensSold
-                    )} / ${formatEther(campaign.totalTokensForSale)} ${
-                      campaign.tokenSymbol
-                    }`}
-                  ></div>
-                </div>
-                <div className="flex justify-between mt-2 text-sm text-gray-600">
-                  <span>
-                    {formatEther(campaign.totalTokensSold)}{" "}
-                    {campaign.tokenSymbol}
-                  </span>
-                  <span>
-                    {formatEther(campaign.totalTokensForSale)}{" "}
-                    {campaign.tokenSymbol}
-                  </span>
-                </div>
-              </div>
+              <h2 className="text-2xl font-bold mb-6">Campaign Information</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">
-                    Total Tokens for Sale
-                  </p>
-                  <p className="text-xl font-bold">
-                    {formatEther(campaign.totalTokensForSale)}{" "}
-                    {campaign.tokenSymbol}
-                  </p>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">Tokens Sold</p>
-                  <p className="text-xl font-bold">
-                    {formatEther(campaign.totalTokensSold)}{" "}
-                    {campaign.tokenSymbol}
+                  <p className="text-sm text-gray-500 mb-2">Campaign Status</p>
+                  <p className="text-xl font-bold capitalize">
+                    {timeStatus.status}
                   </p>
                 </div>
 
@@ -430,12 +391,64 @@ const IdoDetail = () => {
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">Token Price</p>
-                  <p className="text-xl font-bold">
-                    {formatEther(campaign.tokenPrice)} XDC
+                  <p className="text-sm text-gray-500 mb-2">Start Time</p>
+                  <p className="text-lg font-bold">
+                    {formatDate(campaign.saleStartTime)}
+                  </p>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-sm text-gray-500 mb-2">End Time</p>
+                  <p className="text-lg font-bold">
+                    {formatDate(campaign.saleEndTime)}
                   </p>
                 </div>
               </div>
+
+              {/* Creator Actions */}
+              {isCreator && timeStatus.status === "ended" && !campaign.liquidityAdded && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <h3 className="text-lg font-bold mb-2 text-blue-800">Creator Actions</h3>
+                  <p className="text-sm text-blue-700 mb-4">
+                    Your IDO campaign has ended. You can now finalize the sale to add liquidity and allow token claiming.
+                  </p>
+                  <div className="bg-white border border-blue-300 rounded-lg p-3 mb-4">
+                    <h4 className="text-sm font-semibold text-blue-800 mb-2">Fund Distribution:</h4>
+                    <ul className="text-xs text-blue-700 space-y-1">
+                      <li>• 2% will go to the platform</li>
+                      <li>• 8% will go to the IDO creator</li>
+                      <li>• 90% will be sent to XSwap to create LP tokens and lock them in the IDO contract</li>
+                    </ul>
+                  </div>
+                  <WriteButton
+                    data={handleFinalizeSale()}
+                    buttonName="Finalize Sale & Add Liquidity"
+                    className="btn btn-success"
+                    callback={handleSuccess}
+                  />
+                </div>
+              )}
+
+              {campaign.liquidityAdded && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                  <h3 className="text-lg font-bold mb-2 text-green-800">✅ Sale Finalized</h3>
+                  <p className="text-sm text-green-700">
+                    This IDO has been successfully finalized. Liquidity has been added and tokens are available for claiming.
+                  </p>
+                  {campaign.liquidityPair && (
+                    <div className="mt-3">
+                      <Link
+                        href={`https://app.xspswap.finance/#/swap?outputCurrency=${campaign.projectToken}&inputCurrency=XDC`}
+                        className="btn btn-sm btn-outline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Trade on DEX
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -448,39 +461,21 @@ const IdoDetail = () => {
                 {campaign.userPurchase > 0n ? (
                   <div className="mb-6 bg-green-50 border border-green-100 rounded-lg p-5">
                     <div className="flex justify-between items-center mb-4">
-                      <p className="text-sm text-gray-700">Your purchase:</p>
-                      <p
-                        className="font-medium text-right"
-                        title={`${formatEther(
-                          (campaign.userPurchase * campaign.tokenPrice) /
-                            10n ** 18n
-                        )} XDC`}
-                      >
-                        {parseFloat(
-                          formatEther(
-                            (campaign.userPurchase * campaign.tokenPrice) /
-                              10n ** 18n
-                          )
-                        ).toFixed(4)}{" "}
-                        XDC
+                      <p className="text-sm text-gray-700">Your contribution:</p>
+                      <p className="font-medium text-right">
+                        {(Number(campaign.userPurchase) / 1e24).toLocaleString('en-US', { maximumFractionDigits: 6 })} XDC
                       </p>
                     </div>
 
                     {campaign.claimable > 0n ? (
                       <div>
                         <div className="flex justify-between items-center mb-4">
-                          <p className="text-sm text-gray-700">Claimable:</p>
-                          <p
-                            className="font-medium text-right"
-                            title={`${formatEther(campaign.claimable)} ${
-                              campaign.tokenSymbol
-                            }`}
-                          >
-                            {formatEther(campaign.claimable)}{" "}
-                            {campaign.tokenSymbol}
+                          <p className="text-sm text-gray-700">Claimable tokens:</p>
+                          <p className="font-medium text-right">
+                            {Number(formatEther(campaign.claimable)).toLocaleString('en-US', { maximumFractionDigits: 6 })} {campaign.tokenSymbol}
                           </p>
                         </div>
-                        {timeStatus.status === "ended" && (
+                        {campaign.liquidityAdded && (
                           <WriteButton
                             data={handleClaim()}
                             buttonName="Claim Tokens"
@@ -488,29 +483,25 @@ const IdoDetail = () => {
                             callback={handleSuccess}
                           />
                         )}
+                        {!campaign.liquidityAdded && (
+                          <p className="text-center text-sm text-gray-600">
+                            Tokens will be claimable once the creator finalizes the sale.
+                          </p>
+                        )}
                       </div>
                     ) : campaign.liquidityAdded ? (
                       <div>
-                        <div className="flex justify-between items-center mb-4">
-                          <p className="text-sm text-gray-700">Claimed:</p>
-                          <p
-                            className="font-medium text-right"
-                            title={`${formatEther(campaign.userPurchase)} ${
-                              campaign.tokenSymbol
-                            }`}
-                          >
-                            {formatEther(campaign.userPurchase)}{" "}
-                            {campaign.tokenSymbol}
-                          </p>
-                        </div>
-                        <button
+                        <p className="text-center text-green-700 mb-4">
+                          ✅ Tokens have been claimed successfully!
+                        </p>
+                        <Link
+                          href={`https://app.xspswap.finance/#/swap?outputCurrency=${campaign.projectToken}&inputCurrency=XDC`}
                           className="btn btn-success w-full"
-                          onClick={() =>
-                            (window.location.href = `/swap/${campaign.projectToken}?inputPoolAddress=${campaign.liquidityPair}`)
-                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          Go Swap
-                        </button>
+                          Trade Your Tokens
+                        </Link>
                       </div>
                     ) : (
                       <p className="text-center text-gray-600">
@@ -536,17 +527,14 @@ const IdoDetail = () => {
                         onChange={(e) => setPurchaseInput(e.target.value)}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                         placeholder="Enter XDC amount"
+                        step="0.01"
+                        min="0"
                       />
 
                       {purchaseInput && (
                         <div className="text-sm mt-2 text-gray-600">
                           <p>
-                            ≈{" "}
-                            {(
-                              parseFloat(purchaseInput) /
-                              parseFloat(formatEther(campaign.tokenPrice))
-                            ).toFixed(6)}{" "}
-                            {campaign.tokenSymbol}
+                            Contributing {purchaseInput} XDC to this IDO
                           </p>
                         </div>
                       )}
@@ -554,7 +542,7 @@ const IdoDetail = () => {
 
                     <WriteButton
                       data={handleBuy()}
-                      buttonName="Buy Tokens"
+                      buttonName="Contribute to IDO"
                       className="btn btn-success w-full py-3 text-lg"
                       disabled={
                         !purchaseInput || parseFloat(purchaseInput) <= 0
@@ -573,19 +561,27 @@ const IdoDetail = () => {
                   </div>
                 )}
 
-                {timeStatus.status === "ended" && !campaign.userPurchase && (
+                {timeStatus.status === "ended" && !campaign.userPurchase && !campaign.liquidityAdded && (
                   <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-center">
                     <p className="text-gray-700">
-                      This sale has ended. You did not participate in this IDO.
+                      This sale has ended and is awaiting finalization by the creator.
                     </p>
                   </div>
                 )}
 
-                {timeStatus.status === "inactive" && (
-                  <div className="bg-red-50 border border-red-100 rounded-lg p-4 text-center">
-                    <p className="text-red-700">
-                      This sale is currently inactive.
+                {timeStatus.status === "ended" && !campaign.userPurchase && campaign.liquidityAdded && (
+                  <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-center">
+                    <p className="text-gray-700">
+                      This sale has ended. You did not participate in this IDO.
                     </p>
+                    <Link
+                      href={`https://app.xspswap.finance/#/swap?outputCurrency=${campaign.projectToken}&inputCurrency=XDC`}
+                      className="btn btn-outline mt-3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Trade on DEX
+                    </Link>
                   </div>
                 )}
               </div>
