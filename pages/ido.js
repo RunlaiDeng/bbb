@@ -58,7 +58,7 @@ const Ido = () => {
       },
     ],
     query: {
-      enabled: Boolean(idoContract && isConnected),
+      enabled: Boolean(idoContract),
       refetchInterval: 10000,
     },
   });
@@ -74,7 +74,7 @@ const Ido = () => {
     if (contractData && contractData[0]?.result !== undefined) {
       setCampaignCount(Number(contractData[0].result));
     }
-  }, [contractData, address]);
+  }, [contractData]);
 
   // Load campaigns when count changes
   useEffect(() => {
