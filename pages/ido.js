@@ -568,157 +568,320 @@ const Ido = () => {
           )}
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Token
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Creator
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Start Time
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    End Time
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                    Raised
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {campaigns.map((campaign) => {
-                  const timeStatus = getTimeStatus(
-                    campaign.saleStartTime,
-                    campaign.saleEndTime,
-                    campaign.liquidityAdded
-                  );
+        <>
+          {/* Desktop Table View */}
+          <div className="hidden lg:block bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Token
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Creator
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Start Time
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      End Time
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Raised
+                    </th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {campaigns.map((campaign) => {
+                    const timeStatus = getTimeStatus(
+                      campaign.saleStartTime,
+                      campaign.saleEndTime,
+                      campaign.liquidityAdded
+                    );
 
-                  // Use tokenImage from contract, fallback to config or default
-                  const campaignImage =
-                    campaign.tokenImage ||
-                    idos?.[campaign.id]?.image ||
-                    "/logo.png";
+                    // Use tokenImage from contract, fallback to config or default
+                    const campaignImage =
+                      campaign.tokenImage ||
+                      idos?.[campaign.id]?.image ||
+                      "/logo.png";
 
-                  return (
-                    <tr
-                      key={campaign.id}
-                      className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => navigateToCampaignDetail(campaign.id)}
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 mr-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-                            <Image
-                              src={campaignImage}
-                              alt={campaign.tokenName}
-                              height={40}
-                              width={40}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = "/logo.png";
-                              }}
-                            />
-                          </div>
-                          <div>
-                            <div className="font-semibold text-gray-900">
-                              {campaign.tokenName}
+                    return (
+                      <tr
+                        key={campaign.id}
+                        className="hover:bg-gray-50 cursor-pointer"
+                        onClick={() => navigateToCampaignDetail(campaign.id)}
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 mr-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                              <Image
+                                src={campaignImage}
+                                alt={campaign.tokenName}
+                                height={40}
+                                width={40}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = "/logo.png";
+                                }}
+                              />
                             </div>
-                            <div className="text-sm text-gray-500">
-                              {campaign.tokenSymbol}
+                            <div>
+                              <div className="font-semibold text-gray-900">
+                                {campaign.tokenName}
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {campaign.tokenSymbol}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            timeStatus.status === "live"
-                              ? "bg-green-100 text-green-800"
-                              : timeStatus.status === "upcoming"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
+                        </td>
+                        <td className="px-6 py-4">
                           <span
-                            className={`inline-block w-1.5 h-1.5 rounded-full mr-1 ${
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               timeStatus.status === "live"
-                                ? "bg-green-500 animate-pulse"
+                                ? "bg-green-100 text-green-800"
                                 : timeStatus.status === "upcoming"
-                                ? "bg-yellow-500"
-                                : "bg-gray-500"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
-                          ></span>
-                          <span className="capitalize">
-                            {timeStatus.status}
+                          >
+                            <span
+                              className={`inline-block w-1.5 h-1.5 rounded-full mr-1 ${
+                                timeStatus.status === "live"
+                                  ? "bg-green-500 animate-pulse"
+                                  : timeStatus.status === "upcoming"
+                                  ? "bg-yellow-500"
+                                  : "bg-gray-500"
+                              }`}
+                            ></span>
+                            <span className="capitalize">
+                              {timeStatus.status}
+                            </span>
                           </span>
-                        </span>
-                        {timeStatus.status === "live" && (
-                          <div className="text-xs text-green-600 mt-1">
-                            {timeStatus.timeRemaining} left
-                          </div>
-                        )}
-                        {timeStatus.status === "upcoming" && (
-                          <div className="text-xs text-yellow-600 mt-1">
-                            Starts in {timeStatus.timeRemaining}
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {campaign.creator.slice(0, 6)}...
-                        {campaign.creator.slice(-4)}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(
-                          campaign.saleStartTime * 1000
-                        ).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(
-                          campaign.saleEndTime * 1000
-                        ).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                        {parseFloat(formatEther(campaign.ethCollected)).toFixed(
-                          4
-                        )}{" "}
-                        XDC
-                      </td>
-                      <td
-                        className="px-6 py-4 text-center"
+                          {timeStatus.status === "live" && (
+                            <div className="text-xs text-green-600 mt-1">
+                              {timeStatus.timeRemaining} left
+                            </div>
+                          )}
+                          {timeStatus.status === "upcoming" && (
+                            <div className="text-xs text-yellow-600 mt-1">
+                              Starts in {timeStatus.timeRemaining}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {campaign.creator.slice(0, 6)}...
+                          {campaign.creator.slice(-4)}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {new Date(
+                            campaign.saleStartTime * 1000
+                          ).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {new Date(
+                            campaign.saleEndTime * 1000
+                          ).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                          {parseFloat(formatEther(campaign.ethCollected)).toFixed(
+                            4
+                          )}{" "}
+                          XDC
+                        </td>
+                        <td
+                          className="px-6 py-4 text-center"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {address &&
+                            address.toLowerCase() ===
+                              campaign.creator.toLowerCase() &&
+                            timeStatus.status === "ended" &&
+                            !campaign.liquidityAdded && (
+                              <WriteButton
+                                data={handleFinalizeSale(campaign.id)}
+                                buttonName="Finalize"
+                                className="btn btn-sm btn-success"
+                                callback={handleSuccess}
+                              />
+                            )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="lg:hidden space-y-4">
+            {campaigns.map((campaign) => {
+              const timeStatus = getTimeStatus(
+                campaign.saleStartTime,
+                campaign.saleEndTime,
+                campaign.liquidityAdded
+              );
+
+              // Use tokenImage from contract, fallback to config or default
+              const campaignImage =
+                campaign.tokenImage ||
+                idos?.[campaign.id]?.image ||
+                "/logo.png";
+
+              return (
+                <div
+                  key={campaign.id}
+                  className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 cursor-pointer transform transition-all duration-200 hover:scale-102 hover:shadow-xl active:scale-98"
+                  onClick={() => navigateToCampaignDetail(campaign.id)}
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      <div className="w-12 h-12 mr-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                        <Image
+                          src={campaignImage}
+                          alt={campaign.tokenName}
+                          height={48}
+                          width={48}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/logo.png";
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <div className="font-bold text-lg text-gray-900">
+                          {campaign.tokenName}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {campaign.tokenSymbol}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Status Badge */}
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        timeStatus.status === "live"
+                          ? "bg-green-100 text-green-800"
+                          : timeStatus.status === "upcoming"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block w-2 h-2 rounded-full mr-1.5 ${
+                          timeStatus.status === "live"
+                            ? "bg-green-500 animate-pulse"
+                            : timeStatus.status === "upcoming"
+                            ? "bg-yellow-500"
+                            : "bg-gray-500"
+                        }`}
+                      ></span>
+                      <span className="capitalize">
+                        {timeStatus.status}
+                      </span>
+                    </span>
+                  </div>
+
+                  {/* Time Information */}
+                  {(timeStatus.status === "live" || timeStatus.status === "upcoming") && (
+                    <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm font-medium text-gray-700">
+                        {timeStatus.status === "live" ? "⏰ Time Remaining" : "🕐 Starts In"}
+                      </div>
+                      <div className={`text-lg font-bold ${
+                        timeStatus.status === "live" ? "text-green-600" : "text-yellow-600"
+                      }`}>
+                        {timeStatus.timeRemaining}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Details Grid */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                        Creator
+                      </div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {campaign.creator.slice(0, 6)}...{campaign.creator.slice(-4)}
+                      </div>
+                    </div>
+                    
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                        Raised
+                      </div>
+                      <div className="text-sm font-bold text-green-600">
+                        {parseFloat(formatEther(campaign.ethCollected)).toFixed(4)} XDC
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="border-t border-gray-100 pt-4">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                          Start Date
+                        </div>
+                        <div className="text-gray-700">
+                          {new Date(campaign.saleStartTime * 1000).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                          End Date
+                        </div>
+                        <div className="text-gray-700">
+                          {new Date(campaign.saleEndTime * 1000).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  {address &&
+                    address.toLowerCase() === campaign.creator.toLowerCase() &&
+                    timeStatus.status === "ended" &&
+                    !campaign.liquidityAdded && (
+                      <div 
+                        className="mt-4 pt-4 border-t border-gray-100"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {address &&
-                          address.toLowerCase() ===
-                            campaign.creator.toLowerCase() &&
-                          timeStatus.status === "ended" &&
-                          !campaign.liquidityAdded && (
-                            <WriteButton
-                              data={handleFinalizeSale(campaign.id)}
-                              buttonName="Finalize"
-                              className="btn btn-sm btn-success"
-                              callback={handleSuccess}
-                            />
-                          )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        <WriteButton
+                          data={handleFinalizeSale(campaign.id)}
+                          buttonName="Finalize Sale"
+                          className="btn btn-success w-full"
+                          callback={handleSuccess}
+                        />
+                      </div>
+                    )}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </>
       )}
     </div>
   );
