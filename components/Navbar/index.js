@@ -200,7 +200,7 @@ const Navbar = () => {
                       </li>
                       <li className="rounded-lg">
                         <Link
-                          href={"/bbbstake"}
+                          href={"/mbbb"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                         >
                           mBBB
@@ -904,7 +904,7 @@ const Navbar = () => {
                             <div
                               className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
                               onClick={(e) => {
-                                router.push("/bbbstake");
+                                router.push("/mbbb");
                                 setData({ ...data, menuItemsOpen: false });
                               }}
                             >

@@ -150,15 +150,15 @@ const MobileNav = () => {
           </Link>
 
           <Link
-            href="/bbbstake"
+            href="/mbbb"
             className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/bbbstake" 
+              router.pathname === "/mbbb" 
                 ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
                 : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
             }`}
           >
             <div className={`p-2 rounded-xl ${
-              router.pathname === "/bbbstake" ? "bg-green-100" : "bg-gray-100"
+              router.pathname === "/mbbb" ? "bg-green-100" : "bg-gray-100"
             }`}>
               <svg viewBox="0 0 24 24" width="20" height="20">
                 <path
@@ -450,7 +450,7 @@ const MobileNav = () => {
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
-            router.pathname === "/bbbstake"
+            router.pathname === "/mbbb"
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
@@ -463,7 +463,7 @@ const MobileNav = () => {
             router.pathname === "/bbbubu" ||
             router.pathname === "/airdrophub" ||
             router.pathname === "/merch" ||
-            router.pathname === "/bbbstake" ? "bg-green-100" : "bg-transparent"
+            router.pathname === "/mbbb" ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg
               viewBox="0 0 1024 1024"
