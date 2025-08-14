@@ -4,6 +4,7 @@ import {
   useReadContracts,
   usePublicClient,
   useChainId,
+  useBalance,
 } from "wagmi";
 import { formatEther, parseEther } from "viem";
 import WriteButton from "../../components/WriteButton";
@@ -26,6 +27,12 @@ const IdoDetail = () => {
   const idoContract = contracts?.[chainId]?.idoContract;
   // Get public client for direct contract calls
   const publicClient = usePublicClient();
+
+  // Get user's XDC balance
+  const { data: balance } = useBalance({
+    address: address,
+    chainId: chainId,
+  });
 
   // Fetch campaign data
   useEffect(() => {
@@ -536,6 +543,20 @@ const IdoDetail = () => {
                           <p>
                             Contributing {purchaseInput} XDC to this IDO
                           </p>
+                        </div>
+                      )}
+
+                      {/* User's XDC Balance */}
+                      {balance && (
+                        <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3">
+                          <div className="flex justify-between items-center">
+                            <p className="text-sm text-gray-700">Your XDC Balance:</p>
+                            <p className="font-medium text-blue-800">
+                              {Number(formatEther(balance.value)).toLocaleString('en-US', { 
+                                maximumFractionDigits: 6 
+                              })} XDC
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>
