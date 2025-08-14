@@ -4,10 +4,12 @@ import { useState } from "react";
 export default function Download() {
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const version = "1.0.1";
+
   const handleAndroidDownload = () => {
     setIsDownloading(true);
     const link = document.createElement("a");
-    link.href = "https://benybadboy.b-cdn.net/app/BBBFI.apk";
+    link.href = "https://benybadboy.b-cdn.net/app/BBBFi-v" + version + ".apk";
     link.download = "BBBFI.apk";
     document.body.appendChild(link);
     link.click();
@@ -32,8 +34,10 @@ export default function Download() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-gray-800">Android App</h3>
-                <p className="text-sm text-gray-600">Version 1.0.1</p>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  Android App
+                </h3>
+                <p className="text-sm text-gray-600">Version {version}</p>
               </div>
               <button
                 onClick={handleAndroidDownload}
@@ -66,11 +70,10 @@ export default function Download() {
           </div>
         </div>
 
-
-
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-800">
-            <strong>Note:</strong> You may need to enable &quot;Install from unknown sources&quot; to install the APK file.
+            <strong>Note:</strong> You may need to enable &quot;Install from
+            unknown sources&quot; to install the APK file.
           </p>
         </div>
       </div>

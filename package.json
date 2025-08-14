@@ -15,8 +15,8 @@
     "android:build:aab": "yarn cap:sync && cd android && ./gradlew bundleRelease",
     "android:build:apk": "yarn cap:sync && cd android && ./gradlew assembleRelease",
     "android:build": "yarn android:build:aab && yarn android:build:apk",
-    "release:copy": "mkdir -p release && cp android/app/build/outputs/bundle/release/app-release.aab release/ && cp android/app/build/outputs/apk/release/app-release.apk release/",
-    "release:copy:apk": "mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/BBBFi.apk",
+    "release:copy": "mkdir -p release && VERSION=$(grep versionName android/app/build.gradle | cut -d'\"' -f2) && cp android/app/build/outputs/bundle/release/app-release.aab release/BBBFI-v$VERSION.aab && cp android/app/build/outputs/apk/release/app-release.apk release/BBBFi-v$VERSION.apk",
+    "release:copy:apk": "mkdir -p release && VERSION=$(grep versionName android/app/build.gradle | cut -d'\"' -f2) && cp android/app/build/outputs/apk/release/app-release.apk release/BBBFI-$VERSION.apk",
     "generate:icons": "npx capacitor-assets generate",
     "build:apk": "yarn generate:icons && yarn android:build:apk && yarn release:copy:apk",
     "build:all": "yarn generate:icons && yarn android:build && yarn release:copy"
