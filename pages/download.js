@@ -9,7 +9,7 @@ export default function Download() {
   const handleAndroidDownload = () => {
     setIsDownloading(true);
     const link = document.createElement("a");
-    link.href = "https://benybadboy.b-cdn.net/app/BBBFi-v" + version + ".apk";
+    link.href = "https://benybadboy.b-cdn.net/app/BBBFI-" + version + ".apk";
     link.download = "BBBFI.apk";
     document.body.appendChild(link);
     link.click();
