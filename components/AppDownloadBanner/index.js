@@ -38,7 +38,7 @@ const AppDownloadBanner = () => {
           <div className="flex items-center space-x-3">
             <div className="flex-shrink-0">
               <Image
-                src="/favicon.ico"
+                src="/logosm.png"
                 alt="BBBFI App"
                 width={32}
                 height={32}

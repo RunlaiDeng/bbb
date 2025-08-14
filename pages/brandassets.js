@@ -5,8 +5,8 @@ const BrandAssets = () => {
     {
       name: 'BBB Favicon',
       description: 'Official BBB favicon for browser tab icons',
-      path: '/favicon.ico',
-      fileName: 'favicon.ico',
+      path: '/logosm.png',
+      fileName: 'logosm.png',
     },
     {
       name: 'BBB Pump Card',

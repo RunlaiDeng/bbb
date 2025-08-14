@@ -56,7 +56,7 @@ const FloatingCoins = () => (
     </div>
     <div className="coin coin3">
       <Image
-        src="/favicon.ico"
+        src="/logosm.png"
         alt="Coin"
         width={40}
         height={40}
