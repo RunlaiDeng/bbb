@@ -1,6 +1,6 @@
 {
-  "appId": "fun.bbbpump.app",
-  "appName": "bbbpump",
+  "appId": "com.bbbfi.app",
+  "appName": "BBBFI",
   "webDir": "out",
   "bundledWebRuntime": false,
   "ios": {

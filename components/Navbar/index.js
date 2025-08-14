@@ -239,7 +239,7 @@ const Navbar = () => {
                 {isConnected && (
                   <div className="flex items-center gap-2">
                     <div
-                      className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
+                      className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
                       onClick={() => {
                         router.push({
                           pathname: "/swap",
@@ -717,12 +717,12 @@ const Navbar = () => {
                 )}
                 {!isConnected && (
                   <div
-                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
+                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
                     onClick={async () => {
                       privyLogin();
                     }}
                   >
-                    Log In
+                    Sign Up
                   </div>
                 )}
 
@@ -785,182 +785,245 @@ const Navbar = () => {
                             </svg>
                           </div>
                         </div>
-                        <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                          onClick={(e) => {
-                            window.open(buyXDCLink);
-                            setData({ ...data, menuItemsOpen: false });
-                          }}
-                        >
-                          <Image
-                            src={"/xdc.png"}
-                            height={20}
-                            width={20}
-                            alt=""
-                          />
-                          <div>Buy XDC</div>
-                        </div>
-                        <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                          onClick={(e) => {
-                            router.push(
-                              "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
-                            );
-                            setData({ ...data, menuItemsOpen: false });
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 1080 1024"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            p-id="4273"
-                            width="20"
-                            height="20"
+                        {/* MobileNav More Content */}
+                        <div className="grid grid-cols-2 gap-4 p-4">
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/stake");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
                           >
-                            <path
-                              d="M1038.051556 631.694222l-105.415112-119.978666-105.130666 120.433777h59.448889a364.544 364.544 0 0 1-131.640889 176.753778 357.262222 357.262222 0 0 1-208.327111 67.128889 357.262222 357.262222 0 0 1-208.213334-67.128889 364.544 364.544 0 0 1-131.697777-176.753778H112.924444A456.419556 456.419556 0 0 0 274.204444 873.813333 446.691556 446.691556 0 0 0 547.100444 967.111111a446.691556 446.691556 0 0 0 272.896-93.297778 456.419556 456.419556 0 0 0 161.28-241.664l56.775112-0.455111zM267.662222 391.281778H56.888889l105.187555 120.433778 105.585778-120.433778z m279.893334-244.508445a357.262222 357.262222 0 0 1 207.985777 67.640889 364.544 364.544 0 0 1 131.185778 176.924445h94.549333a456.419556 456.419556 0 0 0-161.336888-241.322667A446.748444 446.748444 0 0 0 547.214222 56.888889a446.691556 446.691556 0 0 0-272.668444 93.127111 456.476444 456.476444 0 0 0-161.393778 241.265778h94.378667A364.600889 364.600889 0 0 1 339.057778 214.129778 357.262222 357.262222 0 0 1 547.555556 146.773333z"
-                              fill="#515151"
-                              p-id="4274"
-                            ></path>
-                            <path
-                              d="M547.612444 671.402667L392.419556 514.048l155.192888-156.956444 155.192889 156.956444-155.192889 157.354667z"
-                              fill="#515151"
-                              p-id="4275"
-                            ></path>
-                          </svg>
-                          <div>Trade</div>
-                        </div>
-                        <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                          onClick={(e) => {
-                            router.push("/ido");
-                            setData({ ...data, menuItemsOpen: false });
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                          >
-                            <path
-                              d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
-                              fill="#515151"
-                            />
-                          </svg>
-                          <div>IDO</div>
-                        </div>
-                        <div
-                          tabIndex={0}
-                          className="collapse collapse-arrow bg-base-200"
-                        >
-                          <input type="checkbox" className="peer" />
-                          <div className="collapse-title text-xl font-medium flex items-center gap-2">
-                            <svg
-                              viewBox="0 0 1024 1024"
-                              version="1.1"
-                              xmlns="http://www.w3.org/2000/svg"
-                              p-id="15539"
-                              width="20"
-                              height="20"
-                            >
-                              <path
-                                d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
-                                p-id="15540"
-                              ></path>
-                            </svg>{" "}
-                            More
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M3 3H21V21H3V3Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M3 9H21"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M9 21V9"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Stake</span>
                           </div>
-                          <div className="collapse-content z-50">
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/stake");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>Stake</div>
-                            </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/usdb");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>USDB</div>
-                            </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/lend");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>Lend</div>
-                            </div>
 
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/mbbb");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>mBBB</div>
-                            </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/farm");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>Farm</div>
-                            </div>
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/bbbubu");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>BBBubu</div>
-                            </div>
-
-                            <div
-                              className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                              onClick={(e) => {
-                                router.push("/airdrophub");
-                                setData({ ...data, menuItemsOpen: false });
-                              }}
-                            >
-                              <div>Airdrop Hub</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div
-                          className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
-                          onClick={() => {
-                            window.open("https://t.me/bbbsking");
-                          }}
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            p-id="1507"
-                            width="20"
-                            height="20"
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/usdb");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
                           >
-                            <path
-                              d="M960 403.2c-38.4-217.6-224-377.6-448-377.6-224 0-409.6 166.4-448 377.6C25.6 435.2 0 492.8 0 550.4c0 76.8 44.8 166.4 115.2 166.4 64 0 64-70.4 64-166.4 0-89.6 0-160-44.8-166.4C172.8 211.2 326.4 83.2 512 83.2c185.6 0 339.2 128 377.6 294.4-44.8 12.8-44.8 76.8-44.8 166.4 0 64 0 108.8 12.8 140.8-57.6 89.6-140.8 153.6-243.2 179.2-19.2-25.6-57.6-44.8-102.4-44.8-64 0-115.2 32-115.2 70.4 0 38.4 51.2 70.4 115.2 70.4s115.2-32 115.2-70.4c0 0 0 0 0 0 102.4-25.6 192-96 249.6-185.6 6.4 6.4 19.2 6.4 32 6.4 70.4 0 115.2-89.6 115.2-166.4C1024 492.8 998.4 435.2 960 403.2z"
-                              p-id="1508"
-                            ></path>
-                          </svg>
-                          <div>24/7 Chat Support</div>
+                            <div className="p-2 rounded-xl overflow-hidden bg-gray-100">
+                              <Image
+                                src="/usdb.png"
+                                alt="USDB"
+                                width={20}
+                                height={20}
+                                className="rounded-lg object-cover"
+                              />
+                            </div>
+                            <span className="ml-3 font-medium">USDB</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/lend");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 10V14M10 12H14"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Lend</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/merch");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Merch</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/mbbb");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">mBBB</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/farm");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M3 6.5C3 4.01472 5.01472 2 7.5 2C9.98528 2 12 4.01472 12 6.5C12 8.98528 9.98528 11 7.5 11C5.01472 11 3 8.98528 3 6.5Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M12 6.5C12 4.01472 14.0147 2 16.5 2C18.9853 2 21 4.01472 21 6.5C21 8.98528 18.9853 11 16.5 11C14.0147 11 12 8.98528 12 6.5Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M3 17.5C3 15.0147 5.01472 13 7.5 13C9.98528 13 12 15.0147 12 17.5C12 19.9853 9.98528 22 7.5 22C5.01472 22 3 19.9853 3 17.5Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                                <path
+                                  d="M12 17.5C12 15.0147 14.0147 13 16.5 13C18.9853 13 21 15.0147 21 17.5C21 19.9853 18.9853 22 16.5 22C14.0147 22 12 19.9853 12 17.5Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Farm</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/bbbubu");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl overflow-hidden bg-gray-100">
+                              <Image
+                                src="/bbb.jpg"
+                                alt="BBBubu"
+                                width={20}
+                                height={20}
+                                className="rounded-lg object-cover"
+                              />
+                            </div>
+                            <span className="ml-3 font-medium">BBBubu</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/airdrophub");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M12 2L8 6H4C3.44772 6 3 6.44772 3 7V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7C21 6.44772 20.5523 6 20 6H16L12 2Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 11V15"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M12 18V22"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <circle cx="12" cy="9" r="1" fill="currentColor" />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Airdrop Hub</span>
+                          </div>
                         </div>
                       </div>
                     </div>

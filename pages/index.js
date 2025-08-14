@@ -66,6 +66,8 @@ const FloatingCoins = () => (
   </div>
 );
 
+
+
 const HomeContent = memo(() => {
   const privyLogin = usePrivyLogin();
   const router = useRouter();
@@ -74,13 +76,13 @@ const HomeContent = memo(() => {
 
   const [price, setPrice] = useState({});
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     setMount(false);
     const xdc = await getXDCPrice();
 
-    setPrice({ ...price, xdc });
+    setPrice(prevPrice => ({ ...prevPrice, xdc }));
     setMount(true);
-  }
+  }, []);
 
   const xdcPrice = price?.xdc?.price;
 
@@ -89,13 +91,13 @@ const HomeContent = memo(() => {
   useEffect(() => {
     // router.push("/markets");
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleTryNow = useCallback(async () => {
     try {
       if (!address) {
         await privyLogin();
-        router.push("/markets");
+        router.push("/");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -229,7 +231,7 @@ const HomeContent = memo(() => {
                     aria-label="Try Now"
                     type="button"
                   >
-                    Log in
+                    Sign Up
                   </button>
                 )}
                 {address && (

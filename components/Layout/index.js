@@ -3,6 +3,7 @@ import Navbar from "../Navbar";
 import { useRouter } from "next/router";
 import Footer from "../Footer";
 import MobileNav from "../MobileNav";
+import AppDownloadBanner from "../AppDownloadBanner";
 import { useAccount } from "wagmi";
 
 const Layout = ({ children }) => {
@@ -16,10 +17,11 @@ const Layout = ({ children }) => {
         {children}
       </div>
 
-      <div className="pb-16 lg:pb-0">
+      <div className="pb-16 lg:pb-0 hidden lg:block">
         <Footer/>
       </div>
       <MobileNav />
+      <AppDownloadBanner />
     </main>
   );
 };

@@ -3,327 +3,22 @@ import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { usePrivy } from "@privy-io/react-auth";
 
 const MobileNav = () => {
   const router = useRouter();
-  const { address } = useAccount();
-  const [isEarnOpen, setIsEarnOpen] = useState(false);
+  const { address, isConnected } = useAccount();
+  const { authenticated } = usePrivy();
 
-  // Close dropdown when navigating
-  useEffect(() => {
-    setIsEarnOpen(false);
-  }, [router.pathname]);
+
+  // 如果用户没有连接钱包或没有通过Privy认证，不显示移动导航
+  if (!isConnected && !authenticated) {
+    return null;
+  }
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200/50 z-50 shadow-lg">
-      {/* Dropdown menu with enhanced animations */}
-      <div 
-        className={`absolute bottom-full left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-2xl transition-all duration-500 ease-in-out ${
-          isEarnOpen 
-            ? "max-h-[400px] opacity-100 transform translate-y-0" 
-            : "max-h-0 opacity-0 transform translate-y-4 pointer-events-none"
-        }`}
-      >
-        <div className="grid grid-cols-2 gap-4 p-6">
-          <Link
-            href="/stake"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/stake" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/stake" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M3 3H21V21H3V3Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M3 9H21"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M9 21V9"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Stake</span>
-          </Link>
 
-          <Link
-            href="/usdb"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/usdb" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl overflow-hidden ${
-              router.pathname === "/usdb" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <Image
-                src="/usdb.png"
-                alt="USDB"
-                width={20}
-                height={20}
-                className="rounded-lg object-cover"
-              />
-            </div>
-            <span className="ml-3 font-medium">USDB</span>
-          </Link>
-
-          <Link
-            href="/lend"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/lend" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/lend" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 10V14M10 12H14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Lend</span>
-          </Link>
-
-          <Link
-            href="/merch"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/merch" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/merch" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16 21V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V21"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Merch</span>
-          </Link>
-
-          <Link
-            href="/mbbb"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/mbbb" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/mbbb" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">mBBB</span>
-          </Link>
-
-          <Link
-            href="/farm"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/farm" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/farm" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M3 6.5C3 4.01472 5.01472 2 7.5 2C9.98528 2 12 4.01472 12 6.5C12 8.98528 9.98528 11 7.5 11C5.01472 11 3 8.98528 3 6.5Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path
-                  d="M12 6.5C12 4.01472 14.0147 2 16.5 2C18.9853 2 21 4.01472 21 6.5C21 8.98528 18.9853 11 16.5 11C14.0147 11 12 8.98528 12 6.5Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path
-                  d="M3 17.5C3 15.0147 5.01472 13 7.5 13C9.98528 13 12 15.0147 12 17.5C12 19.9853 9.98528 22 7.5 22C5.01472 22 3 19.9853 3 17.5Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path
-                  d="M12 17.5C12 15.0147 14.0147 13 16.5 13C18.9853 13 21 15.0147 21 17.5C21 19.9853 18.9853 22 16.5 22C14.0147 22 12 19.9853 12 17.5Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Farm</span>
-          </Link>
-
-          <Link
-            href="/bbbubu"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/bbbubu" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl overflow-hidden ${
-              router.pathname === "/bbbubu" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <Image
-                src="/bbb.jpg"
-                alt="BBBubu"
-                width={20}
-                height={20}
-                className="rounded-lg object-cover"
-              />
-            </div>
-            <span className="ml-3 font-medium">BBBubu</span>
-          </Link>
-
-
-
-          <Link
-            href="/airdrophub"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/airdrophub" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/airdrophub" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 2L8 6H4C3.44772 6 3 6.44772 3 7V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7C21 6.44772 20.5523 6 20 6H16L12 2Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 11V15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M12 18V22"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <circle cx="12" cy="9" r="1" fill="currentColor" />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Airdrop Hub</span>
-          </Link>
-
-
-
-          <Link
-            href="/lend"
-            className={`flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 ${
-              router.pathname === "/lend" 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 font-semibold shadow-lg border border-green-200" 
-                : "hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-            }`}
-          >
-            <div className={`p-2 rounded-xl ${
-              router.pathname === "/lend" ? "bg-green-100" : "bg-gray-100"
-            }`}>
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path
-                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 10V14M10 12H14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <span className="ml-3 font-medium">Lend</span>
-          </Link>
-        </div>
-      </div>
       
       {/* Main navigation bar with enhanced styling */}
       <div className="flex justify-around items-center h-20 px-2 py-3">
@@ -351,13 +46,13 @@ const MobileNav = () => {
         <Link
           href="/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
-            router.pathname.startsWith("/swap")
+            router.pathname === "/swap"
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
         >
           <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname.startsWith("/swap") ? "bg-green-100" : "bg-transparent"
+            router.pathname === "/swap" ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg
               viewBox="0 0 1080 1024"
@@ -383,15 +78,15 @@ const MobileNav = () => {
         </Link>
 
         <Link
-          href="/stake"
+          href="/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
           className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
-            router.pathname === "/stake" 
+            router.pathname.startsWith("/swap/") 
               ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
           }`}
         >
           <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname === "/stake" ? "bg-green-100" : "bg-transparent"
+            router.pathname.startsWith("/swap/") ? "bg-green-100" : "bg-transparent"
           }`}>
             <svg viewBox="0 0 24 24" width="22" height="22">
               <path
@@ -403,20 +98,20 @@ const MobileNav = () => {
                 strokeLinejoin="round"
               />
               <path
-                d="M3 9H21"
+                d="M12 3V21"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
               <path
-                d="M9 21V9"
+                d="M3 12H21"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
             </svg>
           </div>
-          <span className="text-xs mt-1 font-medium">Stake</span>
+          <span className="text-xs mt-1 font-medium">Markets</span>
         </Link>
 
         <Link
@@ -430,64 +125,66 @@ const MobileNav = () => {
           <div className={`p-2 rounded-xl transition-colors ${
             router.pathname === "/ido" ? "bg-green-100" : "bg-transparent"
           }`}>
-            <svg viewBox="0 0 24 24" width="22" height="22">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+              {/* 火箭主体 */}
               <path
-                d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+                d="M12 2C12 2 15.5 5.5 15.5 10.5C15.5 12.5 14.5 14 12 14C9.5 14 8.5 12.5 8.5 10.5C8.5 5.5 12 2 12 2Z"
                 fill="currentColor"
+                fillOpacity="0.9"
+              />
+              {/* 火箭窗口 */}
+              <circle
+                cx="12"
+                cy="8"
+                r="2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                opacity="0.7"
+              />
+              {/* 火箭尾翼 */}
+              <path
+                d="M8.5 14C8.5 14 7 15.5 7 17C7 18.5 8.5 20 8.5 20"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.8"
+              />
+              <path
+                d="M15.5 14C15.5 14 17 15.5 17 17C17 18.5 15.5 20 15.5 20"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.8"
+              />
+              {/* 火焰效果 */}
+              <path
+                d="M10 20C10 20 11 21.5 12 22C13 21.5 14 20 14 20"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.6"
+              />
+              {/* 装饰星星 */}
+              <path
+                d="M6 6L6.5 7L8 7L7 7.5L7.5 9L6 8L4.5 9L5 7.5L4 7L5.5 7L6 6Z"
+                fill="currentColor"
+                opacity="0.5"
+              />
+              <path
+                d="M18 4L18.3 4.7L19 5L18.3 5.3L18 6L17.7 5.3L17 5L17.7 4.7L18 4Z"
+                fill="currentColor"
+                opacity="0.6"
               />
             </svg>
           </div>
           <span className="text-xs mt-1 font-medium">IDO</span>
         </Link>
 
-        <button
-          onClick={() => setIsEarnOpen(!isEarnOpen)}
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] relative ${
-            router.pathname === "/stake" ||
-            router.pathname === "/usdb" ||
-            router.pathname === "/lend" ||
-            router.pathname === "/farm" ||
-            router.pathname === "/bbbubu" ||
-            router.pathname === "/airdrophub" ||
-            router.pathname === "/merch" ||
-            router.pathname === "/mbbb"
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
-          }`}
-        >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname === "/stake" ||
-            router.pathname === "/usdb" ||
-            router.pathname === "/lend" ||
-            router.pathname === "/farm" ||
-            router.pathname === "/bbbubu" ||
-            router.pathname === "/airdrophub" ||
-            router.pathname === "/merch" ||
-            router.pathname === "/mbbb" ? "bg-green-100" : "bg-transparent"
-          }`}>
-            <svg
-              viewBox="0 0 1024 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="15539"
-              width="22"
-              height="22"
-            >
-              <path
-                d="M375.79 542.48H141.71C97.69 542.48 62 578.17 62 622.2v234.07c0 44.02 35.69 79.71 79.71 79.71h234.2c43.95 0 79.58-35.63 79.58-79.58V622.2c0.01-44.03-35.68-79.72-79.7-79.72zM588.73 481.52H822.8c44.02 0 79.71-35.69 79.71-79.71V167.73c0-44.02-35.69-79.71-79.71-79.71H588.73c-44.02 0-79.71 35.69-79.71 79.71V401.8c0 44.03 35.69 79.72 79.71 79.72zM944.88 856.24l-59.11-38.06c10.64-24.2 16.75-50.82 16.75-78.95 0-108.66-88.09-196.75-196.75-196.75s-196.75 88.09-196.75 196.75 88.09 196.75 196.75 196.75c53.61 0 102.1-21.58 137.58-56.36l61.13 39.36a37.132 37.132 0 0 0 20.16 5.94c12.28 0 24.28-6.04 31.43-17.12 11.13-17.32 6.14-40.41-11.19-51.56zM375.79 88.02H141.71C97.69 88.02 62 123.71 62 167.73V401.8c0 44.02 35.69 79.71 79.71 79.71h234.07c44.02 0 79.71-35.69 79.71-79.71V167.73c0.01-44.02-35.68-79.71-79.7-79.71z"
-                p-id="15540"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </div>
-          <span className="text-xs mt-1 font-medium">More</span>
-          {/* Enhanced arrow indicator */}
-          <div className={`absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center rounded-full bg-green-500 text-white text-xs transition-all duration-300 ${isEarnOpen ? "transform rotate-180 bg-green-600" : ""}`}>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m6 9 6 6 6-6"/>
-            </svg>
-          </div>
-        </button>
+
 
         <Link
           href={address ? `/dashboard/${address}` : "/dashboard"}

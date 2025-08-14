@@ -52,7 +52,7 @@ function SignButton(props) {
           privyLogin();
         }}
       >
-        Log in
+        Sign Up
       </div>
     ))
   );

@@ -11,7 +11,15 @@
     "cap:add": "npx cap add ios && npx cap add android",
     "cap:sync": "yarn static && npx cap sync",
     "ios": "npx cap open ios",
-    "android": "npx cap open android"
+    "android": "npx cap open android",
+    "android:build:aab": "yarn cap:sync && cd android && ./gradlew bundleRelease",
+    "android:build:apk": "yarn cap:sync && cd android && ./gradlew assembleRelease",
+    "android:build": "yarn android:build:aab && yarn android:build:apk",
+    "release:copy": "mkdir -p release && cp android/app/build/outputs/bundle/release/app-release.aab release/ && cp android/app/build/outputs/apk/release/app-release.apk release/",
+    "release:copy:apk": "mkdir -p release && cp android/app/build/outputs/apk/release/app-release.apk release/BBBFi.apk",
+    "generate:icons": "npx capacitor-assets generate",
+    "build:apk": "yarn generate:icons && yarn android:build:apk && yarn release:copy:apk",
+    "build:all": "yarn generate:icons && yarn android:build && yarn release:copy"
   },
   "dependencies": {
     "@bigmi/react": "^0.3.1",

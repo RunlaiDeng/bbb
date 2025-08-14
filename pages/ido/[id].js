@@ -13,6 +13,7 @@ import IDOABI from "../../abi/IDOABI.json";
 import Link from "next/link";
 import Image from "next/image";
 import { contracts, idos } from "@/config";
+import Loading from "../../components/Loading";
 
 const IdoDetail = () => {
   const router = useRouter();
@@ -187,9 +188,7 @@ const IdoDetail = () => {
   if (loading) {
     return (
       <div className="container mx-auto py-12 px-4">
-        <div className="flex justify-center items-center py-20">
-          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
+        <Loading text="Loading IDO campaign details..." />
       </div>
     );
   }
@@ -634,7 +633,7 @@ const IdoDetail = () => {
                 className="btn btn-success px-8"
                 onClick={() => {
                   document
-                    .querySelector('header button[aria-label="Log in"]')
+                    .querySelector('header button[aria-label="Sign Up"]')
                     ?.click();
                 }}
               >

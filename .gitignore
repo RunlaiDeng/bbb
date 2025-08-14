@@ -39,3 +39,6 @@ yarn.lock
 
 /android
 /ios
+/icons
+/resources
+/release

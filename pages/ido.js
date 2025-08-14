@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { contracts, idos } from "@/config";
 import ImageUpload from "../components/ImageUpload";
+import Loading from "../components/Loading";
 
 const Ido = () => {
   const router = useRouter();
@@ -523,7 +524,7 @@ const Ido = () => {
             onClick={() => {
               // This will trigger the wallet modal to open through your UI's existing wallet connection flow
               document
-                .querySelector('header button[aria-label="Log in"]')
+                .querySelector('header button[aria-label="Sign Up"]')
                 ?.click();
             }}
           >
@@ -533,9 +534,7 @@ const Ido = () => {
       )}
 
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
+        <Loading text="Loading IDO campaigns..." />
       ) : campaigns.length === 0 ? (
         <div className="text-center py-16 bg-gray-50 rounded-lg">
           <div className="w-20 h-20 mx-auto mb-6 relative">

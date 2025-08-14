@@ -143,7 +143,7 @@ const WriteButton = (props) => {
           privyLogin();
         }}
       >
-        Log in
+        Sign Up
       </div>
     ))
   );
