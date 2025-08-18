@@ -136,7 +136,9 @@ const Navbar = () => {
 
                 <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
                   <Link
-                    href={"/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"}
+                    href={
+                      "/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
+                    }
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
                     Swap
@@ -241,14 +243,7 @@ const Navbar = () => {
                     <div
                       className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
                       onClick={() => {
-                        router.push({
-                          pathname: "/swap",
-                          query: {
-                            toChain: "50",
-                            toToken:
-                              "0x0000000000000000000000000000000000000000",
-                          },
-                        });
+                        router.push("/deposit");
                       }}
                     >
                       <svg
@@ -1019,10 +1014,17 @@ const Navbar = () => {
                                   strokeWidth="2"
                                   strokeLinecap="round"
                                 />
-                                <circle cx="12" cy="9" r="1" fill="currentColor" />
+                                <circle
+                                  cx="12"
+                                  cy="9"
+                                  r="1"
+                                  fill="currentColor"
+                                />
                               </svg>
                             </div>
-                            <span className="ml-3 font-medium">Airdrop Hub</span>
+                            <span className="ml-3 font-medium">
+                              Airdrop Hub
+                            </span>
                           </div>
                         </div>
                       </div>
