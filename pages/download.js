@@ -48,7 +48,7 @@ export default function Download() {
                     : "bg-green-600 text-white hover:bg-green-700"
                 }`}
               >
-                {isDownloading ? "Downloading..." : "Download APK"}
+                {isDownloading ? "Downloading..." : "Download"}
               </button>
             </div>
           </div>

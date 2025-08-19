@@ -14,6 +14,8 @@ import { FollowProvider } from "@/components/Context/follow";
 import { xdc } from "../config/chains";
 import Script from "next/script";
 import { cookieStorage, createStorage } from "wagmi";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -94,6 +96,8 @@ const MyApp = ({ Component, pageProps }) => {
           </PrivyProvider>
         </FollowProvider>
       </NotificationProvider>
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 };
