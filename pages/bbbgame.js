@@ -230,10 +230,12 @@ export default function BBBGame() {
                   {/* Start Fight Button - Moved here */}
                   <button
                     onClick={handleStartMining}
-                    disabled={!isConnected || isFighting}
+                    disabled={isFighting}
                     className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
-                      !isConnected || isFighting
+                      isFighting
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        : !isConnected
+                        ? "bg-blue-500 hover:bg-blue-600 text-white transform hover:scale-105"
                         : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
                     }`}
                   >
