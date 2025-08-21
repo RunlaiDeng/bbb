@@ -243,6 +243,34 @@ export default function BBBGame() {
                   <p className="text-lg text-gray-600 mb-4">
                     Your rabbit is prepared and waiting for your command
                   </p>
+                  
+                  {/* BBBubu Stats - Moved here */}
+                  {isConnected && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                      {/* BBBubu Count with Buy Button */}
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-gray-600 mb-1">BBBubu NFTs</p>
+                        <div className="text-lg font-bold text-green-600 mb-2">
+                          🐰 {getBbbubuCount()}
+                        </div>
+                        <button
+                          onClick={handleBuyBBBubu}
+                          className="px-3 py-1 rounded-md text-xs font-semibold bg-green-600 hover:bg-green-700 text-white transform hover:scale-105 transition-all duration-300"
+                        >
+                          🐰 Buy
+                        </button>
+                      </div>
+                      
+                      {/* Mining Rate */}
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-gray-600 mb-1">Mining Rate</p>
+                        <div className="text-lg font-bold text-green-700">
+                          ⚡ {getCurrentMiningRate().toFixed(4)}/block
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <p className="text-lg text-green-600 font-semibold mb-4">
                     ⚔️ Click &quot;Start Fight&quot; to begin your adventure!
                   </p>
@@ -277,33 +305,6 @@ export default function BBBGame() {
 
         {/* Action Buttons Section */}
         <div className="bg-green-50 rounded-2xl p-6">
-          {/* Stats Info */}
-          {isConnected && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {/* BBBubu Count with Buy Button */}
-              <div className="bg-white rounded-xl p-4 text-center">
-                <p className="text-sm font-medium text-gray-600 mb-1">BBBubu NFTs</p>
-                <div className="text-2xl font-bold text-green-600 mb-3">
-                  🐰 {getBbbubuCount()}
-                </div>
-                <button
-                  onClick={handleBuyBBBubu}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 hover:bg-green-700 text-white transform hover:scale-105 transition-all duration-300"
-                >
-                  🐰 Buy
-                </button>
-              </div>
-              
-              {/* Mining Rate */}
-              <div className="bg-white rounded-xl p-4 text-center">
-                <p className="text-sm font-medium text-gray-600 mb-1">Mining Rate</p>
-                <div className="text-2xl font-bold text-green-700">
-                  ⚡ {getCurrentMiningRate().toFixed(4)}/block
-                </div>
-              </div>
-            </div>
-          )}
-          
 
 
           {/* Enhanced Status Messages */}
