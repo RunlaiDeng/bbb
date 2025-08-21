@@ -198,7 +198,7 @@ export default function BBBGame() {
                       playsInline
                       className="w-80 h-60 object-cover rounded-xl mx-auto block"
                     >
-                      <source src="/fighting.mp4" type="video/mp4" />
+                      <source src="https://benybadboy.b-cdn.net/fighting0.mp4" type="video/mp4" />
                       {/* Fallback for browsers that don't support video */}
                       <div className="text-8xl animate-bounce mb-4">🐰</div>
                     </video>
@@ -276,7 +276,7 @@ export default function BBBGame() {
                       playsInline
                       className="w-80 h-60 object-cover rounded-xl mx-auto block"
                     >
-                      <source src="/fighting.mp4" type="video/mp4" />
+                      <source src="https://benybadboy.b-cdn.net/fighting0.mp4" type="video/mp4" />
                       {/* Fallback for browsers that don't support video */}
                       <div className="text-8xl animate-bounce mb-4">🐰</div>
                     </video>
