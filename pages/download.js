@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function Download() {
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const version = "1.0.3";
+  const version = "1.0.5";
 
   const handleAndroidDownload = () => {
     setIsDownloading(true);
