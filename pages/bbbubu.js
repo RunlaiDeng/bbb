@@ -662,6 +662,19 @@ const BBBubu = () => {
                 You own {userBBBubuNFTs.length} BBBubu NFT
                 {userBBBubuNFTs.length !== 1 ? "s" : ""}
               </p>
+              
+              {/* Play BBBGame Button */}
+              <div className="mt-4">
+                <Link
+                  href="/bbbgame"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  🎮 Play BBBGame
+                </Link>
+                <p className="text-xs text-gray-500 mt-2">
+                  Use your BBBubu NFTs to battle and earn rewards!
+                </p>
+              </div>
             </div>
 
             {/* Selection Controls */}
