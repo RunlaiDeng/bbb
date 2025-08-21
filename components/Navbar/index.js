@@ -226,6 +226,14 @@ const Navbar = () => {
                       </li>
                       <li className="rounded-lg">
                         <Link
+                          href={"/bbbgame"}
+                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                        >
+                          🎮 BBBGame
+                        </Link>
+                      </li>
+                      <li className="rounded-lg">
+                        <Link
                           href={"/airdrophub"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg"
                         >

@@ -168,7 +168,7 @@ export default function BBBGame() {
           <div className="relative z-10 flex items-center justify-center h-full min-h-[350px]">
             {isFighting ? (
               <div className="text-center space-y-6">
-                <div className="relative">
+                <div className="relative flex justify-center">
                   {/* Fighting Video with enhanced styling */}
                   <div className="relative p-4 bg-white rounded-2xl">
                     <video
@@ -176,7 +176,7 @@ export default function BBBGame() {
                       loop
                       muted
                       playsInline
-                      className="w-80 h-60 object-cover rounded-xl"
+                      className="w-80 h-60 object-cover rounded-xl mx-auto block"
                     >
                       <source src="/fighting.mp4" type="video/mp4" />
                       {/* Fallback for browsers that don't support video */}
@@ -199,8 +199,21 @@ export default function BBBGame() {
               </div>
             ) : (
               <div className="text-center space-y-6">
-                <div className="relative">
-                  <div className="text-9xl mb-4 animate-pulse">🐰</div>
+                <div className="relative flex justify-center">
+                  {/* Video Playing - Ready State */}
+                  <div className="relative p-4 bg-white rounded-2xl">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-80 h-60 object-cover rounded-xl mx-auto block"
+                    >
+                      <source src="/fighting.mp4" type="video/mp4" />
+                      {/* Fallback for browsers that don't support video */}
+                      <div className="text-8xl animate-bounce mb-4">🐰</div>
+                    </video>
+                  </div>
                 </div>
                 
                 <div className="bg-green-100 rounded-xl p-6">
@@ -210,9 +223,28 @@ export default function BBBGame() {
                   <p className="text-lg text-gray-600 mb-4">
                     Your rabbit is prepared and waiting for your command
                   </p>
-                  <p className="text-lg text-green-600 font-semibold">
+                  <p className="text-lg text-green-600 font-semibold mb-4">
                     ⚔️ Click &quot;Start Fight&quot; to begin your adventure!
                   </p>
+                  
+                  {/* Start Fight Button - Moved here */}
+                  <button
+                    onClick={handleStartMining}
+                    disabled={!isConnected || isFighting}
+                    className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
+                      !isConnected || isFighting
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
+                    }`}
+                  >
+                    {!isConnected
+                      ? "🔗 Connect Wallet"
+                      : isFighting
+                      ? `⚔️ Fighting (${formatCountdown(countdown)})`
+                      : `⚔️ Start Fight ${
+                          getBbbubuCount() > 0 ? ` ${getBbbubuCount()}X` : ""
+                        }`}
+                  </button>
                 </div>
               </div>
             )}
@@ -224,12 +256,18 @@ export default function BBBGame() {
           {/* Stats Info */}
           {isConnected && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {/* BBBubu Count */}
+              {/* BBBubu Count with Buy Button */}
               <div className="bg-white rounded-xl p-4 text-center">
                 <p className="text-sm font-medium text-gray-600 mb-1">BBBubu NFTs</p>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-green-600 mb-3">
                   🐰 {getBbbubuCount()}
                 </div>
+                <button
+                  onClick={handleBuyBBBubu}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 hover:bg-green-700 text-white transform hover:scale-105 transition-all duration-300"
+                >
+                  🐰 Buy
+                </button>
               </div>
               
               {/* Mining Rate */}
@@ -242,37 +280,7 @@ export default function BBBGame() {
             </div>
           )}
           
-          {/* Main Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-            {/* Start Fight Button */}
-            <button
-              onClick={handleStartMining}
-              disabled={!isConnected || isFighting}
-              className={`w-full sm:w-auto min-w-[200px] px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
-                !isConnected || isFighting
-                  ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
-              }`}
-            >
-              {!isConnected
-                ? "🔗 Connect Wallet"
-                : isFighting
-                ? `⚔️ Fighting (${formatCountdown(countdown)})`
-                : `⚔️ Start Fight ${
-                    getBbbubuCount() > 0 ? ` ${getBbbubuCount()}X` : ""
-                  }`}
-            </button>
 
-            {/* Buy BBBubu Button */}
-            {isConnected && (
-              <button
-                onClick={handleBuyBBBubu}
-                className="w-full sm:w-auto min-w-[200px] px-8 py-4 rounded-2xl font-bold text-lg bg-green-600 hover:bg-green-700 text-white transform hover:scale-105 transition-all duration-300"
-              >
-                🐰 Buy BBBubu NFT
-              </button>
-            )}
-          </div>
 
           {/* Enhanced Status Messages */}
           <div className="space-y-4">
