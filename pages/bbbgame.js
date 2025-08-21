@@ -209,12 +209,59 @@ export default function BBBGame() {
                   <p className="text-2xl font-bold text-green-700 mb-2">
                     ⚔️ Battle in Progress
                   </p>
-                  <p className="text-lg text-gray-700">
+                  <p className="text-lg text-gray-700 mb-4">
                     Your brave rabbit is fighting monsters...
                   </p>
-                  <p className="text-sm text-green-600 mt-2 font-medium">
-                    ⏰ Time remaining: {formatCountdown(countdown)}
-                  </p>
+                  
+                  {/* BBBubu Stats - Also show during fighting */}
+                  {isConnected && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                      {/* BBBubu Count with Buy Button */}
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-gray-600 mb-1">BBBubu NFTs</p>
+                        <div className="text-lg font-bold text-green-600 mb-2">
+                          🐰 {getBbbubuCount()}
+                        </div>
+                        <button
+                          onClick={handleBuyBBBubu}
+                          className="px-3 py-1 rounded-md text-xs font-semibold bg-green-600 hover:bg-green-700 text-white transform hover:scale-105 transition-all duration-300"
+                        >
+                          🐰 Buy
+                        </button>
+                      </div>
+                      
+                      {/* Mining Rate */}
+                      <div className="bg-white rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-gray-600 mb-1">Mining Rate</p>
+                        <div className="text-lg font-bold text-green-700">
+                          ⚡ {getCurrentMiningRate().toFixed(4)}/block
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Fight Button - Also show during fighting */}
+                  <button
+                    onClick={handleStartMining}
+                    disabled={isFighting || (isConnected && getBbbubuCount() === 0)}
+                    className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
+                      isFighting
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        : !isConnected
+                        ? "bg-blue-500 hover:bg-blue-600 text-white transform hover:scale-105"
+                        : isConnected && getBbbubuCount() === 0
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
+                    }`}
+                  >
+                    {!isConnected
+                      ? "🔗 Connect Wallet"
+                      : isFighting
+                      ? `⚔️ Fighting (${formatCountdown(countdown)})`
+                      : getBbbubuCount() === 0
+                      ? "❌ Need BBBubu NFT to Fight"
+                      : `⚔️ Start Fight ${getBbbubuCount()}X`}
+                  </button>
                 </div>
               </div>
             ) : (
