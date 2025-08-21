@@ -16,6 +16,7 @@ import BBBubuABI from "../abi/BBBubuABI.json";
 import mTransferABI from "../abi/mTransferABI.json";
 import sUSDBABI from "../abi/sUSDBABI.json";
 import lendABI from "../abi/LendABI.json";
+import BBBGameABI from "../abi/BBBGameABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -184,6 +185,10 @@ export const contracts = {
     lend: {
       address: "0xABC8AA43120ff0f53749e9d8B525f50da489e0d9",
       abi: lendABI,
+    },
+    bbbgame: {
+      address: "0xEA831F396704e741D0161A740b91126c95753212",
+      abi: BBBGameABI,
     },
   },
 };
