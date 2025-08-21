@@ -4,6 +4,7 @@ import { contracts } from "../config";
 import { formatEther } from "viem";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import usePrivyLogin from "../components/Hook/usePrivyLogin";
 
 export default function BBBGame() {
   const { address, isConnected } = useAccount();
@@ -12,6 +13,7 @@ export default function BBBGame() {
   const [isFighting, setIsFighting] = useState(false);
   const { writeContract } = useWriteContract();
   const router = useRouter();
+  const privyLogin = usePrivyLogin();
 
   // Get user info from contract
   const { data: userInfoData, refetch: refetchUserInfo } = useReadContract({
@@ -73,9 +75,27 @@ export default function BBBGame() {
     }
   }, [countdown, refetchUserInfo]);
 
-  // Start mining function
+  // Start mining function or handle login
   const handleStartMining = async () => {
-    if (!isConnected || isFighting) return;
+    // If not connected, trigger Privy login
+    if (!isConnected) {
+      try {
+        await privyLogin();
+        return;
+      } catch (error) {
+        console.error("Login failed:", error);
+        return;
+      }
+    }
+
+    // If fighting, do nothing
+    if (isFighting) return;
+
+    // Check if user has BBBubu NFTs
+    if (getBbbubuCount() === 0) {
+      alert("You need at least 1 BBBubu NFT to start fighting! Please purchase BBBubu NFTs first.");
+      return;
+    }
 
     try {
       await writeContract({
@@ -230,12 +250,14 @@ export default function BBBGame() {
                   {/* Start Fight Button - Moved here */}
                   <button
                     onClick={handleStartMining}
-                    disabled={isFighting}
+                    disabled={isFighting || (isConnected && getBbbubuCount() === 0)}
                     className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
                       isFighting
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                         : !isConnected
                         ? "bg-blue-500 hover:bg-blue-600 text-white transform hover:scale-105"
+                        : isConnected && getBbbubuCount() === 0
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                         : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
                     }`}
                   >
@@ -243,9 +265,9 @@ export default function BBBGame() {
                       ? "🔗 Connect Wallet"
                       : isFighting
                       ? `⚔️ Fighting (${formatCountdown(countdown)})`
-                      : `⚔️ Start Fight ${
-                          getBbbubuCount() > 0 ? ` ${getBbbubuCount()}X` : ""
-                        }`}
+                      : getBbbubuCount() === 0
+                      ? "❌ Need BBBubu NFT to Fight"
+                      : `⚔️ Start Fight ${getBbbubuCount()}X`}
                   </button>
                 </div>
               </div>
