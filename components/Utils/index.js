@@ -1,3 +1,4 @@
+import { markets } from "@/config";
 function formatNumber(num) {
   if (!num && num !== 0) return "0.00";
   num = Number(num);
@@ -164,10 +165,21 @@ const send = async (url, params = {}) => {
 const getPool = async (token) => {
   if (!token) return {};
   try {
+    // Import markets from config to find the pool address
+
+    
+    // Find the market entry that matches the token address
+    const market = markets.find(m => m.address?.toLowerCase() === token.toLowerCase());
+    
+    if (!market || !market.pool) {
+      console.warn(`No pool found for token: ${token}`);
+      return {};
+    }
+    
     const json = await send(
-      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/tokens/${token}/pools?page=1`
+      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/pools/${market.pool}`
     );
-    return json?.data?.[0]?.attributes || {};
+    return json?.data?.attributes || {};
   } catch (error) {
     console.error("Error getting pool:", error);
     return {};
