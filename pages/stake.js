@@ -10,6 +10,7 @@ const POOL_HASH_MAP = {
   bbb: "lp-2",
   "4pool": "lpv2-0",
   "xdc-bbb-v2": "lpv2-3",
+  "susdb": "lpv2-4",
 };
 
 // Pool configurations (move outside component)
@@ -67,6 +68,18 @@ const POOL_CONFIGS = [
     icon: "combined",
     getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-twocrypto-0/deposit/",
     hashTag: "#xdc-bbb-v2"
+  },
+
+  { 
+    id: 'lpv2-4', 
+    pid: 4, 
+    poolType: 'lpstakev2', 
+    title: 'sUSDB Staking', 
+    symbol: 'sUSDB',
+    icon: "/susdb.png",
+    getTokenLink: "/usdb",
+    hashTag: "#susdb",
+    decimals: 6
   },
 ];
 
@@ -213,6 +226,8 @@ const Stake = () => {
           poolConfig.symbol?.toLowerCase().includes("bbb")) ||
         (searchTerm.includes("usdb") &&
           poolConfig.symbol?.toLowerCase().includes("usdb")) ||
+        (searchTerm.includes("susdb") &&
+          poolConfig.symbol?.toLowerCase().includes("susdb")) ||
         (searchTerm.includes("4pool") &&
           poolConfig.poolType === 'lpstakev2') ||
         (searchTerm.includes("fourpool") &&

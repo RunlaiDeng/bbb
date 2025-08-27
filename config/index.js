@@ -155,10 +155,7 @@ export const contracts = {
       address: "0xcdA5b77E2E2268D9E09c874c1b9A4c3F07b37555",
       abi: ERC20ABI,
     },
-    usdbStake: {
-      address: "0x510ef49A0aec84F1957D8aa1d7a4308782ABAD7d",
-      abi: USDBStakeABI,
-    },
+
     lpStakev2: {
       address: "0x9cbf30677b51Ba2E3Fd65dF3BD9BcA5F7dace781",
       abi: LpStakeABI,
@@ -175,10 +172,6 @@ export const contracts = {
       abi: mTransferABI,
     },
     sUSDB: {
-      address: "0xeA5cD2C82551f81F7298e74B291182Bd429237F6",
-      abi: sUSDBABI,
-    },
-    sUSDBV2: {
       address: "0x1416ceC451561105B70623CDfb70e521293E919a",
       abi: sUSDBABI,
     },

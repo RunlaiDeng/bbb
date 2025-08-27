@@ -21,10 +21,10 @@ const USDB = () => {
 
 
 
-  // sUSDB V2 states
-  const [sUSDBV2Amount, setSUSDBV2Amount] = useState("");
-  const [withdrawV2Amount, setWithdrawV2Amount] = useState("");
-  const [activeV2Tab, setActiveV2Tab] = useState("deposit"); // deposit, withdraw, manage
+  // sUSDB states
+  const [sUSDBAmount, setSUSDBAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [activeTab, setActiveTab] = useState("deposit"); // deposit, withdraw, manage
 
   // 添加客户端挂载状态
   const [isMounted, setIsMounted] = useState(false);
@@ -166,61 +166,61 @@ const USDB = () => {
 
 
 
-  // sUSDB V2 相关数据获取
-  const { data: sUSDBV2Balance, refetch: refetchSUSDBV2Balance } = useBalance({
+  // sUSDB 相关数据获取
+  const { data: sUSDBBalance, refetch: refetchSUSDBBalance } = useBalance({
     address,
-    token: contracts[chainId]?.sUSDBV2?.address,
+    token: contracts[chainId]?.sUSDB?.address,
     query: {
-      enabled: !!address && !!contracts[chainId]?.sUSDBV2?.address,
+      enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
     },
   });
 
-  // 获取 sUSDB V2 汇率
-  const { data: exchangeRateV2, refetch: refetchExchangeRateV2 } = useReadContract({
-    address: contracts[chainId]?.sUSDBV2?.address,
-    abi: contracts[chainId]?.sUSDBV2?.abi,
+  // 获取 sUSDB 汇率
+  const { data: exchangeRate, refetch: refetchExchangeRate } = useReadContract({
+    address: contracts[chainId]?.sUSDB?.address,
+    abi: contracts[chainId]?.sUSDB?.abi,
     functionName: "getExchangeRate",
     args: [],
     query: {
-      enabled: !!contracts[chainId]?.sUSDBV2?.address,
+      enabled: !!contracts[chainId]?.sUSDB?.address,
     },
   });
 
-  // 获取用户的活跃提取请求 V2
-  const { data: activeWithdrawalsV2, refetch: refetchActiveWithdrawalsV2 } =
+  // 获取用户的活跃提取请求
+  const { data: activeWithdrawals, refetch: refetchActiveWithdrawals } =
     useReadContract({
-      address: contracts[chainId]?.sUSDBV2?.address,
-      abi: contracts[chainId]?.sUSDBV2?.abi,
+      address: contracts[chainId]?.sUSDB?.address,
+      abi: contracts[chainId]?.sUSDB?.abi,
       functionName: "getActiveWithdrawalRequests",
       args: [address],
       query: {
-        enabled: !!address && !!contracts[chainId]?.sUSDBV2?.address,
+        enabled: !!address && !!contracts[chainId]?.sUSDB?.address,
       },
     });
 
-  // 获取USDB对sUSDBV2的授权额度
-  const { data: usdbAllowanceV2, refetch: refetchUSDBAllowanceV2 } =
+  // 获取USDB对sUSDB的授权额度
+  const { data: usdbAllowance, refetch: refetchUSDBAllowance } =
     useReadContract({
       address: contracts[chainId]?.usdb?.address,
       abi: contracts[chainId]?.usdb?.abi,
       functionName: "allowance",
-      args: [address, contracts[chainId]?.sUSDBV2?.address],
+      args: [address, contracts[chainId]?.sUSDB?.address],
       query: {
         enabled:
           !!address &&
           !!contracts[chainId]?.usdb?.address &&
-          !!contracts[chainId]?.sUSDBV2?.address,
+          !!contracts[chainId]?.sUSDB?.address,
       },
     });
 
-  // 获取sUSDBV2总供应量
-  const { data: sUSDBV2TotalSupply } = useReadContract({
-    address: contracts[chainId]?.sUSDBV2?.address,
-    abi: contracts[chainId]?.sUSDBV2?.abi,
+  // 获取sUSDB总供应量
+  const { data: sUSDBTotalSupply } = useReadContract({
+    address: contracts[chainId]?.sUSDB?.address,
+    abi: contracts[chainId]?.sUSDB?.abi,
     functionName: "totalSupply",
     args: [],
     query: {
-      enabled: !!contracts[chainId]?.sUSDBV2?.address,
+      enabled: !!contracts[chainId]?.sUSDB?.address,
     },
   });
 
@@ -295,63 +295,63 @@ const USDB = () => {
 
 
 
-  // sUSDB V2 相关辅助函数
-  const handleSUSDBV2MaxClick = () => {
+  // sUSDB 相关辅助函数
+  const handleSUSDBMaxClick = () => {
     if (usdbBalance) {
-      setSUSDBV2Amount(formatUnits(usdbBalance.value, usdbBalance.decimals));
+      setSUSDBAmount(formatUnits(usdbBalance.value, usdbBalance.decimals));
     }
   };
 
-  const handleSUSDBV2AmountChange = (e) => {
+  const handleSUSDBAmountChange = (e) => {
     const value = e.target.value;
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
-      setSUSDBV2Amount(value);
+      setSUSDBAmount(value);
     }
   };
 
-  const handleWithdrawV2MaxClick = () => {
-    if (sUSDBV2Balance) {
-      setWithdrawV2Amount(formatUnits(sUSDBV2Balance.value, sUSDBV2Balance.decimals));
+  const handleWithdrawMaxClick = () => {
+    if (sUSDBBalance) {
+      setWithdrawAmount(formatUnits(sUSDBBalance.value, sUSDBBalance.decimals));
     }
   };
 
-  const handleWithdrawV2AmountChange = (e) => {
+  const handleWithdrawAmountChange = (e) => {
     const value = e.target.value;
     if (value === "" || /^\d*\.?\d*$/.test(value)) {
-      setWithdrawV2Amount(value);
+      setWithdrawAmount(value);
     }
   };
 
 
 
-  // sUSDB V2 相关计算函数
-  const calculateSUSDBV2FromUSDB = (usdbAmount) => {
-    if (!usdbAmount || !exchangeRateV2) return "0";
+  // sUSDB 相关计算函数
+  const calculateSUSDBFromUSDB = (usdbAmount) => {
+    if (!usdbAmount || !exchangeRate) return "0";
     try {
       const usdbWei = parseUnits(usdbAmount, 6); // USDB is 6 decimals
-      const sUSDBWei = (usdbWei * BigInt(1e6)) / exchangeRateV2; // exchangeRate is in 1e6 format
+      const sUSDBWei = (usdbWei * BigInt(1e6)) / exchangeRate; // exchangeRate is in 1e6 format
       return formatUnits(sUSDBWei, 6); // sUSDB is also 6 decimals
     } catch {
       return "0";
     }
   };
 
-  const calculateUSDBFromSUSDBV2 = (sUSDBAmount) => {
-    if (!sUSDBAmount || !exchangeRateV2) return "0";
+  const calculateUSDBFromSUSDB = (sUSDBAmount) => {
+    if (!sUSDBAmount || !exchangeRate) return "0";
     try {
       const sUSDBWei = parseUnits(sUSDBAmount, 6); // sUSDB is 6 decimals
-      const usdbWei = (sUSDBWei * exchangeRateV2) / BigInt(1e6); // exchangeRate is in 1e6 format
+      const usdbWei = (sUSDBWei * exchangeRate) / BigInt(1e6); // exchangeRate is in 1e6 format
       return formatUnits(usdbWei, 6); // USDB is 6 decimals
     } catch {
       return "0";
     }
   };
 
-  // 获取当前 sUSDB V2 价值（以 USDB 计算）
-  const getSUSDBV2ValueInUSDB = () => {
-    if (!sUSDBV2Balance || !exchangeRateV2) return "0.00";
+  // 获取当前 sUSDB 价值（以 USDB 计算）
+  const getSUSDBValueInUSDB = () => {
+    if (!sUSDBBalance || !exchangeRate) return "0.00";
     try {
-      const usdbValue = (sUSDBV2Balance.value * exchangeRateV2) / BigInt(1e6);
+      const usdbValue = (sUSDBBalance.value * exchangeRate) / BigInt(1e6);
       return formatUnits(usdbValue, 6);
     } catch {
       return "0.00";
@@ -360,14 +360,14 @@ const USDB = () => {
 
 
 
-  // 检查USDB V2授权
-  const needsUSDBV2Approval = () => {
-    if (!sUSDBV2Amount || !usdbBalance) return false;
+  // 检查USDB授权
+  const needsUSDBApproval = () => {
+    if (!sUSDBAmount || !usdbBalance) return false;
     try {
-      const amountWei = parseUnits(sUSDBV2Amount, usdbBalance.decimals);
+      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
       if (amountWei <= 0) return false;
-      if (usdbAllowanceV2 === undefined || usdbAllowanceV2 === null) return true;
-      return usdbAllowanceV2 < amountWei;
+      if (usdbAllowance === undefined || usdbAllowance === null) return true;
+      return usdbAllowance < amountWei;
     } catch {
       return true;
     }
@@ -400,22 +400,22 @@ const USDB = () => {
 
 
 
-  // sUSDB V2 验证函数
-  const isValidSUSDBV2Amount = () => {
-    if (!sUSDBV2Amount || !usdbBalance) return false;
+  // sUSDB 验证函数
+  const isValidSUSDBAmount = () => {
+    if (!sUSDBAmount || !usdbBalance) return false;
     try {
-      const amountWei = parseUnits(sUSDBV2Amount, usdbBalance.decimals);
+      const amountWei = parseUnits(sUSDBAmount, usdbBalance.decimals);
       return amountWei > 0 && amountWei <= usdbBalance.value;
     } catch {
       return false;
     }
   };
 
-  const isValidWithdrawV2Amount = () => {
-    if (!withdrawV2Amount || !sUSDBV2Balance) return false;
+  const isValidWithdrawAmount = () => {
+    if (!withdrawAmount || !sUSDBBalance) return false;
     try {
-      const amountWei = parseUnits(withdrawV2Amount, sUSDBV2Balance.decimals);
-      return amountWei > 0 && amountWei <= sUSDBV2Balance.value;
+      const amountWei = parseUnits(withdrawAmount, sUSDBBalance.decimals);
+      return amountWei > 0 && amountWei <= sUSDBBalance.value;
     } catch {
       return false;
     }
@@ -430,11 +430,11 @@ const USDB = () => {
 
 
 
-  // 格式化汇率显示 V2
-  const formatExchangeRateV2 = () => {
-    if (!exchangeRateV2) return "1.0000";
+  // 格式化汇率显示
+  const formatExchangeRate = () => {
+    if (!exchangeRate) return "1.0000";
     try {
-      const rate = formatUnits(exchangeRateV2, 6);
+      const rate = formatUnits(exchangeRate, 6);
       return parseFloat(rate).toFixed(4);
     } catch {
       return "1.0000";
@@ -586,14 +586,14 @@ const USDB = () => {
 
 
 
-                {/* sUSDB V2 Card */}
+                {/* sUSDB Card */}
                 <div className="bg-white/90 backdrop-blur-sm border border-indigo-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center p-2">
                         <img
                           src="/susdb.png"
-                          alt="sUSDB V2 Logo"
+                          alt="sUSDB Logo"
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -620,10 +620,10 @@ const USDB = () => {
                   <div>
                     <div className="text-gray-600 text-sm mb-1">Balance</div>
                     <div className="text-gray-900 text-2xl font-bold">
-                      {isConnected && sUSDBV2Balance ? formatUsdbAmount(sUSDBV2Balance.value) : "0.00"} sUSDB
+                      {isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"} sUSDB
                     </div>
                     <div className="text-gray-500 text-sm mt-1">
-                      ≈ ${isConnected && sUSDBV2Balance ? getSUSDBV2ValueInUSDB() : "0.00"} USD
+                      ≈ ${isConnected && sUSDBBalance ? getSUSDBValueInUSDB() : "0.00"} USD
                     </div>
                     <div className="text-indigo-600 text-xs mt-1 flex items-center gap-1">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -853,7 +853,7 @@ const USDB = () => {
                       <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center p-1">
                         <img
                           src="/susdb.png"
-                          alt="sUSDB V2 Logo"
+                          alt="sUSDB Logo"
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -863,7 +863,7 @@ const USDB = () => {
                        </div>
                     </div>
                     <div className="text-3xl font-bold text-gray-900">
-                      {sUSDBV2TotalSupply ? `${formatUsdbAmount(sUSDBV2TotalSupply)} sUSDB` : "Loading..."}
+                      {sUSDBTotalSupply ? `${formatUsdbAmount(sUSDBTotalSupply)} sUSDB` : "Loading..."}
                     </div>
                   </div>
                 </div>
@@ -1249,9 +1249,9 @@ const USDB = () => {
             </div>
           </div>
 
-          {/* sUSDB V2 Section */}
+          {/* sUSDB Section */}
           {isMounted && (
-            <div id="susdbv2-section" className="py-8 sm:py-16 bg-gradient-to-r from-indigo-50 to-blue-50">
+            <div id="susdb-section" className="py-8 sm:py-16 bg-gradient-to-r from-indigo-50 to-blue-50">
               <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-6 md:mb-8">
                   <div className="flex flex-col sm:inline-flex sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 md:mb-4">
@@ -1272,7 +1272,7 @@ const USDB = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                  {/* sUSDB V2 Balance & Rewards */}
+                  {/* sUSDB Balance & Rewards */}
                   <div className="lg:col-span-1 order-1">
                     {/* Balance Overview */}
                     <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6">
@@ -1280,7 +1280,7 @@ const USDB = () => {
                         Your sUSDB Portfolio
                       </h3>
 
-                      {/* sUSDB V2 Balance */}
+                      {/* sUSDB Balance */}
                       <div className="bg-gradient-to-r from-indigo-100 to-blue-100 rounded-xl p-4 sm:p-5 mb-4">
                         <div className="flex items-start justify-between">
                           <div className="flex items-center gap-3">
@@ -1293,8 +1293,8 @@ const USDB = () => {
                             </div>
                             <div>
                               <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                                {sUSDBV2Balance
-                                  ? formatUsdbAmount(sUSDBV2Balance.value)
+                                {sUSDBBalance
+                                  ? formatUsdbAmount(sUSDBBalance.value)
                                   : "0.00"}
                               </div>
                               <div className="text-sm text-gray-600">
@@ -1305,8 +1305,8 @@ const USDB = () => {
                           <div className="text-right">
                             <div className="text-lg font-semibold text-indigo-600">
                               ≈ $
-                              {sUSDBV2Balance
-                                ? getSUSDBV2ValueInUSDB()
+                              {sUSDBBalance
+                                ? getSUSDBValueInUSDB()
                                 : "0.00"}
                             </div>
                             <div className="text-xs text-gray-500">
@@ -1327,7 +1327,7 @@ const USDB = () => {
                             </div>
                             <div className="min-w-0">
                               <div className="text-sm sm:text-base font-bold text-gray-900 whitespace-nowrap">
-                                1 sUSDB = {formatExchangeRateV2()} USDB
+                                1 sUSDB = {formatExchangeRate()} USDB
                               </div>
                               <div className="text-xs text-gray-600">
                                 Current exchange rate
@@ -1388,17 +1388,17 @@ const USDB = () => {
                       </div>
                     </div>
 
-                    {/* Active Withdrawals V2 */}
-                    {activeWithdrawalsV2 &&
-                      activeWithdrawalsV2[0] &&
-                      activeWithdrawalsV2[0].length > 0 && (
+                    {/* Active Withdrawals */}
+                    {activeWithdrawals &&
+                      activeWithdrawals[0] &&
+                      activeWithdrawals[0].length > 0 && (
                         <div className="bg-white rounded-2xl p-6 shadow-lg">
                           <h3 className="text-xl font-semibold text-gray-900 mb-4">
                             Active Withdrawals
                           </h3>
                           <div className="space-y-3">
-                            {activeWithdrawalsV2[0].map((withdrawal, index) => {
-                              const requestIndex = activeWithdrawalsV2[1][index];
+                            {activeWithdrawals[0].map((withdrawal, index) => {
+                              const requestIndex = activeWithdrawals[1][index];
                               const unlockTime =
                                 Number(withdrawal.unlockTime) * 1000;
                               const now = Date.now();
@@ -1434,16 +1434,16 @@ const USDB = () => {
                                       <WriteButton
                                         data={{
                                           address:
-                                            contracts[chainId]?.sUSDBV2?.address,
-                                          abi: contracts[chainId]?.sUSDBV2?.abi,
+                                            contracts[chainId]?.sUSDB?.address,
+                                          abi: contracts[chainId]?.sUSDB?.abi,
                                           functionName: "executeWithdrawal",
                                           args: [requestIndex],
                                         }}
                                         callback={() => {
-                                          refetchSUSDBV2Balance();
+                                          refetchSUSDBBalance();
                                           refetchUsdbBalance();
-                                          refetchActiveWithdrawalsV2();
-                                          refetchExchangeRateV2();
+                                          refetchActiveWithdrawals();
+                                          refetchExchangeRate();
                                         }}
                                         className="flex-1 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 cursor-pointer text-sm text-center"
                                         buttonName="Execute"
@@ -1452,15 +1452,15 @@ const USDB = () => {
                                     <WriteButton
                                       data={{
                                         address:
-                                          contracts[chainId]?.sUSDBV2?.address,
-                                        abi: contracts[chainId]?.sUSDBV2?.abi,
+                                          contracts[chainId]?.sUSDB?.address,
+                                        abi: contracts[chainId]?.sUSDB?.abi,
                                         functionName: "cancelWithdrawal",
                                         args: [requestIndex],
                                       }}
                                       callback={() => {
-                                        refetchSUSDBV2Balance();
-                                        refetchActiveWithdrawalsV2();
-                                        refetchExchangeRateV2();
+                                        refetchSUSDBBalance();
+                                        refetchActiveWithdrawals();
+                                        refetchExchangeRate();
                                       }}
                                       className="flex-1 px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 cursor-pointer text-sm text-center"
                                       buttonName="Cancel"
@@ -1480,9 +1480,9 @@ const USDB = () => {
                       {/* Tab Navigation */}
                       <div className="flex border-b border-gray-200 mb-4 sm:mb-6">
                         <button
-                          onClick={() => setActiveV2Tab("deposit")}
+                          onClick={() => setActiveTab("deposit")}
                           className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
-                            activeV2Tab === "deposit"
+                            activeTab === "deposit"
                               ? "border-indigo-500 text-indigo-600 bg-indigo-50"
                               : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                           }`}
@@ -1503,9 +1503,9 @@ const USDB = () => {
                           </div>
                         </button>
                         <button
-                          onClick={() => setActiveV2Tab("withdraw")}
+                          onClick={() => setActiveTab("withdraw")}
                           className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
-                            activeV2Tab === "withdraw"
+                            activeTab === "withdraw"
                               ? "border-indigo-500 text-indigo-600 bg-indigo-50"
                               : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                           }`}
@@ -1528,7 +1528,7 @@ const USDB = () => {
                       </div>
 
                       {/* Deposit Tab */}
-                      {activeV2Tab === "deposit" && (
+                      {activeTab === "deposit" && (
                         <div>
                           <div className="text-center mb-6">
                             <div className="flex items-center justify-center gap-2 mb-2">
@@ -1547,7 +1547,7 @@ const USDB = () => {
                               </h3>
                             </div>
                             <p className="text-gray-600 text-sm">
-                              Current rate: 1 USDB = {exchangeRateV2 ? (1 / parseFloat(formatExchangeRateV2())).toFixed(4) : "0.0000"} sUSDB • Auto-compounding rewards
+                              Current rate: 1 USDB = {exchangeRate ? (1 / parseFloat(formatExchangeRate())).toFixed(4) : "0.0000"} sUSDB • Auto-compounding rewards
                             </p>
                           </div>
 
@@ -1568,23 +1568,23 @@ const USDB = () => {
                             <div className="relative">
                               <input
                                 type="text"
-                                value={sUSDBV2Amount}
-                                onChange={handleSUSDBV2AmountChange}
+                                value={sUSDBAmount}
+                                onChange={handleSUSDBAmountChange}
                                 placeholder="0.0"
                                 disabled={!isMounted || !isConnected}
                                 className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-indigo-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                               />
                               <button
-                                onClick={handleSUSDBV2MaxClick}
+                                onClick={handleSUSDBMaxClick}
                                 disabled={!isMounted || !isConnected}
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-indigo-100 text-indigo-600 hover:bg-indigo-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
                               >
                                 MAX
                               </button>
                             </div>
-                            {sUSDBV2Amount && (
+                            {sUSDBAmount && (
                               <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {calculateSUSDBV2FromUSDB(sUSDBV2Amount)} sUSDB
+                                You will receive: {calculateSUSDBFromUSDB(sUSDBAmount)} sUSDB
                               </div>
                             )}
                           </div>
@@ -1592,7 +1592,7 @@ const USDB = () => {
                           <div className="space-y-4">
                             {isMounted && isConnected ? (
                               <>
-                                {needsUSDBV2Approval() ? (
+                                {needsUSDBApproval() ? (
                               <>
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                                   <div className="flex items-center gap-2 text-blue-800 text-sm">
@@ -1617,12 +1617,12 @@ const USDB = () => {
                                     abi: contracts[chainId]?.usdb?.abi,
                                     functionName: "approve",
                                     args: [
-                                      contracts[chainId]?.sUSDBV2?.address,
+                                      contracts[chainId]?.sUSDB?.address,
                                       maxUint256,
                                     ],
                                   }}
                                   callback={() => {
-                                    refetchUSDBAllowanceV2();
+                                    refetchUSDBAllowance();
                                   }}
                                   className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 cursor-pointer transition-all duration-200 text-center shadow-lg"
                                   buttonName="Approve USDB"
@@ -1631,23 +1631,23 @@ const USDB = () => {
                             ) : (
                               <WriteButton
                                 data={{
-                                  address: contracts[chainId]?.sUSDBV2?.address,
-                                  abi: contracts[chainId]?.sUSDBV2?.abi,
+                                  address: contracts[chainId]?.sUSDB?.address,
+                                  abi: contracts[chainId]?.sUSDB?.abi,
                                   functionName: "deposit",
                                   args: [
                                     parseUnits(
-                                      sUSDBV2Amount || "0",
+                                      sUSDBAmount || "0",
                                       usdbBalance?.decimals || 6
                                     ),
                                   ],
                                 }}
                                 callback={() => {
-                                  setSUSDBV2Amount("");
-                                  refetchSUSDBV2Balance();
+                                  setSUSDBAmount("");
+                                  refetchSUSDBBalance();
                                   refetchUsdbBalance();
-                                  refetchExchangeRateV2();
+                                  refetchExchangeRate();
                                 }}
-                                disabled={!isValidSUSDBV2Amount()}
+                                disabled={!isValidSUSDBAmount()}
                                 className="w-full px-6 py-4 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-blue-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg"
                                 buttonName="Deposit & Start Earning"
                               />
@@ -1666,7 +1666,7 @@ const USDB = () => {
                       )}
 
                       {/* Withdraw Tab */}
-                      {activeV2Tab === "withdraw" && (
+                      {activeTab === "withdraw" && (
                         <div>
                           <div className="text-center mb-6">
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -1686,8 +1686,8 @@ const USDB = () => {
                               </label>
                               <div className="text-sm text-gray-500">
                                 Available:{" "}
-                                {sUSDBV2Balance
-                                  ? formatUsdbAmount(sUSDBV2Balance.value)
+                                {sUSDBBalance
+                                  ? formatUsdbAmount(sUSDBBalance.value)
                                   : "0.00"}{" "}
                                 sUSDB
                               </div>
@@ -1695,23 +1695,23 @@ const USDB = () => {
                             <div className="relative">
                               <input
                                 type="text"
-                                value={withdrawV2Amount}
-                                onChange={handleWithdrawV2AmountChange}
+                                value={withdrawAmount}
+                                onChange={handleWithdrawAmountChange}
                                 placeholder="0.0"
                                 disabled={!isMounted || !isConnected}
                                 className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-red-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                               />
                               <button
-                                onClick={handleWithdrawV2MaxClick}
+                                onClick={handleWithdrawMaxClick}
                                 disabled={!isMounted || !isConnected}
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-red-100 text-red-600 hover:bg-red-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
                               >
                                 MAX
                               </button>
                             </div>
-                            {withdrawV2Amount && (
+                            {withdrawAmount && (
                               <div className="mt-2 text-sm text-gray-600">
-                                You will receive: {calculateUSDBFromSUSDBV2(withdrawV2Amount)} USDB (after 7 days)
+                                You will receive: {calculateUSDBFromSUSDB(withdrawAmount)} USDB (after 7 days)
                               </div>
                             )}
                           </div>
@@ -1719,23 +1719,23 @@ const USDB = () => {
                           {isMounted && isConnected ? (
                             <WriteButton
                               data={{
-                                address: contracts[chainId]?.sUSDBV2?.address,
-                                abi: contracts[chainId]?.sUSDBV2?.abi,
+                                address: contracts[chainId]?.sUSDB?.address,
+                                abi: contracts[chainId]?.sUSDB?.abi,
                                 functionName: "requestWithdrawal",
                                 args: [
                                   parseUnits(
-                                    withdrawV2Amount || "0",
-                                    sUSDBV2Balance?.decimals || 6
+                                    withdrawAmount || "0",
+                                    sUSDBBalance?.decimals || 6
                                   ),
                                 ],
                               }}
                               callback={() => {
-                                setWithdrawV2Amount("");
-                                refetchSUSDBV2Balance();
-                                refetchActiveWithdrawalsV2();
-                                refetchExchangeRateV2();
+                                setWithdrawAmount("");
+                                refetchSUSDBBalance();
+                                refetchActiveWithdrawals();
+                                refetchExchangeRate();
                               }}
-                              disabled={!isValidWithdrawV2Amount()}
+                              disabled={!isValidWithdrawAmount()}
                               className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-lg mb-4"
                               buttonName="Request Withdrawal"
                             />

@@ -508,10 +508,11 @@ const StakingPool = ({
           rewardPerBlock: contractData[0]?.result?.[5] || BigInt(0),
           isActive: contractData[0]?.result?.[6] || false,
           tokenAddress: lpTokenAddress,
-          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : pid === 1 ? "3XDC" : pid === 3 ? "BBBXDC" : "LP"),
+          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : pid === 1 ? "3XDC" : pid === 3 ? "BBBXDC" : pid === 4 ? "sUSDB" : "LP"),
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
+          decimals: poolConfig?.decimals || 18, // Add decimals from poolConfig
         };
 
         // Add pool-specific token balances
@@ -536,6 +537,9 @@ const StakingPool = ({
             bbb: bbbxdcPoolTokenBalances?.[0]?.result || BigInt(0),
             wxdc: bbbxdcPoolTokenBalances?.[1]?.result || BigInt(0),
           };
+        } else if (pid === 4) {
+          // sUSDB pool - special handling for 6 decimals
+          pool.issUSDBPool = true;
         }
       } else {
         // LP pool - need additional token data
@@ -689,6 +693,9 @@ const StakingPool = ({
         const totalBBBXDCPoolValueUSD = bbbValue + wxdcValue;
         const lpTokenPrice = totalBBBXDCPoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
+      } else if (poolType === 'lpstakev2' && pid === 4 && pool.issUSDBPool) {
+        // Special handling for sUSDB pool - use 6 decimals and $1 value
+        totalStakedUSD = Number(formatUnits(pool.totalStaked, 6)) * 1;
       } else if (isPsXdcPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
       } else if (isBpsXdcPool) {
@@ -956,7 +963,7 @@ const StakingPool = ({
             address: lpStakev2Address,
             abi: LpStakeABI,
             functionName: "deposit",
-            args: [pid, parseEther(localState.stakeAmount || "0")],
+            args: [pid, poolData.issUSDBPool ? parseUnits(localState.stakeAmount || "0", 6) : parseEther(localState.stakeAmount || "0")],
           },
           callback: () => {
             refreshData();
@@ -973,7 +980,7 @@ const StakingPool = ({
             address: lpStakev2Address,
             abi: LpStakeABI,
             functionName: "withdraw",
-            args: [pid, parseEther(localState.unstakeAmount || "0")],
+            args: [pid, poolData.issUSDBPool ? parseUnits(localState.unstakeAmount || "0", 6) : parseEther(localState.unstakeAmount || "0")],
           },
           callback: () => {
             refreshData();
@@ -1247,9 +1254,9 @@ const StakingPool = ({
                   <div className="flex justify-between items-center py-2 border-b border-gray-100">
                     <span className="text-gray-500">Your Staked</span>
                     <div className="font-medium truncate max-w-[60%] text-right">
-                      {poolData.isUsdbPool
+                      {poolData.isUsdbPool || poolData.issUSDBPool
                         ? Number(
-                            formatUnits(poolData.userStaked, 6)
+                            formatUnits(poolData.userStaked, poolData.decimals || 6)
                           )?.toLocaleString("en-US", {
                             minimumFractionDigits: 4,
                             maximumFractionDigits: 4,
@@ -1308,8 +1315,8 @@ const StakingPool = ({
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-gray-500">Total Staked</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
-                  {poolData.isUsdbPool
-                    ? Number(formatUnits(poolData.totalStaked, 6))?.toLocaleString(
+                  {poolData.isUsdbPool || poolData.issUSDBPool
+                    ? Number(formatUnits(poolData.totalStaked, poolData.decimals || 6))?.toLocaleString(
                         "en-US",
                         {
                           minimumFractionDigits: 4,
@@ -1458,8 +1465,8 @@ const StakingPool = ({
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
-                    stakeAmount: poolData.isUsdbPool
-                      ? formatUnits(poolData.balance, 6)
+                    stakeAmount: poolData.isUsdbPool || poolData.issUSDBPool
+                      ? formatUnits(poolData.balance, poolData.decimals || 6)
                       : formatEther(poolData.balance),
                   }));
                 }}
@@ -1471,8 +1478,8 @@ const StakingPool = ({
             <div className="flex justify-between text-sm text-gray-500">
               <span>Available</span>
               <span className="truncate max-w-[70%] text-right">
-                {poolData.isUsdbPool
-                  ? Number(formatUnits(poolData.balance, 6))?.toLocaleString(
+                {poolData.isUsdbPool || poolData.issUSDBPool
+                  ? Number(formatUnits(poolData.balance, poolData.decimals || 6))?.toLocaleString(
                       "en-US",
                       {
                         minimumFractionDigits: 4,
@@ -1492,13 +1499,14 @@ const StakingPool = ({
 
             {!poolData.isXdcPool &&
             !poolData.isUsdbPool &&
+            !poolData.issUSDBPool &&
             poolData.allowance < parseEther(localState.stakeAmount || "0") ? (
               <WriteButton
                 {...poolActions.approve}
                 className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
               />
-            ) : poolData.isUsdbPool &&
-              poolData.allowance < parseUnits(localState.stakeAmount || "0", 6) ? (
+            ) : (poolData.isUsdbPool || poolData.issUSDBPool) &&
+              poolData.allowance < parseUnits(localState.stakeAmount || "0", poolData.decimals || 6) ? (
               <WriteButton
                 {...poolActions.approve}
                 className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
@@ -1559,8 +1567,8 @@ const StakingPool = ({
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
-                    unstakeAmount: poolData.isUsdbPool
-                      ? formatUnits(poolData.userStaked, 6)
+                    unstakeAmount: poolData.isUsdbPool || poolData.issUSDBPool
+                      ? formatUnits(poolData.userStaked, poolData.decimals || 6)
                       : formatEther(poolData.userStaked),
                   }));
                 }}
@@ -1572,9 +1580,9 @@ const StakingPool = ({
             <div className="flex justify-between text-sm text-gray-500">
               <span>Staked</span>
               <span className="truncate max-w-[70%] text-right">
-                {poolData.isUsdbPool
+                {poolData.isUsdbPool || poolData.issUSDBPool
                   ? Number(
-                      formatUnits(poolData.userStaked, 6)
+                      formatUnits(poolData.userStaked, poolData.decimals || 6)
                     )?.toLocaleString("en-US", {
                       minimumFractionDigits: 4,
                       maximumFractionDigits: 4,
