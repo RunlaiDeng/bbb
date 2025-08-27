@@ -235,7 +235,50 @@ const USDB = () => {
     },
   });
 
+  // 检查当前用户是否是USDB合约的owner
+  const { data: usdbOwner } = useReadContract({
+    address: contracts[chainId]?.usdb?.address,
+    abi: contracts[chainId]?.usdb?.abi,
+    functionName: "owner",
+    args: [],
+    query: {
+      enabled: !!contracts[chainId]?.usdb?.address,
+    },
+  });
 
+  // 获取USDB合约中的USDC.e余额
+  const { data: contractUsdcBalance, refetch: refetchContractUsdcBalance } = useBalance({
+    address: contracts[chainId]?.usdb?.address,
+    token: contracts[chainId]?.xdcUSDC?.address,
+    query: {
+      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.xdcUSDC?.address,
+    },
+  });
+
+  // 获取USDB合约中的USDT余额
+  const { data: contractUsdtBalance, refetch: refetchContractUsdtBalance } = useBalance({
+    address: contracts[chainId]?.usdb?.address,
+    token: contracts[chainId]?.stargateUSDT?.address,
+    query: {
+      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.stargateUSDT?.address,
+    },
+  });
+
+  // 获取USDB合约中的Stargate USDC余额
+  const { data: contractStargateUsdcBalance, refetch: refetchContractStargateUsdcBalance } = useBalance({
+    address: contracts[chainId]?.usdb?.address,
+    token: contracts[chainId]?.stargateUSDC?.address,
+    query: {
+      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.stargateUSDC?.address,
+    },
+  });
+
+
+
+  // 检查当前用户是否是USDB合约的owner
+  const isOwner = () => {
+    return address && usdbOwner && address.toLowerCase() === usdbOwner.toLowerCase();
+  };
 
   const handleMaxClick = () => {
     if (tokenBalance) {
@@ -596,6 +639,173 @@ const USDB = () => {
               </div>
 
 
+            </div>
+          </div>
+        )}
+
+        {/* Owner Admin Section - Only visible to contract owner */}
+        {isMounted && isConnected && isOwner() && (
+          <div className="pb-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200/30 rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900">Contract Administration</h2>
+                  </div>
+                  <div className="text-red-600 text-sm font-medium bg-red-100 px-3 py-1 rounded-lg">
+                    Owner Access
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Contract USDC.e Balance */}
+                  <div className="bg-white rounded-xl p-6 border border-blue-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center p-1">
+                          <img
+                            src="/usdc.jpg"
+                            alt="USDC.e Logo"
+                            className="w-full h-full object-contain rounded-full"
+                          />
+                        </div>
+                        <div>
+                          <span className="text-gray-900 text-lg font-semibold">Contract USDC.e</span>
+                          <div className="text-sm text-gray-500">Available for withdrawal</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">
+                      {contractUsdcBalance ? parseFloat(formatUnits(contractUsdcBalance.value, contractUsdcBalance.decimals)).toFixed(4) : "0.0000"}
+                    </div>
+                    <div className="text-gray-500 text-sm mb-4">
+                      ≈ ${contractUsdcBalance ? (parseFloat(formatUnits(contractUsdcBalance.value, contractUsdcBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
+                    </div>
+                    <WriteButton
+                      data={{
+                        address: contracts[chainId]?.usdb?.address,
+                        abi: contracts[chainId]?.usdb?.abi,
+                        functionName: "withdrawToken",
+                        args: [
+                          contracts[chainId]?.xdcUSDC?.address,
+                          contractUsdcBalance?.value || 0,
+                        ],
+                      }}
+                      callback={() => {
+                        refetchContractUsdcBalance();
+                      }}
+                      disabled={!contractUsdcBalance || contractUsdcBalance.value <= 0}
+                      className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-md"
+                      buttonName="Withdraw USDC.e"
+                    />
+                  </div>
+
+                  {/* Contract USDT Balance */}
+                  <div className="bg-white rounded-xl p-6 border border-green-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center p-1">
+                          <img
+                            src="/usdt.jpg"
+                            alt="USDT Logo"
+                            className="w-full h-full object-contain rounded-full"
+                          />
+                        </div>
+                        <div>
+                          <span className="text-gray-900 text-lg font-semibold">Contract USDT</span>
+                          <div className="text-sm text-gray-500">Available for withdrawal</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">
+                      {contractUsdtBalance ? parseFloat(formatUnits(contractUsdtBalance.value, contractUsdtBalance.decimals)).toFixed(4) : "0.0000"}
+                    </div>
+                    <div className="text-gray-500 text-sm mb-4">
+                      ≈ ${contractUsdtBalance ? (parseFloat(formatUnits(contractUsdtBalance.value, contractUsdtBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
+                    </div>
+                    <WriteButton
+                      data={{
+                        address: contracts[chainId]?.usdb?.address,
+                        abi: contracts[chainId]?.usdb?.abi,
+                        functionName: "withdrawToken",
+                        args: [
+                          contracts[chainId]?.stargateUSDT?.address,
+                          contractUsdtBalance?.value || 0,
+                        ],
+                      }}
+                      callback={() => {
+                        refetchContractUsdtBalance();
+                      }}
+                      disabled={!contractUsdtBalance || contractUsdtBalance.value <= 0}
+                      className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-md"
+                      buttonName="Withdraw USDT"
+                    />
+                  </div>
+
+                  {/* Contract Stargate USDC Balance */}
+                  <div className="bg-white rounded-xl p-6 border border-purple-200">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
+                          <img
+                            src="/usdc.jpg"
+                            alt="Stargate USDC Logo"
+                            className="w-full h-full object-contain rounded-full"
+                          />
+                        </div>
+                        <div>
+                          <span className="text-gray-900 text-lg font-semibold">Contract Stargate USDC</span>
+                          <div className="text-sm text-gray-500">Available for withdrawal</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">
+                      {contractStargateUsdcBalance ? parseFloat(formatUnits(contractStargateUsdcBalance.value, contractStargateUsdcBalance.decimals)).toFixed(4) : "0.0000"}
+                    </div>
+                    <div className="text-gray-500 text-sm mb-4">
+                      ≈ ${contractStargateUsdcBalance ? (parseFloat(formatUnits(contractStargateUsdcBalance.value, contractStargateUsdcBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
+                    </div>
+                    <WriteButton
+                      data={{
+                        address: contracts[chainId]?.usdb?.address,
+                        abi: contracts[chainId]?.usdb?.abi,
+                        functionName: "withdrawToken",
+                        args: [
+                          contracts[chainId]?.stargateUSDC?.address,
+                          contractStargateUsdcBalance?.value || 0,
+                        ],
+                      }}
+                      callback={() => {
+                        refetchContractStargateUsdcBalance();
+                      }}
+                      disabled={!contractStargateUsdcBalance || contractStargateUsdcBalance.value <= 0}
+                      className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-purple-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-md"
+                      buttonName="Withdraw Stargate USDC"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mt-0.5">
+                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-yellow-800 mb-1">Administrator Notice</h4>
+                      <p className="text-sm text-yellow-700">
+                        You are viewing this section because you are the contract owner. These functions allow you to withdraw tokens from the USDB contract. Please use them responsibly.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
