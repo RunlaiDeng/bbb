@@ -155,6 +155,18 @@ const Navbar = () => {
                   >
                     IDO
                   </Link>
+                  <Link
+                    href={"/stake"}
+                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                  >
+                    Stake
+                  </Link>
+                  <Link
+                    href={"/usdb"}
+                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                  >
+                    USDB
+                  </Link>
 
                   <div className="dropdown dropdown-hover font-bold">
                     <div
@@ -168,22 +180,6 @@ const Navbar = () => {
                       tabIndex={0}
                       className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50"
                     >
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/stake"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          Stake
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/usdb"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          USDB
-                        </Link>
-                      </li>
                       <li className="rounded-lg">
                         <Link
                           href={"/lend"}
