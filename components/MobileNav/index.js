@@ -43,39 +43,27 @@ const MobileNav = () => {
           <span className="text-xs mt-1 font-medium">Home</span>
         </Link>
 
-        <Link
-          href="/swap?fromChain=50&toChain=50&fromToken=0x0000000000000000000000000000000000000000&toToken=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
-            router.pathname === "/swap"
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
-          }`}
+        <a
+          href="https://jumper.exchange/zh?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=50&toToken=0x0000000000000000000000000000000000000000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
         >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname === "/swap" ? "bg-green-100" : "bg-transparent"
-          }`}>
+          <div className="p-2 rounded-xl transition-colors bg-transparent">
             <svg
-              viewBox="0 0 1080 1024"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              p-id="4273"
+              viewBox="0 0 24 24"
               width="22"
               height="22"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
             >
-              <path
-                d="M1038.051556 631.694222l-105.415112-119.978666-105.130666 120.433777h59.448889a364.544 364.544 0 0 1-131.640889 176.753778 357.262222 357.262222 0 0 1-208.327111 67.128889 357.262222 357.262222 0 0 1-208.213334-67.128889 364.544 364.544 0 0 1-131.697777-176.753778H112.924444A456.419556 456.419556 0 0 0 274.204444 873.813333 446.691556 446.691556 0 0 0 547.100444 967.111111a446.691556 446.691556 0 0 0 272.896-93.297778 456.419556 456.419556 0 0 0 161.28-241.664l56.775112-0.455111zM267.662222 391.281778H56.888889l105.187555 120.433778 105.585778-120.433778z m279.893334-244.508445a357.262222 357.262222 0 0 1 207.985777 67.640889 364.544 364.544 0 0 1 131.185778 176.924445h94.549333a456.419556 456.419556 0 0 0-161.336888-241.322667A446.748444 446.748444 0 0 0 547.214222 56.888889a446.691556 446.691556 0 0 0-272.668444 93.127111 456.476444 456.476444 0 0 0-161.393778 241.265778h94.378667A364.600889 364.600889 0 0 1 339.057778 214.129778 357.262222 357.262222 0 0 1 547.555556 146.773333z"
-                fill="currentColor"
-                p-id="4274"
-              ></path>
-              <path
-                d="M547.612444 671.402667L392.419556 514.048l155.192888-156.956444 155.192889 156.956444-155.192889 157.354667z"
-                fill="currentColor"
-                p-id="4275"
-              ></path>
+              <path d="M12 2v20" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </div>
-          <span className="text-xs mt-1 font-medium">Swap</span>
-        </Link>
+          <span className="text-xs mt-1 font-medium">Bridge</span>
+        </a>
 
         <Link
           href="/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"

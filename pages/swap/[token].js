@@ -352,15 +352,7 @@ const Swap = () => {
           <div className="divider my-1"></div>
           <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
             <button 
-              onClick={() => router.push({
-                pathname: '/swap',
-                query: {
-                  fromChain: '50',
-                  toChain: '50',
-                  fromToken: '0x0000000000000000000000000000000000000000',
-                  toToken: token
-                }
-              })}
+              onClick={() => window.open(`https://app.xspswap.finance/#/swap?outputCurrency=${token}&inputCurrency=xdc`, '_blank')}
               className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
             >
               Swap
