@@ -411,6 +411,45 @@ const IdoDetail = () => {
                 </div>
               </div>
 
+              {/* IDO Distribution Rules */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-6">
+                <h3 className="text-xl font-bold mb-4 text-green-800 flex items-center">
+                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  IDO Distribution Rules
+                </h3>
+                <p className="text-sm text-green-700 mb-4">
+                  After IDO completion, XDC and tokens will be distributed as follows:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-green-600 mb-2">2%</div>
+                    <div className="text-sm font-semibold text-gray-700 mb-1">Platform Fee</div>
+                    <div className="text-xs text-gray-600">Goes to platform</div>
+                  </div>
+                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-blue-600 mb-2">8%</div>
+                    <div className="text-sm font-semibold text-gray-700 mb-1">Creator Reward</div>
+                    <div className="text-xs text-gray-600">Goes to IDO creator</div>
+                  </div>
+                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-purple-600 mb-2">90%</div>
+                    <div className="text-sm font-semibold text-gray-700 mb-1">Liquidity Pool</div>
+                    <div className="text-xs text-gray-600">Added to XSwapProtocol<br/>(LP tokens locked)</div>
+                  </div>
+                </div>
+                <div className="mt-4 bg-white border border-green-300 rounded-lg p-3">
+                  <p className="text-xs text-gray-700 font-medium mb-2">📌 Important Notes:</p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• 90% of raised XDC automatically creates liquidity on XSwapProtocol</li>
+                    <li>• LP tokens are permanently locked in the IDO contract</li>
+                    <li>• Ensures immediate trading availability and price stability</li>
+                    <li>• No rug pull protection through locked liquidity</li>
+                  </ul>
+                </div>
+              </div>
+
               {/* Creator Actions */}
               {isCreator && timeStatus.status === "ended" && !campaign.liquidityAdded && (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
@@ -419,11 +458,11 @@ const IdoDetail = () => {
                     Your IDO campaign has ended. You can now finalize the sale to add liquidity and allow token claiming.
                   </p>
                   <div className="bg-white border border-blue-300 rounded-lg p-3 mb-4">
-                    <h4 className="text-sm font-semibold text-blue-800 mb-2">Fund Distribution:</h4>
+                    <h4 className="text-sm font-semibold text-blue-800 mb-2">Fund Distribution will execute:</h4>
                     <ul className="text-xs text-blue-700 space-y-1">
-                      <li>• 2% will go to the platform</li>
-                      <li>• 8% will go to the IDO creator</li>
-                      <li>• 90% will be sent to XSwap to create LP tokens and lock them in the IDO contract</li>
+                      <li>• 2% platform fee will be deducted</li>
+                      <li>• 8% creator reward will be sent to you</li>
+                      <li>• 90% will create liquidity pool on XSwapProtocol with LP tokens locked</li>
                     </ul>
                   </div>
                   <WriteButton

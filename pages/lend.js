@@ -1099,10 +1099,9 @@ const Lend = () => {
               </div>
             )}
 
-            {/* Show lending interface only when connected */}
-            {isConnected ? (
-              <div className="space-y-6 sm:space-y-8">
-                {/* User Position Cards */}
+            <div className="space-y-6 sm:space-y-8">
+              {/* User Position Cards - Only show when connected */}
+              {isConnected && (
                 <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
                   <div className="aave-card p-4 sm:p-6">
                     <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
@@ -1242,174 +1241,48 @@ const Lend = () => {
                     )}
                   </div>
                 </div>
+              )}
 
-                {/* Assets to Supply/Borrow - Aligned on same row */}
-                <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
-                  {/* Assets to Supply */}
-                  <div className="aave-card p-4 sm:p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                        Assets to supply
-                      </h2>
-                    </div>
-
-                    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-xs sm:text-sm text-green-700">
-                        Supply assets to earn interest and use them as collateral for borrowing.
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      {/* Desktop Table Header - Only visible on desktop */}
-                      <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
-                        <div>Asset</div>
-                        <div className="text-right">Total supply</div>
-                        <div className="text-right">APY</div>
-                        <div></div>
-                      </div>
-
-                      {assetsList
-                        .map((asset) => (
-                          <div
-                            key={`supply-${asset.address}`}
-                            onClick={(e) => {
-                              // 如果点击的是按钮，不跳转
-                              if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
-                                return;
-                              }
-                              router.push(`/asset/${asset.address}`);
-                            }}
-                            className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
-                          >
-                            {/* Mobile Card Layout */}
-                            <div className="sm:hidden space-y-4">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center">
-                                  <img
-                                    src={asset.icon}
-                                    alt={asset.symbol}
-                                    className="w-10 h-10 rounded-full mr-3"
-                                  />
-                                  <div>
-                                    <div className="font-semibold text-gray-900 text-base">
-                                      {asset.symbol}
-                                    </div>
-                                  </div>
-                                </div>
-                                <button
-                                  onClick={() => {
-                                    setSelectedAsset(asset.address);
-                                    setActiveTab("supply");
-                                    setAmount("");
-                                  }}
-                                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                                >
-                                  Supply
-                                </button>
-                              </div>
-                              <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-gray-50 rounded-lg p-3">
-                                  <div className="text-xs text-gray-500 mb-1">Total Supply</div>
-                                  <div className="font-semibold text-gray-900">
-                                    {formatNumber(asset.totalSupply, asset.decimals, 2)}
-                                  </div>
-                                </div>
-                                <div className="bg-gray-50 rounded-lg p-3">
-                                  <div className="text-xs text-gray-500 mb-1">Supply APY</div>
-                                  <div className="font-semibold text-green-600">
-                                    {formatAPY(asset.supplyAPY)}%
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {/* Desktop Table Layout */}
-                            <div className="hidden sm:contents">
-                              <div className="flex items-center">
-                                <img
-                                  src={asset.icon}
-                                  alt={asset.symbol}
-                                  className="w-8 h-8 rounded-full mr-3"
-                                />
-                                <span className="font-semibold text-gray-900">
-                                  {asset.symbol}
-                                </span>
-                              </div>
-                              <div className="text-right">
-                                <div className="font-medium text-gray-900">
-                                  {formatNumber(asset.totalSupply, asset.decimals, 2)}
-                                </div>
-                              </div>
-                              <div className="text-right font-medium text-green-600">
-                                {formatAPY(asset.supplyAPY)}%
-                              </div>
-                              <div className="text-right">
-                                <button
-                                  onClick={() => {
-                                    setSelectedAsset(asset.address);
-                                    setActiveTab("supply");
-                                    setAmount("");
-                                  }}
-                                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
-                                >
-                                  Supply
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
+              {/* Market Data - Always show market lending rates and liquidity */}
+              <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
+                {/* Assets to Supply - Show market data always */}
+                <div className="aave-card p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Assets to supply
+                    </h2>
                   </div>
 
-                  {/* Assets to Borrow */}
-                  <div className="aave-card p-4 sm:p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                        Assets to borrow
-                      </h2>
+                  <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
+                    <svg
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-xs sm:text-sm text-green-700">
+                      Supply assets to earn interest and use them as collateral for borrowing.
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Desktop Table Header - Only visible on desktop */}
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                      <div>Asset</div>
+                      <div className="text-right">Total supply</div>
+                      <div className="text-right">APY</div>
+                      <div></div>
                     </div>
 
-                    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
-                      <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-xs sm:text-sm text-blue-700">
-                        To borrow you need to supply any asset to be used as
-                        collateral.
-                      </span>
-                    </div>
-
-                    <div className="space-y-3">
-                      {/* Desktop Table Header - Only visible on desktop */}
-                      <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
-                        <div>Asset</div>
-                        <div className="text-right">Total borrowed</div>
-                        <div className="text-right">APY, variable</div>
-                        <div></div>
-                      </div>
-
-                      {assetsList.map((asset) => (
+                    {assetsList.length > 0 ? assetsList
+                      .map((asset) => (
                         <div
-                          key={`borrow-${asset.address}`}
+                          key={`supply-${asset.address}`}
                           onClick={(e) => {
                             // 如果点击的是按钮，不跳转
                             if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
@@ -1432,11 +1305,161 @@ const Lend = () => {
                                   <div className="font-semibold text-gray-900 text-base">
                                     {asset.symbol}
                                   </div>
-                                  <div className="text-xs text-gray-500">
-                                    Variable APY
-                                  </div>
                                 </div>
                               </div>
+                              {isConnected ? (
+                                <button
+                                  onClick={() => {
+                                    setSelectedAsset(asset.address);
+                                    setActiveTab("supply");
+                                    setAmount("");
+                                  }}
+                                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                                >
+                                  Supply
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={privyLogin}
+                                  className="bg-gray-400 text-white px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-500 transition-colors"
+                                >
+                                  Connect
+                                </button>
+                              )}
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="bg-gray-50 rounded-lg p-3">
+                                <div className="text-xs text-gray-500 mb-1">Total Supply</div>
+                                <div className="font-semibold text-gray-900">
+                                  {formatNumber(asset.totalSupply, asset.decimals, 2)}
+                                </div>
+                              </div>
+                              <div className="bg-gray-50 rounded-lg p-3">
+                                <div className="text-xs text-gray-500 mb-1">Supply APY</div>
+                                <div className="font-semibold text-green-600">
+                                  {formatAPY(asset.supplyAPY)}%
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Desktop Table Layout */}
+                          <div className="hidden sm:contents">
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-8 h-8 rounded-full mr-3"
+                              />
+                              <span className="font-semibold text-gray-900">
+                                {asset.symbol}
+                              </span>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-medium text-gray-900">
+                                {formatNumber(asset.totalSupply, asset.decimals, 2)}
+                              </div>
+                            </div>
+                            <div className="text-right font-medium text-green-600">
+                              {formatAPY(asset.supplyAPY)}%
+                            </div>
+                            <div className="text-right">
+                              {isConnected ? (
+                                <button
+                                  onClick={() => {
+                                    setSelectedAsset(asset.address);
+                                    setActiveTab("supply");
+                                    setAmount("");
+                                  }}
+                                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                                >
+                                  Supply
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={privyLogin}
+                                  className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                                >
+                                  Connect
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )) : (
+                        <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                          Loading market data...
+                        </div>
+                      )}
+                  </div>
+                </div>
+
+                {/* Assets to Borrow - Show market data always */}
+                <div className="aave-card p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      Assets to borrow
+                    </h2>
+                  </div>
+
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+                    <svg
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-xs sm:text-sm text-blue-700">
+                      To borrow you need to supply any asset to be used as
+                      collateral.
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Desktop Table Header - Only visible on desktop */}
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                      <div>Asset</div>
+                      <div className="text-right">Total borrowed</div>
+                      <div className="text-right">APY, variable</div>
+                      <div></div>
+                    </div>
+
+                    {assetsList.length > 0 ? assetsList.map((asset) => (
+                      <div
+                        key={`borrow-${asset.address}`}
+                        onClick={(e) => {
+                          // 如果点击的是按钮，不跳转
+                          if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                            return;
+                          }
+                          router.push(`/asset/${asset.address}`);
+                        }}
+                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
+                      >
+                        {/* Mobile Card Layout */}
+                        <div className="sm:hidden space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-10 h-10 rounded-full mr-3"
+                              />
+                              <div>
+                                <div className="font-semibold text-gray-900 text-base">
+                                  {asset.symbol}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  Variable APY
+                                </div>
+                              </div>
+                            </div>
+                            {isConnected ? (
                               <button
                                 onClick={() => {
                                   setSelectedAsset(asset.address);
@@ -1448,54 +1471,63 @@ const Lend = () => {
                               >
                                 Borrow
                               </button>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-500 mb-1">Total Borrowed</div>
-                                <div className="font-semibold text-gray-900">
-                                  {formatNumber(
-                                    asset.totalBorrow,
-                                    asset.decimals,
-                                    2
-                                  )}
-                                </div>
-                              </div>
-                              <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-500 mb-1">APY Variable</div>
-                                <div className="font-semibold text-red-600">
-                                  {formatAPY(asset.borrowAPY)}%
-                                </div>
-                              </div>
-                            </div>
+                            ) : (
+                              <button
+                                onClick={privyLogin}
+                                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                              >
+                                Connect
+                              </button>
+                            )}
                           </div>
-                          
-                          {/* Desktop Table Layout */}
-                          <div className="hidden sm:contents">
-                              <div className="flex items-center">
-                                <img
-                                  src={asset.icon}
-                                  alt={asset.symbol}
-                                  className="w-8 h-8 rounded-full mr-3"
-                                />
-                                <span className="font-semibold text-gray-900">
-                                  {asset.symbol}
-                                </span>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-gray-50 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 mb-1">Total Borrowed</div>
+                              <div className="font-semibold text-gray-900">
+                                {formatNumber(
+                                  asset.totalBorrow,
+                                  asset.decimals,
+                                  2
+                                )}
                               </div>
-                              <div className="text-right">
-                               <div className="font-medium text-gray-900">
-                                  {formatNumber(
-                                    asset.totalBorrow,
-                                    asset.decimals,
-                                    2
-                                  )}
-                               </div>
-                             </div>
-                            <div className="text-right">
-                              <div className="font-medium text-red-600">
+                            </div>
+                            <div className="bg-gray-50 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 mb-1">APY Variable</div>
+                              <div className="font-semibold text-red-600">
                                 {formatAPY(asset.borrowAPY)}%
                               </div>
                             </div>
+                          </div>
+                        </div>
+                        
+                        {/* Desktop Table Layout */}
+                        <div className="hidden sm:contents">
+                            <div className="flex items-center">
+                              <img
+                                src={asset.icon}
+                                alt={asset.symbol}
+                                className="w-8 h-8 rounded-full mr-3"
+                              />
+                              <span className="font-semibold text-gray-900">
+                                {asset.symbol}
+                              </span>
+                            </div>
                             <div className="text-right">
+                             <div className="font-medium text-gray-900">
+                                {formatNumber(
+                                  asset.totalBorrow,
+                                  asset.decimals,
+                                  2
+                                )}
+                             </div>
+                           </div>
+                          <div className="text-right">
+                            <div className="font-medium text-red-600">
+                              {formatAPY(asset.borrowAPY)}%
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            {isConnected ? (
                               <button
                                 onClick={() => {
                                   setSelectedAsset(asset.address);
@@ -1507,22 +1539,33 @@ const Lend = () => {
                               >
                                 Borrow
                               </button>
-                            </div>
+                            ) : (
+                              <button
+                                onClick={privyLogin}
+                                className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                              >
+                                Connect
+                              </button>
+                            )}
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    )) : (
+                      <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                        Loading market data...
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-            ) : (
-              /* Connect Wallet Interface */
-              <div className="flex items-center justify-center min-h-[50vh] sm:min-h-[60vh] px-4">
-                <div className="text-center max-w-sm sm:max-w-md mx-auto">
-                  <div className="mb-6 sm:mb-8 flex justify-center">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-600 rounded-full flex items-center justify-center">
+
+              {/* Connect Wallet Prompt - Only show when not connected and positioned at bottom */}
+              {!isConnected && (
+                <div className="aave-card p-6 text-center">
+                  <div className="mb-6 flex justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full flex items-center justify-center">
                       <svg 
-                        className="w-10 h-10 sm:w-12 sm:h-12 text-white" 
+                        className="w-8 h-8 text-white" 
                         fill="currentColor" 
                         viewBox="0 0 24 24"
                       >
@@ -1530,21 +1573,21 @@ const Lend = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-                    Please, connect your wallet
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Connect your wallet to start earning
                   </h3>
-                  <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
-                    Please connect your wallet to see your supplies, borrowings, and open positions.
+                  <p className="text-gray-600 mb-6 max-w-sm mx-auto">
+                    Connect your wallet to supply assets, borrow against them, and manage your positions.
                   </p>
                   <button
                     onClick={privyLogin}
-                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
+                    className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
                   >
                     Connect wallet
                   </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
 

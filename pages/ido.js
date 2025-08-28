@@ -347,6 +347,7 @@ const Ido = () => {
         </p>
       </div>
 
+
       {/* Create Campaign Section - Available to all connected users */}
       {isConnected && (
         <div className="mb-12">
