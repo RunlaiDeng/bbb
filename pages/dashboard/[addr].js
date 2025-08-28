@@ -222,61 +222,6 @@ const Address = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      {/* Profile Card */}
-      <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div className="card-body p-6">
-          <div className="flex items-center gap-6">
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24">
-              <Image
-                src="/bbb.jpg"
-                alt="user"
-                fill
-                className="rounded-2xl object-cover"
-                priority
-              />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 text-sm sm:text-base font-medium">
-                <span className="font-mono">{addr?.substr(36)}</span>
-                {address != addr && <span className="text-gray-500">(Watch Only)</span>}
-                <div
-                  className="tooltip cursor-pointer hover:opacity-80 transition-opacity"
-                  data-tip="Copy Address"
-                  onClick={() => {
-                    copy(addr);
-                    success("Address copied!");
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                      className="fill-current"
-                    />
-                    <path
-                      d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                      className="fill-current"
-                    />
-                  </svg>
-                </div>
-                <div
-                  className="tooltip cursor-pointer hover:opacity-80 transition-opacity"
-                  data-tip="View on XDCScan"
-                  onClick={() => {
-                    window.open("https://xdcscan.com/address/" + addr);
-                  }}
-                >
-                  <Image src="/xdc.png" width={20} height={20} alt="XDC" className="rounded-full" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Balance Card */}
       <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200">
         <div className="card-body p-6">
@@ -299,13 +244,13 @@ const Address = () => {
               </div>
             )}
           </div>
-          
+
           {!show && (
             <div className="flex justify-center py-8">
               <Loading />
             </div>
           )}
-          
+
           {show && (
             <>
               <div className="mt-4">
@@ -314,7 +259,11 @@ const Address = () => {
                 </div>
                 <div className="flex items-center gap-2 mt-2 text-sm">
                   <span className="text-gray-600">24h Change</span>
-                  <span className={total24hChange >= 0 ? "text-success" : "text-error"}>
+                  <span
+                    className={
+                      total24hChange >= 0 ? "text-success" : "text-error"
+                    }
+                  >
                     {total24hChange >= 0 ? "+" : "-"}$
                     {Math.abs(total24hChange)?.toLocaleString()}
                     <span className="ml-1">
@@ -361,8 +310,22 @@ const Address = () => {
                 </div>
               ) : error ? (
                 <div className="alert alert-error">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <span>{error.message || "An error occurred while loading data"}</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-current shrink-0 h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>
+                    {error.message || "An error occurred while loading data"}
+                  </span>
                 </div>
               ) : (
                 <table className="table">
@@ -371,8 +334,12 @@ const Address = () => {
                       <th>Coin</th>
                       <th className="text-right">Amount</th>
                       <th className="text-right hidden sm:table-cell">Price</th>
-                      <th className="text-right hidden sm:table-cell">24h Change</th>
-                      <th className="text-right hidden sm:table-cell">Actions</th>
+                      <th className="text-right hidden sm:table-cell">
+                        24h Change
+                      </th>
+                      <th className="text-right hidden sm:table-cell">
+                        Actions
+                      </th>
                       <th className="text-right sm:hidden px-0"></th>
                     </tr>
                   </thead>
@@ -392,21 +359,31 @@ const Address = () => {
                           </div>
                           <div>
                             <div className="font-medium">bXDC</div>
-                            <div className="text-sm text-gray-500">Bonus XDC</div>
+                            <div className="text-sm text-gray-500">
+                              Bonus XDC
+                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="text-right">
-                        <div className="font-medium">{Number(referralBonus)?.toLocaleString() || 0}</div>
-                        <div className="text-sm text-gray-500">${referralUsdBonus?.toLocaleString() || 0}</div>
+                        <div className="font-medium">
+                          {Number(referralBonus)?.toLocaleString() || 0}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          ${referralUsdBonus?.toLocaleString() || 0}
+                        </div>
                       </td>
                       <td className="text-right hidden sm:table-cell font-medium">
                         ${Number(xdcPrice || 0)?.toFixed(6)}
                       </td>
-                      <td className={
-                        "text-right hidden sm:table-cell font-medium " +
-                        (xdcPriceChange24h >= 0 ? "text-success" : "text-error")
-                      }>
+                      <td
+                        className={
+                          "text-right hidden sm:table-cell font-medium " +
+                          (xdcPriceChange24h >= 0
+                            ? "text-success"
+                            : "text-error")
+                        }
+                      >
                         {xdcPriceChange24h >= 0 ? "+" : "-"}
                         {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                       </td>
@@ -449,21 +426,31 @@ const Address = () => {
                           </div>
                           <div>
                             <div className="font-medium">XDC</div>
-                            <div className="text-sm text-gray-500">XDC Network</div>
+                            <div className="text-sm text-gray-500">
+                              XDC Network
+                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="text-right">
-                        <div className="font-medium">{Number(xdcBalance)?.toLocaleString() || 0}</div>
-                        <div className="text-sm text-gray-500">${xdcUsdBalance?.toLocaleString() || 0}</div>
+                        <div className="font-medium">
+                          {Number(xdcBalance)?.toLocaleString() || 0}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          ${xdcUsdBalance?.toLocaleString() || 0}
+                        </div>
                       </td>
                       <td className="text-right hidden sm:table-cell font-medium">
                         ${Number(xdcPrice || 0)?.toFixed(6)}
                       </td>
-                      <td className={
-                        "text-right hidden sm:table-cell font-medium " +
-                        (xdcPriceChange24h >= 0 ? "text-success" : "text-error")
-                      }>
+                      <td
+                        className={
+                          "text-right hidden sm:table-cell font-medium " +
+                          (xdcPriceChange24h >= 0
+                            ? "text-success"
+                            : "text-error")
+                        }
+                      >
                         {xdcPriceChange24h >= 0 ? "+" : "-"}
                         {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
                       </td>
@@ -487,7 +474,9 @@ const Address = () => {
                     {tokens?.map((item, index) => (
                       <tr
                         key={index}
-                        className={"hover " + (item?.balance == 0 ? "hidden" : "")}
+                        className={
+                          "hover " + (item?.balance == 0 ? "hidden" : "")
+                        }
                       >
                         <td>
                           <div className="flex items-center gap-3">
@@ -519,7 +508,9 @@ const Address = () => {
                         <td className="text-right">
                           <div className="font-medium">
                             {formatEther(item?.balance) >= 1000
-                              ? Number(formatEther(item?.balance))?.toLocaleString()
+                              ? Number(
+                                  formatEther(item?.balance)
+                                )?.toLocaleString()
                               : formatEther(item?.balance)}
                           </div>
                           <div className="text-sm text-gray-500">
@@ -529,10 +520,14 @@ const Address = () => {
                         <td className="text-right hidden sm:table-cell font-medium">
                           ${Number(item?.price || 0)?.toFixed(6)}
                         </td>
-                        <td className={
-                          "text-right hidden sm:table-cell font-medium " +
-                          (item?.priceChange24h >= 0 ? "text-success" : "text-error")
-                        }>
+                        <td
+                          className={
+                            "text-right hidden sm:table-cell font-medium " +
+                            (item?.priceChange24h >= 0
+                              ? "text-success"
+                              : "text-error")
+                          }
+                        >
                           {item?.priceChange24h >= 0 && "+"}
                           {(item?.priceChange24h * 100)?.toFixed(2)}%
                         </td>
