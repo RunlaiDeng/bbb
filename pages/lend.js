@@ -37,6 +37,11 @@ const Lend = () => {
   const [loading, setLoading] = useState(true);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  // 设置价格相关状态
+  const [showPriceModal, setShowPriceModal] = useState(false);
+  const [selectedPriceAsset, setSelectedPriceAsset] = useState("");
+  const [newPrice, setNewPrice] = useState("");
 
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
@@ -172,7 +177,7 @@ const Lend = () => {
       }
     });
     return contracts;
-  }, [address, lendContract, supportedAssets]);
+  }, [address, lendContract, supportedAssets, bbbToken?.abi]);
 
   const { data: contractData, refetch: refetchData } = useReadContracts({
     contracts: createUserDataContracts,
@@ -230,6 +235,17 @@ const Lend = () => {
       : [],
     query: { enabled: !!lendContract },
   });
+
+  // 获取合约owner地址
+  const { data: ownerData } = useReadContracts({
+    contracts: lendContract
+      ? [{ ...lendContract, functionName: "owner" }]
+      : [],
+    query: { enabled: !!lendContract },
+  });
+
+  const contractOwner = ownerData?.[0]?.result;
+  const isOwner = address && contractOwner && address.toLowerCase() === contractOwner.toLowerCase();
 
   // ESC键关闭弹窗
   useEffect(() => {
@@ -1053,9 +1069,20 @@ const Lend = () => {
             {/* User Dashboard */}
             {isConnected && userData && (
               <div className="aave-card p-4 sm:p-6">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
-                  Account Overview
-                </h2>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-0">
+                    Account Overview
+                  </h2>
+                  {/* Owner设置价格按钮 */}
+                  {isOwner && (
+                    <button
+                      onClick={() => setShowPriceModal(true)}
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 shadow-md"
+                    >
+                      🔧 设置价格
+                    </button>
+                  )}
+                </div>
                 <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-8">
                   <div className="text-left">
                     <div className="text-xs sm:text-sm text-gray-600 mb-1">Net Worth</div>
@@ -1988,6 +2015,142 @@ const Lend = () => {
                         </div>
                       </div>
                     )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 价格设置弹窗 */}
+      {showPriceModal && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4"
+          onClick={() => {
+            setShowPriceModal(false);
+            setSelectedPriceAsset("");
+            setNewPrice("");
+          }}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 弹窗头部 */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                🔧 设置资产价格
+              </h3>
+              <button
+                onClick={() => {
+                  setShowPriceModal(false);
+                  setSelectedPriceAsset("");
+                  setNewPrice("");
+                }}
+                className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* 弹窗内容 */}
+            <div className="p-6 space-y-6">
+              {/* 资产选择 */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  选择资产
+                </label>
+                <select
+                  value={selectedPriceAsset}
+                  onChange={(e) => setSelectedPriceAsset(e.target.value)}
+                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base font-medium"
+                >
+                  <option value="">请选择要设置价格的资产</option>
+                  {assetsList.map((asset) => (
+                    <option key={asset.address} value={asset.address}>
+                      {asset.symbol} - {asset.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 当前价格显示 */}
+              {selectedPriceAsset && (
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-sm text-gray-600 mb-1">当前价格 (USD)</div>
+                  <div className="text-lg font-bold text-gray-900">
+                    ${(() => {
+                      const asset = assetsList.find(a => a.address === selectedPriceAsset);
+                      return asset ? formatNumber(asset.price, 18, 6) : "0.000000";
+                    })()}
+                  </div>
+                </div>
+              )}
+
+              {/* 新价格输入 */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  新价格 (USD)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={newPrice}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "" || /^\d*\.?\d*$/.test(value)) {
+                        setNewPrice(value);
+                      }
+                    }}
+                    placeholder="0.000000"
+                    className="w-full p-3 pl-8 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base font-semibold"
+                  />
+                  <div className="absolute left-3 top-3 text-gray-500 font-medium">
+                    $
+                  </div>
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  价格将以18位小数精度存储在合约中
+                </div>
+              </div>
+
+              {/* 操作按钮 */}
+              <div className="space-y-3">
+                {selectedPriceAsset && newPrice && (
+                  <WriteButton
+                    buttonName="设置价格"
+                    data={{
+                      ...lendContract,
+                      functionName: "updatePrice",
+                      args: [selectedPriceAsset, parseEther(newPrice)],
+                    }}
+                    callback={() => {
+                      refreshData();
+                      setShowPriceModal(false);
+                      setSelectedPriceAsset("");
+                      setNewPrice("");
+                    }}
+                    className={`${BUTTON_STYLES.base} bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg`}
+                  />
+                )}
+
+                {/* 批量设置按钮 (未来功能) */}
+                <div className="pt-4 border-t border-gray-200">
+                  <div className="text-sm text-gray-500 text-center">
+                    💡 提示：单个资产价格设置完成后，可以考虑添加批量设置功能
                   </div>
                 </div>
               </div>
