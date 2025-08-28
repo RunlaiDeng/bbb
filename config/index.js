@@ -227,7 +227,7 @@ export const markets = [
     imageUrl: "/usdb.png",
     description: "USDB token",
     address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
-    pool: "0x9c15dc1c8991e852ceaf623b30162a98a1c83f3d",
+    pool: "0xa82b7926f5c503a6b0d9efc1eb0d0e47d73e8907",
   },
 ];
 
