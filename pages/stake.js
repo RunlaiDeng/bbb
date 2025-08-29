@@ -5,37 +5,12 @@ import StakingPool from "@/components/StakingPool";
 
 // Process pool ids for hash navigation (move outside component to avoid dependency issues)
 const POOL_HASH_MAP = {
-  xdc: "xdc-0",
-  psxdc: "lp-0",
   bbb: "lp-2",
-  "4pool": "lpv2-0",
-  "xdc-bbb-v2": "lpv2-3",
   "susdb": "lpv2-4",
 };
 
 // Pool configurations (move outside component)
 const POOL_CONFIGS = [
-  { 
-    id: 'xdc-0', 
-    pid: 0, 
-    poolType: 'xdc', 
-    title: 'XDC Staking (Expired)', 
-    symbol: 'XDC',
-    icon: "/xdc.png",
-    getTokenLink: "https://faucet.blockpi.io/xdc",
-    hashTag: "#xdc"
-  },
-  { 
-    id: 'lp-0', 
-    pid: 0, 
-    poolType: 'lp', 
-    title: 'psXDC ReStaking (Expired)', 
-    symbol: 'psXDC',
-    icon: "/xdc.png",
-    getTokenLink: "https://primestaking.xyz/xdc-liquid-staking",
-    hashTag: "#psxdc"
-  },
-
   { 
     id: 'lp-2', 
     pid: 2, 
@@ -45,29 +20,6 @@ const POOL_CONFIGS = [
     icon: "/bbb.jpg",
     getTokenLink: "/buy",
     hashTag: "#bbb"
-  },
-
-  { 
-    id: 'lpv2-0', 
-    pid: 0, 
-    poolType: 'lpstakev2', 
-    title: '4pool Staking(Expired)', 
-    symbol: '4POOL',
-    icon: "fourpool",
-    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-stable-ng-2/deposit/",
-    hashTag: "#4pool"
-  },
-
-
-  { 
-    id: 'lpv2-3', 
-    pid: 3, 
-    poolType: 'lpstakev2', 
-    title: 'BBBXDC Staking(Expired)', 
-    symbol: 'BBBXDC',
-    icon: "combined",
-    getTokenLink: "https://www.curve.finance/dex/xdc/pools/factory-twocrypto-0/deposit/",
-    hashTag: "#xdc-bbb-v2"
   },
 
   { 
@@ -220,30 +172,14 @@ const Stake = () => {
 
       // Search by keywords
       const keywordMatch =
-        (searchTerm.includes("xdc") &&
-          (poolConfig.poolType === 'xdc' || poolConfig.symbol?.toLowerCase().includes("xdc"))) ||
         (searchTerm.includes("bbb") &&
           poolConfig.symbol?.toLowerCase().includes("bbb")) ||
         (searchTerm.includes("usdb") &&
           poolConfig.symbol?.toLowerCase().includes("usdb")) ||
         (searchTerm.includes("susdb") &&
           poolConfig.symbol?.toLowerCase().includes("susdb")) ||
-        (searchTerm.includes("4pool") &&
-          poolConfig.poolType === 'lpstakev2') ||
-        (searchTerm.includes("fourpool") &&
-          poolConfig.poolType === 'lpstakev2') ||
-        (searchTerm.includes("3xdc") &&
-          poolConfig.symbol?.toLowerCase().includes("3xdc")) ||
-        (searchTerm.includes("usdc") &&
-          poolConfig.poolType === 'lpstakev2') ||
-        (searchTerm.includes("usdt") &&
-          poolConfig.poolType === 'lpstakev2') ||
         searchTerm.includes("stake") ||
-        searchTerm.includes("staking") ||
-        searchTerm.includes("restake") ||
-        searchTerm.includes("restaking") ||
-        (searchTerm.includes("lp") && poolConfig.pid === 3) ||
-        (searchTerm.includes("icelp") && poolConfig.pid === 3);
+        searchTerm.includes("staking");
 
       return symbolMatch || contractSymbolMatch || titleMatch || keywordMatch;
     });
