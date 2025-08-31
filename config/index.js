@@ -219,7 +219,7 @@ export const markets = [
     createTime: "09/06/24",
     deployer: "0x2475Dcd4Fe333bE814Ef7C8f8CE8A1E9B5FcDEA0",
     address: "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
-    pool: "0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
+    pool: "0x96023B06291327a95578FdA9D0Ac4194451Dd57d",
   },
   {
     name: "USDB",
