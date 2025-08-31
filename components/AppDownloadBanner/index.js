@@ -33,7 +33,7 @@ const AppDownloadBanner = () => {
           animation: fadeInUp 0.3s ease-out forwards;
         }
       `}</style>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 border-t border-green-500/30 shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 border-t border-green-500/30 shadow-lg hidden lg:block">
         <div className="flex items-center justify-between px-4 py-3 max-w-screen-xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="flex-shrink-0">
