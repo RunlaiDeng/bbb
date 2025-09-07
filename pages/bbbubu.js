@@ -516,7 +516,7 @@ const BBBubu = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 pb-24 lg:pb-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 mobile-safe-bottom">
       <Head>
         <title>BBBubu - Mystery Box NFT Collection</title>
         <meta
@@ -791,7 +791,7 @@ const BBBubu = () => {
 
       {/* Mint Modal */}
       {data.showMintModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 pb-20 lg:pb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">Mint BBBubu</h2>
@@ -904,7 +904,7 @@ const BBBubu = () => {
 
       {/* Swap Modal */}
       {data.showSwapModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 pb-20 lg:pb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">Swap Farm</h2>
@@ -1097,7 +1097,7 @@ const BBBubu = () => {
 
       {/* Transfer Modal */}
       {data.showTransferModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 pb-20 lg:pb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">

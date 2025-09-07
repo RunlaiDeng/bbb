@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 
   return (
     <main>
-      <div className="min-h-screen pb-20 lg:pb-0">
+      <div className="min-h-screen mobile-safe-bottom">
         <Navbar />
         {children}
       </div>

@@ -80,3 +80,24 @@
 .rainbow-outline{
   animation: ranbow-outline 5s linear infinite;
 }
+
+/* Mobile navigation safe areas */
+.mobile-safe-bottom {
+  padding-bottom: 5rem; /* 80px - mobile nav height */
+}
+
+@media (min-width: 1024px) {
+  .mobile-safe-bottom {
+    padding-bottom: 1rem; /* 16px - normal desktop padding */
+  }
+}
+
+.mobile-safe-modal {
+  padding-bottom: 5rem; /* 80px - mobile nav height */
+}
+
+@media (min-width: 640px) {
+  .mobile-safe-modal {
+    padding-bottom: 1rem; /* 16px - normal desktop padding */
+  }
+}
