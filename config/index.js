@@ -37,17 +37,58 @@ export const rpcUrl = "https://api.bbbpump.fun";
 
 export const dashboardConfig = {
   "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {
+    symbol: "BBB",
+    name: "Beny Bad Boy",
     imageUrl: "/bbb.jpg",
     tradeLink: dexLink,
     price: "bbb",
   },
   "0x37c00AE5C4b49Ab0F5fD2FFB1033588e9bC33B08": {
+    symbol: "mBBB",
+    name: "Staked BBB",
     imageUrl: "/bbb.jpg",
     price: "mbbb",
   },
   "0x951857744785E80e2De051c32EE7b25f9c458C42": {
+    symbol: "WXDC",
+    name: "Wrapped XDC",
     imageUrl: "/xdc.png",
     price: "wxdc",
+  },
+  "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8": {
+    symbol: "USDB",
+    name: "USDB Stablecoin",
+    imageUrl: "/usdb.png",
+    price: "usdb",
+    tradeLink: "/swap/0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
+  },
+  "0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1": {
+    symbol: "USDC",
+    name: "USD Coin",
+    imageUrl: "/usdc.jpg",
+    price: "usdc",
+    tradeLink: "/swap/0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
+  },
+  "0x1416ceC451561105B70623CDfb70e521293E919a": {
+    symbol: "sUSDB",
+    name: "Staked USDB",
+    imageUrl: "/susdb.png",
+    price: "susdb",
+    tradeLink: "/stake",
+  },
+  "0x9B8e12b0BAC165B86967E771d98B520Ec3F665A6": {
+    symbol: "psXDC",
+    name: "Proof of Stake XDC",
+    imageUrl: "/xdc.png",
+    price: "psxdc",
+    tradeLink: "/bpsXDC",
+  },
+  "0x24be372f0915b8BAf17AfA150210FFcB79C88845": {
+    symbol: "bpsXDC",
+    name: "BBB Proof of Stake XDC",
+    imageUrl: "/xdc.png",
+    price: "bpsxdc",
+    tradeLink: "/bpsXDC",
   },
 };
 

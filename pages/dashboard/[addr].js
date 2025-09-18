@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
 import {
   calculatePrice,
   getBBBPrice,
-  getERC20List,
   getXDCPrice,
 } from "@/components/Utils";
 import { erc20Abi, formatEther, getAddress } from "viem";
@@ -27,7 +26,7 @@ const Address = () => {
   const chainId = useChainId();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const fetchData = async (addr) => {
+  const fetchData = useCallback(async (addr) => {
     if (addr) {
       setMount(false);
       setIsLoading(true);
@@ -44,40 +43,8 @@ const Address = () => {
         if (bbb.price != 0) {
           setPrice.bbb = bbb;
         }
-        const erc20List = await getERC20List(addr);
-        const queryList = erc20List?.items?.map((item) => {
-          return getAddress(item?.token?.address);
-        });
 
-        const queryTokens = await rpc.getTokens(
-          1,
-          1,
-          queryList?.length,
-          queryList
-        );
-
-        const coins = erc20List?.items?.map((item, index) => {
-          const list = queryTokens?.list;
-          const listMapping = list?.reduce((acc, item) => {
-            acc[item.token] = item;
-            return acc;
-          }, {});
-          const queryAddr = getAddress(item?.token?.address);
-
-          const queryInfo = listMapping[queryAddr];
-
-          if (queryInfo) {
-            queryInfo.priceChange24h =
-              (1 + Number(queryInfo.priceChangeH24)) *
-                (1 + Number(xdc.priceChange24h)) -
-              1;
-          }
-
-          item = { ...item.token, ...queryInfo };
-          return item;
-        });
-
-        setData({ ...data, ...setPrice, coins: coins, referralInfo });
+        setData((prevData) => ({ ...prevData, ...setPrice, referralInfo }));
         setMount(true);
         setIsLoading(false);
       } catch (err) {
@@ -85,18 +52,21 @@ const Address = () => {
         setIsLoading(false);
       }
     }
-  };
+  }, []);
 
   const mbbb = contracts[chainId]?.mbbbv2;
   const referralInfo = data?.referralInfo;
 
   useEffect(() => {
     fetchData(addr);
-  }, [addr]);
+  }, [addr, fetchData]);
 
-  const searchBalances = data?.coins?.map((item) => {
+  // Get token addresses from dashboardConfig instead of data.coins
+  const configuredTokens = Object.keys(dashboardConfig);
+  
+  const searchBalances = configuredTokens.map((tokenAddress) => {
     return {
-      address: item?.address,
+      address: tokenAddress,
       abi: erc20Abi,
       functionName: "balanceOf",
       args: [addr],
@@ -104,12 +74,13 @@ const Address = () => {
   });
 
   const { data: reads0 } = useReadContracts({ contracts: searchBalances });
-
-  const searchTokens = data?.coins?.map((item) => {
+  console.log(reads0)
+  
+  const searchTokens = configuredTokens.map((tokenAddress) => {
     return {
       ...mbbb,
       functionName: "tokenMapping",
-      args: [item?.address],
+      args: [tokenAddress],
     };
   });
 
@@ -159,17 +130,25 @@ const Address = () => {
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
 
   let tokens = reads0?.map((item, index) => {
-    const coin = data?.coins?.[index];
-    const tokenAddress = getAddress(coin?.address);
+    const tokenAddress = getAddress(configuredTokens[index]);
     const coinConfig = dashboardConfig[tokenAddress];
     const dropToken = dropTokensMapping?.[tokenAddress];
-    coin.priceChange24h = coin?.priceChange24h || 0;
+    
+    // Create a coin object with basic info from config
+    const coin = {
+      address: tokenAddress,
+      symbol: coinConfig?.symbol || 'Unknown',
+      name: coinConfig?.name || 'Unknown Token',
+      priceChange24h: 0, // Default to 0, will be updated below
+      imageUrl: coinConfig?.imageUrl || '/logo.png',
+    };
 
     let tradeLink;
     let usdBalance = 0;
     let price = 0;
     let show = false;
 
+    // Handle dropTokens if they exist
     if (dropToken) {
       tradeLink = "/swap/" + dropToken?.token;
       price = xdcPrice * calculatePrice(Number(dropToken?.xdcAmount));
@@ -178,22 +157,46 @@ const Address = () => {
       total24hChange += usdBalance - usdBalance / (1 + coin.priceChange24h);
       show = true;
     }
-
-    if (coinConfig?.price == "bbb" || coinConfig?.price == "mbbb") {
+    // Handle configured tokens
+    else if (coinConfig?.price == "bbb" || coinConfig?.price == "mbbb") {
       price = bbbPrice;
       usdBalance = (price * Number(item?.result)) / 1e18;
       totalBalance += usdBalance;
       coin.priceChange24h = bbbPriceChange24h;
       total24hChange += usdBalance - usdBalance / (1 + bbbPriceChange24h);
+      tradeLink = coinConfig?.tradeLink || tradeLink;
       show = true;
     }
 
-    if (coinConfig?.price == "wxdc") {
+    else if (coinConfig?.price == "wxdc" || coinConfig?.price == "psxdc" || coinConfig?.price == "bpsxdc") {
       price = xdcPrice;
       usdBalance = (price * Number(item?.result)) / 1e18;
       totalBalance += usdBalance;
       coin.priceChange24h = xdcPriceChange24h;
       total24hChange += usdBalance - usdBalance / (1 + xdcPriceChange24h);
+      tradeLink = coinConfig?.tradeLink || tradeLink;
+      show = true;
+    }
+
+    else if (coinConfig?.price == "usdb" || coinConfig?.price == "susdb") {
+      // USDB and sUSDB are stablecoins, price is approximately $1
+      price = 1;
+      usdBalance = (price * Number(item?.result)) / 1e18;
+      totalBalance += usdBalance;
+      coin.priceChange24h = 0; // Stablecoins have minimal price change
+      total24hChange += usdBalance - usdBalance / (1 + 0);
+      tradeLink = coinConfig?.tradeLink || tradeLink;
+      show = true;
+    }
+
+    else if (coinConfig?.price == "usdc") {
+      // USDC is a stablecoin, price is approximately $1
+      price = 1;
+      usdBalance = (price * Number(item?.result)) / 1e6; // USDC typically has 6 decimals
+      totalBalance += usdBalance;
+      coin.priceChange24h = 0; // Stablecoins have minimal price change
+      total24hChange += usdBalance - usdBalance / (1 + 0);
+      tradeLink = coinConfig?.tradeLink || tradeLink;
       show = true;
     }
 
