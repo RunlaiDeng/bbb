@@ -16,7 +16,6 @@ const USDB = () => {
 
   // Deposit states (no longer modal)
   const [amount, setAmount] = useState("");
-  const [selectedToken, setSelectedToken] = useState("USDC_XDC");
   const [copiedAddress, setCopiedAddress] = useState(null);
 
 
@@ -49,33 +48,14 @@ const USDB = () => {
     }
   }, [copiedAddress]);
 
-  // 代币配置对象
-  const tokenConfigs = {
-    USDC_XDC: {
-      symbol: "USDC.e",
-      name: "Bridged USDC(XDC)",
-      icon: "/usdc.jpg",
-      iconBg: "bg-blue-100",
-      getContract: () => contracts[chainId]?.xdcUSDC,
-      buyLink:
-        "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0x2A8E898b6242355c290E1f4Fc966b8788729A4D4",
-    },
-    USDC_STARGATE: {
-      symbol: "USDCe",
-      name: "USDC.e (Stargate)",
-      icon: "/usdc.jpg",
-      iconBg: "bg-purple-100",
-      getContract: () => contracts[chainId]?.stargateUSDC,
-      buyLink: null,
-    },
-    USDT_STARGATE: {
-      symbol: "USDT",
-      name: "Bridged stgUSDT",
-      icon: "/usdt.jpg",
-      iconBg: "bg-green-100",
-      getContract: () => contracts[chainId]?.stargateUSDT,
-      buyLink: null,
-    },
+  // USDC代币配置
+  const usdcConfig = {
+    symbol: "USDC",
+    name: "Official USDC",
+    icon: "/usdc.jpg",
+    iconBg: "bg-blue-100",
+    getContract: () => contracts[chainId]?.usdc,
+    buyLink: "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
   };
 
   const { data: balance } = useBalance({
@@ -94,42 +74,26 @@ const USDB = () => {
     },
   });
 
-  // 获取各个代币的余额用于显示
-  const { data: usdcXdcBalance } = useBalance({
+  // 获取USDC余额
+  const { data: usdcBalance } = useBalance({
     address,
-    token: contracts[chainId]?.xdcUSDC?.address,
+    token: contracts[chainId]?.usdc?.address,
     query: {
-      enabled: !!address && !!contracts[chainId]?.xdcUSDC?.address,
+      enabled: !!address && !!contracts[chainId]?.usdc?.address,
     },
   });
 
-  const { data: usdcStargateBalance } = useBalance({
-    address,
-    token: contracts[chainId]?.stargateUSDC?.address,
-    query: {
-      enabled: !!address && !!contracts[chainId]?.stargateUSDC?.address,
-    },
-  });
-
-  const { data: usdtStargateBalance } = useBalance({
-    address,
-    token: contracts[chainId]?.stargateUSDT?.address,
-    query: {
-      enabled: !!address && !!contracts[chainId]?.stargateUSDT?.address,
-    },
-  });
-
-  // 获取选中代币的配置
+  // 获取USDC配置
   const getTokenConfig = () => {
-    return tokenConfigs[selectedToken]?.getContract();
+    return usdcConfig.getContract();
   };
 
-  // 检查是否支持选中的代币
+  // 检查USDC是否支持
   const isTokenSupported = () => {
     return getTokenConfig()?.address;
   };
 
-  // 获取代币余额
+  // 获取USDC余额用于交易
   const { data: tokenBalance, refetch: refetchTokenBalance } = useBalance({
     address,
     token: getTokenConfig()?.address,
@@ -150,18 +114,9 @@ const USDB = () => {
     },
   });
 
-  // 获取特定代币的余额
-  const getTokenBalance = (tokenKey) => {
-    switch (tokenKey) {
-      case "USDC_XDC":
-        return usdcXdcBalance;
-      case "USDC_STARGATE":
-        return usdcStargateBalance;
-      case "USDT_STARGATE":
-        return usdtStargateBalance;
-      default:
-        return null;
-    }
+  // 获取USDC余额显示
+  const getDisplayBalance = () => {
+    return usdcBalance;
   };
 
 
@@ -246,30 +201,12 @@ const USDB = () => {
     },
   });
 
-  // 获取USDB合约中的USDC.e余额
+  // 获取USDB合约中的USDC余额
   const { data: contractUsdcBalance, refetch: refetchContractUsdcBalance } = useBalance({
     address: contracts[chainId]?.usdb?.address,
-    token: contracts[chainId]?.xdcUSDC?.address,
+    token: contracts[chainId]?.usdc?.address,
     query: {
-      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.xdcUSDC?.address,
-    },
-  });
-
-  // 获取USDB合约中的USDT余额
-  const { data: contractUsdtBalance, refetch: refetchContractUsdtBalance } = useBalance({
-    address: contracts[chainId]?.usdb?.address,
-    token: contracts[chainId]?.stargateUSDT?.address,
-    query: {
-      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.stargateUSDT?.address,
-    },
-  });
-
-  // 获取USDB合约中的Stargate USDC余额
-  const { data: contractStargateUsdcBalance, refetch: refetchContractStargateUsdcBalance } = useBalance({
-    address: contracts[chainId]?.usdb?.address,
-    token: contracts[chainId]?.stargateUSDC?.address,
-    query: {
-      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.stargateUSDC?.address,
+      enabled: !!contracts[chainId]?.usdb?.address && !!contracts[chainId]?.usdc?.address,
     },
   });
 
@@ -692,7 +629,7 @@ const USDB = () => {
                         abi: contracts[chainId]?.usdb?.abi,
                         functionName: "withdrawToken",
                         args: [
-                          contracts[chainId]?.xdcUSDC?.address,
+                          contracts[chainId]?.usdc?.address,
                           contractUsdcBalance?.value || 0,
                         ],
                       }}
@@ -705,89 +642,6 @@ const USDB = () => {
                     />
                   </div>
 
-                  {/* Contract USDT Balance */}
-                  <div className="bg-white rounded-xl p-6 border border-green-200">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center p-1">
-                          <img
-                            src="/usdt.jpg"
-                            alt="USDT Logo"
-                            className="w-full h-full object-contain rounded-full"
-                          />
-                        </div>
-                        <div>
-                          <span className="text-gray-900 text-lg font-semibold">Contract USDT</span>
-                          <div className="text-sm text-gray-500">Available for withdrawal</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 mb-2">
-                      {contractUsdtBalance ? parseFloat(formatUnits(contractUsdtBalance.value, contractUsdtBalance.decimals)).toFixed(4) : "0.0000"}
-                    </div>
-                    <div className="text-gray-500 text-sm mb-4">
-                      ≈ ${contractUsdtBalance ? (parseFloat(formatUnits(contractUsdtBalance.value, contractUsdtBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
-                    </div>
-                    <WriteButton
-                      data={{
-                        address: contracts[chainId]?.usdb?.address,
-                        abi: contracts[chainId]?.usdb?.abi,
-                        functionName: "withdrawToken",
-                        args: [
-                          contracts[chainId]?.stargateUSDT?.address,
-                          contractUsdtBalance?.value || 0,
-                        ],
-                      }}
-                      callback={() => {
-                        refetchContractUsdtBalance();
-                      }}
-                      disabled={!contractUsdtBalance || contractUsdtBalance.value <= 0}
-                      className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-md"
-                      buttonName="Withdraw USDT"
-                    />
-                  </div>
-
-                  {/* Contract Stargate USDC Balance */}
-                  <div className="bg-white rounded-xl p-6 border border-purple-200">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center p-1">
-                          <img
-                            src="/usdc.jpg"
-                            alt="Stargate USDC Logo"
-                            className="w-full h-full object-contain rounded-full"
-                          />
-                        </div>
-                        <div>
-                          <span className="text-gray-900 text-lg font-semibold">Contract Stargate USDC</span>
-                          <div className="text-sm text-gray-500">Available for withdrawal</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900 mb-2">
-                      {contractStargateUsdcBalance ? parseFloat(formatUnits(contractStargateUsdcBalance.value, contractStargateUsdcBalance.decimals)).toFixed(4) : "0.0000"}
-                    </div>
-                    <div className="text-gray-500 text-sm mb-4">
-                      ≈ ${contractStargateUsdcBalance ? (parseFloat(formatUnits(contractStargateUsdcBalance.value, contractStargateUsdcBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
-                    </div>
-                    <WriteButton
-                      data={{
-                        address: contracts[chainId]?.usdb?.address,
-                        abi: contracts[chainId]?.usdb?.abi,
-                        functionName: "withdrawToken",
-                        args: [
-                          contracts[chainId]?.stargateUSDC?.address,
-                          contractStargateUsdcBalance?.value || 0,
-                        ],
-                      }}
-                      callback={() => {
-                        refetchContractStargateUsdcBalance();
-                      }}
-                      disabled={!contractStargateUsdcBalance || contractStargateUsdcBalance.value <= 0}
-                      className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-purple-700 disabled:opacity-50 cursor-pointer transition-all duration-200 text-center shadow-md"
-                      buttonName="Withdraw Stargate USDC"
-                    />
-                  </div>
                 </div>
 
                 <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
@@ -900,193 +754,154 @@ const USDB = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                  {/* Token Selection & Information */}
+                  {/* USDC Token Information */}
                   <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-fit">
                     <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                      Available Tokens
+                      Payment Token
                     </h3>
 
-                                          {/* 代币选择器 */}
+                    {/* USDC信息卡片 */}
                     <div className="mb-6">
-                      <div className="space-y-3">
-                        {Object.keys(tokenConfigs).map((token) => {
-                          const config = tokenConfigs[token];
-                          const balance = getTokenBalance(token);
-                          const isSelected = selectedToken === token;
-                          const contractAddress =
-                            config.getContract()?.address;
-
-                          return (
-                            <button
-                              key={token}
-                              onClick={() => setSelectedToken(token)}
-                              className={`w-full p-5 border-2 rounded-2xl flex items-center justify-between transition-all duration-300 ${
-                                isSelected
-                                  ? "border-green-500 bg-gradient-to-r from-green-50 to-emerald-50 shadow-lg transform scale-[1.02]"
-                                  : "border-gray-200 hover:border-green-300 hover:bg-gray-50 hover:shadow-md"
-                              }`}
-                            >
-                                                              {/* 左侧：图标和代币信息 */}
-                              <div className="flex items-center gap-4">
-                                <div
-                                  className={`w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg ${
-                                    isSelected
-                                      ? "bg-gradient-to-r from-green-100 to-emerald-100 ring-2 ring-green-500"
-                                      : config.iconBg
-                                  }`}
-                                >
-                                  <img
-                                    src={config.icon}
-                                    alt={`${config.symbol} Logo`}
-                                    className="w-9 h-9 rounded-xl object-cover"
-                                  />
-                                </div>
-                                <div className="text-left">
-                                  <div
-                                    className={`font-bold text-xl ${
-                                      isSelected
-                                        ? "text-green-700"
-                                        : "text-gray-900"
-                                    }`}
+                      <div className="w-full p-5 border-2 border-green-500 bg-gradient-to-r from-green-50 to-emerald-50 shadow-lg rounded-2xl">
+                        {/* 左侧：图标和USDC信息 */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg bg-gradient-to-r from-green-100 to-emerald-100 ring-2 ring-green-500">
+                              <img
+                                src={usdcConfig.icon}
+                                alt={`${usdcConfig.symbol} Logo`}
+                                className="w-9 h-9 rounded-xl object-cover"
+                              />
+                            </div>
+                            <div className="text-left">
+                              <div className="font-bold text-xl text-green-700">
+                                {usdcConfig.symbol}
+                              </div>
+                              <div className="text-sm text-gray-500 font-medium">
+                                {usdcConfig.name}
+                              </div>
+                              {/* 合约地址显示 */}
+                              {usdcConfig.getContract()?.address && (
+                                <div className="flex items-center gap-2 mt-2">
+                                  <div className="bg-gray-100 rounded-md px-2 py-1">
+                                    <span className="text-xs text-gray-600 font-mono">
+                                      {usdcConfig.getContract().address.slice(0, 6)}...
+                                      {usdcConfig.getContract().address.slice(-4)}
+                                    </span>
+                                  </div>
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(
+                                        usdcConfig.getContract().address
+                                      );
+                                      setCopiedAddress(usdcConfig.getContract().address);
+                                    }}
+                                    className="p-1 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-all duration-200"
+                                    title="Copy contract address"
                                   >
-                                    {config.symbol}
-                                  </div>
-                                  <div className="text-sm text-gray-500 font-medium">
-                                    {config.name}
-                                  </div>
-                                                                      {/* 合约地址显示 */}
-                                  {contractAddress && (
-                                    <div className="flex items-center gap-2 mt-2">
-                                      <div className="bg-gray-100 rounded-md px-2 py-1">
-                                        <span className="text-xs text-gray-600 font-mono">
-                                          {contractAddress.slice(0, 6)}...
-                                          {contractAddress.slice(-4)}
-                                        </span>
-                                      </div>
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          navigator.clipboard.writeText(
-                                            contractAddress
-                                          );
-                                          setCopiedAddress(contractAddress);
-                                        }}
-                                        className="p-1 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-all duration-200"
-                                        title="Copy contract address"
-                                      >
-                                        {copiedAddress === contractAddress ? (
-                                          <svg
-                                            className="w-3 h-3 text-green-500"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M5 13l4 4L19 7"
-                                            />
-                                          </svg>
-                                        ) : (
-                                          <svg
-                                            className="w-3 h-3"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                            />
-                                          </svg>
-                                        )}
-                                      </button>
-                                    </div>
-                                  )}
-                                  </div>
-                                </div>
-
-                                                              {/* 右侧：余额信息 */}
-                              <div className="text-right">
-                                {isMounted && isConnected && balance ? (
-                                  <>
-                                    <div
-                                      className={`font-bold text-lg ${
-                                        isSelected
-                                          ? "text-green-700"
-                                          : "text-gray-900"
-                                      }`}
-                                    >
-                                      {parseFloat(
-                                        formatUnits(
-                                          balance.value,
-                                          balance.decimals
-                                        )
-                                      ).toFixed(4)}
-                                    </div>
-                                    <div className="text-sm text-gray-500 font-medium">
-                                      ≈ $
-                                      {(
-                                        parseFloat(
-                                          formatUnits(
-                                            balance.value,
-                                            balance.decimals
-                                          )
-                                        ) * 0.999
-                                      ).toFixed(2)}
-                                    </div>
-                                  </>
-                                ) : (
-                                  <div className="text-sm text-gray-400 font-medium">
-                                    {isMounted && isConnected
-                                      ? "0.0000"
-                                      : "-- --"}
-                                  </div>
-                                )}
-
-                                {/* 选中标记 */}
-                                {isSelected && (
-                                  <div className="mt-2">
-                                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center ml-auto">
+                                    {copiedAddress === usdcConfig.getContract().address ? (
                                       <svg
-                                        className="w-4 h-4 text-white"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
+                                        className="w-3 h-3 text-green-500"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                       >
                                         <path
-                                          fillRule="evenodd"
-                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                          clipRule="evenodd"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M5 13l4 4L19 7"
                                         />
                                       </svg>
-                                    </div>
-                                  </div>
-                                )}
+                                    ) : (
+                                      <svg
+                                        className="w-3 h-3"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                        />
+                                      </svg>
+                                    )}
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* 右侧：余额信息 */}
+                          <div className="text-right">
+                            {isMounted && isConnected && usdcBalance ? (
+                              <>
+                                <div className="font-bold text-lg text-green-700">
+                                  {parseFloat(
+                                    formatUnits(
+                                      usdcBalance.value,
+                                      usdcBalance.decimals
+                                    )
+                                  ).toFixed(4)}
+                                </div>
+                                <div className="text-sm text-gray-500 font-medium">
+                                  ≈ $
+                                  {(
+                                    parseFloat(
+                                      formatUnits(
+                                        usdcBalance.value,
+                                        usdcBalance.decimals
+                                      )
+                                    ) * 1.0
+                                  ).toFixed(2)}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-sm text-gray-400 font-medium">
+                                {isMounted && isConnected
+                                  ? "0.0000"
+                                  : "-- --"}
                               </div>
-                              </button>
-                            );
-                                                  })}
+                            )}
+
+                            {/* 选中标记 */}
+                            <div className="mt-2">
+                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center ml-auto">
+                                <svg
+                                  className="w-4 h-4 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Token Information */}
+                    {/* USDC Token Information */}
                     {isMounted && isConnected && tokenBalance && (
                       <div className="bg-gray-50 rounded-xl p-4">
-                        <h4 className="font-semibold text-gray-800 mb-3">Selected Token Info</h4>
+                        <h4 className="font-semibold text-gray-800 mb-3">USDC Token Info</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Your Balance:</span>
                             <span className="font-medium">
-                              {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)} {tokenConfigs[selectedToken]?.symbol}
+                              {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)} {usdcConfig.symbol}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">USD Value:</span>
                             <span className="font-medium">
-                              ≈ ${(parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)) * 0.999).toFixed(2)}
+                              ≈ ${(parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)) * 1.0).toFixed(2)}
                             </span>
                           </div>
                           <div className="flex justify-between">

@@ -143,16 +143,8 @@ export const contracts = {
       address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
       abi: USDBABI,
     },
-    xdcUSDC: {
-      address: "0x2A8E898b6242355c290E1f4Fc966b8788729A4D4",
-      abi: ERC20ABI,
-    },
-    stargateUSDC: {
-      address: "0xCc0587aeBDa397146cc828b445dB130a94486e74",
-      abi: ERC20ABI,
-    },
-    stargateUSDT: {
-      address: "0xcdA5b77E2E2268D9E09c874c1b9A4c3F07b37555",
+    usdc: {
+      address: "0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
       abi: ERC20ABI,
     },
 
