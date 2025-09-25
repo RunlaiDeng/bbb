@@ -241,12 +241,12 @@ export const markets = [
     imageUrl: "/bbb.jpg",
     description:
       "$BBB isn't just a meme; it's the heartbeat of a wild, unstoppable community. Powered by the BBB Cult, we're rewriting the rules of memecoins. Together, the BBB Community creates the fun, fuels the pumps, and spreads the megadrops like wildfire.",
-    x: "https://x.com/bbbpump",
+    x: "https://x.com/bbbfidotcom",
     cmc: "https://coinmarketcap.com/currencies/beny-bad-boy/",
     coingecko:
       "https://www.geckoterminal.com/xdc/pools/0x2340cd5ec3e6c51c217212f5092d56d594f0bd0e",
-    tg: "https://t.me/bbbpump",
-    website: "https://bbbpump.fun",
+    tg: "https://t.me/bbbfidotcom",
+    website: "https://bbbfi.com",
     youtube: "https://www.youtube.com/@bbbpump",
     substack: "https://bbbpump.substack.com/",
     createTime: "09/06/24",
