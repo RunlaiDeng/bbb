@@ -182,14 +182,6 @@ const Navbar = () => {
                     >
                       <li className="rounded-lg">
                         <Link
-                          href={"/lend"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          Lend
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
                           href={"/merch"}
                           className="hover:text-green-600 hover:bg-green-50 rounded-lg "
                         >
@@ -839,34 +831,6 @@ const Navbar = () => {
                             <span className="ml-3 font-medium">USDB</span>
                           </div>
 
-                          <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
-                            onClick={() => {
-                              router.push("/lend");
-                              setData({ ...data, menuItemsOpen: false });
-                            }}
-                          >
-                            <div className="p-2 rounded-xl bg-gray-100">
-                              <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path
-                                  d="M12 2C13.1046 2 14 2.89543 14 4V6H16C17.1046 6 18 6.89543 18 8V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V8C6 6.89543 6.89543 6 8 6H10V4C10 2.89543 10.8954 2 12 2Z"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M12 10V14M10 12H14"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <span className="ml-3 font-medium">Lend</span>
-                          </div>
 
                           <div
                             className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
