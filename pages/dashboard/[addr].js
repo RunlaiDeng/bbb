@@ -9,13 +9,11 @@ import {
 } from "@/components/Utils";
 import { erc20Abi, formatEther, getAddress } from "viem";
 import { contracts, dashboardConfig } from "@/config";
-import { useNotification } from "@/components/Context/notice";
-import rpc from "@/components/Rpc";
-import copy from "copy-to-clipboard";
 import Loading from "@/components/Loading";
 const Address = () => {
   const router = useRouter();
   const { addr } = router.query;
+  const chainId = useChainId();
   const { data: xdcBalanceData } = useBalance({ address: addr });
   const [data, setData] = useState({});
   const xdcBalance = xdcBalanceData?.formatted;
@@ -23,7 +21,6 @@ const Address = () => {
   const { address } = useAccount();
 
   const [mount, setMount] = useState(false);
-  const chainId = useChainId();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const fetchData = useCallback(async (addr) => {
@@ -33,7 +30,6 @@ const Address = () => {
       setError(null);
       try {
         const setPrice = {};
-        const referralInfo = await rpc.getReferralInfo(addr);
         const xdc = await getXDCPrice();
         const bbb = await getBBBPrice();
         if (xdc.price != 0) {
@@ -44,7 +40,7 @@ const Address = () => {
           setPrice.bbb = bbb;
         }
 
-        setData((prevData) => ({ ...prevData, ...setPrice, referralInfo }));
+        setData((prevData) => ({ ...prevData, ...setPrice }));
         setMount(true);
         setIsLoading(false);
       } catch (err) {
@@ -55,7 +51,6 @@ const Address = () => {
   }, []);
 
   const mbbb = contracts[chainId]?.mbbbv2;
-  const referralInfo = data?.referralInfo;
 
   useEffect(() => {
     fetchData(addr);
@@ -121,12 +116,9 @@ const Address = () => {
   let totalBalance = 0;
   let total24hChange = 0;
 
-  const referralBonus = referralInfo?.totalPrize / 1e18 || 0;
-
-  const referralUsdBonus = referralBonus * xdcPrice || 0;
   const xdcUsdBalance = xdcBalance * xdcPrice;
 
-  totalBalance += xdcUsdBalance + referralUsdBonus;
+  totalBalance += xdcUsdBalance;
   total24hChange += xdcUsdBalance - xdcUsdBalance / (1 + xdcPriceChange24h);
 
   let tokens = reads0?.map((item, index) => {
@@ -215,7 +207,6 @@ const Address = () => {
   tokens = tokens?.filter((item) => {
     return item.show;
   });
-  const { info, success } = useNotification();
   tokens = tokens?.sort((a, b) => b.usdBalance - a.usdBalance);
 
   const total24hChangePercent =
@@ -347,72 +338,6 @@ const Address = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="hover">
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full overflow-hidden">
-                            <Image
-                              height={32}
-                              width={32}
-                              src="/xdc.png"
-                              alt="XDC Token"
-                              className="object-cover"
-                              priority
-                            />
-                          </div>
-                          <div>
-                            <div className="font-medium">bXDC</div>
-                            <div className="text-sm text-gray-500">
-                              Bonus XDC
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-right">
-                        <div className="font-medium">
-                          {Number(referralBonus)?.toLocaleString() || 0}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          ${referralUsdBonus?.toLocaleString() || 0}
-                        </div>
-                      </td>
-                      <td className="text-right hidden sm:table-cell font-medium">
-                        ${Number(xdcPrice || 0)?.toFixed(6)}
-                      </td>
-                      <td
-                        className={
-                          "text-right hidden sm:table-cell font-medium " +
-                          (xdcPriceChange24h >= 0
-                            ? "text-success"
-                            : "text-error")
-                        }
-                      >
-                        {xdcPriceChange24h >= 0 ? "+" : "-"}
-                        {Math.abs(xdcPriceChange24h * 100)?.toFixed(2)}%
-                      </td>
-                      <td className="text-right hidden sm:table-cell">
-                        <button
-                          className="btn btn-sm btn-success btn-outline"
-                          onClick={() => router.push("/referral")}
-                        >
-                          Claim
-                        </button>
-                      </td>
-                      <td className="text-right sm:hidden px-0">
-                        <button className="btn btn-ghost btn-sm btn-square">
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                          >
-                            <path
-                              d="M512 681.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 425.984q34.005333 0 59.989333 25.984t25.984 59.989333-25.984 59.989333-59.989333 25.984-59.989333-25.984-25.984-59.989333 25.984-59.989333 59.989333-25.984zM512 342.016q-34.005333 0-59.989333-25.984t-25.984-59.989333 25.984-59.989333 59.989333-25.984 59.989333 25.984 25.984 59.989333-25.984 59.989333-59.989333 25.984z"
-                              className="fill-current"
-                            />
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
                     {/* XDC Row */}
                     <tr className="hover">
                       <td>
@@ -473,7 +398,7 @@ const Address = () => {
                         </button>
                       </td>
                     </tr>
-                    {/* Other Tokens */}
+                    {/* XDC Network Tokens */}
                     {tokens?.map((item, index) => (
                       <tr
                         key={index}
