@@ -7,7 +7,7 @@ export const xdc = {
     symbol: "XDC",
   },
   rpcUrls: {
-    default: { http: ["https://erpc.xinfin.network"] },
+    default: { http: ["https://rpc.ankr.com/xdc"] },
   },
   blockExplorers: {
     default: {
