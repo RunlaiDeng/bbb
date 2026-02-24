@@ -36,6 +36,9 @@ export const rpcUrl = "https://api.bbbpump.fun";
 
 // export const rpcUrl = "http://192.168.0.145:10033";
 
+/** Liquidity Staking: true = show Coming Soon, false = show full functionality */
+export const liquidityStakingComingSoon = true;
+
 export const dashboardConfig = {
   "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {
     symbol: "BBB",

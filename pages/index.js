@@ -7,7 +7,7 @@ import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
 import { formatEther, parseEther } from "viem";
 import TokenMarkets from "@/components/TokenMarkets";
 import { getXDCPrice } from "@/components/Utils";
-import { contracts } from "@/config";
+import { contracts, liquidityStakingComingSoon } from "@/config";
 import LiqudityStakingABI from "@/abi/LiqudityStakingABI.json";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import WriteButton from "@/components/WriteButton";
@@ -182,7 +182,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
             <h3 className="font-semibold text-green-800 text-lg">Liquidity Staking</h3>
           </div>
 
-          {/* Balance 区块 - 清晰展示 XDC 和 bXDC */}
+          {/* Balance section - XDC and bXDC display */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div className="bg-white/30 rounded-lg p-4 border border-green-100/60">
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Your Balance</p>
@@ -433,6 +433,51 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
 
 XDCStakeCard.displayName = "XDCStakeCard";
 
+const LiquidityStakingComingSoon = memo(() => (
+  <div className="coming-soon-card relative mb-6 overflow-hidden rounded-2xl backdrop-blur-md">
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/25 via-emerald-50/40 to-green-50/30" />
+    <div className="absolute inset-[1px] rounded-[15px] bg-gradient-to-br from-white/20 to-green-50/20" />
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_70%_0%,rgba(34,197,94,0.12)_0%,transparent_60%)]" />
+    <div className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.25)_50%,transparent_65%)] coming-soon-shimmer" />
+    <div className="relative z-10 p-8 sm:p-10 border border-green-200/30 rounded-2xl">
+      <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+        <div className="coming-soon-icon-wrap flex-shrink-0 relative">
+          <Image src="/xdc.png" alt="XDC" width={72} height={72} className="rounded-2xl shadow-xl ring-2 ring-white/50 relative z-10" />
+        </div>
+        <div className="flex-1 text-center sm:text-left">
+          <h3 className="font-bold text-green-900 text-xl sm:text-2xl tracking-tight mb-2">Liquidity Staking</h3>
+          <p className="text-gray-600 text-sm sm:text-base mb-5 max-w-md leading-relaxed">
+            Stake XDC to earn rewards. Convert to bXDC and participate in the staking pool.
+          </p>
+          <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/15 border border-amber-400/40 text-amber-800 font-semibold text-sm tracking-wide shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+            Coming Soon
+          </span>
+        </div>
+      </div>
+    </div>
+    <style jsx>{`
+      .coming-soon-shimmer {
+        animation: comingSoonShimmer 4s ease-in-out infinite;
+      }
+      @keyframes comingSoonShimmer {
+        0%, 100% { opacity: 0; transform: translateX(-20%); }
+        50% { opacity: 1; transform: translateX(20%); }
+      }
+      .coming-soon-icon-wrap::before {
+        content: "";
+        position: absolute;
+        inset: -12px;
+        background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 65%);
+        border-radius: 1.5rem;
+        filter: blur(16px);
+        z-index: -1;
+      }
+    `}</style>
+  </div>
+));
+LiquidityStakingComingSoon.displayName = "LiquidityStakingComingSoon";
+
 const FloatingCoins = () => (
   <div className="floating-coins absolute w-full h-full overflow-hidden pointer-events-none">
     <div className="coin coin1">
@@ -617,7 +662,11 @@ const HomeContent = memo(() => {
       <div className="relative min-h-screen pt-32">
         <div className="card sm:w-3/4 m-auto">
           <div className="card-body backdrop-blur-sm bg-white/10 rounded-lg">
-            <XDCStakeCard address={address} chainId={chainId ?? 50} onConnect={handleTryNow} />
+            {liquidityStakingComingSoon ? (
+              <LiquidityStakingComingSoon />
+            ) : (
+              <XDCStakeCard address={address} chainId={chainId ?? 50} onConnect={handleTryNow} />
+            )}
             <div className="mt-6">
               <div className="glass p-4 rounded-xl backdrop-blur-md bg-white/10">
                 <TokenMarkets {...tMarkets} />
