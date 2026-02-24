@@ -36,7 +36,7 @@ export const rpcUrl = "https://api.bbbpump.fun";
 
 // export const rpcUrl = "http://192.168.0.145:10033";
 
-/** Liquidity Staking: true = show Coming Soon, false = show full functionality */
+/** Liquidity Staking: true = show Coming Soon, false = show full functionality. Overridden by URL ?ComingSoon=false */
 export const liquidityStakingComingSoon = true;
 
 export const dashboardConfig = {
@@ -185,7 +185,7 @@ export const contracts = {
       abi: XDCStakeABI,
     },
     liqudityStaking: {
-      address: "0x15E16111EC75D7B8543F63e068c3c649cA80d1A8",
+      address: "0x884f9B2c2f5Ae2FBB27d89413AF64A9Fa4C91f26",
       abi: LiqudityStakingABI,
     },
     usdb: {

@@ -3,11 +3,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { memo, useCallback, useEffect, useState } from "react";
-import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
+import { useAccount, useBalance, useBlockNumber, useChainId, useReadContracts } from "wagmi";
 import { formatEther, parseEther } from "viem";
 import TokenMarkets from "@/components/TokenMarkets";
 import { getXDCPrice } from "@/components/Utils";
-import { contracts, liquidityStakingComingSoon } from "@/config";
+import { contracts } from "@/config";
 import LiqudityStakingABI from "@/abi/LiqudityStakingABI.json";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import WriteButton from "@/components/WriteButton";
@@ -62,6 +62,8 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
       { address: stakeAddress, abi: stakeAbi, functionName: "getExchangeRate" },
       { address: stakeAddress, abi: stakeAbi, functionName: "totalPooledXDC" },
       { address: stakeAddress, abi: stakeAbi, functionName: "minStakeAmount" },
+      { address: stakeAddress, abi: stakeAbi, functionName: "minWithdrawAmount" },
+      { address: stakeAddress, abi: stakeAbi, functionName: "withdrawDelayBlocks" },
     ];
     return contractsList;
   }, [stakeAddress, stakeAbi]);
@@ -75,6 +77,10 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
   const exchangeRate = poolData?.[1]?.result ?? 1n * BigInt(1e18);
   const totalPooled = poolData?.[2]?.result ?? 0n;
   const minStake = poolData?.[3]?.result ?? parseEther("1");
+  const minWithdraw = poolData?.[4]?.result ?? 0n;
+  const withdrawDelayBlocks = poolData?.[5]?.result ?? 0n;
+
+  const { data: blockNumber } = useBlockNumber({ watch: true });
 
   const { data: userData, refetch: refetchUser } = useReadContracts({
     contracts:
@@ -90,7 +96,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
             {
               address: stakeAddress,
               abi: stakeAbi,
-              functionName: "getUserWithdrawalRequests",
+              functionName: "getUserWithdrawalBatchCount",
               args: [address],
             },
           ]
@@ -100,15 +106,32 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
 
   const bxdcBalance = userData?.[0]?.result ?? 0n;
   const bxdcAllowance = userData?.[1]?.result ?? 0n;
-  const userRequestIds = userData?.[2]?.result ?? [];
+  const batchCount = userData?.[2]?.result ?? 0n;
 
-  const withdrawalDetailContracts =
-    Array.isArray(userRequestIds) && userRequestIds.length > 0 && stakeAddress
-      ? userRequestIds.map((id) => ({
+  const batchIdContracts =
+    Number(batchCount) > 0 && stakeAddress && address
+      ? Array.from({ length: Number(batchCount) }, (_, i) => ({
           address: stakeAddress,
           abi: stakeAbi,
-          functionName: "withdrawalRequests",
-          args: [id],
+          functionName: "userWithdrawalBatches",
+          args: [address, BigInt(i)],
+        }))
+      : [];
+
+  const { data: batchIdsData, refetch: refetchBatchIds } = useReadContracts({
+    contracts: batchIdContracts,
+    query: { enabled: batchIdContracts.length > 0 },
+  });
+
+  const batchIds = batchIdsData?.map((d) => d?.result).filter((id) => id !== undefined && id !== null) ?? [];
+
+  const withdrawalDetailContracts =
+    batchIds.length > 0 && stakeAddress
+      ? batchIds.map((batchId) => ({
+          address: stakeAddress,
+          abi: stakeAbi,
+          functionName: "withdrawalBatches",
+          args: [batchId],
         }))
       : [];
 
@@ -118,18 +141,18 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
   });
 
   const withdrawalOrders =
-    Array.isArray(userRequestIds) && withdrawalDetails
-      ? userRequestIds.map((id, i) => {
+    batchIds.length > 0 && withdrawalDetails
+      ? batchIds.map((batchId, i) => {
           const detail = withdrawalDetails[i]?.result;
           if (!detail) return null;
-          const [reqUser, bxdcAmount, xdcAmount, requestTime, processed, approved] = detail;
+          const [xdcAmount, unlockBlock, redeemed] = detail;
+          const bxdcAmount = exchangeRate > 0n ? (xdcAmount * BigInt(1e18)) / exchangeRate : 0n;
           return {
-            id: Number(id),
+            id: batchId,
             bxdcAmount,
             xdcAmount,
-            requestTime,
-            processed,
-            approved,
+            unlockBlock,
+            redeemed,
           };
         }).filter(Boolean)
       : [];
@@ -137,8 +160,9 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
   const refreshStake = useCallback(() => {
     refetchPool();
     refetchUser();
+    refetchBatchIds?.();
     refetchWithdrawals?.();
-  }, [refetchPool, refetchUser, refetchWithdrawals]);
+  }, [refetchPool, refetchUser, refetchBatchIds, refetchWithdrawals]);
 
   const { data: supplyData } = useReadContracts({
     contracts: bxdcTokenAddress
@@ -232,52 +256,55 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
               onClick={handleUnstakeClick}
               disabled={!!address && bxdcBalance === 0n}
             >
-              {address ? "Request Withdraw" : "Connect Wallet"}
+              {address ? "Withdraw" : "Connect Wallet"}
             </button>
           </div>
           {withdrawalOrders.length > 0 && (
             <div className="mt-4 pt-4 border-t border-green-200/50">
               <h4 className="font-medium text-sm mb-2 text-green-800">Withdrawal Orders</h4>
               <div className="max-h-40 overflow-y-auto space-y-2">
-                {withdrawalOrders.map((order) => (
-                  <div
-                    key={order.id}
-                    className="flex justify-between items-center text-sm p-2 bg-white/20 rounded-lg gap-2"
-                  >
-                    <span>
-                      {formatEther(order.xdcAmount)} XDC
-                      <span className="text-gray-500 ml-1">
-                        ({formatEther(order.bxdcAmount)} bXDC)
+                {withdrawalOrders.map((order) => {
+                  const canRedeem = blockNumber !== undefined && !order.redeemed && blockNumber >= order.unlockBlock;
+                  return (
+                    <div
+                      key={String(order.id)}
+                      className="flex justify-between items-center text-sm p-2 bg-white/20 rounded-lg gap-2"
+                    >
+                      <span>
+                        {formatEther(order.xdcAmount)} XDC
+                        <span className="text-gray-500 ml-1">
+                          ({formatEther(order.bxdcAmount)} bXDC)
+                        </span>
                       </span>
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={
-                          order.processed
-                            ? order.approved
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={
+                            order.redeemed
                               ? "text-green-600 font-medium"
-                              : "text-red-600 font-medium"
-                            : "text-amber-600 font-medium"
-                        }
-                      >
-                        {order.processed ? (order.approved ? "Approved" : "Rejected") : "Pending"}
-                      </span>
-                      {!order.processed && (
-                        <WriteButton
-                          className="btn btn-ghost btn-xs text-red-600"
-                          buttonName="Cancel"
-                          data={{
-                            address: stakeAddress,
-                            abi: stakeAbi,
-                            functionName: "cancelWithdrawal",
-                            args: [BigInt(order.id)],
-                          }}
-                          callback={refreshStake}
-                        />
-                      )}
+                              : canRedeem
+                                ? "text-green-600 font-medium"
+                                : "text-amber-600 font-medium"
+                          }
+                        >
+                          {order.redeemed ? "Redeemed" : canRedeem ? "Ready" : "Pending"}
+                        </span>
+                        {canRedeem && (
+                          <WriteButton
+                            className="btn btn-ghost btn-xs text-green-600"
+                            buttonName="Redeem"
+                            data={{
+                              address: stakeAddress,
+                              abi: stakeAbi,
+                              functionName: "redeemWithdrawal",
+                              args: [order.id],
+                            }}
+                            callback={refreshStake}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -363,7 +390,9 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
                 ✕
               </button>
             </div>
-            <p className="text-sm text-gray-500 mb-4">Withdrawals require admin approval.</p>
+            <p className="text-sm text-gray-500 mb-4">
+              Withdrawals unlock after {String(withdrawDelayBlocks)} blocks. Min: {formatEther(minWithdraw)} bXDC.
+            </p>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">bXDC Amount</span>
@@ -404,16 +433,16 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
               ) : (
                 <WriteButton
                   className="btn btn-success flex-1"
-                  buttonName="Request"
+                  buttonName="Withdraw"
                   disabled={
                     !unstakeAmount ||
-                    parseEther(unstakeAmount || "0") <= 0n ||
+                    parseEther(unstakeAmount || "0") < minWithdraw ||
                     parseEther(unstakeAmount || "0") > bxdcBalance
                   }
                   data={{
                     address: stakeAddress,
                     abi: stakeAbi,
-                    functionName: "requestWithdrawal",
+                    functionName: "withdraw",
                     args: [parseEther(unstakeAmount || "0")],
                   }}
                   callback={() => {
@@ -516,6 +545,8 @@ const HomeContent = memo(() => {
   const privyLogin = usePrivyLogin();
   const router = useRouter();
   const [mount, setMount] = useState(false);
+  /** URL ?ComingSoon=false 显示完整功能，默认 true 显示 Coming Soon */
+  const liquidityStakingComingSoon = router.query.ComingSoon === "false" ? false : true;
   const { address } = useAccount();
   const chainId = useChainId();
 

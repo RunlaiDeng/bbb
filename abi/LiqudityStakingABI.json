@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_validator",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -45,13 +51,19 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newPercentage",
+        "name": "xdcAmount",
         "type": "uint256"
       }
     ],
-    "name": "MaxWithdrawablePercentageUpdated",
+    "name": "InstantExit",
     "type": "event"
   },
   {
@@ -59,25 +71,57 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "newAmount",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "kycHash",
+        "type": "string"
       }
     ],
-    "name": "MinStakeAmountUpdated",
+    "name": "LSPKYCSubmitted",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newAmount",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "MinWithdrawAmountUpdated",
+    "name": "MasternodeProposed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "OperatorAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "OperatorRemoved",
     "type": "event"
   },
   {
@@ -118,7 +162,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "admin",
+        "name": "from",
         "type": "address"
       },
       {
@@ -186,27 +230,8 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "admin",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "ValidatorFundsWithdrawn",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "requestId",
+        "name": "batchId",
         "type": "uint256"
       },
       {
@@ -222,7 +247,7 @@
         "type": "uint256"
       }
     ],
-    "name": "WithdrawalApproved",
+    "name": "WithdrawalNFTMinted",
     "type": "event"
   },
   {
@@ -231,7 +256,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "requestId",
+        "name": "batchId",
         "type": "uint256"
       },
       {
@@ -243,11 +268,11 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "bxdcAmount",
+        "name": "xdcAmount",
         "type": "uint256"
       }
     ],
-    "name": "WithdrawalRejected",
+    "name": "WithdrawalRedeemed",
     "type": "event"
   },
   {
@@ -256,7 +281,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "requestId",
+        "name": "batchId",
         "type": "uint256"
       },
       {
@@ -282,29 +307,49 @@
     "type": "event"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "MASTERNODE_CAP",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "requestId",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "approveWithdrawal",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "uint256[]",
-        "name": "requestIds",
-        "type": "uint256[]"
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
       }
     ],
-    "name": "batchApproveWithdrawals",
+    "name": "addOperator",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "addToInstantExitBuffer",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "bufferLendingLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -318,19 +363,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "requestId",
-        "type": "uint256"
-      }
-    ],
-    "name": "cancelWithdrawal",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -349,38 +381,25 @@
   },
   {
     "inputs": [],
+    "name": "getAvailableBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getExchangeRate",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPendingWithdrawalCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPendingWithdrawalIds",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -394,20 +413,7 @@
         "type": "address"
       }
     ],
-    "name": "getUserWithdrawalRequests",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getWithdrawalRequestCount",
+    "name": "getUserWithdrawalBatchCount",
     "outputs": [
       {
         "internalType": "uint256",
@@ -458,6 +464,82 @@
   },
   {
     "inputs": [],
+    "name": "instantExitBuffer",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "kycVerifier",
+    "outputs": [
+      {
+        "internalType": "contract IKYCVerifier",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lendingProtocol",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lspKYCSubmitted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "masternodeOperators",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "maxWithdrawablePercentage",
     "outputs": [
       {
@@ -490,6 +572,57 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextWithdrawalBatchId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "operatorList",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operators",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -531,12 +664,38 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "proposeMasternode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
-        "name": "requestId",
+        "name": "batchId",
         "type": "uint256"
       }
     ],
-    "name": "rejectWithdrawal",
+    "name": "redeemWithdrawal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "removeOperator",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -551,12 +710,30 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_verifier",
+        "type": "address"
+      }
+    ],
+    "name": "setKYCVerifier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lending",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "bxdcAmount",
+        "name": "_limit",
         "type": "uint256"
       }
     ],
-    "name": "requestWithdrawal",
+    "name": "setLendingProtocol",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -565,7 +742,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "percentage",
+        "name": "pct",
         "type": "uint256"
       }
     ],
@@ -601,6 +778,19 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "blocks",
+        "type": "uint256"
+      }
+    ],
+    "name": "setWithdrawDelayBlocks",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "stake",
     "outputs": [],
@@ -608,8 +798,47 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "kycHash",
+        "type": "string"
+      }
+    ],
+    "name": "submitKYC",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalInUnbonding",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "totalPooledXDC",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalStakedInMasternodes",
     "outputs": [
       {
         "internalType": "uint256",
@@ -653,7 +882,46 @@
         "type": "uint256"
       }
     ],
-    "name": "userWithdrawalRequests",
+    "name": "userWithdrawalBatches",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "validator",
+    "outputs": [
+      {
+        "internalType": "contract IXDCValidator",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "bxdcAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawDelayBlocks",
     "outputs": [
       {
         "internalType": "uint256",
@@ -685,18 +953,8 @@
         "type": "uint256"
       }
     ],
-    "name": "withdrawalRequests",
+    "name": "withdrawalBatches",
     "outputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bxdcAmount",
-        "type": "uint256"
-      },
       {
         "internalType": "uint256",
         "name": "xdcAmount",
@@ -704,18 +962,26 @@
       },
       {
         "internalType": "uint256",
-        "name": "requestTime",
+        "name": "unlockBlock",
         "type": "uint256"
       },
       {
         "internalType": "bool",
-        "name": "processed",
+        "name": "redeemed",
         "type": "bool"
-      },
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawalNFT",
+    "outputs": [
       {
-        "internalType": "bool",
-        "name": "approved",
-        "type": "bool"
+        "internalType": "contract WithdrawalRequestNFT",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
