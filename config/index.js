@@ -17,6 +17,7 @@ import mTransferABI from "../abi/mTransferABI.json";
 import sUSDBABI from "../abi/sUSDBABI.json";
 import lendABI from "../abi/LendABI.json";
 import BBBGameABI from "../abi/BBBGameABI.json";
+import LiqudityStakingABI from "../abi/LiqudityStakingABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -179,6 +180,10 @@ export const contracts = {
     xdcStake: {
       address: "0x5af754f822CEd42deC729c1F1B3EDb9f13485ba7",
       abi: XDCStakeABI,
+    },
+    liqudityStaking: {
+      address: "0x15E16111EC75D7B8543F63e068c3c649cA80d1A8",
+      abi: LiqudityStakingABI,
     },
     usdb: {
       address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
