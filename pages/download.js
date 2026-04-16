@@ -18,26 +18,26 @@ export default function Download() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-base-200/60 py-8 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold text-base-content/80 mb-2">
             Download BBBFI App
           </h1>
-          <p className="text-gray-600">
+          <p className="text-base-content/60">
             Mobile app for DeFi trading and portfolio management
           </p>
         </div>
 
         <div className="space-y-4">
           {/* Android Download */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-base-200 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold text-base-content/80">
                   Android App
                 </h3>
-                <p className="text-sm text-gray-600">Version {version}</p>
+                <p className="text-sm text-base-content/60">Version {version}</p>
               </div>
               <button
                 onClick={handleAndroidDownload}
@@ -54,11 +54,11 @@ export default function Download() {
           </div>
 
           {/* iOS Download */}
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-base-200 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-gray-800">iOS App</h3>
-                <p className="text-sm text-gray-600">Coming Soon</p>
+                <h3 className="text-lg font-semibold text-base-content/80">iOS App</h3>
+                <p className="text-sm text-base-content/60">Coming Soon</p>
               </div>
               <button
                 disabled

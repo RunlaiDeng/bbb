@@ -16,20 +16,20 @@ const AnniversaryBanner = ({ router }) => {
 
   return (
     <div
-      className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 shadow-lg cursor-pointer"
+      className="w-full bg-base-200/90 border-b border-base-300 cursor-pointer"
       onClick={() => router.push("/anniversary")}
     >
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-teal-600/20"></div>
-        <div className="relative px-4 py-3">
+        <div className="absolute inset-0 bg-primary/5"></div>
+        <div className="relative px-4 py-2.5">
           <div className="flex items-center justify-between max-w-6xl mx-auto">
             <div className="flex items-center gap-3">
-              <span className="text-2xl animate-bounce">🎉</span>
-              <div className="text-white">
-                <span className="font-bold text-lg">
+              <span className="text-xl">🎉</span>
+              <div className="text-base-content">
+                <span className="font-semibold text-sm sm:text-base">
                   BBB Anniversary Celebration
                 </span>
-                <span className="hidden sm:inline ml-2 text-sm opacity-90">
+                <span className="hidden sm:inline ml-2 text-xs sm:text-sm text-base-content/70">
                   Join the USDB Deposit Competition & Win BBB Rewards!
                 </span>
               </div>
@@ -40,7 +40,7 @@ const AnniversaryBanner = ({ router }) => {
                   e.stopPropagation();
                   setIsVisible(false);
                 }}
-                className="text-white/80 hover:text-white transition-colors p-1"
+                className="text-base-content/50 hover:text-base-content transition-colors p-1"
                 aria-label="Close banner"
               >
                 ✕
@@ -119,111 +119,111 @@ const Navbar = () => {
   return (
     mount && (
       <>
-        <div className="w-full">
-          <div className="w-full h-18">
-            <div className="navbar items-center font-bold">
-              <div className="navbar-start">
+        <div className="w-full sticky top-0 z-40 bg-base-100/90 backdrop-blur-md border-b border-base-300">
+          <div className="w-full min-h-[3.5rem]">
+            <div className="navbar items-center min-h-[3.5rem] py-1 px-0 font-medium">
+              <div className="navbar-start flex-1 min-w-0">
                 <Image
                   src={"/logo.png"}
-                  height={150}
-                  width={150}
+                  height={120}
+                  width={120}
                   alt=""
-                  className="cursor-pointer transform hover:scale-105 transition-all duration-300"
+                  className="cursor-pointer max-h-10 w-auto h-auto object-contain hover:opacity-90 transition-opacity"
                   onClick={() => {
                     router.push("/");
                   }}
                 />
 
-                <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
+                <div className="ml-1 hidden lg:flex items-center gap-0.5 flex-wrap">
                   <a
                     href="https://jumper.exchange/zh?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=50&toToken=0x0000000000000000000000000000000000000000"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md normal-case"
                   >
                     Bridge
                   </a>
                   <Link
                     href={"/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md normal-case"
                   >
                     Markets
                   </Link>
                   <Link
                     href={"/ido"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md normal-case"
                   >
                     IDO
                   </Link>
                   <Link
                     href={"/stake"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md normal-case"
                   >
                     Stake
                   </Link>
                   <Link
                     href={"/usdb"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md normal-case"
                   >
                     USDB
                   </Link>
 
-                  <div className="dropdown dropdown-hover font-bold">
+                  <div className="dropdown dropdown-hover">
                     <div
                       tabIndex={0}
                       role="button"
-                      className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
+                      className="btn btn-ghost btn-sm text-base-content/80 hover:text-primary hover:bg-base-200 rounded-md border-none normal-case"
                     >
                       More
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50"
+                      className="dropdown-content menu bg-base-200 rounded-lg z-50 w-52 p-2 shadow-xl border border-base-300"
                     >
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/merch"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                          className="hover:bg-base-300 rounded-md"
                         >
                           Merch
                         </Link>
                       </li>
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/mbbb"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
+                          className="hover:bg-base-300 rounded-md"
                         >
                           mBBB
                         </Link>
                       </li>
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/farm"}
-                          className="hover:text-green-600 hover:bg-green-50  rounded-lg "
+                          className="hover:bg-base-300 rounded-md"
                         >
                           Farm
                         </Link>
                       </li>
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/bbbubu"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                          className="hover:bg-base-300 rounded-md"
                         >
                           BBBubu
                         </Link>
                       </li>
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/bbbgame"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                          className="hover:bg-base-300 rounded-md"
                         >
                           🎮 BBBGame
                         </Link>
                       </li>
-                      <li className="rounded-lg">
+                      <li className="rounded-md">
                         <Link
                           href={"/airdrophub"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                          className="hover:bg-base-300 rounded-md"
                         >
                           Airdrop Hub
                         </Link>
@@ -237,7 +237,7 @@ const Navbar = () => {
                 {isConnected && (
                   <div className="flex items-center gap-2">
                     <div
-                      className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
+                      className="btn btn-primary btn-sm hidden lg:flex normal-case"
                       onClick={() => {
                         router.push("/deposit");
                       }}
@@ -253,7 +253,8 @@ const Navbar = () => {
                         <path
                           d="M881.778 446.578L510.52 813.909l-83.058-82.716-285.24-282.34 83.626-82.716L451.186 589.71V0h118.613v589.767l227.783-225.963 84.196 82.774z m-1.138 460.06H142.222V1024H880.64V906.638z"
                           p-id="2584"
-                          fill="#ffffff"
+                          fill="currentColor"
+                          className="text-primary-content"
                         ></path>
                       </svg>
                       Deposit
@@ -277,17 +278,22 @@ const Navbar = () => {
                         p-id="1866"
                         width="24"
                         height="24"
-                        className="cursor-pointer"
+                        className={
+                          "cursor-pointer " +
+                          (data?.showUserItems
+                            ? "text-primary"
+                            : "text-base-content/70")
+                        }
                       >
                         <path
                           d="M512 62.08A449.92 449.92 0 1 0 961.92 512 449.92 449.92 0 0 0 512 62.08z m0 135.04a135.04 135.04 0 1 1-135.04 135.04A134.72 134.72 0 0 1 512 197.12z m0 640a323.84 323.84 0 0 1-269.76-144.96c0-89.6 179.84-138.56 269.76-138.56s268.48 48.96 269.76 138.56A323.84 323.84 0 0 1 512 835.84z"
                           p-id="1867"
-                          fill={data?.showUserItems ? "#0e932e" : ""}
+                          fill="currentColor"
                         ></path>
                       </svg>
                       <div
                         tabIndex={0}
-                        className="card dropdown-content menu bg-white rounded-xl z-50 w-72 shadow-lg border border-green-100 p-0 text-xs"
+                        className="card dropdown-content menu bg-base-200 rounded-lg z-50 w-72 shadow-xl border border-base-300 p-0 text-xs"
                       >
                         <div className="card-body p-0 font-medium">
                           <div className="flex items-center gap-1 p-4 text-xl">
@@ -319,27 +325,27 @@ const Navbar = () => {
                               >
                                 <path
                                   d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                                  fill="#5E6570"
+                                  fill="currentColor"
                                   p-id="1642"
                                 ></path>
                                 <path
                                   d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                                  fill="#5E6570"
+                                  fill="currentColor"
                                   p-id="1643"
                                 ></path>
                                 <path
                                   d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
-                                  fill="#5E6570"
+                                  fill="currentColor"
                                   p-id="1644"
                                 ></path>
                                 <path
                                   d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
-                                  fill="#5E6570"
+                                  fill="currentColor"
                                   p-id="1645"
                                 ></path>
                                 <path
                                   d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
-                                  fill="#5E6570"
+                                  fill="currentColor"
                                   p-id="1646"
                                 ></path>
                               </svg>
@@ -363,7 +369,7 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                             onClick={() => {
                               router.push("/dashboard/" + address);
                             }}
@@ -387,7 +393,7 @@ const Navbar = () => {
                             <div>Dashboard</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                             onClick={(e) => {
                               e.stopPropagation();
                               router.push("/orders/" + address);
@@ -411,7 +417,7 @@ const Navbar = () => {
                             <div>Orders</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                            className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                             onClick={() => {
                               router.push("/referral");
                             }}
@@ -433,7 +439,7 @@ const Navbar = () => {
                             <div>Refferal</div>
                           </div>
                           <div
-                            className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
+                            className="flex items-center gap-2 hover:bg-base-300/60 transition-all duration-300 cursor-pointer p-4"
                             onClick={async () => {
                               if (connectorType == "injected") {
                                 info("Please disconnect your wallet manually");
@@ -453,7 +459,7 @@ const Navbar = () => {
                             >
                               <path
                                 d="M972.8 512l-307.2-256 0 153.6-358.4 0 0 204.8 358.4 0 0 153.6 307.2-256zM153.6 153.6l409.6 0 0-102.4-409.6 0c-56.32 0-102.4 46.08-102.4 102.4l0 716.8c0 56.32 46.08 102.4 102.4 102.4l409.6 0 0-102.4-409.6 0 0-716.8z"
-                                fill="#444444"
+                                fill="currentColor"
                                 p-id="7251"
                               ></path>
                             </svg>
@@ -485,12 +491,17 @@ const Navbar = () => {
                             p-id="1866"
                             width="24"
                             height="24"
-                            className="cursor-pointer"
+                            className={
+                              "cursor-pointer " +
+                              (data?.showUserItems
+                                ? "text-primary"
+                                : "text-base-content/70")
+                            }
                           >
                             <path
                               d="M512 62.08A449.92 449.92 0 1 0 961.92 512 449.92 449.92 0 0 0 512 62.08z m0 135.04a135.04 135.04 0 1 1-135.04 135.04A134.72 134.72 0 0 1 512 197.12z m0 640a323.84 323.84 0 0 1-269.76-144.96c0-89.6 179.84-138.56 269.76-138.56s268.48 48.96 269.76 138.56A323.84 323.84 0 0 1 512 835.84z"
                               p-id="1867"
-                              fill={data?.showUserItems ? "#0e932e" : ""}
+                              fill="currentColor"
                             ></path>
                           </svg>
                         </label>
@@ -514,10 +525,11 @@ const Navbar = () => {
                                   p-id="1638"
                                   width="20"
                                   height="20"
+                                  className="text-base-content/70"
                                 >
                                   <path
                                     d="M553.708426 511.998977l318.623781-318.623781c11.988032-11.988032 12.301164-31.112602 0.699941-42.714847l-1.399883-1.399883c-11.602246-11.602246-30.725792-11.288091-42.713824 0.700965L510.293637 468.584188 191.669856 149.96143c-11.988032-11.989055-31.112602-12.302187-42.714847-0.700965l-1.399883 1.400906c-11.602246 11.602246-11.288091 30.725792 0.700965 42.714847l318.623781 318.622758L148.255067 830.621734c-11.989055 11.989055-12.302187 31.112602-0.700965 42.714847l1.399883 1.399883c11.602246 11.602246 30.726815 11.288091 42.714847-0.699941l318.623781-318.623781 318.623781 318.623781c11.988032 11.989055 31.111578 12.302187 42.713824 0.700965l1.399883-1.399883c11.602246-11.602246 11.288091-30.726815-0.699941-42.714847L553.708426 511.998977z"
-                                    fill="#272636"
+                                    fill="currentColor"
                                     p-id="1639"
                                   ></path>
                                 </svg>
@@ -553,27 +565,27 @@ const Navbar = () => {
                                   >
                                     <path
                                       d="M672 832 224 832c-52.928 0-96-43.072-96-96L128 160c0-52.928 43.072-96 96-96l448 0c52.928 0 96 43.072 96 96l0 576C768 788.928 724.928 832 672 832zM224 128C206.368 128 192 142.368 192 160l0 576c0 17.664 14.368 32 32 32l448 0c17.664 0 32-14.336 32-32L704 160c0-17.632-14.336-32-32-32L224 128z"
-                                      fill="#5E6570"
+                                      fill="currentColor"
                                       p-id="1642"
                                     ></path>
                                     <path
                                       d="M800 960 320 960c-17.664 0-32-14.304-32-32s14.336-32 32-32l480 0c17.664 0 32-14.336 32-32L832 256c0-17.664 14.304-32 32-32s32 14.336 32 32l0 608C896 916.928 852.928 960 800 960z"
-                                      fill="#5E6570"
+                                      fill="currentColor"
                                       p-id="1643"
                                     ></path>
                                     <path
                                       d="M544 320 288 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l256 0c17.696 0 32 14.336 32 32S561.696 320 544 320z"
-                                      fill="#5E6570"
+                                      fill="currentColor"
                                       p-id="1644"
                                     ></path>
                                     <path
                                       d="M608 480 288.032 480c-17.664 0-32-14.336-32-32s14.336-32 32-32L608 416c17.696 0 32 14.336 32 32S625.696 480 608 480z"
-                                      fill="#5E6570"
+                                      fill="currentColor"
                                       p-id="1645"
                                     ></path>
                                     <path
                                       d="M608 640 288 640c-17.664 0-32-14.304-32-32s14.336-32 32-32l320 0c17.696 0 32 14.304 32 32S625.696 640 608 640z"
-                                      fill="#5E6570"
+                                      fill="currentColor"
                                       p-id="1646"
                                     ></path>
                                   </svg>
@@ -597,7 +609,7 @@ const Navbar = () => {
                               </div>
 
                               <div
-                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                                 onClick={() => {
                                   router.push("/dashboard/" + address);
                                   setData({ ...data, userItemsOpen: false });
@@ -622,7 +634,7 @@ const Navbar = () => {
                                 <div>Dashboard</div>
                               </div>
                               <div
-                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                                 onClick={(e) => {
                                   e.stopPropagation();
 
@@ -648,7 +660,7 @@ const Navbar = () => {
                                 <div>Orders</div>
                               </div>
                               <div
-                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-green-50 transition-all duration-300"
+                                className="flex items-center gap-2 cursor-pointer p-4 hover:bg-base-300/60 transition-all duration-300"
                                 onClick={() => {
                                   router.push("/referral");
                                   setData({ ...data, userItemsOpen: false });
@@ -671,7 +683,7 @@ const Navbar = () => {
                                 <div>Refferal</div>
                               </div>
                               <div
-                                className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
+                                className="flex items-center gap-2 hover:bg-base-300/60 transition-all duration-300 cursor-pointer p-4"
                                 onClick={async () => {
                                   if (connectorType == "injected") {
                                     info(
@@ -693,7 +705,7 @@ const Navbar = () => {
                                 >
                                   <path
                                     d="M972.8 512l-307.2-256 0 153.6-358.4 0 0 204.8 358.4 0 0 153.6 307.2-256zM153.6 153.6l409.6 0 0-102.4-409.6 0c-56.32 0-102.4 46.08-102.4 102.4l0 716.8c0 56.32 46.08 102.4 102.4 102.4l409.6 0 0-102.4-409.6 0 0-716.8z"
-                                    fill="#444444"
+                                    fill="currentColor"
                                     p-id="7251"
                                   ></path>
                                 </svg>
@@ -708,7 +720,7 @@ const Navbar = () => {
                 )}
                 {!isConnected && (
                   <div
-                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
+                    className="btn btn-primary btn-sm hidden lg:flex normal-case"
                     onClick={async () => {
                       privyLogin();
                     }}
@@ -767,10 +779,11 @@ const Navbar = () => {
                               p-id="1638"
                               width="20"
                               height="20"
+                              className="text-base-content/70"
                             >
                               <path
                                 d="M553.708426 511.998977l318.623781-318.623781c11.988032-11.988032 12.301164-31.112602 0.699941-42.714847l-1.399883-1.399883c-11.602246-11.602246-30.725792-11.288091-42.713824 0.700965L510.293637 468.584188 191.669856 149.96143c-11.988032-11.989055-31.112602-12.302187-42.714847-0.700965l-1.399883 1.400906c-11.602246 11.602246-11.288091 30.725792 0.700965 42.714847l318.623781 318.622758L148.255067 830.621734c-11.989055 11.989055-12.302187 31.112602-0.700965 42.714847l1.399883 1.399883c11.602246 11.602246 30.726815 11.288091 42.714847-0.699941l318.623781-318.623781 318.623781 318.623781c11.988032 11.989055 31.111578 12.302187 42.713824 0.700965l1.399883-1.399883c11.602246-11.602246 11.288091-30.726815-0.699941-42.714847L553.708426 511.998977z"
-                                fill="#272636"
+                                fill="currentColor"
                                 p-id="1639"
                               ></path>
                             </svg>
@@ -779,13 +792,13 @@ const Navbar = () => {
                         {/* MobileNav More Content */}
                         <div className="grid grid-cols-2 gap-4 p-4">
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/stake");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl bg-gray-100">
+                            <div className="p-2 rounded-xl bg-base-300">
                               <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path
                                   d="M3 3H21V21H3V3Z"
@@ -813,13 +826,13 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/usdb");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl overflow-hidden bg-gray-100">
+                            <div className="p-2 rounded-xl overflow-hidden bg-base-300">
                               <Image
                                 src="/usdb.png"
                                 alt="USDB"
@@ -833,13 +846,13 @@ const Navbar = () => {
 
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/merch");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl bg-gray-100">
+                            <div className="p-2 rounded-xl bg-base-300">
                               <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path
                                   d="M20 6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6Z"
@@ -863,13 +876,13 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/mbbb");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl bg-gray-100">
+                            <div className="p-2 rounded-xl bg-base-300">
                               <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path
                                   d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
@@ -897,13 +910,13 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/farm");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl bg-gray-100">
+                            <div className="p-2 rounded-xl bg-base-300">
                               <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path
                                   d="M3 6.5C3 4.01472 5.01472 2 7.5 2C9.98528 2 12 4.01472 12 6.5C12 8.98528 9.98528 11 7.5 11C5.01472 11 3 8.98528 3 6.5Z"
@@ -935,13 +948,13 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/bbbubu");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl overflow-hidden bg-gray-100">
+                            <div className="p-2 rounded-xl overflow-hidden bg-base-300">
                               <Image
                                 src="/bbb.jpg"
                                 alt="BBBubu"
@@ -954,13 +967,13 @@ const Navbar = () => {
                           </div>
 
                           <div
-                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-base-300/50 border border-base-300/40"
                             onClick={() => {
                               router.push("/airdrophub");
                               setData({ ...data, menuItemsOpen: false });
                             }}
                           >
-                            <div className="p-2 rounded-xl bg-gray-100">
+                            <div className="p-2 rounded-xl bg-base-300">
                               <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path
                                   d="M12 2L8 6H4C3.44772 6 3 6.44772 3 7V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7C21 6.44772 20.5523 6 20 6H16L12 2Z"
@@ -1004,18 +1017,18 @@ const Navbar = () => {
           </div>
         </div>
         <dialog id="howisworks" className="modal text-center">
-          <div className="modal-box bg-white rounded-2xl shadow-lg">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
+          <div className="modal-box bg-base-200 border border-base-300 rounded-xl shadow-xl">
+            <h1 className="text-2xl font-bold text-primary mb-6">
               How it works
             </h1>
-            <div className="font-bold my-4 text-gray-700">
+            <div className="font-semibold my-4 text-base-content/90">
               Pump prevents rugs by making sure that all created tokens are
               safe. Each coin on pump is a{" "}
-              <span className="text-green-600">fair-launch</span> with{" "}
-              <span className="text-blue-500">no presale</span> and{" "}
-              <span className="text-orange-500">no team allocation.</span>
+              <span className="text-primary">fair-launch</span> with{" "}
+              <span className="text-info">no presale</span> and{" "}
+              <span className="text-warning">no team allocation.</span>
             </div>
-            <div className="text-slate-500">
+            <div className="text-base-content/60">
               <div className="my-4">step 1: pick a coin that you like</div>
               <div className="my-4">
                 step 2: buy the coin on the bonding curve
@@ -1035,7 +1048,7 @@ const Navbar = () => {
 
             <div className="modal-action flex justify-center items-center">
               <form method="dialog">
-                <button className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl">
+                <button className="btn btn-primary">
                   {"I'm ready to pump"}
                 </button>
               </form>

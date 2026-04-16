@@ -507,7 +507,7 @@ const BBBubu = () => {
 
   // Progress Bar Component
   const ProgressBar = ({ progress }) => (
-    <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+    <div className="w-full bg-base-300 rounded-full h-2 mb-4">
       <div
         className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
         style={{ width: `${progress}%` }}
@@ -516,7 +516,7 @@ const BBBubu = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 mobile-safe-bottom">
+    <div className="min-h-screen bg-base-200 flex items-center justify-center p-4 mobile-safe-bottom">
       <Head>
         <title>BBBubu - Mystery Box NFT Collection</title>
         <meta
@@ -528,24 +528,24 @@ const BBBubu = () => {
       <div className="w-full max-w-lg mx-auto">
         {/* Sale Title */}
         <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">
+          <h1 className="text-2xl font-bold text-base-content/80 mb-1">
             BBBubu NFT Sale
           </h1>
-          <p className="text-gray-600 text-sm">
+          <p className="text-base-content/60 text-sm">
             Exclusive Mystery Box Collection
           </p>
         </div>
 
         {/* Progress Section */}
-        <div className="mb-6 bg-white border-2 border-gray-300 rounded-xl p-4 shadow-sm">
-          <div className="flex justify-between text-gray-600 mb-2 text-sm">
+        <div className="mb-6 bg-base-200 border-2 border-base-300 rounded-xl p-4 shadow-sm">
+          <div className="flex justify-between text-base-content/60 mb-2 text-sm">
             <span>Minting Progress</span>
             <span>
               {totalSupply.toString()}/
               {Number(totalSupply) + Number(remainingSupply)}
             </span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="w-full bg-base-300 rounded-full h-3">
             <div
               className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transition-all duration-300"
               style={{
@@ -557,16 +557,16 @@ const BBBubu = () => {
               }}
             />
           </div>
-          <div className="flex justify-between text-gray-500 mt-2 text-xs">
+          <div className="flex justify-between text-base-content/50 mt-2 text-xs">
             <span>Minted</span>
             <span>Total Supply</span>
           </div>
         </div>
 
         {/* Main Image Area */}
-        <div className="border-2 border-gray-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-white shadow-sm">
+        <div className="border-2 border-base-300 rounded-xl mb-6 h-96 overflow-hidden relative bg-base-200 shadow-sm">
           {data.imageLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+            <div className="absolute inset-0 flex items-center justify-center bg-base-200 z-10">
               <div className="animate-spin text-6xl">🥕</div>
             </div>
           )}
@@ -588,7 +588,7 @@ const BBBubu = () => {
         {/* Information Section */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            <h3 className="text-lg font-semibold text-base-content/80 mb-3">
               How to Get BBBubu NFTs
             </h3>
 
@@ -600,11 +600,11 @@ const BBBubu = () => {
             </div>
 
             {/* Direct Purchase Option */}
-            <div className="mb-4 p-3 bg-white rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-gray-800 mb-2">
+            <div className="mb-4 p-3 bg-base-200 rounded-lg border border-blue-200">
+              <h4 className="font-semibold text-base-content/80 mb-2">
                 💰 Direct Purchase
               </h4>
-              <p className="text-gray-600 text-sm">
+              <p className="text-base-content/60 text-sm">
                 You can directly purchase BBBubu NFTs with{" "}
                 <span className="font-semibold text-blue-600">600 XDC</span>{" "}
                 each
@@ -612,9 +612,9 @@ const BBBubu = () => {
             </div>
 
             {/* Swap Option */}
-            <div className="mb-4 p-3 bg-white rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-gray-800 mb-2">🔄 1:1 Swap</h4>
-              <p className="text-gray-600 text-sm mb-2">
+            <div className="mb-4 p-3 bg-base-200 rounded-lg border border-blue-200">
+              <h4 className="font-semibold text-base-content/80 mb-2">🔄 1:1 Swap</h4>
+              <p className="text-base-content/60 text-sm mb-2">
                 If you hold Farm NFTs, you can use{" "}
                 <span className="font-semibold text-blue-600">Swap</span> to
                 exchange them 1:1 for BBBubu NFTs
@@ -644,7 +644,7 @@ const BBBubu = () => {
             onClick={() =>
               setData((prev) => ({ ...prev, showSwapModal: true }))
             }
-            className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-4 text-xl font-bold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
+            className="flex-1 btn btn-primary border-none rounded-xl py-4 text-xl font-bold hover:brightness-110 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
             disabled={false}
           >
             Swap
@@ -653,12 +653,12 @@ const BBBubu = () => {
 
         {/* User's BBBubu NFTs */}
         {userBBBubuNFTs && userBBBubuNFTs.length > 0 && (
-          <div className="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
+          <div className="mt-8 bg-base-200/60 border border-base-300 rounded-xl p-4">
             <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-1">
+              <h3 className="text-lg font-semibold text-base-content/80 mb-1">
                 Your BBBubu NFTs
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-base-content/60 text-sm">
                 You own {userBBBubuNFTs.length} BBBubu NFT
                 {userBBBubuNFTs.length !== 1 ? "s" : ""}
               </p>
@@ -667,11 +667,11 @@ const BBBubu = () => {
               <div className="mt-4">
                 <Link
                   href="/bbbgame"
-                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  className="inline-flex items-center px-6 py-3 btn btn-primary border-none font-bold rounded-xl hover:brightness-110 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
                   🎮 Play BBBGame
                 </Link>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-base-content/50 mt-2">
                   Use your BBBubu NFTs to battle and earn rewards!
                 </p>
               </div>
@@ -691,14 +691,14 @@ const BBBubu = () => {
               </button>
               <button
                 onClick={deselectAllTransferNFTs}
-                className="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                className="px-3 py-1 text-xs bg-base-300 text-base-content/60 rounded-lg hover:bg-base-300 transition-colors disabled:opacity-50"
                 disabled={
                   data.isLoading || data.selectedTransferTokenIds.length === 0
                 }
               >
                 Clear Selection
               </button>
-              <span className="text-xs text-gray-500 self-center">
+              <span className="text-xs text-base-content/50 self-center">
                 {data.selectedTransferTokenIds.length} selected
               </span>
             </div>
@@ -707,10 +707,10 @@ const BBBubu = () => {
               {userBBBubuNFTs.map((tokenId) => (
                 <div
                   key={tokenId.toString()}
-                  className={`relative bg-white rounded-lg border-2 p-3 text-center cursor-pointer transition-all ${
+                  className={`relative bg-base-200 rounded-lg border-2 p-3 text-center cursor-pointer transition-all ${
                     data.selectedTransferTokenIds.includes(tokenId.toString())
                       ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 hover:border-blue-300"
+                      : "border-base-300 hover:border-blue-300"
                   }`}
                   onClick={() => toggleTransferNFTSelection(tokenId.toString())}
                 >
@@ -754,7 +754,7 @@ const BBBubu = () => {
                       }}
                     />
                   </div>
-                  <p className="text-xs font-semibold text-gray-800">
+                  <p className="text-xs font-semibold text-base-content/80">
                     BBBubu #{tokenId.toString()}
                   </p>
                 </div>
@@ -792,14 +792,14 @@ const BBBubu = () => {
       {/* Mint Modal */}
       {data.showMintModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+          <div className="bg-base-200 rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Mint BBBubu</h2>
+              <h2 className="text-2xl font-bold text-base-content/80">Mint BBBubu</h2>
               <button
                 onClick={() =>
                   setData((prev) => ({ ...prev, showMintModal: false }))
                 }
-                className="text-gray-400 hover:text-gray-600 text-2xl"
+                className="text-base-content/40 hover:text-base-content/60 text-2xl"
               >
                 ×
               </button>
@@ -807,14 +807,14 @@ const BBBubu = () => {
 
             {/* Progress Section */}
             <div className="mb-6">
-              <div className="flex justify-between text-gray-600 mb-2 text-sm">
+              <div className="flex justify-between text-base-content/60 mb-2 text-sm">
                 <span>Progress</span>
                 <span>
                   {totalSupply.toString()}/
                   {Number(totalSupply) + Number(remainingSupply)}
                 </span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="w-full bg-base-300 rounded-full h-2">
                 <div
                   className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transition-all duration-300"
                   style={{
@@ -831,32 +831,32 @@ const BBBubu = () => {
             {/* Progress Bars */}
             {data.mintProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Minting...</div>
+                <div className="text-base-content/60 text-sm mb-1">Minting...</div>
                 <ProgressBar progress={data.mintProgress} />
               </div>
             )}
 
             {/* Cost Info */}
-            <div className="bg-gray-50 rounded-2xl p-4 mb-6 space-y-3 border border-gray-200">
+            <div className="bg-base-200/60 rounded-2xl p-4 mb-6 space-y-3 border border-base-300">
               <div className="flex justify-between">
-                <span className="text-gray-600">Amount:</span>
-                <span className="text-gray-800 font-semibold">
+                <span className="text-base-content/60">Amount:</span>
+                <span className="text-base-content/80 font-semibold">
                   {data.quantity} BBBUBU
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Unit Price:</span>
-                <span className="text-gray-600">600 XDC</span>
+                <span className="text-base-content/60">Unit Price:</span>
+                <span className="text-base-content/60">600 XDC</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Total Price:</span>
-                <span className="text-gray-800 font-semibold">
+                <span className="text-base-content/60">Total Price:</span>
+                <span className="text-base-content/80 font-semibold">
                   {formatEther(totalCost)} XDC
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Your Balance:</span>
-                <span className="text-gray-800 font-semibold">
+                <span className="text-base-content/60">Your Balance:</span>
+                <span className="text-base-content/80 font-semibold">
                   {xdcBalance ? parseFloat(formatEther(xdcBalance.value)).toFixed(2) : "0"} XDC
                 </span>
               </div>
@@ -865,22 +865,22 @@ const BBBubu = () => {
             {/* Quantity Selector */}
             <div className="flex justify-between items-center mb-6">
               <button
-                className="w-12 h-12 rounded-full border-2 border-gray-300 text-gray-600 text-2xl hover:bg-gray-100 hover:border-gray-400 transition-colors disabled:opacity-50"
+                className="w-12 h-12 rounded-full border-2 border-base-300 text-base-content/60 text-2xl hover:bg-base-300 hover:border-gray-400 transition-colors disabled:opacity-50"
                 onClick={() => handleQuantityChange(-1)}
                 disabled={data.isLoading || data.quantity <= 1}
               >
                 -
               </button>
               <div className="text-center">
-                <span className="text-3xl font-bold text-gray-800">
+                <span className="text-3xl font-bold text-base-content/80">
                   {data.quantity}
                 </span>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-base-content/50 mt-1">
                   max: {Number(remainingSupply)}
                 </div>
               </div>
               <button
-                className="w-12 h-12 rounded-full border-2 border-gray-300 text-gray-600 text-2xl hover:bg-gray-100 hover:border-gray-400 transition-colors disabled:opacity-50 select-none"
+                className="w-12 h-12 rounded-full border-2 border-base-300 text-base-content/60 text-2xl hover:bg-base-300 hover:border-gray-400 transition-colors disabled:opacity-50 select-none"
                 onClick={() => handleQuantityChange(1)}
                 onMouseDown={() => plusLongPress.startLongPress()}
                 onMouseUp={() => plusLongPress.stopLongPress()}
@@ -905,9 +905,9 @@ const BBBubu = () => {
       {/* Swap Modal */}
       {data.showSwapModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+          <div className="bg-base-200 rounded-3xl p-8 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Swap Farm</h2>
+              <h2 className="text-2xl font-bold text-base-content/80">Swap Farm</h2>
               <button
                 onClick={() =>
                   setData((prev) => ({
@@ -916,7 +916,7 @@ const BBBubu = () => {
                     selectedTokenIds: [],
                   }))
                 }
-                className="text-gray-400 hover:text-gray-600 text-2xl"
+                className="text-base-content/40 hover:text-base-content/60 text-2xl"
               >
                 ×
               </button>
@@ -925,13 +925,13 @@ const BBBubu = () => {
             {/* Progress Bars */}
             {data.approveProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Approving...</div>
+                <div className="text-base-content/60 text-sm mb-1">Approving...</div>
                 <ProgressBar progress={data.approveProgress} />
               </div>
             )}
             {data.swapProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Swapping...</div>
+                <div className="text-base-content/60 text-sm mb-1">Swapping...</div>
                 <ProgressBar progress={data.swapProgress} />
               </div>
             )}
@@ -939,10 +939,10 @@ const BBBubu = () => {
             {userCarrotFarmerNFTs && userCarrotFarmerNFTs.length > 0 ? (
               <>
                 <div className="mb-6">
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-base-content/60 mb-4">
                     You own {userCarrotFarmerNFTs.length} CarrotFarmer NFTs
                   </p>
-                  <p className="text-gray-500 mb-3 text-sm">
+                  <p className="text-base-content/50 mb-3 text-sm">
                     Select NFTs to swap (1:1 exchange ratio):
                   </p>
 
@@ -961,26 +961,26 @@ const BBBubu = () => {
                     </button>
                     <button
                       onClick={deselectAllNFTs}
-                      className="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                      className="px-3 py-1 text-xs bg-base-300 text-base-content/60 rounded-lg hover:bg-base-300 transition-colors disabled:opacity-50"
                       disabled={
                         data.isLoading || data.selectedTokenIds.length === 0
                       }
                     >
                       Clear Selection
                     </button>
-                    <span className="text-xs text-gray-500 self-center">
+                    <span className="text-xs text-base-content/50 self-center">
                       {data.selectedTokenIds.length} selected
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-3 bg-gray-50">
+                  <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto border border-base-300 rounded-lg p-3 bg-base-200/60">
                     {userCarrotFarmerNFTs.map((tokenId) => (
                       <button
                         key={tokenId.toString()}
                         className={`p-2 rounded-lg text-xs font-bold transition-all flex flex-col items-center justify-center min-h-[80px] ${
                           data.selectedTokenIds.includes(tokenId.toString())
                             ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md"
-                            : "bg-white text-gray-700 border border-gray-300 hover:border-blue-400 hover:bg-blue-50"
+                            : "bg-base-200 text-base-content/70 border border-base-300 hover:border-blue-400 hover:bg-blue-50"
                         }`}
                         onClick={() => toggleNFTSelection(tokenId.toString())}
                         disabled={data.isLoading}
@@ -1026,28 +1026,28 @@ const BBBubu = () => {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200">
+                <div className="bg-base-200/60 rounded-xl p-4 mb-6 border border-base-300">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Selected:</span>
-                    <span className="text-gray-800 font-semibold">
+                    <span className="text-base-content/60">Selected:</span>
+                    <span className="text-base-content/80 font-semibold">
                       {data.selectedTokenIds.length} NFTs
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Exchange Ratio:</span>
-                    <span className="text-gray-800">1:1</span>
+                    <span className="text-base-content/60">Exchange Ratio:</span>
+                    <span className="text-base-content/80">1:1</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Will Receive:</span>
-                    <span className="text-gray-800 font-semibold">
+                    <span className="text-base-content/60">Will Receive:</span>
+                    <span className="text-base-content/80 font-semibold">
                       {data.selectedTokenIds.length} BBBubu NFTs
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Approval Status:</span>
+                    <span className="text-base-content/60">Approval Status:</span>
                     <span
                       className={`font-semibold ${
-                        isApprovedForAll ? "text-green-600" : "text-red-600"
+                        isApprovedForAll ? "text-primary" : "text-red-600"
                       }`}
                     >
                       {isApprovedForAll ? "Approved" : "Not Approved"}
@@ -1058,7 +1058,7 @@ const BBBubu = () => {
                 {/* Conditional buttons based on approval status */}
                 {!isApprovedForAll ? (
                   <div className="space-y-3">
-                    <div className="text-center text-gray-600 text-sm">
+                    <div className="text-center text-base-content/60 text-sm">
                       You need to approve CarrotFarmer NFTs first to proceed
                       with swapping
                     </div>
@@ -1077,15 +1077,15 @@ const BBBubu = () => {
             ) : (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4 opacity-50">🥕</div>
-                <p className="text-gray-600 text-lg mb-2">
+                <p className="text-base-content/60 text-lg mb-2">
                   You don&apos;t have any CarrotFarmer NFTs
                 </p>
-                <p className="text-gray-500 text-sm">
+                <p className="text-base-content/50 text-sm">
                   Please get CarrotFarmer NFTs first to swap
                 </p>
                 <button
                   onClick={() => refetchPublicData()}
-                  className="mt-4 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="mt-4 px-4 py-2 bg-base-300 text-base-content/60 rounded-lg hover:bg-base-300 transition-colors"
                 >
                   Refresh Data
                 </button>
@@ -1098,9 +1098,9 @@ const BBBubu = () => {
       {/* Transfer Modal */}
       {data.showTransferModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
+          <div className="bg-base-200 rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-base-content/80">
                 Transfer BBBubu NFTs
               </h2>
               <button
@@ -1112,7 +1112,7 @@ const BBBubu = () => {
                     transferAddress: "",
                   }))
                 }
-                className="text-gray-400 hover:text-gray-600 text-2xl"
+                className="text-base-content/40 hover:text-base-content/60 text-2xl"
               >
                 ×
               </button>
@@ -1121,7 +1121,7 @@ const BBBubu = () => {
             {/* Progress Bar */}
             {data.transferProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">
+                <div className="text-base-content/60 text-sm mb-1">
                   Transferring...
                 </div>
                 <ProgressBar progress={data.transferProgress} />
@@ -1129,7 +1129,7 @@ const BBBubu = () => {
             )}
             {data.approveProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">
+                <div className="text-base-content/60 text-sm mb-1">
                   Approving for Transfer...
                 </div>
                 <ProgressBar progress={data.approveProgress} />
@@ -1137,22 +1137,22 @@ const BBBubu = () => {
             )}
 
             {/* Transfer Info */}
-            <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200">
+            <div className="bg-base-200/60 rounded-xl p-4 mb-6 border border-base-300">
               <div className="flex justify-between mb-2">
-                <span className="text-gray-600">Selected NFTs:</span>
-                <span className="text-gray-800 font-semibold">
+                <span className="text-base-content/60">Selected NFTs:</span>
+                <span className="text-base-content/80 font-semibold">
                   {data.selectedTransferTokenIds.length}
                 </span>
               </div>
-              <div className="text-xs text-gray-500 mb-2">
+              <div className="text-xs text-base-content/50 mb-2">
                 Token IDs: {data.selectedTransferTokenIds.join(", ")}
               </div>
               <div className="flex justify-between mb-2">
-                <span className="text-gray-600">Transfer Approval:</span>
+                <span className="text-base-content/60">Transfer Approval:</span>
                 <span
                   className={`font-semibold text-xs ${
                     isApprovedForMultiTransfer
-                      ? "text-green-600"
+                      ? "text-primary"
                       : "text-red-600"
                   }`}
                 >
@@ -1163,7 +1163,7 @@ const BBBubu = () => {
               </div>
               {data.isLoading && (
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Status:</span>
+                  <span className="text-base-content/60">Status:</span>
                   <span className="text-blue-600 text-xs font-semibold">
                     {data.approveProgress > 0
                       ? "Approving..."
@@ -1174,7 +1174,7 @@ const BBBubu = () => {
                 </div>
               )}
               {data.selectedTransferTokenIds.length > 1 && (
-                <div className="text-xs text-green-600 bg-green-50 p-2 rounded">
+                <div className="text-xs text-primary bg-primary/10 p-2 rounded">
                   ✅ All NFTs will be transferred in a single transaction
                 </div>
               )}
@@ -1182,7 +1182,7 @@ const BBBubu = () => {
 
             {/* Recipient Address Input */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-base-content/70 mb-2">
                 Recipient Address
               </label>
               <input
@@ -1195,13 +1195,13 @@ const BBBubu = () => {
                   }))
                 }
                 placeholder="Enter recipient wallet address (0x...)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-base-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 disabled={data.isLoading}
               />
               {data.transferAddress && (
                 <div className="mt-2">
                   {data.transferAddress.match(/^0x[a-fA-F0-9]{40}$/) ? (
-                    <span className="text-xs text-green-600">
+                    <span className="text-xs text-primary">
                       ✓ Valid address format
                     </span>
                   ) : (
@@ -1229,7 +1229,7 @@ const BBBubu = () => {
             {/* Transfer Button */}
             {!isApprovedForMultiTransfer ? (
               <div className="space-y-3">
-                <div className="text-center text-gray-600 text-sm">
+                <div className="text-center text-base-content/60 text-sm">
                   You need to approve BBBubu NFTs for batch transfer first
                 </div>
                 <WriteButton

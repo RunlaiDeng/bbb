@@ -62,17 +62,17 @@ const AirdropHub = () => {
 
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
-      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
-        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+      <div className="bg-gradient-to-br from-primary/90 via-base-300 to-base-200 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-base-content to-primary">
           BBBPump Airdrops
         </h1>
-        <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+        <div className="text-sm bg-base-200/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
           🎁 Claim your BBBPump airdrops and rewards
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600 mb-6">
+      <div className="bg-base-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 mb-6">
           Available Airdrops
         </h2>
         
@@ -99,11 +99,11 @@ const AirdropHub = () => {
             return (
               <div 
                 key={index}
-                className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 hover:shadow-md transition-all duration-300"
+                className="bg-gradient-to-br from-primary/10 to-base-200 p-6 rounded-xl border border-primary/20 hover:shadow-md transition-all duration-300"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-full overflow-hidden bg-white shadow-sm">
+                    <div className="h-12 w-12 rounded-full overflow-hidden bg-base-200 shadow-sm">
                       <Image
                         height={400}
                         width={400}
@@ -113,8 +113,8 @@ const AirdropHub = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-800">{item?.desc}</h3>
-                      <p className="text-sm text-gray-600">
+                      <h3 className="font-bold text-base-content/80">{item?.desc}</h3>
+                      <p className="text-sm text-base-content/60">
                         Available: {claimMax * item?.rewards} mBBB
                       </p>
                     </div>
@@ -123,8 +123,8 @@ const AirdropHub = () => {
                     {...claimBtn}
                     className={`btn btn-sm ${
                       claimMax == 0
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md transform hover:-translate-y-1"
+                        ? "bg-base-300 text-base-content/40 cursor-not-allowed"
+                        : "btn btn-primary border-none hover:shadow-md transform hover:-translate-y-1"
                     } transition-all duration-300`}
                   />
                 </div>
@@ -133,7 +133,7 @@ const AirdropHub = () => {
           })}
 
           {airdropList.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-base-content/50">
               No airdrops available at the moment
             </div>
           )}

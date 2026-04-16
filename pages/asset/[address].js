@@ -205,17 +205,17 @@ const AssetDetail = () => {
 
   const getUtilizationColor = (utilization) => {
     const util = Number(formatUnits(utilization, 27)) * 100;
-    if (util < 50) return "text-green-600";
+    if (util < 50) return "text-primary";
     if (util < 80) return "text-yellow-600";
     return "text-red-600";
   };
 
   if (loading || !assetData) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-base-200 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading asset details...</p>
+          <p className="mt-4 text-base-content/60">Loading asset details...</p>
         </div>
       </div>
     );
@@ -228,7 +228,7 @@ const AssetDetail = () => {
         <meta name="description" content={`Detailed information about ${assetData.name} lending and borrowing on BBB Finance`} />
       </Head>
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-base-200">
         <div className="container mx-auto px-4 py-6 max-w-6xl">
           {/* Header */}
           <div className="mb-8">
@@ -244,38 +244,38 @@ const AssetDetail = () => {
             <div className="flex items-center space-x-4">
               <img src={assetData.icon} alt={assetData.symbol} className="w-16 h-16 rounded-full" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">{assetData.name}</h1>
-                <p className="text-xl text-gray-600">{assetData.symbol}</p>
-                <p className="text-sm text-gray-500 font-mono">{assetData.address}</p>
+                <h1 className="text-3xl font-bold text-base-content">{assetData.name}</h1>
+                <p className="text-xl text-base-content/60">{assetData.symbol}</p>
+                <p className="text-sm text-base-content/50 font-mono">{assetData.address}</p>
               </div>
             </div>
           </div>
 
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-sm text-gray-600 mb-2">Current Price</div>
-              <div className="text-2xl font-bold text-gray-900">
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <div className="text-sm text-base-content/60 mb-2">Current Price</div>
+              <div className="text-2xl font-bold text-base-content">
                 ${Number(formatEther(assetData.price)).toFixed(4)}
               </div>
             </div>
             
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-sm text-gray-600 mb-2">Supply APY</div>
-              <div className="text-2xl font-bold text-green-600">
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <div className="text-sm text-base-content/60 mb-2">Supply APY</div>
+              <div className="text-2xl font-bold text-primary">
                 {formatAPY(assetData.supplyAPY)}%
               </div>
             </div>
             
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-sm text-gray-600 mb-2">Borrow APY</div>
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <div className="text-sm text-base-content/60 mb-2">Borrow APY</div>
               <div className="text-2xl font-bold text-red-600">
                 {formatAPY(assetData.borrowAPY)}%
               </div>
             </div>
             
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-sm text-gray-600 mb-2">Utilization Rate</div>
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <div className="text-sm text-base-content/60 mb-2">Utilization Rate</div>
               <div className={`text-2xl font-bold ${getUtilizationColor(assetData.utilizationRate)}`}>
                 {formatAPY(assetData.utilizationRate)}%
               </div>
@@ -284,53 +284,53 @@ const AssetDetail = () => {
 
           {/* Market Information */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Market Information</h2>
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-base-content mb-6">Market Information</h2>
               
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total Supply</span>
+                  <span className="text-base-content/60">Total Supply</span>
                   <div className="text-right">
                     <div className="font-semibold">
                       {formatNumber(assetData.totalSupplyLending, assetData.decimals)} {assetData.symbol}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-base-content/50">
                       ${formatUSDValue(assetData.totalSupplyLending, assetData.price, assetData.decimals)}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total Borrowed</span>
+                  <span className="text-base-content/60">Total Borrowed</span>
                   <div className="text-right">
                     <div className="font-semibold">
                       {formatNumber(assetData.totalBorrow, assetData.decimals)} {assetData.symbol}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-base-content/50">
                       ${formatUSDValue(assetData.totalBorrow, assetData.price, assetData.decimals)}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Available Liquidity</span>
+                  <span className="text-base-content/60">Available Liquidity</span>
                   <div className="text-right">
                     <div className="font-semibold">
                       {formatNumber(assetData.availableLiquidity, assetData.decimals)} {assetData.symbol}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-base-content/50">
                       ${formatUSDValue(assetData.availableLiquidity, assetData.price, assetData.decimals)}
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Token Total Supply</span>
+                  <span className="text-base-content/60">Token Total Supply</span>
                   <div className="text-right">
                     <div className="font-semibold">
                       {formatNumber(assetData.totalSupply, assetData.decimals)} {assetData.symbol}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-base-content/50">
                       ${formatUSDValue(assetData.totalSupply, assetData.price, assetData.decimals)}
                     </div>
                   </div>
@@ -339,40 +339,40 @@ const AssetDetail = () => {
             </div>
 
             {/* Interest Rate Model */}
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">Interest Rate Model</h2>
+            <div className="bg-base-200 border border-base-300 rounded-xl p-6">
+              <h2 className="text-xl font-semibold text-base-content mb-6">Interest Rate Model</h2>
               
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Supply APY</span>
-                  <span className="font-semibold text-green-600">
+                  <span className="text-base-content/60">Supply APY</span>
+                  <span className="font-semibold text-primary">
                     {formatAPY(assetData.supplyAPY)}%
                   </span>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Borrow APY (Variable)</span>
+                  <span className="text-base-content/60">Borrow APY (Variable)</span>
                   <span className="font-semibold text-red-600">
                     {formatAPY(assetData.borrowAPY)}%
                   </span>
                 </div>
                 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Utilization Rate</span>
+                  <span className="text-base-content/60">Utilization Rate</span>
                   <span className={`font-semibold ${getUtilizationColor(assetData.utilizationRate)}`}>
                     {formatAPY(assetData.utilizationRate)}%
                   </span>
                 </div>
                 
-                <div className="pt-4 border-t border-gray-200">
-                  <div className="text-sm text-gray-600 mb-2">Utilization Progress</div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="pt-4 border-t border-base-300">
+                  <div className="text-sm text-base-content/60 mb-2">Utilization Progress</div>
+                  <div className="w-full bg-base-300 rounded-full h-2">
                     <div 
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${Math.min(Number(formatAPY(assetData.utilizationRate)), 100)}%` }}
                     ></div>
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs text-base-content/50 mt-1">
                     {formatAPY(assetData.utilizationRate)}% of supplied assets are being borrowed
                   </div>
                 </div>

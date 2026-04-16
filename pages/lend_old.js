@@ -820,9 +820,9 @@ const Lend = () => {
   };
 
   const getHealthFactorColor = (healthFactor) => {
-    if (!healthFactor || healthFactor === 0n) return "text-gray-500";
+    if (!healthFactor || healthFactor === 0n) return "text-base-content/50";
     const hf = Number(formatEther(healthFactor));
-    if (hf >= 2) return "text-green-600";
+    if (hf >= 2) return "text-primary";
     if (hf >= 1.5) return "text-yellow-600";
     if (hf >= 1.2) return "text-orange-600";
     return "text-red-600";
@@ -991,7 +991,7 @@ const Lend = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-base-content/60">
             {!lendContract
               ? "Loading contract..."
               : "Loading lending protocol..."}
@@ -1038,12 +1038,12 @@ const Lend = () => {
         `}</style>
       </Head>
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-base-200">
         <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-7xl">
           <div className="mb-6">
-            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 text-green-600">Lending & Borrowing</h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600">
+            <div className="bg-base-200 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-base-300">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 text-primary">Lending & Borrowing</h1>
+              <p className="text-sm sm:text-base md:text-lg text-base-content/60">
                 Supply assets to earn interest and use them as collateral to
                 borrow other assets
               </p>
@@ -1053,7 +1053,7 @@ const Lend = () => {
           {/* Refresh Indicator - Fixed to bottom right */}
           {isRefreshing && (
             <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 max-w-xs sm:max-w-sm">
-              <div className="bg-white border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center space-x-2 sm:space-x-3 shadow-lg">
+              <div className="bg-base-200 border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4 flex items-center space-x-2 sm:space-x-3 shadow-lg">
                 <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-blue-600"></div>
                 <div className="text-blue-800">
                   <div className="font-medium text-xs sm:text-sm">Updating data...</div>
@@ -1070,7 +1070,7 @@ const Lend = () => {
             {isConnected && userData && (
               <div className="aave-card p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-0">
+                  <h2 className="text-lg sm:text-xl font-semibold text-base-content mb-2 sm:mb-0">
                     Account Overview
                   </h2>
                   {/* Owner设置价格按钮 */}
@@ -1085,8 +1085,8 @@ const Lend = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:flex sm:gap-8">
                   <div className="text-left">
-                    <div className="text-xs sm:text-sm text-gray-600 mb-1">Net Worth</div>
-                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+                    <div className="text-xs sm:text-sm text-base-content/60 mb-1">Net Worth</div>
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold text-base-content">
                       $
                       {formatNumber(
                         userData.totalCollateralBase -
@@ -1097,7 +1097,7 @@ const Lend = () => {
                     </div>
                   </div>
                   <div className="text-left">
-                    <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                    <div className="text-xs sm:text-sm text-base-content/60 mb-1">
                       Health Factor
                     </div>
                     <div
@@ -1131,7 +1131,7 @@ const Lend = () => {
               {isConnected && (
                 <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
                   <div className="aave-card p-4 sm:p-6">
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
+                    <h2 className="text-lg sm:text-xl font-semibold text-base-content mb-4 sm:mb-6">
                       Your supplies
                     </h2>
                     {assetsList.some((asset) => asset.userSupplied > 0n) ? (
@@ -1141,7 +1141,7 @@ const Lend = () => {
                           .map((asset) => (
                             <div
                               key={`user-supply-${asset.address}`}
-                              className="p-3 sm:p-4 bg-gray-50 rounded-lg"
+                              className="p-3 sm:p-4 bg-base-200/60 rounded-lg"
                             >
                               <div className="flex items-start justify-between">
                                 <div className="flex items-center flex-1 min-w-0">
@@ -1151,10 +1151,10 @@ const Lend = () => {
                                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-3 flex-shrink-0"
                                   />
                                   <div className="min-w-0 flex-1">
-                                    <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    <div className="font-semibold text-base-content text-sm sm:text-base">
                                       {asset.symbol}
                                     </div>
-                                    <div className="text-xs sm:text-sm text-gray-500 truncate">
+                                    <div className="text-xs sm:text-sm text-base-content/50 truncate">
                                       {formatNumber(
                                         asset.userSupplied,
                                         asset.decimals,
@@ -1165,14 +1165,14 @@ const Lend = () => {
                                 </div>
                                 <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                                   <div className="text-right">
-                                    <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    <div className="font-semibold text-base-content text-sm sm:text-base">
                                       $
                                       {calculateUSDValue(
                                         asset.userSupplied,
                                         asset
                                       ).toFixed(2)}
                                     </div>
-                                    <div className="text-xs sm:text-sm text-green-600">
+                                    <div className="text-xs sm:text-sm text-primary">
                                       {formatAPY(asset.supplyAPY)}% APY
                                     </div>
                                   </div>
@@ -1192,7 +1192,7 @@ const Lend = () => {
                           ))}
                       </div>
                     ) : (
-                      <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                      <div className="text-center text-base-content/50 py-6 sm:py-8 text-sm sm:text-base">
                         Nothing supplied yet
                       </div>
                     )}
@@ -1200,7 +1200,7 @@ const Lend = () => {
 
                   <div className="aave-card p-4 sm:p-6">
                     <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                      <h2 className="text-lg sm:text-xl font-semibold text-base-content">
                         Your borrows
                       </h2>
                     </div>
@@ -1211,7 +1211,7 @@ const Lend = () => {
                           .map((asset) => (
                             <div
                               key={`user-borrow-${asset.address}`}
-                              className="p-3 sm:p-4 bg-gray-50 rounded-lg"
+                              className="p-3 sm:p-4 bg-base-200/60 rounded-lg"
                             >
                               <div className="flex items-start justify-between">
                                 <div className="flex items-center flex-1 min-w-0">
@@ -1221,10 +1221,10 @@ const Lend = () => {
                                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-3 flex-shrink-0"
                                   />
                                   <div className="min-w-0 flex-1">
-                                    <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    <div className="font-semibold text-base-content text-sm sm:text-base">
                                       {asset.symbol}
                                     </div>
-                                    <div className="text-xs sm:text-sm text-gray-500 truncate">
+                                    <div className="text-xs sm:text-sm text-base-content/50 truncate">
                                       {formatNumber(
                                         asset.userBorrowed,
                                         asset.decimals,
@@ -1235,7 +1235,7 @@ const Lend = () => {
                                 </div>
                                 <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                                   <div className="text-right">
-                                    <div className="font-semibold text-gray-900 text-sm sm:text-base">
+                                    <div className="font-semibold text-base-content text-sm sm:text-base">
                                       $
                                       {calculateUSDValue(
                                         asset.userBorrowed,
@@ -1262,7 +1262,7 @@ const Lend = () => {
                           ))}
                       </div>
                     ) : (
-                      <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                      <div className="text-center text-base-content/50 py-6 sm:py-8 text-sm sm:text-base">
                         Nothing borrowed yet
                       </div>
                     )}
@@ -1275,14 +1275,14 @@ const Lend = () => {
                 {/* Assets to Supply - Show market data always */}
                 <div className="aave-card p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                    <h2 className="text-lg sm:text-xl font-semibold text-base-content">
                       Assets to supply
                     </h2>
                   </div>
 
-                  <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
+                  <div className="mb-4 p-3 bg-primary/10 border border-base-300 rounded-lg flex items-center">
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2 flex-shrink-0"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-primary mr-2 flex-shrink-0"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -1292,14 +1292,14 @@ const Lend = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-xs sm:text-sm text-green-700">
+                    <span className="text-xs sm:text-sm text-success">
                       Supply assets to earn interest and use them as collateral for borrowing.
                     </span>
                   </div>
 
                   <div className="space-y-3">
                     {/* Desktop Table Header - Only visible on desktop */}
-                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-base-content/60 uppercase tracking-wider px-3 py-2 border-b border-base-300">
                       <div>Asset</div>
                       <div className="text-right">Total supply</div>
                       <div className="text-right">APY</div>
@@ -1317,7 +1317,7 @@ const Lend = () => {
                             }
                             router.push(`/asset/${asset.address}`);
                           }}
-                          className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
+                          className="bg-base-200 border border-base-300 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-base-200/60 sm:hover:shadow-none cursor-pointer"
                         >
                           {/* Mobile Card Layout */}
                           <div className="sm:hidden space-y-4">
@@ -1329,7 +1329,7 @@ const Lend = () => {
                                   className="w-10 h-10 rounded-full mr-3"
                                 />
                                 <div>
-                                  <div className="font-semibold text-gray-900 text-base">
+                                  <div className="font-semibold text-base-content text-base">
                                     {asset.symbol}
                                   </div>
                                 </div>
@@ -1355,15 +1355,15 @@ const Lend = () => {
                               )}
                             </div>
                             <div className="grid grid-cols-2 gap-4">
-                              <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-500 mb-1">Total Supply</div>
-                                <div className="font-semibold text-gray-900">
+                              <div className="bg-base-200/60 rounded-lg p-3">
+                                <div className="text-xs text-base-content/50 mb-1">Total Supply</div>
+                                <div className="font-semibold text-base-content">
                                   {formatNumber(asset.totalSupply, asset.decimals, 2)}
                                 </div>
                               </div>
-                              <div className="bg-gray-50 rounded-lg p-3">
-                                <div className="text-xs text-gray-500 mb-1">Supply APY</div>
-                                <div className="font-semibold text-green-600">
+                              <div className="bg-base-200/60 rounded-lg p-3">
+                                <div className="text-xs text-base-content/50 mb-1">Supply APY</div>
+                                <div className="font-semibold text-primary">
                                   {formatAPY(asset.supplyAPY)}%
                                 </div>
                               </div>
@@ -1378,16 +1378,16 @@ const Lend = () => {
                                 alt={asset.symbol}
                                 className="w-8 h-8 rounded-full mr-3"
                               />
-                              <span className="font-semibold text-gray-900">
+                              <span className="font-semibold text-base-content">
                                 {asset.symbol}
                               </span>
                             </div>
                             <div className="text-right">
-                              <div className="font-medium text-gray-900">
+                              <div className="font-medium text-base-content">
                                 {formatNumber(asset.totalSupply, asset.decimals, 2)}
                               </div>
                             </div>
-                            <div className="text-right font-medium text-green-600">
+                            <div className="text-right font-medium text-primary">
                               {formatAPY(asset.supplyAPY)}%
                             </div>
                             <div className="text-right">
@@ -1414,7 +1414,7 @@ const Lend = () => {
                           </div>
                         </div>
                       )) : (
-                        <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                        <div className="text-center text-base-content/50 py-6 sm:py-8 text-sm sm:text-base">
                           Loading market data...
                         </div>
                       )}
@@ -1424,7 +1424,7 @@ const Lend = () => {
                 {/* Assets to Borrow - Show market data always */}
                 <div className="aave-card p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                    <h2 className="text-lg sm:text-xl font-semibold text-base-content">
                       Assets to borrow
                     </h2>
                   </div>
@@ -1449,7 +1449,7 @@ const Lend = () => {
 
                   <div className="space-y-3">
                     {/* Desktop Table Header - Only visible on desktop */}
-                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-gray-600 uppercase tracking-wider px-3 py-2 border-b border-gray-200">
+                    <div className="hidden sm:grid grid-cols-4 gap-4 text-xs font-semibold text-base-content/60 uppercase tracking-wider px-3 py-2 border-b border-base-300">
                       <div>Asset</div>
                       <div className="text-right">Total borrowed</div>
                       <div className="text-right">APY, variable</div>
@@ -1466,7 +1466,7 @@ const Lend = () => {
                           }
                           router.push(`/asset/${asset.address}`);
                         }}
-                        className="bg-white border border-gray-200 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-gray-50 sm:hover:shadow-none cursor-pointer"
+                        className="bg-base-200 border border-base-300 rounded-xl p-4 sm:p-3 hover:shadow-md transition-all sm:grid sm:grid-cols-4 sm:gap-4 sm:items-center sm:border-0 sm:rounded-lg sm:hover:bg-base-200/60 sm:hover:shadow-none cursor-pointer"
                       >
                         {/* Mobile Card Layout */}
                         <div className="sm:hidden space-y-4">
@@ -1478,10 +1478,10 @@ const Lend = () => {
                                 className="w-10 h-10 rounded-full mr-3"
                               />
                               <div>
-                                <div className="font-semibold text-gray-900 text-base">
+                                <div className="font-semibold text-base-content text-base">
                                   {asset.symbol}
                                 </div>
-                                <div className="text-xs text-gray-500">
+                                <div className="text-xs text-base-content/50">
                                   Variable APY
                                 </div>
                               </div>
@@ -1508,9 +1508,9 @@ const Lend = () => {
                             )}
                           </div>
                           <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-gray-50 rounded-lg p-3">
-                              <div className="text-xs text-gray-500 mb-1">Total Borrowed</div>
-                              <div className="font-semibold text-gray-900">
+                            <div className="bg-base-200/60 rounded-lg p-3">
+                              <div className="text-xs text-base-content/50 mb-1">Total Borrowed</div>
+                              <div className="font-semibold text-base-content">
                                 {formatNumber(
                                   asset.totalBorrow,
                                   asset.decimals,
@@ -1518,8 +1518,8 @@ const Lend = () => {
                                 )}
                               </div>
                             </div>
-                            <div className="bg-gray-50 rounded-lg p-3">
-                              <div className="text-xs text-gray-500 mb-1">APY Variable</div>
+                            <div className="bg-base-200/60 rounded-lg p-3">
+                              <div className="text-xs text-base-content/50 mb-1">APY Variable</div>
                               <div className="font-semibold text-red-600">
                                 {formatAPY(asset.borrowAPY)}%
                               </div>
@@ -1535,12 +1535,12 @@ const Lend = () => {
                                 alt={asset.symbol}
                                 className="w-8 h-8 rounded-full mr-3"
                               />
-                              <span className="font-semibold text-gray-900">
+                              <span className="font-semibold text-base-content">
                                 {asset.symbol}
                               </span>
                             </div>
                             <div className="text-right">
-                             <div className="font-medium text-gray-900">
+                             <div className="font-medium text-base-content">
                                 {formatNumber(
                                   asset.totalBorrow,
                                   asset.decimals,
@@ -1578,7 +1578,7 @@ const Lend = () => {
                         </div>
                       </div>
                     )) : (
-                      <div className="text-center text-gray-500 py-6 sm:py-8 text-sm sm:text-base">
+                      <div className="text-center text-base-content/50 py-6 sm:py-8 text-sm sm:text-base">
                         Loading market data...
                       </div>
                     )}
@@ -1600,10 +1600,10 @@ const Lend = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-base-content mb-3">
                     Connect your wallet to start earning
                   </h3>
-                  <p className="text-gray-600 mb-6 max-w-sm mx-auto">
+                  <p className="text-base-content/60 mb-6 max-w-sm mx-auto">
                     Connect your wallet to supply assets, borrow against them, and manage your positions.
                   </p>
                   <button
@@ -1632,7 +1632,7 @@ const Lend = () => {
           }}
         >
           <div
-            className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto mb-16 sm:mb-0"
+            className="bg-base-200 rounded-t-3xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] sm:max-h-[90vh] overflow-y-auto mb-16 sm:mb-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Mobile Drag Indicator */}
@@ -1641,14 +1641,14 @@ const Lend = () => {
             </div>
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-base-300">
               <div className="flex items-center space-x-3">
                 <img
                   src={selectedAssetData?.icon}
                   alt={selectedAssetData?.symbol}
                   className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
                 />
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 capitalize">
+                <h3 className="text-lg sm:text-xl font-bold text-base-content capitalize">
                   {activeTab} {selectedAssetData?.symbol}
                 </h3>
               </div>
@@ -1658,7 +1658,7 @@ const Lend = () => {
                   setSelectedAsset("");
                   setAmount("");
                 }}
-                className="text-gray-400 hover:text-gray-600 p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="text-base-content/40 hover:text-base-content/60 p-1 sm:p-2 hover:bg-base-300 rounded-full transition-colors"
               >
                 <svg
                   className="w-5 h-5 sm:w-6 sm:h-6"
@@ -1682,7 +1682,7 @@ const Lend = () => {
                 <div className="space-y-4 sm:space-y-6">
                   {/* Amount Input */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-base-content/70 mb-3">
                       Amount
                     </label>
                     <div className="relative">
@@ -1703,16 +1703,16 @@ const Lend = () => {
                           }
                         }}
                         placeholder="0.00"
-                        className="w-full p-3 sm:p-4 pr-16 sm:pr-20 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base sm:text-lg font-semibold"
+                        className="w-full p-3 sm:p-4 pr-16 sm:pr-20 border-2 border-base-300 rounded-xl focus:outline-none focus:border-blue-500 text-base sm:text-lg font-semibold"
                       />
-                      <div className="absolute right-3 sm:right-4 top-3 sm:top-4 text-gray-500 font-medium text-sm sm:text-base">
+                      <div className="absolute right-3 sm:right-4 top-3 sm:top-4 text-base-content/50 font-medium text-sm sm:text-base">
                         {selectedAssetData?.symbol}
                       </div>
                     </div>
 
                     {selectedAssetData && (
                       <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm space-y-2 sm:space-y-0">
-                        <span className="text-gray-600">
+                        <span className="text-base-content/60">
                           Available:{" "}
                           {formatNumber(
                             activeTab === "supply"
@@ -1907,13 +1907,13 @@ const Lend = () => {
                 </div>
 
                 {/* Transaction Overview */}
-                <div className="bg-gray-50 rounded-xl p-4 sm:p-6 order-first md:order-last">
-                  <h4 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">
+                <div className="bg-base-200/60 rounded-xl p-4 sm:p-6 order-first md:order-last">
+                  <h4 className="font-semibold text-base-content mb-3 sm:mb-4 text-sm sm:text-base">
                     Transaction Overview
                   </h4>
                   <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Asset:</span>
+                      <span className="text-base-content/60">Asset:</span>
                       <div className="flex items-center space-x-2">
                         <img
                           src={selectedAssetData?.icon}
@@ -1926,15 +1926,15 @@ const Lend = () => {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Amount:</span>
+                      <span className="text-base-content/60">Amount:</span>
                       <span className="font-medium text-right">
                         {amount || "0"} {selectedAssetData?.symbol}
                       </span>
                     </div>
                     {activeTab === "supply" && (
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Supply APY:</span>
-                        <span className="font-medium text-green-600">
+                        <span className="text-base-content/60">Supply APY:</span>
+                        <span className="font-medium text-primary">
                           {formatAPY(selectedAssetData?.supplyAPY)}%
                         </span>
                       </div>
@@ -1942,13 +1942,13 @@ const Lend = () => {
                     {activeTab === "borrow" && (
                       <>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Borrow APY:</span>
+                          <span className="text-base-content/60">Borrow APY:</span>
                           <span className="font-medium text-red-600">
                             {formatAPY(selectedAssetData?.borrowAPY)}%
                           </span>
                         </div>
                         <div className="flex justify-between items-start">
-                          <span className="text-gray-600">
+                          <span className="text-base-content/60">
                             Available Liquidity:
                           </span>
                           <span className="font-medium text-right">
@@ -1962,13 +1962,13 @@ const Lend = () => {
                     {activeTab === "withdraw" && (
                       <>
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Supply APY:</span>
-                          <span className="font-medium text-green-600">
+                          <span className="text-base-content/60">Supply APY:</span>
+                          <span className="font-medium text-primary">
                             {formatAPY(selectedAssetData?.supplyAPY)}%
                           </span>
                         </div>
                         <div className="flex justify-between items-start">
-                          <span className="text-gray-600">
+                          <span className="text-base-content/60">
                             Available Liquidity:
                           </span>
                           <span className="font-medium text-right">
@@ -1977,7 +1977,7 @@ const Lend = () => {
                           </span>
                         </div>
                         <div className="flex justify-between items-start">
-                          <span className="text-gray-600">
+                          <span className="text-base-content/60">
                             Your Supplied:
                           </span>
                           <span className="font-medium text-right">
@@ -1990,7 +1990,7 @@ const Lend = () => {
 
                     {activeTab === "repay" && (
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Borrow APY:</span>
+                        <span className="text-base-content/60">Borrow APY:</span>
                         <span className="font-medium text-red-600">
                           {formatAPY(selectedAssetData?.borrowAPY)}%
                         </span>
@@ -1998,9 +1998,9 @@ const Lend = () => {
                     )}
 
                     {amount && selectedAssetData && (
-                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200">
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-base-300">
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">USD Value:</span>
+                          <span className="text-base-content/60">USD Value:</span>
                           <span className="font-medium">
                             $
                             {(
@@ -2034,12 +2034,12 @@ const Lend = () => {
           }}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+            className="bg-base-200 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* 弹窗头部 */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 flex items-center">
+            <div className="flex items-center justify-between p-6 border-b border-base-300">
+              <h3 className="text-xl font-bold text-base-content flex items-center">
                 🔧 设置资产价格
               </h3>
               <button
@@ -2048,7 +2048,7 @@ const Lend = () => {
                   setSelectedPriceAsset("");
                   setNewPrice("");
                 }}
-                className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="text-base-content/40 hover:text-base-content/60 p-2 hover:bg-base-300 rounded-full transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -2070,13 +2070,13 @@ const Lend = () => {
             <div className="p-6 space-y-6">
               {/* 资产选择 */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <label className="block text-sm font-semibold text-base-content/70 mb-3">
                   选择资产
                 </label>
                 <select
                   value={selectedPriceAsset}
                   onChange={(e) => setSelectedPriceAsset(e.target.value)}
-                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base font-medium"
+                  className="w-full p-3 border-2 border-base-300 rounded-xl focus:outline-none focus:border-blue-500 text-base font-medium"
                 >
                   <option value="">请选择要设置价格的资产</option>
                   {assetsList.map((asset) => (
@@ -2089,9 +2089,9 @@ const Lend = () => {
 
               {/* 当前价格显示 */}
               {selectedPriceAsset && (
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="text-sm text-gray-600 mb-1">当前价格 (USD)</div>
-                  <div className="text-lg font-bold text-gray-900">
+                <div className="bg-base-200/60 rounded-lg p-4">
+                  <div className="text-sm text-base-content/60 mb-1">当前价格 (USD)</div>
+                  <div className="text-lg font-bold text-base-content">
                     ${(() => {
                       const asset = assetsList.find(a => a.address === selectedPriceAsset);
                       return asset ? formatNumber(asset.price, 18, 6) : "0.000000";
@@ -2102,7 +2102,7 @@ const Lend = () => {
 
               {/* 新价格输入 */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <label className="block text-sm font-semibold text-base-content/70 mb-3">
                   新价格 (USD)
                 </label>
                 <div className="relative">
@@ -2116,13 +2116,13 @@ const Lend = () => {
                       }
                     }}
                     placeholder="0.000000"
-                    className="w-full p-3 pl-8 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-base font-semibold"
+                    className="w-full p-3 pl-8 border-2 border-base-300 rounded-xl focus:outline-none focus:border-blue-500 text-base font-semibold"
                   />
-                  <div className="absolute left-3 top-3 text-gray-500 font-medium">
+                  <div className="absolute left-3 top-3 text-base-content/50 font-medium">
                     $
                   </div>
                 </div>
-                <div className="mt-2 text-xs text-gray-500">
+                <div className="mt-2 text-xs text-base-content/50">
                   价格将以18位小数精度存储在合约中
                 </div>
               </div>
@@ -2148,8 +2148,8 @@ const Lend = () => {
                 )}
 
                 {/* 批量设置按钮 (未来功能) */}
-                <div className="pt-4 border-t border-gray-200">
-                  <div className="text-sm text-gray-500 text-center">
+                <div className="pt-4 border-t border-base-300">
+                  <div className="text-sm text-base-content/50 text-center">
                     💡 提示：单个资产价格设置完成后，可以考虑添加批量设置功能
                   </div>
                 </div>

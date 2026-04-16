@@ -338,11 +338,11 @@ const Ido = () => {
   return (
     <div className="container mx-auto py-12 px-4">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-500 to-emerald-600 text-transparent bg-clip-text">
+        <h1 className="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
           IDO
         </h1>
-        <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-600 mx-auto my-4"></div>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <div className="w-24 h-1 bg-primary rounded-full mx-auto my-4"></div>
+        <p className="text-lg text-base-content/60 max-w-3xl mx-auto">
           Everyone can create IDOs with fair token distribution and fully locked liquidity pools
         </p>
       </div>
@@ -361,15 +361,15 @@ const Ido = () => {
           </div>
 
           {showCreateForm && (
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200 max-w-2xl mx-auto">
-              <h2 className="text-2xl font-bold mb-6 text-green-600 text-center">
+            <div className="bg-base-200 rounded-xl shadow-lg p-6 mb-8 border border-base-300 max-w-2xl mx-auto">
+              <h2 className="text-2xl font-bold mb-6 text-primary text-center">
                 Launch Your Token
               </h2>
 
               <div className="space-y-6">
                 {/* Token Image Upload */}
                 <div className="flex flex-col items-center">
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-medium text-base-content/70 mb-3">
                     Token Image
                   </label>
                   <ImageUpload
@@ -378,7 +378,7 @@ const Ido = () => {
                     clean={!newCampaign.tokenImage}
                   />
                   {!newCampaign.tokenImage && (
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-base-content/50 mt-2">
                       Upload an image for your token (required)
                     </p>
                   )}
@@ -386,7 +386,7 @@ const Ido = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-base-content/70 mb-1">
                       Token Name *
                     </label>
                     <input
@@ -394,13 +394,13 @@ const Ido = () => {
                       name="tokenName"
                       value={newCampaign.tokenName}
                       onChange={handleFormChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-3 py-2 border border-base-300 rounded-lg focus:ring-primary focus:border-primary"
                       placeholder="e.g. My Amazing Token"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-base-content/70 mb-1">
                       Token Symbol *
                     </label>
                     <input
@@ -408,13 +408,13 @@ const Ido = () => {
                       name="tokenSymbol"
                       value={newCampaign.tokenSymbol}
                       onChange={handleFormChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-3 py-2 border border-base-300 rounded-lg focus:ring-primary focus:border-primary"
                       placeholder="e.g. MAT"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-base-content/70 mb-1">
                       Start Time *
                     </label>
                     <input
@@ -422,12 +422,12 @@ const Ido = () => {
                       name="startTime"
                       value={newCampaign.startTime}
                       onChange={handleFormChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-3 py-2 border border-base-300 rounded-lg focus:ring-primary focus:border-primary"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-base-content/70 mb-1">
                       End Time *
                     </label>
                     <input
@@ -435,7 +435,7 @@ const Ido = () => {
                       name="endTime"
                       value={newCampaign.endTime}
                       onChange={handleFormChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-3 py-2 border border-base-300 rounded-lg focus:ring-primary focus:border-primary"
                     />
                   </div>
                 </div>
@@ -500,9 +500,9 @@ const Ido = () => {
 
       {/* Connect Wallet Prompt */}
       {!isConnected && !loading && (
-        <div className="flex flex-col items-center justify-center py-16 mb-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+        <div className="flex flex-col items-center justify-center py-16 mb-8 bg-gradient-to-r from-primary/10 to-base-200 rounded-xl border border-primary/20">
           <svg
-            className="w-16 h-16 mb-4 text-green-500"
+            className="w-16 h-16 mb-4 text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -516,7 +516,7 @@ const Ido = () => {
             />
           </svg>
           <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
-          <p className="text-gray-600 mb-6 text-center max-w-lg">
+          <p className="text-base-content/60 mb-6 text-center max-w-lg">
             Connect your wallet to view available IDO campaigns, purchase
             tokens, create your own IDO, and track your investments.
           </p>
@@ -537,7 +537,7 @@ const Ido = () => {
       {loading ? (
         <Loading text="Loading IDO campaigns..." />
       ) : campaigns.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 rounded-lg">
+        <div className="text-center py-16 bg-base-200/60 rounded-lg">
           <div className="w-20 h-20 mx-auto mb-6 relative">
             <svg
               viewBox="0 0 1024 1024"
@@ -555,7 +555,7 @@ const Ido = () => {
             </svg>
           </div>
           <h2 className="text-3xl font-bold mb-2">No Campaigns Yet</h2>
-          <p className="text-gray-600 mb-4">
+          <p className="text-base-content/60 mb-4">
             Be the first to create an IDO campaign on our platform!
           </p>
           {isConnected && (
@@ -570,30 +570,30 @@ const Ido = () => {
       ) : (
         <>
           {/* Desktop Table View */}
-          <div className="hidden lg:block bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          <div className="hidden lg:block bg-base-200 rounded-xl shadow-lg overflow-hidden border border-base-300">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-base-200/60">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       Token
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       Creator
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       Start Time
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       End Time
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-base-content">
                       Raised
                     </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-base-content">
                       Actions
                     </th>
                   </tr>
@@ -615,12 +615,12 @@ const Ido = () => {
                     return (
                       <tr
                         key={campaign.id}
-                        className="hover:bg-gray-50 cursor-pointer"
+                        className="hover:bg-base-200/60 cursor-pointer"
                         onClick={() => navigateToCampaignDetail(campaign.id)}
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center">
-                            <div className="w-10 h-10 mr-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                            <div className="w-10 h-10 mr-3 rounded-full overflow-hidden bg-base-300 flex items-center justify-center">
                               <Image
                                 src={campaignImage}
                                 alt={campaign.tokenName}
@@ -634,10 +634,10 @@ const Ido = () => {
                               />
                             </div>
                             <div>
-                              <div className="font-semibold text-gray-900">
+                              <div className="font-semibold text-base-content">
                                 {campaign.tokenName}
                               </div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-base-content/50">
                                 {campaign.tokenSymbol}
                               </div>
                             </div>
@@ -647,10 +647,10 @@ const Ido = () => {
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               timeStatus.status === "live"
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-primary/15 text-green-800"
                                 : timeStatus.status === "upcoming"
                                 ? "bg-yellow-100 text-yellow-800"
-                                : "bg-gray-100 text-gray-800"
+                                : "bg-base-300 text-base-content/80"
                             }`}
                           >
                             <span
@@ -667,7 +667,7 @@ const Ido = () => {
                             </span>
                           </span>
                           {timeStatus.status === "live" && (
-                            <div className="text-xs text-green-600 mt-1">
+                            <div className="text-xs text-primary mt-1">
                               {timeStatus.timeRemaining} left
                             </div>
                           )}
@@ -677,21 +677,21 @@ const Ido = () => {
                             </div>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-base-content/50">
                           {campaign.creator.slice(0, 6)}...
                           {campaign.creator.slice(-4)}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-base-content/50">
                           {new Date(
                             campaign.saleStartTime * 1000
                           ).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-base-content/50">
                           {new Date(
                             campaign.saleEndTime * 1000
                           ).toLocaleDateString()}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                        <td className="px-6 py-4 text-sm text-base-content font-medium">
                           {parseFloat(formatEther(campaign.ethCollected)).toFixed(
                             4
                           )}{" "}
@@ -740,13 +740,13 @@ const Ido = () => {
               return (
                 <div
                   key={campaign.id}
-                  className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 cursor-pointer transform transition-all duration-200 hover:scale-102 hover:shadow-xl active:scale-98"
+                  className="bg-base-200 rounded-xl shadow-lg border border-base-300 p-4 cursor-pointer transform transition-all duration-200 hover:scale-102 hover:shadow-xl active:scale-98"
                   onClick={() => navigateToCampaignDetail(campaign.id)}
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 mr-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                      <div className="w-12 h-12 mr-3 rounded-full overflow-hidden bg-base-300 flex items-center justify-center">
                         <Image
                           src={campaignImage}
                           alt={campaign.tokenName}
@@ -760,10 +760,10 @@ const Ido = () => {
                         />
                       </div>
                       <div>
-                        <div className="font-bold text-lg text-gray-900">
+                        <div className="font-bold text-lg text-base-content">
                           {campaign.tokenName}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-base-content/50">
                           {campaign.tokenSymbol}
                         </div>
                       </div>
@@ -773,10 +773,10 @@ const Ido = () => {
                     <span
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                         timeStatus.status === "live"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-primary/15 text-green-800"
                           : timeStatus.status === "upcoming"
                           ? "bg-yellow-100 text-yellow-800"
-                          : "bg-gray-100 text-gray-800"
+                          : "bg-base-300 text-base-content/80"
                       }`}
                     >
                       <span
@@ -796,12 +796,12 @@ const Ido = () => {
 
                   {/* Time Information */}
                   {(timeStatus.status === "live" || timeStatus.status === "upcoming") && (
-                    <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                      <div className="text-sm font-medium text-gray-700">
+                    <div className="mb-4 p-3 bg-base-200/60 rounded-lg">
+                      <div className="text-sm font-medium text-base-content/70">
                         {timeStatus.status === "live" ? "⏰ Time Remaining" : "🕐 Starts In"}
                       </div>
                       <div className={`text-lg font-bold ${
-                        timeStatus.status === "live" ? "text-green-600" : "text-yellow-600"
+                        timeStatus.status === "live" ? "text-primary" : "text-yellow-600"
                       }`}>
                         {timeStatus.timeRemaining}
                       </div>
@@ -810,33 +810,33 @@ const Ido = () => {
 
                   {/* Details Grid */}
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                    <div className="bg-base-200/60 rounded-lg p-3">
+                      <div className="text-xs text-base-content/50 uppercase tracking-wide font-medium mb-1">
                         Creator
                       </div>
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-base-content">
                         {campaign.creator.slice(0, 6)}...{campaign.creator.slice(-4)}
                       </div>
                     </div>
                     
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                    <div className="bg-base-200/60 rounded-lg p-3">
+                      <div className="text-xs text-base-content/50 uppercase tracking-wide font-medium mb-1">
                         Raised
                       </div>
-                      <div className="text-sm font-bold text-green-600">
+                      <div className="text-sm font-bold text-primary">
                         {parseFloat(formatEther(campaign.ethCollected)).toFixed(4)} XDC
                       </div>
                     </div>
                   </div>
 
                   {/* Timeline */}
-                  <div className="border-t border-gray-100 pt-4">
+                  <div className="border-t border-base-300 pt-4">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                        <div className="text-xs text-base-content/50 uppercase tracking-wide font-medium mb-1">
                           Start Date
                         </div>
-                        <div className="text-gray-700">
+                        <div className="text-base-content/70">
                           {new Date(campaign.saleStartTime * 1000).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -846,10 +846,10 @@ const Ido = () => {
                       </div>
                       
                       <div>
-                        <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-1">
+                        <div className="text-xs text-base-content/50 uppercase tracking-wide font-medium mb-1">
                           End Date
                         </div>
-                        <div className="text-gray-700">
+                        <div className="text-base-content/70">
                           {new Date(campaign.saleEndTime * 1000).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -866,7 +866,7 @@ const Ido = () => {
                     timeStatus.status === "ended" &&
                     !campaign.liquidityAdded && (
                       <div 
-                        className="mt-4 pt-4 border-t border-gray-100"
+                        className="mt-4 pt-4 border-t border-base-300"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <WriteButton

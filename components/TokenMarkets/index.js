@@ -103,7 +103,7 @@ const TokenMarkets = (props) => {
   return (
     <>
       <div className="card h-full flex flex-col">
-        <div className="sticky top-0 bg-base-100 z-10">
+        <div className="sticky top-0 bg-base-200 z-10 border-b border-base-300">
           {searchBar && (
             <div className="p-2 flex items-center gap-2">
               <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
@@ -144,12 +144,12 @@ const TokenMarkets = (props) => {
             </div>
           )}
           {showBar && (
-            <div className="flex gap-2 text-slate-500 font-bold">
-              <div role="tablist" className="tabs tabs-bordered w-full">
+            <div className="flex gap-2 text-base-content/70 font-semibold text-sm">
+              <div role="tablist" className="tabs tabs-boxed bg-base-300/50 w-full gap-1 p-1">
                 <a
                   role="tab"
                   className={
-                    "tab " + (show == 1 ? "tab-active text-green-700" : "")
+                    "tab tab-sm rounded-md " + (show == 1 ? "tab-active bg-base-200 text-primary" : "")
                   }
                   onClick={() => {
                     setShow(1);
@@ -160,7 +160,7 @@ const TokenMarkets = (props) => {
                 <a
                   role="tab"
                   className={
-                    "tab " + (show == 2 ? "tab-active text-green-700" : "")
+                    "tab tab-sm rounded-md " + (show == 2 ? "tab-active bg-base-200 text-primary" : "")
                   }
                   onClick={() => {
                     setShow(2);
@@ -174,8 +174,8 @@ const TokenMarkets = (props) => {
         </div>
         <div className="card-body p-0 overflow-auto">
           <div className="overflow-auto">
-            <table className={"table table-" + tableSize}>
-              <thead className="sticky top-0 bg-base-100 z-10">
+            <table className={"table table-" + tableSize + " tabular-nums"}>
+              <thead className="sticky top-0 bg-base-200 z-10 text-base-content/60 text-xs uppercase tracking-wide">
                 <tr>
                   <th>Coin / Ca</th>
                   <th className="text-right">Price / 24h</th>
@@ -185,7 +185,7 @@ const TokenMarkets = (props) => {
               <tbody>
                 {showBBB && (
                   <tr
-                    className="hover cursor-pointer"
+                    className="hover:bg-base-300/40 cursor-pointer border-base-300"
                     onClick={() => {
                       router.push("/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1");
                     }}
@@ -220,7 +220,7 @@ const TokenMarkets = (props) => {
                       </div>
                       <div className="flex flex-col">
                         <div>BBB</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-base-content/50">
                           {bbbInfo.address.slice(-6)}
                         </div>
                       </div>
@@ -230,8 +230,8 @@ const TokenMarkets = (props) => {
                       <div
                         className={
                           bbbPriceChange24h >= 0
-                            ? "text-green-700"
-                            : "text-red-700"
+                            ? "text-success"
+                            : "text-error"
                         }
                       >
                         {bbbPriceChange24h >= 0 ? "+" : ""}
@@ -243,7 +243,7 @@ const TokenMarkets = (props) => {
 
                 {showUSDB && (
                   <tr
-                    className="hover cursor-pointer"
+                    className="hover:bg-base-300/40 cursor-pointer"
                     onClick={() => {
                       router.push("/swap/" + usdbInfo.address);
                     }}
@@ -278,7 +278,7 @@ const TokenMarkets = (props) => {
                       </div>
                       <div className="flex flex-col">
                         <div>USDB</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-base-content/50">
                           {usdbInfo.address.slice(-6)}
                         </div>
                       </div>
@@ -288,8 +288,8 @@ const TokenMarkets = (props) => {
                       <div
                         className={
                           usdbPriceChange24h >= 0
-                            ? "text-green-700"
-                            : "text-red-700"
+                            ? "text-success"
+                            : "text-error"
                         }
                       >
                         {usdbPriceChange24h >= 0 ? "+" : ""}
@@ -318,7 +318,7 @@ const TokenMarkets = (props) => {
                     return (
                       <tr
                         key={index}
-                        className="hover cursor-pointer"
+                        className="hover:bg-base-300/40 cursor-pointer"
                         onClick={() => {
                           router.push("/swap/" + item?.token);
                         }}
@@ -389,7 +389,7 @@ const TokenMarkets = (props) => {
                           </div>
                           <div className="flex flex-col">
                             <div>{item?.symbol}</div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-base-content/50">
                               {item?.token?.slice(-6)}
                             </div>
                           </div>
@@ -398,7 +398,7 @@ const TokenMarkets = (props) => {
                           <div>${price}</div>
                           <div
                             className={
-                              changeH24 >= 0 ? "text-green-700" : "text-red-700"
+                              changeH24 >= 0 ? "text-success" : "text-error"
                             }
                           >
                             {changeH24 >= 0 ? "+" : ""}
@@ -410,7 +410,7 @@ const TokenMarkets = (props) => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="2" className="text-center py-4 text-gray-500">
+                    <td colSpan="2" className="text-center py-4 text-base-content/50">
                       {show == 1 ? "No tokens in watchlist. Star tokens from trending to add them here." : "No data available"}
                     </td>
                   </tr>

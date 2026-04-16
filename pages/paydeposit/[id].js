@@ -37,23 +37,23 @@ const PayDeposit = () => {
 
   if (!id) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-base-200/60 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Request</h1>
-          <p className="text-gray-600">No ID provided</p>
+          <h1 className="text-2xl font-bold text-base-content mb-4">Invalid Request</h1>
+          <p className="text-base-content/60">No ID provided</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-base-200/60 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="bg-base-200 rounded-lg shadow-sm">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">Payment Deposit</h1>
-            <p className="text-sm text-gray-600 mt-1">ID: {id}</p>
+          <div className="px-6 py-4 border-b border-base-300">
+            <h1 className="text-2xl font-bold text-base-content">Payment Deposit</h1>
+            <p className="text-sm text-base-content/60 mt-1">ID: {id}</p>
           </div>
 
           {/* Content */}
@@ -61,7 +61,7 @@ const PayDeposit = () => {
             {loading ? (
               <div className="flex items-center justify-center py-12">
                 <Loading />
-                <span className="ml-3 text-gray-600">Loading address...</span>
+                <span className="ml-3 text-base-content/60">Loading address...</span>
               </div>
             ) : error ? (
               <div className="text-center py-12">
@@ -84,7 +84,7 @@ const PayDeposit = () => {
             ) : (
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-base-content/70 mb-2">
                     Deposit Address
                   </label>
                   <div className="relative">
@@ -92,7 +92,7 @@ const PayDeposit = () => {
                       type="text"
                       value={address}
                       readOnly
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 font-mono text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-base-300 rounded-lg bg-base-200/60 font-mono text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Address will appear here..."
                     />
                     {address && (
@@ -101,7 +101,7 @@ const PayDeposit = () => {
                           navigator.clipboard.writeText(address);
                           // You can add a notification here
                         }}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-base-content/50 hover:text-base-content/70 focus:outline-none"
                         title="Copy address"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +135,7 @@ const PayDeposit = () => {
                 <div className="flex gap-4">
                   <button
                     onClick={fetchAddress}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    className="inline-flex items-center px-4 py-2 border border-base-300 text-sm font-medium rounded-md text-base-content/70 bg-base-200 hover:bg-base-200/60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -145,7 +145,7 @@ const PayDeposit = () => {
                   
                   <button
                     onClick={() => router.back()}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                   >
                     Back
                   </button>

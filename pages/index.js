@@ -14,7 +14,7 @@ import WriteButton from "@/components/WriteButton";
 
 const WaveBackground = () => (
   <div className="wave-container fixed top-0 left-0 w-full h-full overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white to-green-50/30" />
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-base-100 to-base-200/50" />
     <svg
       className="waves absolute bottom-0 w-full"
       xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +199,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
 
   return (
     <>
-      <div className="card bg-white/10 backdrop-blur-sm border border-green-200/50 rounded-xl mb-6 overflow-hidden">
+      <div className="card bg-base-200/10 backdrop-blur-sm border border-base-300/50 rounded-xl mb-6 overflow-hidden">
         <div className="card-body p-5">
           <div className="flex items-center gap-2 mb-4">
             <Image src="/xdc.png" alt="XDC" width={32} height={32} className="rounded-full" />
@@ -208,39 +208,39 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
 
           {/* Balance section - XDC and bXDC display */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <div className="bg-white/30 rounded-lg p-4 border border-green-100/60">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Your Balance</p>
+            <div className="bg-base-200/30 rounded-lg p-4 border border-primary/20/60">
+              <p className="text-xs font-medium text-base-content/50 uppercase tracking-wide mb-1">Your Balance</p>
               <div className="space-y-2">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-sm text-gray-600">XDC</span>
+                  <span className="text-sm text-base-content/60">XDC</span>
                   <span className="font-semibold text-green-800 tabular-nums">
                     {address ? formatEther(xdcBalance?.value ?? 0n) : "—"}
                   </span>
                 </div>
                 <div className="flex justify-between items-baseline">
-                  <span className="text-sm text-gray-600">bXDC</span>
+                  <span className="text-sm text-base-content/60">bXDC</span>
                   <span className="font-semibold text-green-800 tabular-nums">
                     {address ? formatEther(bxdcBalance) : "—"}
                   </span>
                 </div>
                 {address && userXdcValueCalc > 0n && (
-                  <div className="pt-2 mt-2 border-t border-green-200/50">
-                    <span className="text-xs text-gray-500">bXDC ≈ </span>
-                    <span className="text-xs font-medium text-green-700">{formatEther(userXdcValueCalc)} XDC</span>
+                  <div className="pt-2 mt-2 border-t border-base-300/50">
+                    <span className="text-xs text-base-content/50">bXDC ≈ </span>
+                    <span className="text-xs font-medium text-success">{formatEther(userXdcValueCalc)} XDC</span>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="bg-white/30 rounded-lg p-4 border border-green-100/60">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Pool Info</p>
+            <div className="bg-base-200/30 rounded-lg p-4 border border-primary/20/60">
+              <p className="text-xs font-medium text-base-content/50 uppercase tracking-wide mb-1">Pool Info</p>
               <div className="space-y-2">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-sm text-gray-600">Total Staked</span>
+                  <span className="text-sm text-base-content/60">Total Staked</span>
                   <span className="font-semibold text-green-800 tabular-nums">{formatEther(totalPooled)} XDC</span>
                 </div>
                 <div className="flex justify-between items-baseline">
-                  <span className="text-sm text-gray-600">Rate</span>
+                  <span className="text-sm text-base-content/60">Rate</span>
                   <span className="font-semibold text-green-800 tabular-nums">1 bXDC = {formatEther(exchangeRate)} XDC</span>
                 </div>
               </div>
@@ -260,7 +260,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
             </button>
           </div>
           {withdrawalOrders.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-green-200/50">
+            <div className="mt-4 pt-4 border-t border-base-300/50">
               <h4 className="font-medium text-sm mb-2 text-green-800">Withdrawal Orders</h4>
               <div className="max-h-40 overflow-y-auto space-y-2">
                 {withdrawalOrders.map((order) => {
@@ -268,11 +268,11 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
                   return (
                     <div
                       key={String(order.id)}
-                      className="flex justify-between items-center text-sm p-2 bg-white/20 rounded-lg gap-2"
+                      className="flex justify-between items-center text-sm p-2 bg-base-200/20 rounded-lg gap-2"
                     >
                       <span>
                         {formatEther(order.xdcAmount)} XDC
-                        <span className="text-gray-500 ml-1">
+                        <span className="text-base-content/50 ml-1">
                           ({formatEther(order.bxdcAmount)} bXDC)
                         </span>
                       </span>
@@ -280,9 +280,9 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
                         <span
                           className={
                             order.redeemed
-                              ? "text-green-600 font-medium"
+                              ? "text-primary font-medium"
                               : canRedeem
-                                ? "text-green-600 font-medium"
+                                ? "text-primary font-medium"
                                 : "text-amber-600 font-medium"
                           }
                         >
@@ -290,7 +290,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
                         </span>
                         {canRedeem && (
                           <WriteButton
-                            className="btn btn-ghost btn-xs text-green-600"
+                            className="btn btn-ghost btn-xs text-primary"
                             buttonName="Redeem"
                             data={{
                               address: stakeAddress,
@@ -309,7 +309,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
             </div>
           )}
           <div className="mt-2">
-            <Link href="/stake" className="btn btn-ghost btn-sm text-green-600">
+            <Link href="/stake" className="btn btn-ghost btn-sm text-primary">
               View all pools →
             </Link>
           </div>
@@ -319,7 +319,7 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
       {showStakeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0" onClick={() => setShowStakeModal(false)} aria-hidden />
-          <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="relative bg-base-200 rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-lg">Stake XDC</h3>
               <button className="btn btn-ghost btn-sm btn-circle" onClick={() => setShowStakeModal(false)} aria-label="Close">
@@ -383,14 +383,14 @@ const XDCStakeCard = memo(({ address, chainId, onConnect }) => {
       {showUnstakeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0" onClick={() => setShowUnstakeModal(false)} aria-hidden />
-          <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="relative bg-base-200 rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-lg">Request Withdrawal</h3>
               <button className="btn btn-ghost btn-sm btn-circle" onClick={() => setShowUnstakeModal(false)} aria-label="Close">
                 ✕
               </button>
             </div>
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-base-content/50 mb-4">
               Withdrawals unlock after {String(withdrawDelayBlocks)} blocks. Min: {formatEther(minWithdraw)} bXDC.
             </p>
             <div className="form-control">
@@ -464,21 +464,21 @@ XDCStakeCard.displayName = "XDCStakeCard";
 
 const LiquidityStakingComingSoon = memo(() => (
   <div className="coming-soon-card relative mb-6 overflow-hidden rounded-2xl backdrop-blur-md">
-    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/25 via-emerald-50/40 to-green-50/30" />
-    <div className="absolute inset-[1px] rounded-[15px] bg-gradient-to-br from-white/20 to-green-50/20" />
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-base-300/40 via-primary/10 to-base-200/50" />
+    <div className="absolute inset-[1px] rounded-[15px] bg-gradient-to-br from-base-200/30 to-base-300/20" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_70%_0%,rgba(34,197,94,0.12)_0%,transparent_60%)]" />
     <div className="absolute inset-0 bg-[linear-gradient(105deg,transparent_35%,rgba(255,255,255,0.25)_50%,transparent_65%)] coming-soon-shimmer" />
-    <div className="relative z-10 p-8 sm:p-10 border border-green-200/30 rounded-2xl">
+    <div className="relative z-10 p-8 sm:p-10 border border-base-300/30 rounded-2xl">
       <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
         <div className="coming-soon-icon-wrap flex-shrink-0 relative">
-          <Image src="/xdc.png" alt="XDC" width={72} height={72} className="rounded-2xl shadow-xl ring-2 ring-white/50 relative z-10" />
+          <Image src="/xdc.png" alt="XDC" width={72} height={72} className="rounded-2xl shadow-xl ring-2 ring-base-300 relative z-10" />
         </div>
         <div className="flex-1 text-center sm:text-left">
-          <h3 className="font-bold text-green-900 text-xl sm:text-2xl tracking-tight mb-2">Liquidity Staking</h3>
-          <p className="text-gray-600 text-sm sm:text-base mb-5 max-w-md leading-relaxed">
+          <h3 className="font-bold text-base-content text-xl sm:text-2xl tracking-tight mb-2">Liquidity Staking</h3>
+          <p className="text-base-content/60 text-sm sm:text-base mb-5 max-w-md leading-relaxed">
             Stake XDC to earn rewards. Convert to bXDC and participate in the staking pool.
           </p>
-          <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/15 border border-amber-400/40 text-amber-800 font-semibold text-sm tracking-wide shadow-sm">
+          <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/15 border border-amber-400/40 text-amber-200 font-semibold text-sm tracking-wide shadow-sm">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             Coming Soon
           </span>
@@ -692,14 +692,14 @@ const HomeContent = memo(() => {
       <FloatingCoins />
       <div className="relative min-h-screen pt-32">
         <div className="card sm:w-3/4 m-auto">
-          <div className="card-body backdrop-blur-sm bg-white/10 rounded-lg">
+          <div className="card-body backdrop-blur-sm bg-base-200/10 rounded-lg">
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon />
             ) : (
               <XDCStakeCard address={address} chainId={chainId ?? 50} onConnect={handleTryNow} />
             )}
             <div className="mt-6">
-              <div className="glass p-4 rounded-xl backdrop-blur-md bg-white/10">
+              <div className="glass p-4 rounded-xl backdrop-blur-md bg-base-200/10">
                 <TokenMarkets {...tMarkets} />
               </div>
             </div>

@@ -162,7 +162,7 @@ export default function BBBGame() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-base-200 text-base-content">
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Header Section - Points Only */}
         <div className="text-center mb-10">
@@ -182,7 +182,7 @@ export default function BBBGame() {
         </div>
 
         {/* Game Arena */}
-        <div className="bg-green-50 rounded-3xl p-8 mb-8 min-h-[450px] relative overflow-hidden">
+        <div className="bg-primary/10 rounded-3xl p-8 mb-8 min-h-[450px] relative overflow-hidden">
 
           {/* Fighting Animation */}
           <div className="relative z-10 flex items-center justify-center h-full min-h-[350px]">
@@ -190,7 +190,7 @@ export default function BBBGame() {
               <div className="text-center space-y-6">
                 <div className="relative flex justify-center">
                   {/* Fighting Video with enhanced styling */}
-                  <div className="relative p-4 bg-white rounded-2xl">
+                  <div className="relative p-4 bg-base-200 rounded-2xl">
                     <video
                       autoPlay
                       loop
@@ -205,11 +205,11 @@ export default function BBBGame() {
                   </div>
                 </div>
 
-                <div className="bg-green-100 rounded-xl p-4">
-                  <p className="text-2xl font-bold text-green-700 mb-2">
+                <div className="bg-primary/15 rounded-xl p-4">
+                  <p className="text-2xl font-bold text-success mb-2">
                     ⚔️ Battle in Progress
                   </p>
-                  <p className="text-lg text-gray-700 mb-4">
+                  <p className="text-lg text-base-content/70 mb-4">
                     Your brave rabbit is fighting monsters...
                   </p>
                   
@@ -217,9 +217,9 @@ export default function BBBGame() {
                   {isConnected && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                       {/* BBBubu Count with Buy Button */}
-                      <div className="bg-white rounded-lg p-3 text-center">
-                        <p className="text-xs font-medium text-gray-600 mb-1">BBBubu NFTs</p>
-                        <div className="text-lg font-bold text-green-600 mb-2">
+                      <div className="bg-base-200 rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-base-content/60 mb-1">BBBubu NFTs</p>
+                        <div className="text-lg font-bold text-primary mb-2">
                           🐰 {getBbbubuCount()}
                         </div>
                         <button
@@ -231,9 +231,9 @@ export default function BBBGame() {
                       </div>
                       
                       {/* Mining Rate */}
-                      <div className="bg-white rounded-lg p-3 text-center">
-                        <p className="text-xs font-medium text-gray-600 mb-1">Mining Rate</p>
-                        <div className="text-lg font-bold text-green-700">
+                      <div className="bg-base-200 rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-base-content/60 mb-1">Mining Rate</p>
+                        <div className="text-lg font-bold text-success">
                           ⚡ {getCurrentMiningRate().toFixed(4)}/block
                         </div>
                       </div>
@@ -246,11 +246,11 @@ export default function BBBGame() {
                     disabled={isFighting || (isConnected && getBbbubuCount() === 0)}
                     className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
                       isFighting
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        ? "bg-gray-400 text-base-content/60 cursor-not-allowed"
                         : !isConnected
                         ? "bg-blue-500 hover:bg-blue-600 text-white transform hover:scale-105"
                         : isConnected && getBbbubuCount() === 0
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        ? "bg-gray-400 text-base-content/60 cursor-not-allowed"
                         : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
                     }`}
                   >
@@ -268,7 +268,7 @@ export default function BBBGame() {
               <div className="text-center space-y-6">
                 <div className="relative flex justify-center">
                   {/* Video Playing - Ready State */}
-                  <div className="relative p-4 bg-white rounded-2xl">
+                  <div className="relative p-4 bg-base-200 rounded-2xl">
                     <video
                       autoPlay
                       loop
@@ -283,11 +283,11 @@ export default function BBBGame() {
                   </div>
                 </div>
                 
-                <div className="bg-green-100 rounded-xl p-6">
-                  <p className="text-2xl font-bold text-green-700 mb-3">
+                <div className="bg-primary/15 rounded-xl p-6">
+                  <p className="text-2xl font-bold text-success mb-3">
                     🛡️ Ready for Battle!
                   </p>
-                  <p className="text-lg text-gray-600 mb-4">
+                  <p className="text-lg text-base-content/60 mb-4">
                     Your rabbit is prepared and waiting for your command
                   </p>
                   
@@ -295,9 +295,9 @@ export default function BBBGame() {
                   {isConnected && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                       {/* BBBubu Count with Buy Button */}
-                      <div className="bg-white rounded-lg p-3 text-center">
-                        <p className="text-xs font-medium text-gray-600 mb-1">BBBubu NFTs</p>
-                        <div className="text-lg font-bold text-green-600 mb-2">
+                      <div className="bg-base-200 rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-base-content/60 mb-1">BBBubu NFTs</p>
+                        <div className="text-lg font-bold text-primary mb-2">
                           🐰 {getBbbubuCount()}
                         </div>
                         <button
@@ -309,16 +309,16 @@ export default function BBBGame() {
                       </div>
                       
                       {/* Mining Rate */}
-                      <div className="bg-white rounded-lg p-3 text-center">
-                        <p className="text-xs font-medium text-gray-600 mb-1">Mining Rate</p>
-                        <div className="text-lg font-bold text-green-700">
+                      <div className="bg-base-200 rounded-lg p-3 text-center">
+                        <p className="text-xs font-medium text-base-content/60 mb-1">Mining Rate</p>
+                        <div className="text-lg font-bold text-success">
                           ⚡ {getCurrentMiningRate().toFixed(4)}/block
                         </div>
                       </div>
                     </div>
                   )}
                   
-                  <p className="text-lg text-green-600 font-semibold mb-4">
+                  <p className="text-lg text-primary font-semibold mb-4">
                     ⚔️ Click &quot;Start Fight&quot; to begin your adventure!
                   </p>
                   
@@ -328,11 +328,11 @@ export default function BBBGame() {
                     disabled={isFighting || (isConnected && getBbbubuCount() === 0)}
                     className={`w-full px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 ${
                       isFighting
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        ? "bg-gray-400 text-base-content/60 cursor-not-allowed"
                         : !isConnected
                         ? "bg-blue-500 hover:bg-blue-600 text-white transform hover:scale-105"
                         : isConnected && getBbbubuCount() === 0
-                        ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        ? "bg-gray-400 text-base-content/60 cursor-not-allowed"
                         : "bg-green-500 hover:bg-green-600 text-white transform hover:scale-105"
                     }`}
                   >
@@ -351,15 +351,15 @@ export default function BBBGame() {
         </div>
 
         {/* Action Buttons Section */}
-        <div className="bg-green-50 rounded-2xl p-6">
+        <div className="bg-primary/10 rounded-2xl p-6">
 
 
           {/* Enhanced Status Messages */}
           <div className="space-y-4">
             {/* Connection Status */}
             {!isConnected && (
-              <div className="bg-green-100 rounded-xl p-4 text-center">
-                <p className="text-lg text-green-700 font-medium">
+              <div className="bg-primary/15 rounded-xl p-4 text-center">
+                <p className="text-lg text-success font-medium">
                   🔗 Connect your wallet to start your adventure!
                 </p>
               </div>
@@ -367,8 +367,8 @@ export default function BBBGame() {
 
             {/* Fighting Status */}
             {isFighting && (
-              <div className="bg-green-100 rounded-xl p-4 text-center">
-                <p className="text-lg text-green-700 font-medium">
+              <div className="bg-primary/15 rounded-xl p-4 text-center">
+                <p className="text-lg text-success font-medium">
                   ⏰ Battle in progress... Your rabbit is earning points automatically!
                 </p>
               </div>
@@ -376,28 +376,28 @@ export default function BBBGame() {
             
             {/* Game Tips */}
             {isConnected && (
-              <div className="bg-white rounded-xl p-4">
+              <div className="bg-base-200 rounded-xl p-4">
                 <div className="text-center mb-3">
-                  <p className="text-lg font-semibold text-green-700 mb-2">
+                  <p className="text-lg font-semibold text-success mb-2">
                     💡 Pro Gaming Tips
                   </p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="bg-green-50 rounded-lg p-3">
+                  <div className="bg-primary/10 rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-green-600">🐰</span>
-                      <span className="font-medium text-gray-700">BBBubu Power</span>
+                      <span className="text-primary">🐰</span>
+                      <span className="font-medium text-base-content/70">BBBubu Power</span>
                     </div>
-                    <p className="text-gray-600">Each NFT multiplies your mining rate!</p>
+                    <p className="text-base-content/60">Each NFT multiplies your mining rate!</p>
                   </div>
                   
-                  <div className="bg-green-50 rounded-lg p-3">
+                  <div className="bg-primary/10 rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-green-600">⚡</span>
-                      <span className="font-medium text-gray-700">Auto Mining</span>
+                      <span className="text-primary">⚡</span>
+                      <span className="font-medium text-base-content/70">Auto Mining</span>
                     </div>
-                    <p className="text-gray-600">Earn points automatically while fighting!</p>
+                    <p className="text-base-content/60">Earn points automatically while fighting!</p>
                   </div>
                 </div>
               </div>

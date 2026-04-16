@@ -192,26 +192,26 @@ const Stake = () => {
   return (
     <div className="m-auto md:w-3/4 w-full px-4 md:px-0 mt-6 pb-20">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-green-600">Stake</h1>
-        <div className="text-sm text-green-700">🌊 Stake to earn</div>
+        <h1 className="text-2xl font-bold text-primary">Stake</h1>
+        <div className="text-sm text-success">🌊 Stake to earn</div>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Sort by:</span>
+          <span className="text-sm text-base-content/60">Sort by:</span>
           <select
             value={data.sortBy}
             onChange={(e) =>
               setData((prev) => ({ ...prev, sortBy: e.target.value }))
             }
-            className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
+            className="px-3 py-1 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-base-200 min-w-[140px]"
           >
             <option value="apr">APR</option>
             <option value="latest">Latest</option>
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Search:</span>
+          <span className="text-sm text-base-content/60">Search:</span>
           <div className="relative">
             <input
               type="text"
@@ -220,14 +220,14 @@ const Stake = () => {
               onChange={(e) =>
                 setData((prev) => ({ ...prev, searchQuery: e.target.value }))
               }
-              className="px-3 py-1 pr-8 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
+              className="px-3 py-1 pr-8 text-sm border border-base-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-base-200 min-w-[140px]"
             />
             {data.searchQuery && (
               <button
                 onClick={() =>
                   setData((prev) => ({ ...prev, searchQuery: "" }))
                 }
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-base-content/40 hover:text-base-content/60"
               >
                 ✕
               </button>
@@ -237,7 +237,7 @@ const Stake = () => {
       </div>
 
       {data.searchQuery && (
-        <div className="mb-4 text-sm text-gray-600">
+        <div className="mb-4 text-sm text-base-content/60">
           Found {filteredPools.length} pool
           {filteredPools.length !== 1 ? "s" : ""}
           {filteredPools.length > 0
@@ -262,9 +262,9 @@ const Stake = () => {
         ))
       ) : data.searchQuery ? (
         <div className="text-center py-12">
-          <div className="text-gray-500 mb-4">
+          <div className="text-base-content/50 mb-4">
             <svg
-              className="mx-auto h-12 w-12 text-gray-400"
+              className="mx-auto h-12 w-12 text-base-content/40"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -277,15 +277,15 @@ const Stake = () => {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-lg font-medium text-base-content mb-2">
             No pools found
           </h3>
-          <p className="text-gray-500 mb-4">
+          <p className="text-base-content/50 mb-4">
             No pools match your search for `{data.searchQuery}`
           </p>
           <button
             onClick={() => setData((prev) => ({ ...prev, searchQuery: "" }))}
-            className="text-green-600 hover:text-green-700 font-medium"
+            className="text-primary hover:text-success font-medium"
           >
             Clear search
           </button>

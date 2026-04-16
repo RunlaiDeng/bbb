@@ -33,11 +33,11 @@ export const NotificationProvider = ({ children }) => {
           return (
             <div
               key={index}
-              className={`flex items-center gap-2 min-w-[200px] py-2 px-4 rounded-lg shadow-lg backdrop-blur-md bg-opacity-95 border-l-4 ${
-                type === "success" ? "bg-white border-green-500" :
-                type === "info" ? "bg-white border-blue-500" :
-                "bg-white border-red-500"
-              } alert alert-${type}`}
+              className={`flex items-center gap-2 min-w-[200px] py-2 px-4 rounded-lg shadow-lg backdrop-blur-md border border-base-300 text-base-content border-l-4 ${
+                type === "success" ? "bg-base-200 border-l-success" :
+                type === "info" ? "bg-base-200 border-l-info" :
+                "bg-base-200 border-l-error"
+              } ${type === "success" ? "alert-success" : type === "info" ? "alert-info" : "alert-error"}`}
             >
               {type == "success" && (
                 <svg

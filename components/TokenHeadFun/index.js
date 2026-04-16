@@ -251,7 +251,7 @@ const TokenHeadFun = (props) => {
             <div
               className={
                 "text-xs " +
-                (h24Change >= 0 ? "text-green-700" : "text-red-700")
+                (h24Change >= 0 ? "text-success" : "text-red-700")
               }
             >
               ${Number(price)?.toFixed(6)}
@@ -264,7 +264,7 @@ const TokenHeadFun = (props) => {
             <div
               className={
                 "text-xs " +
-                (h24Change >= 0 ? "text-green-700" : "text-red-700")
+                (h24Change >= 0 ? "text-success" : "text-red-700")
               }
             >
               {Math.abs(h24ChangeNum)?.toFixed(6)} {h24Change >= 0 ? "+" : ""}
@@ -298,7 +298,7 @@ const TokenHeadFun = (props) => {
             <div
               className={
                 "text-xs " +
-                (h24Change >= 0 ? "text-green-700" : "text-red-700")
+                (h24Change >= 0 ? "text-success" : "text-red-700")
               }
             >
               ${Number(price)?.toFixed(6)}
@@ -311,7 +311,7 @@ const TokenHeadFun = (props) => {
             <div
               className={
                 "text-xs " +
-                (h24Change >= 0 ? "text-green-700" : "text-red-700")
+                (h24Change >= 0 ? "text-success" : "text-red-700")
               }
             >
               {Math.abs(h24ChangeNum)?.toFixed(6)} {h24Change >= 0 ? "+" : ""}

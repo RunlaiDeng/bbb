@@ -44,7 +44,7 @@ const Merch = () => {
         <meta name="description" content="Official BBB merchandise shop" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100">
+      <div className="min-h-screen bg-gradient-to-b from-primary/10 to-green-100">
         {/* Header */}
         <div className="bg-green-600 text-white py-8">
           <div className="container mx-auto px-4">
@@ -68,9 +68,9 @@ const Merch = () => {
                 {products.map((product) => (
                   <div
                     key={product.id}
-                    className="bg-white rounded-lg shadow-lg overflow-hidden border border-green-200 hover:shadow-xl transition-shadow"
+                    className="bg-base-200 rounded-lg shadow-lg overflow-hidden border border-base-300 hover:shadow-xl transition-shadow"
                   >
-                    <div className="relative h-64 bg-green-50">
+                    <div className="relative h-64 bg-primary/10">
                       <Image
                         src={product.image}
                         alt={product.name}
@@ -83,11 +83,11 @@ const Merch = () => {
                       <h3 className="text-xl font-semibold text-green-800">
                         {product.name}
                       </h3>
-                      <p className="text-gray-600 mt-2">
+                      <p className="text-base-content/60 mt-2">
                         {product.description}
                       </p>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="text-xl font-bold text-green-700">
+                        <span className="text-xl font-bold text-success">
                           {product.price} BBB
                         </span>
                         <button
@@ -104,12 +104,12 @@ const Merch = () => {
             </div>
 
             {/* Cart Section */}
-            <div className="w-full md:w-80 bg-white p-6 rounded-lg shadow-lg h-fit sticky top-4 border border-green-200">
+            <div className="w-full md:w-80 bg-base-200 p-6 rounded-lg shadow-lg h-fit sticky top-4 border border-base-300">
               <h2 className="text-xl font-semibold mb-4 text-green-800">
                 Your Cart
               </h2>
               {cart.length === 0 ? (
-                <p className="text-gray-500">Your cart is empty</p>
+                <p className="text-base-content/50">Your cart is empty</p>
               ) : (
                 <>
                   <ul className="divide-y divide-green-100">
@@ -120,7 +120,7 @@ const Merch = () => {
                       >
                         <div>
                           <h3 className="font-medium">{item.name}</h3>
-                          <p className="text-gray-600">{item.price} BBB</p>
+                          <p className="text-base-content/60">{item.price} BBB</p>
                         </div>
                         <button
                           onClick={() => removeFromCart(item.id)}
@@ -131,7 +131,7 @@ const Merch = () => {
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 pt-4 border-t border-green-100">
+                  <div className="mt-4 pt-4 border-t border-primary/20">
                     <div className="flex justify-between font-semibold">
                       <span>Total:</span>
                       <span>{getTotalPrice()} BBB</span>

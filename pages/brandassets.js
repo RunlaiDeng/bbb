@@ -37,27 +37,27 @@ const BrandAssets = () => {
         <title>BBB Brand Assets</title>
       </Head>
       
-      <div className="container mx-auto px-4 py-16 min-h-screen bg-gradient-to-b from-green-50 to-green-100">
+      <div className="container mx-auto px-4 py-16 min-h-screen bg-gradient-to-b from-primary/10 to-green-100">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold mb-4 text-green-800">Brand Assets</h1>
-          <p className="text-green-600">
+          <p className="text-primary">
             Download official BBB brand assets and logos
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {assets.map((asset) => (
-            <div key={asset.name} className="card bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div key={asset.name} className="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300">
               <figure className="px-6 pt-6">
                 <img
                   src={asset.path}
                   alt={asset.name}
-                  className="h-48 w-full object-contain bg-green-50 rounded-xl p-4"
+                  className="h-48 w-full object-contain bg-primary/10 rounded-xl p-4"
                 />
               </figure>
               <div className="card-body">
-                <h2 className="card-title text-green-700">{asset.name}</h2>
-                <p className="text-green-600/80">{asset.description}</p>
+                <h2 className="card-title text-success">{asset.name}</h2>
+                <p className="text-primary/80">{asset.description}</p>
                 <div className="card-actions justify-end mt-4">
                   <button
                     className="btn bg-green-600 hover:bg-green-700 text-white border-none w-full"

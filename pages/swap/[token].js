@@ -135,7 +135,7 @@ const Swap = () => {
     return (
       <>
         <Loading />
-        <div className="text-center mt-10 text-gray-600">
+        <div className="text-center mt-10 text-base-content/60">
           Token {token} not found in configuration
         </div>
       </>
@@ -263,26 +263,26 @@ const Swap = () => {
 
   return showData ? (
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-2 m-2">
+      <div className="bg-base-200 border border-base-300 rounded-md p-2 sm:p-3 mb-3">
         <TokenHeadPool {...tHeadPool} />
       </div>
-      <div className="m-auto grid lg:grid-cols-5 gap-4 lg:h-[960px] p-2">
+      <div className="m-auto grid lg:grid-cols-5 gap-3 lg:gap-4 lg:h-[960px] lg:min-h-0 pb-2">
         {windowWidth > 1024 && (
-          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
+          <div className="bg-base-200 border border-base-300 rounded-md p-3 text-center overflow-y-auto min-h-0">
             <TokenMarkets {...tMarkets} />
           </div>
         )}
 
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg overflow-x-auto text-center">
-          <div className="card">
-            <div className="card-body p-4">
-              <div className="flex gap-2 text-gray-500 font-bold">
-                <div role="tablist" className="tabs tabs-bordered w-full">
+        <div className="lg:col-span-3 bg-base-200 border border-base-300 rounded-md overflow-x-auto text-center flex flex-col min-h-0">
+          <div className="card bg-transparent shadow-none border-b border-base-300 rounded-none">
+            <div className="card-body p-3 sm:p-4">
+              <div className="flex gap-2 text-base-content/70 font-semibold text-sm">
+                <div role="tablist" className="tabs tabs-boxed bg-base-300/50 w-full gap-1 p-1">
                   <a
                     role="tab"
                     className={
-                      "tab " +
-                      (type === "chart" ? "tab-active text-green-700" : "")
+                      "tab tab-sm rounded-md " +
+                      (type === "chart" ? "tab-active bg-base-200 text-primary" : "")
                     }
                     onClick={() => {
                       setType("chart");
@@ -293,8 +293,8 @@ const Swap = () => {
                   <a
                     role="tab"
                     className={
-                      "tab " +
-                      (type === "info" ? "tab-active text-green-700" : "")
+                      "tab tab-sm rounded-md " +
+                      (type === "info" ? "tab-active bg-base-200 text-primary" : "")
                     }
                     onClick={() => {
                       setType("info");
@@ -305,8 +305,8 @@ const Swap = () => {
                   <a
                     role="tab"
                     className={
-                      "tab " +
-                      (type === "chat" ? "tab-active text-green-700" : "")
+                      "tab tab-sm rounded-md " +
+                      (type === "chat" ? "tab-active bg-base-200 text-primary" : "")
                     }
                     onClick={() => {
                       setType("chat");
@@ -317,8 +317,8 @@ const Swap = () => {
                   <a
                     role="tab"
                     className={
-                      "tab lg:hidden " +
-                      (type === "trades" ? "tab-active text-green-700" : "")
+                      "tab tab-sm rounded-md lg:hidden " +
+                      (type === "trades" ? "tab-active bg-base-200 text-primary" : "")
                     }
                     onClick={() => {
                       setType("trades");
@@ -329,8 +329,8 @@ const Swap = () => {
                   <a
                     role="tab"
                     className={
-                      "tab lg:hidden " +
-                      (type === "markets" ? "tab-active text-green-700" : "")
+                      "tab tab-sm rounded-md lg:hidden " +
+                      (type === "markets" ? "tab-active bg-base-200 text-primary" : "")
                     }
                     onClick={() => {
                       setType("markets");
@@ -342,25 +342,24 @@ const Swap = () => {
               </div>
             </div>
           </div>
-          <div className="h-[300px] lg:h-[450px]">
+          <div className="h-[300px] lg:h-[450px] flex-1 min-h-0 border-b border-base-300">
             {type == "chart" && <TokenChartPool {...tChartPool} />}
             {type == "info" && <TokenInfo {...tInfo} />}
             {type == "chat" && <TokenChat {...tChat} />}
             {type == "trades" && <TokenTradePool {...tTradePool} />}
             {type == "markets" && <TokenMarkets {...tMarkets} />}
           </div>
-          <div className="divider my-1"></div>
-          <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+          <div className="p-3 sm:p-4 border-t border-base-300 bg-base-300/20">
             <button 
               onClick={() => window.open(`https://app.xspswap.finance/#/swap?outputCurrency=${token}&inputCurrency=xdc`, '_blank')}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
+              className="btn btn-primary btn-block font-semibold"
             >
               Swap
             </button>
           </div>
         </div>
         {windowWidth > 1024 && (
-          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
+          <div className="bg-base-200 border border-base-300 rounded-md p-3 text-center overflow-y-auto min-h-0">
             <TokenTradePool {...tTradePool} />
           </div>
         )}
@@ -369,7 +368,7 @@ const Swap = () => {
   ) : (
     <>
       <Loading />
-      <div className="text-center mt-10 text-gray-600">
+      <div className="text-center mt-10 text-base-content/60">
         Searching for {token}
       </div>
     </>

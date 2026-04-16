@@ -11,13 +11,13 @@ const Layout = ({ children }) => {
   const { address } = useAccount();
 
   return (
-    <main>
-      <div className="min-h-screen mobile-safe-bottom">
+    <main className="min-h-screen bg-base-100 text-base-content">
+      <div className="min-h-screen mobile-safe-bottom max-w-[1920px] mx-auto px-3 sm:px-4">
         <Navbar />
         {children}
       </div>
 
-      <div className="pb-16 lg:pb-0 hidden lg:block">
+      <div className="pb-16 lg:pb-0 hidden lg:block border-t border-base-300 bg-base-200/50">
         <Footer/>
       </div>
       <MobileNav />

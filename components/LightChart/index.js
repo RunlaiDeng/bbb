@@ -4,11 +4,11 @@ import { createChart, ColorType } from "lightweight-charts";
 const LightChart = ({
   trade = [],
   colors = {
-    backgroundColor: "white",
-    lineColor: "#2962FF",
-    textColor: "black",
-    areaTopColor: "#2962FF",
-    areaBottomColor: "rgba(41, 98, 255, 0.28)",
+    backgroundColor: "#12161f",
+    lineColor: "#38bdf8",
+    textColor: "#e5e7eb",
+    areaTopColor: "#38bdf8",
+    areaBottomColor: "rgba(56, 189, 248, 0.2)",
   },
 }) => {
   const chartContainerRef = useRef();
@@ -26,18 +26,18 @@ const LightChart = ({
       width: containerWidth,
       height: containerHeight,
       grid: {
-        vertLines: { color: "rgba(197, 203, 206, 0.5)" },
-        horzLines: { color: "rgba(197, 203, 206, 0.5)" },
+        vertLines: { color: "rgba(148, 163, 184, 0.12)" },
+        horzLines: { color: "rgba(148, 163, 184, 0.12)" },
       },
       crosshair: {
         mode: 0,
       },
       rightPriceScale: {
-        borderColor: "rgba(197, 203, 206, 0.8)",
+        borderColor: "rgba(148, 163, 184, 0.25)",
         mode: 1,
       },
       timeScale: {
-        borderColor: "rgba(197, 203, 206, 0.8)",
+        borderColor: "rgba(148, 163, 184, 0.25)",
         timeVisible: true,
         secondsVisible: false,
       },
@@ -113,7 +113,7 @@ const LightChart = ({
       />
       {!trade.length && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-gray-500">No data available</p>
+          <p className="text-base-content/50">No data available</p>
         </div>
       )}
     </div>

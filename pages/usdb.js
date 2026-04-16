@@ -471,26 +471,26 @@ const USDB = () => {
           />
         </Head>
 
-              <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
+              <div className="min-h-screen bg-gradient-to-br from-primary/10 via-white to-base-200">
         {/* Token Balances Section */}
         {isMounted && (
           <div className="pt-20 pb-8">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Token Balances</h2>
+              <h2 className="text-2xl font-bold text-base-content mb-6">Token Balances</h2>
               
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 {/* USDB Card */}
-                <div className="bg-white/90 backdrop-blur-sm border border-green-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
+                <div className="bg-base-200/90 backdrop-blur-sm border border-base-300/30 rounded-2xl p-6 relative group hover:bg-base-200 hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center p-2">
+                      <div className="w-10 h-10 bg-primary/15 rounded-full flex items-center justify-center p-2">
                         <img
                           src="/usdb.png"
                           alt="USDB Logo"
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <span className="text-gray-900 text-xl font-semibold">USDB</span>
+                      <span className="text-base-content text-xl font-semibold">USDB</span>
                     </div>
                     <button
                       onClick={() => {
@@ -498,7 +498,7 @@ const USDB = () => {
                           behavior: 'smooth' 
                         });
                       }}
-                      className="flex items-center gap-1 text-green-600 hover:text-green-700 transition-colors text-sm font-medium"
+                      className="flex items-center gap-1 text-primary hover:text-success transition-colors text-sm font-medium"
                     >
                       Buy
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -508,15 +508,15 @@ const USDB = () => {
                   </div>
                   
                   <div>
-                    <div className="text-gray-600 text-sm mb-1">Balance</div>
-                    <div className="text-gray-900 text-2xl font-bold">
+                    <div className="text-base-content/60 text-sm mb-1">Balance</div>
+                    <div className="text-base-content text-2xl font-bold">
                       {isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"} USDB
                     </div>
-                    <div className="text-gray-500 text-sm mt-1">
+                    <div className="text-base-content/50 text-sm mt-1">
                       ≈ ${isConnected && usdbBalance ? formatUsdbAmount(usdbBalance.value) : "0.00"} USD
                     </div>
                     {!isConnected && (
-                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
+                      <div className="text-base-content/40 text-xs mt-1">Connect wallet to view balance</div>
                     )}
                   </div>
                 </div>
@@ -524,7 +524,7 @@ const USDB = () => {
 
 
                 {/* sUSDB Card */}
-                <div className="bg-white/90 backdrop-blur-sm border border-indigo-200/30 rounded-2xl p-6 relative group hover:bg-white hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
+                <div className="bg-base-200/90 backdrop-blur-sm border border-indigo-200/30 rounded-2xl p-6 relative group hover:bg-base-200 hover:shadow-xl transition-all duration-300 shadow-lg hover:scale-[1.02]">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center p-2">
@@ -535,8 +535,8 @@ const USDB = () => {
                         />
                       </div>
                                              <div className="flex flex-col">
-                         <span className="text-gray-900 text-xl font-semibold">sUSDB</span>
-                         <span className="text-green-500 text-xs font-medium">Active</span>
+                         <span className="text-base-content text-xl font-semibold">sUSDB</span>
+                         <span className="text-primary text-xs font-medium">Active</span>
                        </div>
                     </div>
                     <button
@@ -555,11 +555,11 @@ const USDB = () => {
                   </div>
                   
                   <div>
-                    <div className="text-gray-600 text-sm mb-1">Balance</div>
-                    <div className="text-gray-900 text-2xl font-bold">
+                    <div className="text-base-content/60 text-sm mb-1">Balance</div>
+                    <div className="text-base-content text-2xl font-bold">
                       {isConnected && sUSDBBalance ? formatUsdbAmount(sUSDBBalance.value) : "0.00"} sUSDB
                     </div>
-                    <div className="text-gray-500 text-sm mt-1">
+                    <div className="text-base-content/50 text-sm mt-1">
                       ≈ ${isConnected && sUSDBBalance ? getSUSDBValueInUSDB() : "0.00"} USD
                     </div>
                     <div className="text-indigo-600 text-xs mt-1 flex items-center gap-1">
@@ -569,7 +569,7 @@ const USDB = () => {
                       Auto-Compounding
                     </div>
                     {!isConnected && (
-                      <div className="text-gray-400 text-xs mt-1">Connect wallet to view balance</div>
+                      <div className="text-base-content/40 text-xs mt-1">Connect wallet to view balance</div>
                     )}
                   </div>
                 </div>
@@ -592,7 +592,7 @@ const USDB = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Contract Administration</h2>
+                    <h2 className="text-2xl font-bold text-base-content">Contract Administration</h2>
                   </div>
                   <div className="text-red-600 text-sm font-medium bg-red-100 px-3 py-1 rounded-lg">
                     Owner Access
@@ -601,7 +601,7 @@ const USDB = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Contract USDC.e Balance */}
-                  <div className="bg-white rounded-xl p-6 border border-blue-200">
+                  <div className="bg-base-200 rounded-xl p-6 border border-blue-200">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center p-1">
@@ -612,15 +612,15 @@ const USDB = () => {
                           />
                         </div>
                         <div>
-                          <span className="text-gray-900 text-lg font-semibold">Contract USDC.e</span>
-                          <div className="text-sm text-gray-500">Available for withdrawal</div>
+                          <span className="text-base-content text-lg font-semibold">Contract USDC.e</span>
+                          <div className="text-sm text-base-content/50">Available for withdrawal</div>
                         </div>
                       </div>
                     </div>
-                    <div className="text-3xl font-bold text-gray-900 mb-2">
+                    <div className="text-3xl font-bold text-base-content mb-2">
                       {contractUsdcBalance ? parseFloat(formatUnits(contractUsdcBalance.value, contractUsdcBalance.decimals)).toFixed(4) : "0.0000"}
                     </div>
-                    <div className="text-gray-500 text-sm mb-4">
+                    <div className="text-base-content/50 text-sm mb-4">
                       ≈ ${contractUsdcBalance ? (parseFloat(formatUnits(contractUsdcBalance.value, contractUsdcBalance.decimals)) * 0.999).toFixed(2) : "0.00"} USD
                     </div>
                     <WriteButton
@@ -668,7 +668,7 @@ const USDB = () => {
         {isMounted && (
           <div className="pb-8">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="bg-white/90 backdrop-blur-sm border border-blue-200/30 rounded-2xl p-6 shadow-lg">
+              <div className="bg-base-200/90 backdrop-blur-sm border border-blue-200/30 rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -676,7 +676,7 @@ const USDB = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                       </svg>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Total Supply Statistics</h2>
+                    <h2 className="text-2xl font-bold text-base-content">Total Supply Statistics</h2>
                   </div>
                   <div className="text-blue-600 text-sm font-medium bg-blue-50 px-3 py-1 rounded-lg">
                     Live Data
@@ -684,18 +684,18 @@ const USDB = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
+                  <div className="bg-gradient-to-r from-primary/10 to-base-200 rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center p-1">
+                      <div className="w-8 h-8 bg-primary/15 rounded-full flex items-center justify-center p-1">
                         <img
                           src="/usdb.png"
                           alt="USDB Logo"
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <span className="text-gray-900 text-lg font-semibold">USDB Total Supply</span>
+                      <span className="text-base-content text-lg font-semibold">USDB Total Supply</span>
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">
+                    <div className="text-3xl font-bold text-base-content">
                       {usdbTotalSupply ? `${formatUsdbAmount(usdbTotalSupply)} USDB` : "Loading..."}
                     </div>
                   </div>
@@ -712,11 +712,11 @@ const USDB = () => {
                         />
                       </div>
                                              <div className="flex flex-col">
-                         <span className="text-gray-900 text-lg font-semibold">sUSDB Total Supply</span>
-                         <span className="text-green-500 text-xs font-medium">Active</span>
+                         <span className="text-base-content text-lg font-semibold">sUSDB Total Supply</span>
+                         <span className="text-primary text-xs font-medium">Active</span>
                        </div>
                     </div>
-                    <div className="text-3xl font-bold text-gray-900">
+                    <div className="text-3xl font-bold text-base-content">
                       {sUSDBTotalSupply ? `${formatUsdbAmount(sUSDBTotalSupply)} sUSDB` : "Loading..."}
                     </div>
                   </div>
@@ -737,32 +737,32 @@ const USDB = () => {
               <div id="buy-usdb-section" className="max-w-6xl mx-auto">
                 <div className="text-center mb-8">
                   <div className="inline-flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center p-2">
+                    <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center p-2">
                       <img
                         src="/usdb.png"
                         alt="USDB Logo"
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <h2 className="text-3xl font-bold text-gray-900">
+                    <h2 className="text-3xl font-bold text-base-content">
                       Buy USDB
                     </h2>
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-base-content/60">
                     Select a stable coin to deposit and receive USDB at 1:1 ratio
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                   {/* USDC Token Information */}
-                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-fit">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                  <div className="bg-base-200 rounded-3xl p-6 shadow-xl border border-base-300 h-fit">
+                    <h3 className="text-xl font-semibold text-base-content mb-6">
                       Payment Token
                     </h3>
 
                     {/* USDC信息卡片 */}
                     <div className="mb-6">
-                      <div className="w-full p-5 border-2 border-green-500 bg-gradient-to-r from-green-50 to-emerald-50 shadow-lg rounded-2xl">
+                      <div className="w-full p-5 border-2 border-primary bg-gradient-to-r from-primary/10 to-base-200 shadow-lg rounded-2xl">
                         {/* 左侧：图标和USDC信息 */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
@@ -774,17 +774,17 @@ const USDB = () => {
                               />
                             </div>
                             <div className="text-left">
-                              <div className="font-bold text-xl text-green-700">
+                              <div className="font-bold text-xl text-success">
                                 {usdcConfig.symbol}
                               </div>
-                              <div className="text-sm text-gray-500 font-medium">
+                              <div className="text-sm text-base-content/50 font-medium">
                                 {usdcConfig.name}
                               </div>
                               {/* 合约地址显示 */}
                               {usdcConfig.getContract()?.address && (
                                 <div className="flex items-center gap-2 mt-2">
-                                  <div className="bg-gray-100 rounded-md px-2 py-1">
-                                    <span className="text-xs text-gray-600 font-mono">
+                                  <div className="bg-base-300 rounded-md px-2 py-1">
+                                    <span className="text-xs text-base-content/60 font-mono">
                                       {usdcConfig.getContract().address.slice(0, 6)}...
                                       {usdcConfig.getContract().address.slice(-4)}
                                     </span>
@@ -796,12 +796,12 @@ const USDB = () => {
                                       );
                                       setCopiedAddress(usdcConfig.getContract().address);
                                     }}
-                                    className="p-1 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-md transition-all duration-200"
+                                    className="p-1 text-base-content/40 hover:text-primary hover:bg-primary/10 rounded-md transition-all duration-200"
                                     title="Copy contract address"
                                   >
                                     {copiedAddress === usdcConfig.getContract().address ? (
                                       <svg
-                                        className="w-3 h-3 text-green-500"
+                                        className="w-3 h-3 text-primary"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -838,7 +838,7 @@ const USDB = () => {
                           <div className="text-right">
                             {isMounted && isConnected && usdcBalance ? (
                               <>
-                                <div className="font-bold text-lg text-green-700">
+                                <div className="font-bold text-lg text-success">
                                   {parseFloat(
                                     formatUnits(
                                       usdcBalance.value,
@@ -846,7 +846,7 @@ const USDB = () => {
                                     )
                                   ).toFixed(4)}
                                 </div>
-                                <div className="text-sm text-gray-500 font-medium">
+                                <div className="text-sm text-base-content/50 font-medium">
                                   ≈ $
                                   {(
                                     parseFloat(
@@ -859,7 +859,7 @@ const USDB = () => {
                                 </div>
                               </>
                             ) : (
-                              <div className="text-sm text-gray-400 font-medium">
+                              <div className="text-sm text-base-content/40 font-medium">
                                 {isMounted && isConnected
                                   ? "0.0000"
                                   : "-- --"}
@@ -889,23 +889,23 @@ const USDB = () => {
 
                     {/* USDC Token Information */}
                     {isMounted && isConnected && tokenBalance && (
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <h4 className="font-semibold text-gray-800 mb-3">USDC Token Info</h4>
+                      <div className="bg-base-200/60 rounded-xl p-4">
+                        <h4 className="font-semibold text-base-content/80 mb-3">USDC Token Info</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Your Balance:</span>
+                            <span className="text-base-content/60">Your Balance:</span>
                             <span className="font-medium">
                               {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)} {usdcConfig.symbol}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">USD Value:</span>
+                            <span className="text-base-content/60">USD Value:</span>
                             <span className="font-medium">
                               ≈ ${(parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)) * 1.0).toFixed(2)}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">Exchange Rate:</span>
+                            <span className="text-base-content/60">Exchange Rate:</span>
                             <span className="font-medium">1:1 to USDB</span>
                           </div>
                         </div>
@@ -914,33 +914,33 @@ const USDB = () => {
                   </div>
 
                   {/* Deposit Amount & Actions */}
-                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-fit">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                  <div className="bg-base-200 rounded-3xl p-6 shadow-xl border border-base-300 h-fit">
+                    <h3 className="text-xl font-semibold text-base-content mb-6">
                       Deposit Amount
                     </h3>
 
                     {/* 输入金额 */}
                     <div className="mb-4">
-                      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                      <div className="bg-base-200/60 rounded-2xl p-6 border border-base-300">
                         <div className="relative">
                           <input
                             type="text"
                             value={amount}
                             onChange={handleAmountChange}
                             placeholder="0.0"
-                            className="w-full px-6 py-4 border-0 bg-white rounded-xl focus:ring-2 focus:ring-green-500 text-2xl font-bold text-gray-900 placeholder-gray-400 shadow-sm"
+                            className="w-full px-6 py-4 border-0 bg-base-200 rounded-xl focus:ring-2 focus:ring-primary text-2xl font-bold text-base-content placeholder-gray-400 shadow-sm"
                             disabled={!isMounted || !isConnected}
                           />
                           <button
                             onClick={handleMaxClick}
                             disabled={!isMounted || !isConnected}
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-sm rounded-lg hover:from-green-600 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-md"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 px-4 py-2 btn btn-primary border-none font-bold text-sm rounded-lg hover:brightness-110 disabled:opacity-50 disabled:brightness-75 disabled:cursor-not-allowed transition-all duration-200 shadow-md"
                           >
                             MAX
                           </button>
                         </div>
                         {tokenBalance && amount && (
-                          <div className="mt-3 flex justify-between text-sm text-gray-600">
+                          <div className="mt-3 flex justify-between text-sm text-base-content/60">
                             <span>Available: {parseFloat(formatUnits(tokenBalance.value, tokenBalance.decimals)).toFixed(4)}</span>
                             <span>≈ ${(parseFloat(amount || "0") * 0.999).toFixed(2)}</span>
                           </div>
@@ -988,7 +988,7 @@ const USDB = () => {
                           ) : (
                             <>
                               {amount && (
-                                <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+                                <div className="bg-primary/10 border border-base-300 rounded-xl p-4 mb-4">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                       <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
@@ -998,12 +998,12 @@ const USDB = () => {
                                       </div>
                                       <div>
                                         <div className="font-semibold text-green-800">You will receive</div>
-                                        <div className="text-sm text-green-700">{amount} USDB tokens</div>
+                                        <div className="text-sm text-success">{amount} USDB tokens</div>
                                       </div>
                                     </div>
                                     <div className="text-right">
                                       <div className="text-lg font-bold text-green-800">{amount}</div>
-                                      <div className="text-xs text-green-600">USDB</div>
+                                      <div className="text-xs text-primary">USDB</div>
                                     </div>
                                   </div>
                                 </div>
@@ -1033,7 +1033,7 @@ const USDB = () => {
                                   }, 2000);
                                 }}
                                 disabled={!isValidAmount()}
-                                className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 cursor-pointer transition-all duration-300 text-center text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:hover:scale-100"
+                                className="w-full px-8 py-4 btn btn-primary border-none font-bold rounded-2xl hover:brightness-110 disabled:opacity-50 cursor-pointer transition-all duration-300 text-center text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:hover:scale-100"
                                 buttonName="Buy USDB"
                               />
                             </>
@@ -1043,14 +1043,14 @@ const USDB = () => {
                         <>
                           <button
                             onClick={privyLogin}
-                            className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                            className="w-full px-8 py-4 btn btn-primary border-none font-bold rounded-2xl hover:brightness-110 transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                           >
                             Connect Wallet to Start
                           </button>
                           
                           {/* 提示信息 */}
                           <div className="text-center">
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-base-content/60">
                               Connect your wallet to deposit and receive USDB tokens
                             </div>
                           </div>
@@ -1077,11 +1077,11 @@ const USDB = () => {
                         className="w-full h-full object-contain"
                       />
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center sm:text-left">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-base-content text-center sm:text-left">
                       sUSDB - Staked USDB
                     </h2>
                   </div>
-                  <p className="text-gray-600 text-sm sm:text-base px-4 sm:px-0">
+                  <p className="text-base-content/60 text-sm sm:text-base px-4 sm:px-0">
                     Stake your USDB to earn automatic compound interest rewards with flexible withdrawal options
                   </p>
                 </div>
@@ -1090,8 +1090,8 @@ const USDB = () => {
                   {/* sUSDB Balance & Rewards */}
                   <div className="lg:col-span-1 order-1">
                     {/* Balance Overview */}
-                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg mb-6">
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
+                    <div className="bg-base-200 rounded-2xl p-4 sm:p-6 shadow-lg mb-6">
+                      <h3 className="text-lg sm:text-xl font-semibold text-base-content mb-4 sm:mb-6">
                         Your sUSDB Portfolio
                       </h3>
 
@@ -1107,12 +1107,12 @@ const USDB = () => {
                               />
                             </div>
                             <div>
-                              <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                              <div className="text-xl sm:text-2xl font-bold text-base-content">
                                 {sUSDBBalance
                                   ? formatUsdbAmount(sUSDBBalance.value)
                                   : "0.00"}
                               </div>
-                              <div className="text-sm text-gray-600">
+                              <div className="text-sm text-base-content/60">
                                 sUSDB Balance
                               </div>
                             </div>
@@ -1124,7 +1124,7 @@ const USDB = () => {
                                 ? getSUSDBValueInUSDB()
                                 : "0.00"}
                             </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-base-content/50">
                               USD Value
                             </div>
                           </div>
@@ -1141,16 +1141,16 @@ const USDB = () => {
                               </svg>
                             </div>
                             <div className="min-w-0">
-                              <div className="text-sm sm:text-base font-bold text-gray-900 whitespace-nowrap">
+                              <div className="text-sm sm:text-base font-bold text-base-content whitespace-nowrap">
                                 1 sUSDB = {formatExchangeRate()} USDB
                               </div>
-                              <div className="text-xs text-gray-600">
+                              <div className="text-xs text-base-content/60">
                                 Current exchange rate
                               </div>
                             </div>
                           </div>
                           <div className="flex-shrink-0">
-                            <div className="text-xs font-semibold text-blue-600 bg-white/60 px-2 py-1 rounded-lg whitespace-nowrap">
+                            <div className="text-xs font-semibold text-blue-600 bg-base-200/60 px-2 py-1 rounded-lg whitespace-nowrap">
                               Auto-Compound
                             </div>
                           </div>
@@ -1159,15 +1159,15 @@ const USDB = () => {
 
                       {/* Quick Stats */}
                       <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                        <div className="bg-gray-50 rounded-lg p-3 text-center relative group">
-                          <div className="text-base sm:text-lg font-bold text-green-600">
+                        <div className="bg-base-200/60 rounded-lg p-3 text-center relative group">
+                          <div className="text-base sm:text-lg font-bold text-primary">
                             5%+
                           </div>
-                          <div className="text-xs text-gray-600 flex items-center justify-center gap-1">
+                          <div className="text-xs text-base-content/60 flex items-center justify-center gap-1">
                             Base APY
                             <div className="relative">
                               <svg 
-                                className="w-3 h-3 text-gray-400 hover:text-gray-600 cursor-help transition-colors" 
+                                className="w-3 h-3 text-base-content/40 hover:text-base-content/60 cursor-help transition-colors" 
                                 fill="currentColor" 
                                 viewBox="0 0 20 20"
                               >
@@ -1180,10 +1180,10 @@ const USDB = () => {
                               {/* Tooltip */}
                               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-64 z-10">
                                 <div className="font-semibold mb-1">sUSDB APY: 5.00%+</div>
-                                <div className="text-gray-300 text-xs leading-relaxed mb-2">
+                                <div className="text-base-content/30 text-xs leading-relaxed mb-2">
                                   Protocol efficiency with automatic reward distribution. This figure represents current returns based on protocol performance.
                                 </div>
-                                <div className="text-gray-400 text-xs">
+                                <div className="text-base-content/40 text-xs">
                                   Last Updated: 18 Jun 25
                                 </div>
                                 {/* Arrow */}
@@ -1192,11 +1192,11 @@ const USDB = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-3 text-center">
+                        <div className="bg-base-200/60 rounded-lg p-3 text-center">
                           <div className="text-base sm:text-lg font-bold text-indigo-600">
                             24/7
                           </div>
-                          <div className="text-xs text-gray-600">
+                          <div className="text-xs text-base-content/60">
                             Auto Rewards
                           </div>
                         </div>
@@ -1207,8 +1207,8 @@ const USDB = () => {
                     {activeWithdrawals &&
                       activeWithdrawals[0] &&
                       activeWithdrawals[0].length > 0 && (
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                        <div className="bg-base-200 rounded-2xl p-6 shadow-lg">
+                          <h3 className="text-xl font-semibold text-base-content mb-4">
                             Active Withdrawals
                           </h3>
                           <div className="space-y-3">
@@ -1223,7 +1223,7 @@ const USDB = () => {
                               return (
                                 <div
                                   key={index}
-                                  className="bg-gray-50 rounded-lg p-3"
+                                  className="bg-base-200/60 rounded-lg p-3"
                                 >
                                   <div className="flex justify-between items-center mb-2">
                                     <span className="font-medium">
@@ -1233,7 +1233,7 @@ const USDB = () => {
                                     <span
                                       className={`text-sm px-2 py-1 rounded ${
                                         canExecute
-                                          ? "bg-green-100 text-green-800"
+                                          ? "bg-primary/15 text-green-800"
                                           : "bg-yellow-100 text-yellow-800"
                                       }`}
                                     >
@@ -1260,7 +1260,7 @@ const USDB = () => {
                                           refetchActiveWithdrawals();
                                           refetchExchangeRate();
                                         }}
-                                        className="flex-1 px-3 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 cursor-pointer text-sm text-center"
+                                        className="flex-1 px-3 py-2 btn btn-primary border-none font-medium rounded-lg hover:brightness-110 cursor-pointer text-sm text-center"
                                         buttonName="Execute"
                                       />
                                     ) : null}
@@ -1291,15 +1291,15 @@ const USDB = () => {
 
                   {/* Actions */}
                   <div className="lg:col-span-1 order-2">
-                    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg">
+                    <div className="bg-base-200 rounded-2xl p-4 sm:p-6 shadow-lg">
                       {/* Tab Navigation */}
-                      <div className="flex border-b border-gray-200 mb-4 sm:mb-6">
+                      <div className="flex border-b border-base-300 mb-4 sm:mb-6">
                         <button
                           onClick={() => setActiveTab("deposit")}
                           className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
                             activeTab === "deposit"
                               ? "border-indigo-500 text-indigo-600 bg-indigo-50"
-                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                              : "border-transparent text-base-content/60 hover:text-base-content hover:bg-base-200/60"
                           }`}
                         >
                           <div className="flex items-center justify-center gap-1 sm:gap-2">
@@ -1322,7 +1322,7 @@ const USDB = () => {
                           className={`flex-1 py-2 sm:py-3 font-medium border-b-2 transition-colors text-center ${
                             activeTab === "withdraw"
                               ? "border-indigo-500 text-indigo-600 bg-indigo-50"
-                              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                              : "border-transparent text-base-content/60 hover:text-base-content hover:bg-base-200/60"
                           }`}
                         >
                           <div className="flex items-center justify-center gap-1 sm:gap-2">
@@ -1347,7 +1347,7 @@ const USDB = () => {
                         <div>
                           <div className="text-center mb-6">
                             <div className="flex items-center justify-center gap-2 mb-2">
-                              <h3 className="text-xl font-semibold text-gray-900">
+                              <h3 className="text-xl font-semibold text-base-content">
                                 Deposit USDB →
                               </h3>
                               <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center p-1">
@@ -1357,22 +1357,22 @@ const USDB = () => {
                                   className="w-full h-full object-contain"
                                 />
                               </div>
-                              <h3 className="text-xl font-semibold text-gray-900">
+                              <h3 className="text-xl font-semibold text-base-content">
                                 sUSDB
                               </h3>
                             </div>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-base-content/60 text-sm">
                               Current rate: 1 USDB = {exchangeRate ? (1 / parseFloat(formatExchangeRate())).toFixed(4) : "0.0000"} sUSDB • Auto-compounding rewards
                             </p>
                           </div>
 
                           {/* Amount Input Card */}
-                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                          <div className="bg-base-200/60 rounded-xl p-4 mb-4">
                             <div className="flex justify-between items-center mb-2">
-                              <label className="text-sm font-medium text-gray-700">
+                              <label className="text-sm font-medium text-base-content/70">
                                 Amount to Deposit
                               </label>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-base-content/50">
                                 Available:{" "}
                                 {usdbBalance
                                   ? formatUsdbAmount(usdbBalance.value)
@@ -1387,18 +1387,18 @@ const USDB = () => {
                                 onChange={handleSUSDBAmountChange}
                                 placeholder="0.0"
                                 disabled={!isMounted || !isConnected}
-                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-indigo-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                className="w-full px-4 py-4 border-0 bg-base-200 rounded-lg focus:ring-2 focus:ring-indigo-500 text-xl font-semibold text-base-content placeholder-gray-400 disabled:bg-base-300 disabled:cursor-not-allowed"
                               />
                               <button
                                 onClick={handleSUSDBMaxClick}
                                 disabled={!isMounted || !isConnected}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-indigo-100 text-indigo-600 hover:bg-indigo-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-indigo-100 text-indigo-600 hover:bg-indigo-200 font-medium text-sm rounded-md transition-colors disabled:bg-base-300 disabled:text-base-content/40 disabled:cursor-not-allowed"
                               >
                                 MAX
                               </button>
                             </div>
                             {sUSDBAmount && (
-                              <div className="mt-2 text-sm text-gray-600">
+                              <div className="mt-2 text-sm text-base-content/60">
                                 You will receive: {calculateSUSDBFromUSDB(sUSDBAmount)} sUSDB
                               </div>
                             )}
@@ -1484,22 +1484,22 @@ const USDB = () => {
                       {activeTab === "withdraw" && (
                         <div>
                           <div className="text-center mb-6">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                            <h3 className="text-xl font-semibold text-base-content mb-2">
                               Request Withdrawal
                             </h3>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-base-content/60 text-sm">
                               7-day waiting period • Cancel anytime to restore
                               sUSDB
                             </p>
                           </div>
 
                           {/* Amount Input Card */}
-                          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                          <div className="bg-base-200/60 rounded-xl p-4 mb-4">
                             <div className="flex justify-between items-center mb-2">
-                              <label className="text-sm font-medium text-gray-700">
+                              <label className="text-sm font-medium text-base-content/70">
                                 Amount to Withdraw
                               </label>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-base-content/50">
                                 Available:{" "}
                                 {sUSDBBalance
                                   ? formatUsdbAmount(sUSDBBalance.value)
@@ -1514,18 +1514,18 @@ const USDB = () => {
                                 onChange={handleWithdrawAmountChange}
                                 placeholder="0.0"
                                 disabled={!isMounted || !isConnected}
-                                className="w-full px-4 py-4 border-0 bg-white rounded-lg focus:ring-2 focus:ring-red-500 text-xl font-semibold text-gray-900 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                className="w-full px-4 py-4 border-0 bg-base-200 rounded-lg focus:ring-2 focus:ring-red-500 text-xl font-semibold text-base-content placeholder-gray-400 disabled:bg-base-300 disabled:cursor-not-allowed"
                               />
                               <button
                                 onClick={handleWithdrawMaxClick}
                                 disabled={!isMounted || !isConnected}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-red-100 text-red-600 hover:bg-red-200 font-medium text-sm rounded-md transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 bg-red-100 text-red-600 hover:bg-red-200 font-medium text-sm rounded-md transition-colors disabled:bg-base-300 disabled:text-base-content/40 disabled:cursor-not-allowed"
                               >
                                 MAX
                               </button>
                             </div>
                             {withdrawAmount && (
-                              <div className="mt-2 text-sm text-gray-600">
+                              <div className="mt-2 text-sm text-base-content/60">
                                 You will receive: {calculateUSDBFromSUSDB(withdrawAmount)} USDB (after 7 days)
                               </div>
                             )}
@@ -1609,13 +1609,13 @@ const USDB = () => {
           
 
           {/* What is USDB Section */}
-          <div className="py-20 bg-white">
+          <div className="py-20 bg-base-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl font-bold text-base-content mb-6">
                   What is USDB?
                 </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p className="text-xl text-base-content/60 max-w-3xl mx-auto">
                   USDB is an innovative synthetic USD solution providing
                   stability and yield for digital currencies
                 </p>
@@ -1623,22 +1623,22 @@ const USDB = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <div className="bg-gradient-to-r from-primary/10 to-base-200 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-base-content mb-3">
                       Synthetic USD Solution
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-base-content/60">
                       USDB provides a crypto-native scalable solution for
                       currency through advanced delta hedging strategies
                       implementing risk management across major digital assets.
                     </p>
                   </div>
 
-                  <div className="bg-gradient-to-r from-emerald-50 to-green-50 p-6 rounded-2xl">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <div className="bg-gradient-to-r from-primary/10 to-base-200 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-base-content mb-3">
                       Delta Hedging Strategy
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-base-content/60">
                       Uses perpetual contracts and deliverable futures to hedge
                       Bitcoin, Ethereum, and Solana spot assets while holding
                       liquid stablecoins like USDC, USDT, USDe, and USDtb.
@@ -1646,14 +1646,14 @@ const USDB = () => {
                     <div className="mt-4 space-y-2">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-base-content/70">
                           <strong>80% of funds</strong> allocated for arbitrage
                           opportunities
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                        <span className="text-sm text-gray-700">
+                        <span className="text-sm text-base-content/70">
                           <strong>20% of funds</strong> reserved for liquidity
                           provision
                         </span>
@@ -1661,11 +1661,11 @@ const USDB = () => {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <div className="bg-gradient-to-r from-primary/10 to-base-200 p-6 rounded-2xl">
+                    <h3 className="text-xl font-semibold text-base-content mb-3">
                       Yield Generation
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-base-content/60">
                       Backing assets generate funding through hedged perpetual
                       contracts and stablecoin rewards, creating sustainable
                       yields for holders.
@@ -1945,13 +1945,13 @@ const USDB = () => {
           </div>
 
           {/* How to Participate Section */}
-          <div className="py-20 bg-gradient-to-br from-gray-50 to-green-50">
+          <div className="py-20 bg-gradient-to-br from-gray-50 to-base-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl font-bold text-base-content mb-6">
                   How to Participate
                 </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p className="text-xl text-base-content/60 max-w-3xl mx-auto">
                   Start earning USDB yields in three simple steps
                 </p>
               </div>
@@ -1961,10 +1961,10 @@ const USDB = () => {
                   <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="text-white font-bold text-2xl">1</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  <h3 className="text-xl font-semibold text-base-content mb-4">
                     Connect Wallet
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-base-content/60">
                     Connect your Web3 wallet to the BBBPump platform, supporting
                     multiple mainstream wallets.
                   </p>
@@ -1974,10 +1974,10 @@ const USDB = () => {
                   <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="text-white font-bold text-2xl">2</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  <h3 className="text-xl font-semibold text-base-content mb-4">
                     Stake USDB to Get sUSDB
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-base-content/60">
                     Simply stake your USDB to receive sUSDB tokens. The dynamic exchange rate ensures you automatically earn compound interest as arbitrage profits are deposited into the contract.
                   </p>
                 </div>
@@ -1986,10 +1986,10 @@ const USDB = () => {
                   <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="text-white font-bold text-2xl">3</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  <h3 className="text-xl font-semibold text-base-content mb-4">
                     Hold & Earn Automatically
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-base-content/60">
                     Just hold sUSDB in your wallet and earn automatic compound interest. As arbitrage profits flow into the contract, your sUSDB becomes worth more USDB over time - no manual actions required.
                   </p>
                 </div>
@@ -2002,7 +2002,7 @@ const USDB = () => {
                       behavior: 'smooth' 
                     });
                   }}
-                  className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
+                  className="px-10 py-4 btn btn-primary border-none font-semibold rounded-xl hover:brightness-110 transform hover:scale-105 transition-all duration-200 shadow-lg text-lg"
                 >
                   {isMounted && isConnected
                     ? "Start Staking"
@@ -2013,13 +2013,13 @@ const USDB = () => {
           </div>
 
           {/* FAQ Section */}
-          <div className="py-20 bg-white">
+          <div className="py-20 bg-base-200">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                <h2 className="text-4xl font-bold text-base-content mb-6">
                   Frequently Asked Questions
                 </h2>
-                <p className="text-xl text-gray-600">
+                <p className="text-xl text-base-content/60">
                   Common questions and answers about USDB
                 </p>
               </div>
@@ -2028,17 +2028,17 @@ const USDB = () => {
                 {faqData.map((faq, index) => (
                   <div
                     key={index}
-                    className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl overflow-hidden"
+                    className="bg-gradient-to-r from-primary/10 to-base-200 rounded-xl overflow-hidden"
                   >
                     <button
                       onClick={() => toggleFaq(index)}
-                      className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-green-100 transition-colors"
+                      className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-primary/15 transition-colors"
                     >
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-base-content">
                         {faq.question}
                       </span>
                       <svg
-                        className={`w-5 h-5 text-green-600 transform transition-transform ${
+                        className={`w-5 h-5 text-primary transform transition-transform ${
                           data.expandedFaq === index ? "rotate-180" : ""
                         }`}
                         fill="none"
@@ -2055,7 +2055,7 @@ const USDB = () => {
                     </button>
                     {data.expandedFaq === index && (
                       <div className="px-6 pb-4">
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-base-content/60 leading-relaxed">
                           {faq.answer}
                         </p>
                       </div>

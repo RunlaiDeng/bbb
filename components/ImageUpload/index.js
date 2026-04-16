@@ -78,14 +78,14 @@ export default function ImageUpload(props) {
             <div className="flex justify-center items-center">
               <div className="loading loading-bars loading-lg text-success"></div>
             </div>
-            <p className="text-xs text-gray-400">Uploading...</p>
+            <p className="text-xs text-base-content/40">Uploading...</p>
           </div>
         )}
         {!loading &&
           !image && ( // Only show this if not loading and no image
             <div className="flex flex-col items-center">
               <svg
-                className="w-12 h-12 text-green-700 mb-4"
+                className="w-12 h-12 text-success mb-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -98,8 +98,8 @@ export default function ImageUpload(props) {
                   d="M12 4v16m8-8H4"
                 ></path>
               </svg>
-              <p className="text-[8px] text-gray-400">JPEG/PNG/WEBP/GIF</p>
-              <p className="text-[8px]  text-gray-400">Less than 4MB</p>
+              <p className="text-[8px] text-base-content/40">JPEG/PNG/WEBP/GIF</p>
+              <p className="text-[8px]  text-base-content/40">Less than 4MB</p>
             </div>
           )}
         {image &&

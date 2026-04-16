@@ -199,10 +199,10 @@ const BpsXDC = () => {
   // Render pool card
   const renderPoolCard = () => {
     return (
-      <div className="space-y-6 mb-8 p-6 bg-white rounded-lg shadow-sm">
+      <div className="space-y-6 mb-8 p-6 bg-base-200 rounded-lg shadow-sm">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold">{psXDCSymbol} Staking</h2>
-          <div className="text-green-600 font-bold text-lg">
+          <div className="text-primary font-bold text-lg">
             0% APR
           </div>
         </div>
@@ -210,8 +210,8 @@ const BpsXDC = () => {
         <div className="space-y-4">
           {isConnected ? (
             <>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Your {psXDCSymbol} Balance</span>
+              <div className="flex justify-between items-center py-2 border-b border-base-300">
+                <span className="text-base-content/50">Your {psXDCSymbol} Balance</span>
                 <div className="font-medium">
                   {Number(formatEther(psXDCBalance))?.toLocaleString(
                     "en-US",
@@ -220,7 +220,7 @@ const BpsXDC = () => {
                   {psXDCSymbol}
                   <Link
                     href="https://primestaking.xyz/xdc-liquid-staking"
-                    className="ml-1 text-xs text-green-600 hover:underline"
+                    className="ml-1 text-xs text-primary hover:underline"
                     target="_blank"
                   >
                     Get {psXDCSymbol}
@@ -228,8 +228,8 @@ const BpsXDC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Your {bpsXDCSymbol} Balance</span>
+              <div className="flex justify-between items-center py-2 border-b border-base-300">
+                <span className="text-base-content/50">Your {bpsXDCSymbol} Balance</span>
                 <div className="font-medium">
                   {Number(formatEther(bpsXDCBalance))?.toLocaleString(
                     "en-US",
@@ -241,8 +241,8 @@ const BpsXDC = () => {
             </>
           ) : null}
 
-          <div className="flex justify-between items-center py-2 border-b border-gray-100">
-            <span className="text-gray-500">Exchange Rate</span>
+          <div className="flex justify-between items-center py-2 border-b border-base-300">
+            <span className="text-base-content/50">Exchange Rate</span>
             <div className="font-medium">1 {psXDCSymbol} = 1 {bpsXDCSymbol}</div>
           </div>
         </div>
@@ -257,7 +257,7 @@ const BpsXDC = () => {
                 Stake {psXDCSymbol}
               </button>
               <button
-                className="flex-1 py-2 px-4 text-green-600 border border-green-500 rounded-md hover:bg-green-50 transition-colors"
+                className="flex-1 py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary/10 transition-colors"
                 onClick={openUnstakeModal}
                 disabled={bpsXDCBalance <= BigInt(0)}
               >
@@ -266,8 +266,8 @@ const BpsXDC = () => {
             </div>
           </>
         ) : (
-          <div className="text-center p-4 mt-4 bg-gray-50 rounded-lg">
-            <p className="mb-4 text-gray-600">
+          <div className="text-center p-4 mt-4 bg-base-200/60 rounded-lg">
+            <p className="mb-4 text-base-content/60">
               Connect your wallet to stake and earn rewards
             </p>
             <button
@@ -286,17 +286,17 @@ const BpsXDC = () => {
   return (
     <div className="m-auto md:w-3/4 w-96 mt-6 pb-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-green-600">psXDC Staking</h1>
-        <div className="text-sm text-green-700">🌊 Stake to earn</div>
+        <h1 className="text-2xl font-bold text-primary">psXDC Staking</h1>
+        <div className="text-sm text-success">🌊 Stake to earn</div>
       </div>
 
       {/* Pool Card */}
       {renderPoolCard()}
 
       {/* Information Section */}
-      <div className="space-y-6 mb-8 p-6 bg-white rounded-lg shadow-sm">
+      <div className="space-y-6 mb-8 p-6 bg-base-200 rounded-lg shadow-sm">
         <h2 className="text-xl font-bold">About {psXDCSymbol} Staking</h2>
-        <p className="text-gray-600 mb-3">
+        <p className="text-base-content/60 mb-3">
           Stake your {psXDCSymbol} tokens to receive {bpsXDCSymbol} tokens, which represent your staked position.
           You can unstake your {psXDCSymbol} at any time by converting your {bpsXDCSymbol} tokens back to {psXDCSymbol}.
         </p>
@@ -309,7 +309,7 @@ const BpsXDC = () => {
         <div className="mt-4">
           <Link
             href="https://primestaking.xyz/xdc-liquid-staking"
-            className="text-green-600 hover:text-green-700 font-medium flex items-center"
+            className="text-primary hover:text-success font-medium flex items-center"
             target="_blank"
           >
             <span>Get {psXDCSymbol} tokens from Prime Staking</span>
@@ -326,9 +326,9 @@ const BpsXDC = () => {
           data.showStakeModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
+        <div className="bg-base-200 rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               Stake {psXDCSymbol}
             </h3>
             <button
@@ -340,7 +340,7 @@ const BpsXDC = () => {
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50 p-2 rounded-lg border border-gray-300">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-base-200/60 p-2 rounded-lg border border-base-300">
               <input
                 type="text"
                 className="grow outline-none bg-transparent"
@@ -350,14 +350,14 @@ const BpsXDC = () => {
               />
               <div className="font-medium">{psXDCSymbol}</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 bg-gray-200 rounded text-xs"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10 px-2 py-1 bg-base-300 rounded text-xs"
                 onClick={setMaxStakeAmount}
               >
                 max
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Available</span>
               <span>
                 {Number(formatEther(psXDCBalance)).toLocaleString(
@@ -366,7 +366,7 @@ const BpsXDC = () => {
                 )} {psXDCSymbol}
                 <Link
                   href="https://primestaking.xyz/xdc-liquid-staking"
-                  className="ml-1 text-xs text-green-500 hover:underline"
+                  className="ml-1 text-xs text-primary hover:underline"
                   target="_blank"
                 >
                   Get more
@@ -378,14 +378,14 @@ const BpsXDC = () => {
             {allowance < (data.stakeAmount ? parseEther(data.stakeAmount) : BigInt(0)) ? (
               <WriteButton
                 {...actions.approve}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg py-2 px-4 rounded-md"
+                className="btn w-full btn-primary border-none hover:shadow-lg py-2 px-4 rounded-md"
               >
                 Approve {psXDCSymbol}
               </WriteButton>
             ) : (
               <WriteButton
                 {...actions.stake}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg py-2 px-4 rounded-md"
+                className="btn w-full btn-primary border-none hover:shadow-lg py-2 px-4 rounded-md"
               >
                 Stake {psXDCSymbol}
               </WriteButton>
@@ -400,9 +400,9 @@ const BpsXDC = () => {
           data.showUnstakeModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
+        <div className="bg-base-200 rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               Unstake {psXDCSymbol}
             </h3>
             <button
@@ -414,7 +414,7 @@ const BpsXDC = () => {
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50 p-2 rounded-lg border border-gray-300">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-base-200/60 p-2 rounded-lg border border-base-300">
               <input
                 type="text"
                 className="grow outline-none bg-transparent"
@@ -424,14 +424,14 @@ const BpsXDC = () => {
               />
               <div className="font-medium">{bpsXDCSymbol}</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 bg-gray-200 rounded text-xs"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10 px-2 py-1 bg-base-300 rounded text-xs"
                 onClick={setMaxUnstakeAmount}
               >
                 max
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Available</span>
               <span>
                 {Number(formatEther(bpsXDCBalance)).toLocaleString(
@@ -452,7 +452,7 @@ const BpsXDC = () => {
 
             <WriteButton
               {...actions.unstake}
-              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg py-2 px-4 rounded-md"
+              className="btn w-full btn-primary border-none hover:shadow-lg py-2 px-4 rounded-md"
             >
               Unstake {psXDCSymbol}
             </WriteButton>

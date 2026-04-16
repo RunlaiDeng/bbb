@@ -316,19 +316,19 @@ const TokenInfo = (props) => {
 
               <div className="opacity-50 text-xs">
                 When the market cap reaches{" "}
-                <span className="text-green-700">
+                <span className="text-success">
                   {"$" +
                     (xdcPrice * formatEther(maxXdc || 0n))?.toLocaleString()}
                 </span>{" "}
                 all the liquidity from the rld curve will be deposited into
                 icecreaswap and burned. Progression increases as the price goes
                 up. After removing liquidity, the Megadrop Staker is snapshot
-                and receives <span className="text-green-700">2%</span> of the
+                and receives <span className="text-success">2%</span> of the
                 token supply.
               </div>
               <div className="opacity-50 text-xs mt-4">
                 There are{" "}
-                <span className="text-green-700">
+                <span className="text-success">
                   {(
                     formatEther(
                       customToFixed(Math.sqrt(maxXdc?.toString() * 2e25))
@@ -337,7 +337,7 @@ const TokenInfo = (props) => {
                   {symbol}
                 </span>{" "}
                 still available for sale in the rld curve and there are{" "}
-                <span className="text-green-700">
+                <span className="text-success">
                   {Number(formatEther(xdcAmount || 0n))?.toLocaleString()} XDC
                 </span>{" "}
                 in the rld curve.
@@ -399,7 +399,7 @@ const TokenInfo = (props) => {
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">
-                  Image <span className="text-green-700">*</span>
+                  Image <span className="text-success">*</span>
                 </span>
               </div>
               <ImageUpload {...imageUpload} />
@@ -407,7 +407,7 @@ const TokenInfo = (props) => {
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">
-                  Name <span className="text-green-700">*</span>
+                  Name <span className="text-success">*</span>
                 </span>
                 <span className="text-right">
                   {getBytesLength(tokenInfo?.name)}/20
@@ -423,7 +423,7 @@ const TokenInfo = (props) => {
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">
-                  Symbol <span className="text-green-700">*</span>
+                  Symbol <span className="text-success">*</span>
                 </span>
                 <span className="text-right">
                   {getBytesLength(tokenInfo?.symbol)}/10
@@ -440,7 +440,7 @@ const TokenInfo = (props) => {
             <label className="form-control">
               <div className="label">
                 <span className="label-text">
-                  Token Decription <span className="text-green-700">*</span>
+                  Token Decription <span className="text-success">*</span>
                 </span>
                 <span className="text-right">
                   {getBytesLength(tokenInfo?.description)}/256

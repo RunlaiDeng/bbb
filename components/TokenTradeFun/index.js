@@ -27,7 +27,7 @@ const TradeRow = ({ item, symbol, router, onAccountClick }) => {
   return (
     <tr
       key={item?.tid}
-      className={item?.tradeType === "buy" ? "text-green-700" : "text-red-700"}
+      className={item?.tradeType === "buy" ? "text-success" : "text-red-700"}
     >
       <td>{getDateSpecifics(item?.time)}</td>
       <td>${Number(item?.priceInUsd)?.toFixed(6)}</td>
@@ -154,14 +154,14 @@ const TokenTradeFun = ({ token, symbol }) => {
   return (
     <div className="card h-full overflow-y-auto" id="chart">
       <div className="sticky top-0 bg-base-100 z-10">
-        <div className="flex gap-2 text-gray-500 font-bold">
+        <div className="flex gap-2 text-base-content/50 font-bold">
           <div role="tablist" className="tabs tabs-bordered w-full">
             <a
               role="tab"
               className={
                 "tab " +
                 (tradeType === TRADE_TYPES.MARKET
-                  ? "tab-active text-green-700"
+                  ? "tab-active text-success"
                   : "")
               }
               onClick={() => {
@@ -175,7 +175,7 @@ const TokenTradeFun = ({ token, symbol }) => {
               className={
                 "tab " +
                 (tradeType === TRADE_TYPES.MY_TRADES
-                  ? "tab-active text-green-700"
+                  ? "tab-active text-success"
                   : "")
               }
               onClick={() => {
@@ -213,7 +213,7 @@ const TokenTradeFun = ({ token, symbol }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-4 text-gray-500">
+                  <td colSpan="6" className="text-center py-4 text-base-content/50">
                     No data available
                   </td>
                 </tr>

@@ -17,21 +17,21 @@ const MobileNav = () => {
   }
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200/50 z-40 shadow-lg">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100/90 backdrop-blur-md border-t border-base-300 z-40 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]">
 
       
       {/* Main navigation bar with enhanced styling */}
       <div className="flex justify-around items-center h-20 px-2 py-3">
         <Link
           href="/"
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
+          className={`flex flex-col items-center p-2 rounded-xl transition-colors active:opacity-80 min-w-[64px] ${
             router.pathname === "/" 
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+              ? "text-primary font-medium bg-base-300/60 ring-1 ring-primary/30" 
+              : "text-base-content/50 hover:text-base-content hover:bg-base-300/40"
           }`}
         >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname === "/" ? "bg-green-100" : "bg-transparent"
+          <div className={`p-2 rounded-lg transition-colors ${
+            router.pathname === "/" ? "bg-base-200" : "bg-transparent"
           }`}>
             <svg viewBox="0 0 1024 1024" width="22" height="22">
               <path
@@ -47,7 +47,7 @@ const MobileNav = () => {
           href="https://jumper.exchange/zh?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=50&toToken=0x0000000000000000000000000000000000000000"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+          className="flex flex-col items-center p-2 rounded-xl transition-colors active:opacity-80 min-w-[64px] text-base-content/50 hover:text-base-content hover:bg-base-300/40"
         >
           <div className="p-2 rounded-xl transition-colors bg-transparent">
             <svg
@@ -67,14 +67,14 @@ const MobileNav = () => {
 
         <Link
           href="/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
+          className={`flex flex-col items-center p-2 rounded-xl transition-colors active:opacity-80 min-w-[64px] ${
             router.pathname.startsWith("/swap/") 
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+              ? "text-primary font-medium bg-base-300/60 ring-1 ring-primary/30" 
+              : "text-base-content/50 hover:text-base-content hover:bg-base-300/40"
           }`}
         >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname.startsWith("/swap/") ? "bg-green-100" : "bg-transparent"
+          <div className={`p-2 rounded-lg transition-colors ${
+            router.pathname.startsWith("/swap/") ? "bg-base-200" : "bg-transparent"
           }`}>
             <svg viewBox="0 0 24 24" width="22" height="22">
               <path
@@ -104,14 +104,14 @@ const MobileNav = () => {
 
         <Link
           href="/ido"
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
+          className={`flex flex-col items-center p-2 rounded-xl transition-colors active:opacity-80 min-w-[64px] ${
             router.pathname === "/ido" 
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105" 
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+              ? "text-primary font-medium bg-base-300/60 ring-1 ring-primary/30" 
+              : "text-base-content/50 hover:text-base-content hover:bg-base-300/40"
           }`}
         >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname === "/ido" ? "bg-green-100" : "bg-transparent"
+          <div className={`p-2 rounded-lg transition-colors ${
+            router.pathname === "/ido" ? "bg-base-200" : "bg-transparent"
           }`}>
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
               {/* 火箭主体 */}
@@ -176,14 +176,14 @@ const MobileNav = () => {
 
         <Link
           href={address ? `/dashboard/${address}` : "/dashboard"}
-          className={`flex flex-col items-center p-3 rounded-2xl transition-all duration-300 transform active:scale-95 min-w-[64px] ${
+          className={`flex flex-col items-center p-2 rounded-xl transition-colors active:opacity-80 min-w-[64px] ${
             router.pathname.startsWith("/dashboard")
-              ? "text-green-600 font-semibold bg-green-50 shadow-md scale-105"
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:scale-105"
+              ? "text-primary font-medium bg-base-300/60 ring-1 ring-primary/30"
+              : "text-base-content/50 hover:text-base-content hover:bg-base-300/40"
           }`}
         >
-          <div className={`p-2 rounded-xl transition-colors ${
-            router.pathname.startsWith("/dashboard") ? "bg-green-100" : "bg-transparent"
+          <div className={`p-2 rounded-lg transition-colors ${
+            router.pathname.startsWith("/dashboard") ? "bg-base-200" : "bg-transparent"
           }`}>
             <svg
               viewBox="0 0 24 24"

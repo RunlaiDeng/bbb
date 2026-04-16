@@ -12,7 +12,7 @@ const Info = () => {
       {pixels.map((_, index) => (
         <div
           key={index}
-          className="w-full h-full bg-white hover:bg-gray-200"
+          className="w-full h-full bg-base-200 hover:bg-base-300"
           onClick={() => handleClick(index)}
         />
       ))}

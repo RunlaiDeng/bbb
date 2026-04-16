@@ -196,9 +196,9 @@ const IdoDetail = () => {
   if (!campaign) {
     return (
       <div className="container mx-auto py-12 px-4">
-        <div className="text-center py-16 bg-gray-50 rounded-lg">
+        <div className="text-center py-16 bg-base-200/60 rounded-lg">
           <h2 className="text-3xl font-bold mb-2">Campaign Not Found</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-base-content/60 mb-6">
             The IDO campaign you&apos;re looking for does not exist.
           </p>
           <Link href="/ido" className="btn btn-primary">
@@ -226,7 +226,7 @@ const IdoDetail = () => {
       <div className="mb-6">
         <Link
           href="/ido"
-          className="inline-flex items-center text-green-600 hover:text-green-700"
+          className="inline-flex items-center text-primary hover:text-success"
         >
           <svg
             className="w-5 h-5 mr-2"
@@ -249,7 +249,7 @@ const IdoDetail = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Token Info */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          <div className="bg-base-200 rounded-xl shadow-lg overflow-hidden border border-base-300">
             <div className="w-full aspect-square bg-gradient-to-r from-green-100 to-emerald-100 relative overflow-hidden">
               <Image
                 src={campaignImage}
@@ -263,19 +263,19 @@ const IdoDetail = () => {
               />
             </div>
 
-            <div className="p-6 border-t border-gray-100">
+            <div className="p-6 border-t border-base-300">
               <h1 className="text-3xl font-bold mb-2">{campaign.tokenName}</h1>
               <div className="flex items-center mb-4">
-                <span className="mr-3 text-lg text-gray-500">
+                <span className="mr-3 text-lg text-base-content/50">
                   {campaign.tokenSymbol}
                 </span>
                 <span
                   className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                     timeStatus.status === "live"
-                      ? "bg-green-100 text-green-800"
+                      ? "bg-primary/15 text-green-800"
                       : timeStatus.status === "upcoming"
                       ? "bg-yellow-100 text-yellow-800"
-                      : "bg-gray-100 text-gray-800"
+                      : "bg-base-300 text-base-content/80"
                   }`}
                 >
                   <span
@@ -292,14 +292,14 @@ const IdoDetail = () => {
               </div>
 
               {/* Creator Info */}
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-500 mb-1">Created by</p>
+              <div className="mb-4 p-3 bg-base-200/60 rounded-lg">
+                <p className="text-sm text-base-content/50 mb-1">Created by</p>
                 <div className="flex items-center justify-between">
-                  <p className="font-medium text-gray-800">
+                  <p className="font-medium text-base-content/80">
                     {campaign.creator.slice(0, 6)}...{campaign.creator.slice(-4)}
                   </p>
                   {isCreator && (
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                    <span className="px-2 py-1 bg-primary/15 text-green-800 text-xs rounded-full">
                       You
                     </span>
                   )}
@@ -308,7 +308,7 @@ const IdoDetail = () => {
                   href={`https://xdcscan.com/address/${campaign.creator}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-green-600 hover:text-green-700"
+                  className="text-xs text-primary hover:text-success"
                 >
                   View on XDCScan
                 </a>
@@ -321,8 +321,8 @@ const IdoDetail = () => {
 
                 {timeStatus.status === "live" && (
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Time Remaining</p>
-                    <p className="font-medium text-green-600">
+                    <p className="text-sm text-base-content/50 mb-1">Time Remaining</p>
+                    <p className="font-medium text-primary">
                       {timeStatus.timeRemaining}
                     </p>
                   </div>
@@ -330,7 +330,7 @@ const IdoDetail = () => {
 
                 {timeStatus.status === "upcoming" && (
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Starts In</p>
+                    <p className="text-sm text-base-content/50 mb-1">Starts In</p>
                     <p className="font-medium text-yellow-600">
                       {timeStatus.timeRemaining}
                     </p>
@@ -341,13 +341,13 @@ const IdoDetail = () => {
 
                 {campaign.liquidityAdded && campaign.liquidityPair && (
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Liquidity Pair</p>
+                    <p className="text-sm text-base-content/50 mb-1">Liquidity Pair</p>
                     <p className="font-medium break-all">
                       <a
                         href={`https://xdcscan.com/address/${campaign.liquidityPair}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-green-600 hover:text-green-700"
+                        className="text-primary hover:text-success"
                       >
                         {campaign.liquidityPair.slice(0, 10)}...{campaign.liquidityPair.slice(-8)}
                       </a>
@@ -357,13 +357,13 @@ const IdoDetail = () => {
 
                 {campaign.projectToken && campaign.projectToken !== "0x0000000000000000000000000000000000000000" && (
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Token Contract</p>
+                    <p className="text-sm text-base-content/50 mb-1">Token Contract</p>
                     <p className="font-medium break-all">
                       <a
                         href={`https://xdcscan.com/address/${campaign.projectToken}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-green-600 hover:text-green-700"
+                        className="text-primary hover:text-success"
                       >
                         {campaign.projectToken.slice(0, 10)}...{campaign.projectToken.slice(-8)}
                       </a>
@@ -377,34 +377,34 @@ const IdoDetail = () => {
 
         {/* Right Column - Sale Info and Actions */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mb-8">
+          <div className="bg-base-200 rounded-xl shadow-lg overflow-hidden border border-base-300 mb-8">
             <div className="p-6">
               <h2 className="text-2xl font-bold mb-6">Campaign Information</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">Campaign Status</p>
+                <div className="bg-base-200/60 rounded-lg p-4">
+                  <p className="text-sm text-base-content/50 mb-2">Campaign Status</p>
                   <p className="text-xl font-bold capitalize">
                     {timeStatus.status}
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">XDC Raised</p>
+                <div className="bg-base-200/60 rounded-lg p-4">
+                  <p className="text-sm text-base-content/50 mb-2">XDC Raised</p>
                   <p className="text-xl font-bold">
                     {formatEther(campaign.ethCollected)} XDC
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">Start Time</p>
+                <div className="bg-base-200/60 rounded-lg p-4">
+                  <p className="text-sm text-base-content/50 mb-2">Start Time</p>
                   <p className="text-lg font-bold">
                     {formatDate(campaign.saleStartTime)}
                   </p>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-2">End Time</p>
+                <div className="bg-base-200/60 rounded-lg p-4">
+                  <p className="text-sm text-base-content/50 mb-2">End Time</p>
                   <p className="text-lg font-bold">
                     {formatDate(campaign.saleEndTime)}
                   </p>
@@ -412,36 +412,36 @@ const IdoDetail = () => {
               </div>
 
               {/* IDO Distribution Rules */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-6">
+              <div className="bg-gradient-to-r from-primary/10 to-base-200 border border-base-300 rounded-lg p-6 mb-6">
                 <h3 className="text-xl font-bold mb-4 text-green-800 flex items-center">
                   <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   IDO Distribution Rules
                 </h3>
-                <p className="text-sm text-green-700 mb-4">
+                <p className="text-sm text-success mb-4">
                   After IDO completion, XDC and tokens will be distributed as follows:
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-green-600 mb-2">2%</div>
-                    <div className="text-sm font-semibold text-gray-700 mb-1">Platform Fee</div>
-                    <div className="text-xs text-gray-600">Goes to platform</div>
+                  <div className="bg-base-200 border border-green-300 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary mb-2">2%</div>
+                    <div className="text-sm font-semibold text-base-content/70 mb-1">Platform Fee</div>
+                    <div className="text-xs text-base-content/60">Goes to platform</div>
                   </div>
-                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
+                  <div className="bg-base-200 border border-green-300 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-blue-600 mb-2">8%</div>
-                    <div className="text-sm font-semibold text-gray-700 mb-1">Creator Reward</div>
-                    <div className="text-xs text-gray-600">Goes to IDO creator</div>
+                    <div className="text-sm font-semibold text-base-content/70 mb-1">Creator Reward</div>
+                    <div className="text-xs text-base-content/60">Goes to IDO creator</div>
                   </div>
-                  <div className="bg-white border border-green-300 rounded-lg p-4 text-center">
+                  <div className="bg-base-200 border border-green-300 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-purple-600 mb-2">90%</div>
-                    <div className="text-sm font-semibold text-gray-700 mb-1">Liquidity Pool</div>
-                    <div className="text-xs text-gray-600">Added to XSwapProtocol<br/>(LP tokens locked)</div>
+                    <div className="text-sm font-semibold text-base-content/70 mb-1">Liquidity Pool</div>
+                    <div className="text-xs text-base-content/60">Added to XSwapProtocol<br/>(LP tokens locked)</div>
                   </div>
                 </div>
-                <div className="mt-4 bg-white border border-green-300 rounded-lg p-3">
-                  <p className="text-xs text-gray-700 font-medium mb-2">📌 Important Notes:</p>
-                  <ul className="text-xs text-gray-600 space-y-1">
+                <div className="mt-4 bg-base-200 border border-green-300 rounded-lg p-3">
+                  <p className="text-xs text-base-content/70 font-medium mb-2">📌 Important Notes:</p>
+                  <ul className="text-xs text-base-content/60 space-y-1">
                     <li>• 90% of raised XDC automatically creates liquidity on XSwapProtocol</li>
                     <li>• LP tokens are permanently locked in the IDO contract</li>
                     <li>• Ensures immediate trading availability and price stability</li>
@@ -457,7 +457,7 @@ const IdoDetail = () => {
                   <p className="text-sm text-blue-700 mb-4">
                     Your IDO campaign has ended. You can now finalize the sale to add liquidity and allow token claiming.
                   </p>
-                  <div className="bg-white border border-blue-300 rounded-lg p-3 mb-4">
+                  <div className="bg-base-200 border border-blue-300 rounded-lg p-3 mb-4">
                     <h4 className="text-sm font-semibold text-blue-800 mb-2">Fund Distribution will execute:</h4>
                     <ul className="text-xs text-blue-700 space-y-1">
                       <li>• 2% platform fee will be deducted</li>
@@ -475,9 +475,9 @@ const IdoDetail = () => {
               )}
 
               {campaign.liquidityAdded && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <div className="bg-primary/10 border border-base-300 rounded-lg p-4 mb-6">
                   <h3 className="text-lg font-bold mb-2 text-green-800">✅ Sale Finalized</h3>
-                  <p className="text-sm text-green-700">
+                  <p className="text-sm text-success">
                     This IDO has been successfully finalized. Liquidity has been added and tokens are available for claiming.
                   </p>
                   {campaign.liquidityPair && (
@@ -499,14 +499,14 @@ const IdoDetail = () => {
 
           {/* User Participation */}
           {isConnected && (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            <div className="bg-base-200 rounded-xl shadow-lg overflow-hidden border border-base-300">
               <div className="p-6">
                 <h2 className="text-2xl font-bold mb-6">Your Participation</h2>
 
                 {campaign.userPurchase > 0n ? (
-                  <div className="mb-6 bg-green-50 border border-green-100 rounded-lg p-5">
+                  <div className="mb-6 bg-primary/10 border border-primary/20 rounded-lg p-5">
                     <div className="flex justify-between items-center mb-4">
-                      <p className="text-sm text-gray-700">Your contribution:</p>
+                      <p className="text-sm text-base-content/70">Your contribution:</p>
                       <p className="font-medium text-right">
                         {(Number(campaign.userPurchase) / 1e24).toLocaleString('en-US', { maximumFractionDigits: 6 })} XDC
                       </p>
@@ -515,7 +515,7 @@ const IdoDetail = () => {
                     {campaign.claimable > 0n ? (
                       <div>
                         <div className="flex justify-between items-center mb-4">
-                          <p className="text-sm text-gray-700">Claimable tokens:</p>
+                          <p className="text-sm text-base-content/70">Claimable tokens:</p>
                           <p className="font-medium text-right">
                             {Number(formatEther(campaign.claimable)).toLocaleString('en-US', { maximumFractionDigits: 6 })} {campaign.tokenSymbol}
                           </p>
@@ -529,14 +529,14 @@ const IdoDetail = () => {
                           />
                         )}
                         {!campaign.liquidityAdded && (
-                          <p className="text-center text-sm text-gray-600">
+                          <p className="text-center text-sm text-base-content/60">
                             Tokens will be claimable once the creator finalizes the sale.
                           </p>
                         )}
                       </div>
                     ) : campaign.liquidityAdded ? (
                       <div>
-                        <p className="text-center text-green-700 mb-4">
+                        <p className="text-center text-success mb-4">
                           ✅ Tokens have been claimed successfully!
                         </p>
                         <Link
@@ -549,13 +549,13 @@ const IdoDetail = () => {
                         </Link>
                       </div>
                     ) : (
-                      <p className="text-center text-gray-600">
+                      <p className="text-center text-base-content/60">
                         Tokens will be claimable once the sale is finalized.
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-base-content/60 mb-6">
                     You have not participated in this IDO yet.
                   </p>
                 )}
@@ -563,21 +563,21 @@ const IdoDetail = () => {
                 {timeStatus.status === "live" && (
                   <div>
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-base-content/70 mb-2">
                         XDC Amount
                       </label>
                       <input
                         type="number"
                         value={purchaseInput}
                         onChange={(e) => setPurchaseInput(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                        className="w-full px-4 py-3 border border-base-300 rounded-lg focus:ring-primary focus:border-primary"
                         placeholder="Enter XDC amount"
                         step="0.01"
                         min="0"
                       />
 
                       {purchaseInput && (
-                        <div className="text-sm mt-2 text-gray-600">
+                        <div className="text-sm mt-2 text-base-content/60">
                           <p>
                             Contributing {purchaseInput} XDC to this IDO
                           </p>
@@ -588,7 +588,7 @@ const IdoDetail = () => {
                       {balance && (
                         <div className="mt-3 bg-blue-50 border border-blue-100 rounded-lg p-3">
                           <div className="flex justify-between items-center">
-                            <p className="text-sm text-gray-700">Your XDC Balance:</p>
+                            <p className="text-sm text-base-content/70">Your XDC Balance:</p>
                             <p className="font-medium text-blue-800">
                               {Number(formatEther(balance.value)).toLocaleString('en-US', { 
                                 maximumFractionDigits: 6 
@@ -621,16 +621,16 @@ const IdoDetail = () => {
                 )}
 
                 {timeStatus.status === "ended" && !campaign.userPurchase && !campaign.liquidityAdded && (
-                  <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-center">
-                    <p className="text-gray-700">
+                  <div className="bg-base-200/60 border border-base-300 rounded-lg p-4 text-center">
+                    <p className="text-base-content/70">
                       This sale has ended and is awaiting finalization by the creator.
                     </p>
                   </div>
                 )}
 
                 {timeStatus.status === "ended" && !campaign.userPurchase && campaign.liquidityAdded && (
-                  <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-center">
-                    <p className="text-gray-700">
+                  <div className="bg-base-200/60 border border-base-300 rounded-lg p-4 text-center">
+                    <p className="text-base-content/70">
                       This sale has ended. You did not participate in this IDO.
                     </p>
                     <Link
@@ -648,9 +648,9 @@ const IdoDetail = () => {
           )}
 
           {!isConnected && (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 p-6 text-center">
+            <div className="bg-base-200 rounded-xl shadow-lg overflow-hidden border border-base-300 p-6 text-center">
               <svg
-                className="w-16 h-16 mx-auto mb-4 text-green-500"
+                className="w-16 h-16 mx-auto mb-4 text-primary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -664,7 +664,7 @@ const IdoDetail = () => {
                 />
               </svg>
               <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
-              <p className="text-gray-600 mb-6 text-center max-w-lg mx-auto">
+              <p className="text-base-content/60 mb-6 text-center max-w-lg mx-auto">
                 Connect your wallet to participate in this IDO campaign,
                 purchase tokens, and track your investments.
               </p>

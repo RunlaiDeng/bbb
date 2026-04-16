@@ -153,25 +153,25 @@ const Stake = () => {
   return (
     <>
       <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
-        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
-          <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+        <div className="bg-gradient-to-br from-primary/90 via-base-300 to-base-200 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+          <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-base-content to-primary">
             BBB Staking
           </h1>
-          <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+          <div className="text-sm bg-base-200/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
             🔒 Stake BBB to earn rewards and participate in airdrops
           </div>
 
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100 text-gray-700">
+          <div className="bg-gradient-to-br from-primary/10 to-base-200 p-6 rounded-xl border border-primary/20 text-base-content/70">
             <div className="mb-6">
               <p className="text-sm font-medium mb-2">Your Staked Balance</p>
-              <p className="text-3xl font-bold text-green-600">
+              <p className="text-3xl font-bold text-primary">
                 {((mbbbBalance?.toString() || 0) / 1e18)?.toLocaleString()} mBBB
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <button
-                className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (!isConnected) {
                     privyLogin();
@@ -183,7 +183,7 @@ const Stake = () => {
                 Stake BBB
               </button>
               <button
-                className="btn bg-white border-2 border-green-500 text-green-600 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn bg-base-200 border-2 border-primary text-primary hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (!isConnected) {
                     privyLogin();
@@ -198,9 +198,9 @@ const Stake = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+        <div className="bg-base-200 rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
               Airdrop List
             </h2>
           </div>
@@ -208,7 +208,7 @@ const Stake = () => {
           <div className="overflow-x-auto">
             <table className="table">
               <thead>
-                <tr className="text-gray-600">
+                <tr className="text-base-content/60">
                   <th>Coin</th>
                   <th>Total Airdrop</th>
                   <th>My Staked</th>
@@ -248,7 +248,7 @@ const Stake = () => {
                     return (
                       <tr
                         key={item?.index}
-                        className="hover:bg-green-50 transition-colors whitespace-nowrap"
+                        className="hover:bg-primary/10 transition-colors whitespace-nowrap"
                       >
                         <td>
                           <div
@@ -295,11 +295,11 @@ const Stake = () => {
                         </td>
                         <td>
                           {claimed || airdropAmount?.toString() == 0 ? (
-                            <span className="text-gray-400">Unavailable</span>
+                            <span className="text-base-content/40">Unavailable</span>
                           ) : (
                             <WriteButton
                               {...claim}
-                              className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
+                              className="btn btn-sm btn-primary border-none hover:shadow-md transform hover:-translate-y-1 transition-all duration-300"
                             />
                           )}
                         </td>
@@ -308,7 +308,7 @@ const Stake = () => {
                   })}
                 {!showList && (
                   <tr>
-                    <td colSpan="7" className="text-center py-8 text-gray-400">
+                    <td colSpan="7" className="text-center py-8 text-base-content/40">
                       No drop history available
                     </td>
                   </tr>
@@ -325,9 +325,9 @@ const Stake = () => {
           data.showDepositModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
+        <div className="bg-base-200 rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
               Stake BBB
             </h3>
             <button
@@ -341,7 +341,7 @@ const Stake = () => {
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-base-200/60">
               <input
                 type="number"
                 className="grow"
@@ -366,7 +366,7 @@ const Stake = () => {
               />
               <div className="font-medium">BBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10"
                 onClick={() => {
                   setData({
                     ...data,
@@ -378,14 +378,14 @@ const Stake = () => {
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Available</span>
               <span>{(bbbBalance?.toString() || 0) / 1e18} BBB</span>
             </div>
 
             {!bbbIsEnough && (
               <Link
-                className="text-sm text-green-600 hover:text-green-700 block"
+                className="text-sm text-primary hover:text-success block"
                 href={dexLink}
               >
                 Need more BBB?
@@ -395,12 +395,12 @@ const Stake = () => {
             {showApprove ? (
               <WriteButton
                 {...approve}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
               />
             ) : (
               <WriteButton
                 {...stake}
-                className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
               />
             )}
           </div>
@@ -413,9 +413,9 @@ const Stake = () => {
           data.showWithdrawModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-6 w-96 max-w-full mx-4">
+        <div className="bg-base-200 rounded-2xl p-6 w-96 max-w-full mx-4">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
+            <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
               Unstake BBB
             </h3>
             <button
@@ -429,7 +429,7 @@ const Stake = () => {
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-2 w-full bg-gray-50">
+            <label className="input input-bordered flex items-center gap-2 w-full bg-base-200/60">
               <input
                 type="number"
                 className="grow"
@@ -456,7 +456,7 @@ const Stake = () => {
               />
               <div className="font-medium">mBBB</div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10"
                 onClick={() => {
                   setData({
                     ...data,
@@ -468,14 +468,14 @@ const Stake = () => {
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Available</span>
               <span>{(mbbbBalance?.toString() || 0) / 1e18} mBBB</span>
             </div>
 
             <WriteButton
               {...unStake}
-              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+              className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
             />
           </div>
         </div>

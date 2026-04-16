@@ -33,7 +33,7 @@ const AppDownloadBanner = () => {
           animation: fadeInUp 0.3s ease-out forwards;
         }
       `}</style>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 border-t border-green-500/30 shadow-lg hidden lg:block">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-base-200/95 backdrop-blur-md border-t border-base-300 shadow-lg hidden lg:block">
         <div className="flex items-center justify-between px-4 py-3 max-w-screen-xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="flex-shrink-0">
@@ -46,10 +46,10 @@ const AppDownloadBanner = () => {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-white font-medium text-sm">
+              <div className="text-base-content font-medium text-sm">
                 BBBFI App
               </div>
-              <div className="text-green-100 text-xs">
+              <div className="text-base-content/60 text-xs">
                 Secure, fast and elegant
               </div>
             </div>
@@ -59,14 +59,14 @@ const AppDownloadBanner = () => {
             <div className="relative">
               {/* QR Code Tooltip */}
               {showQR && (
-                <div className="absolute bottom-16 right-0 mb-2 bg-white rounded-lg shadow-2xl p-4 border border-gray-200 transform transition-all duration-300 ease-in-out animate-fadeInUp">
+                <div className="absolute bottom-16 right-0 mb-2 bg-base-200 rounded-lg shadow-2xl p-4 border border-base-300 transform transition-all duration-300 ease-in-out animate-fadeInUp">
                   <div className="text-center mb-3">
-                    <p className="text-sm font-medium text-gray-800 mb-1">
+                    <p className="text-sm font-medium text-base-content mb-1">
                       Scan to Download App
                     </p>
-                    <p className="text-xs text-gray-600">iOS & Android</p>
+                    <p className="text-xs text-base-content/60">iOS & Android</p>
                   </div>
-                  <div className="bg-white p-2 rounded border border-gray-100">
+                  <div className="bg-base-100 p-2 rounded border border-base-300">
                     <QRCodeSVG
                       value="https://bbbfi.com/download"
                       size={120}
@@ -77,13 +77,13 @@ const AppDownloadBanner = () => {
                     />
                   </div>
                   {/* Arrow pointing down to button */}
-                  <div className="absolute bottom-[-8px] right-6 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white shadow-sm"></div>
+                  <div className="absolute bottom-[-8px] right-6 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-base-200 shadow-sm"></div>
                 </div>
               )}
 
               {/* QR Code Icon Button */}
               <button
-                className="text-green-100 hover:text-white transition-colors duration-200 p-2 mr-2 hover:bg-green-500/20 rounded-lg"
+                className="text-base-content/70 hover:text-base-content transition-colors duration-200 p-2 mr-2 hover:bg-base-300/50 rounded-lg"
                 onMouseEnter={() => setShowQR(true)}
                 onMouseLeave={() => setShowQR(false)}
                 aria-label="Scan QR Code"
@@ -99,26 +99,26 @@ const AppDownloadBanner = () => {
                   <rect x="3" y="3" width="8" height="8" rx="1" fill="currentColor"/>
                   <rect x="13" y="3" width="8" height="8" rx="1" fill="currentColor"/>
                   <rect x="3" y="13" width="8" height="8" rx="1" fill="currentColor"/>
-                  <rect x="5" y="5" width="4" height="4" rx="0.5" fill="#065f46"/>
-                  <rect x="15" y="5" width="4" height="4" rx="0.5" fill="#065f46"/>
-                  <rect x="5" y="15" width="4" height="4" rx="0.5" fill="#065f46"/>
+                  <rect x="5" y="5" width="4" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="15" y="5" width="4" height="4" rx="0.5" fill="#22c55e"/>
+                  <rect x="5" y="15" width="4" height="4" rx="0.5" fill="#22c55e"/>
                   <rect x="13" y="13" width="3" height="3" fill="currentColor"/>
                   <rect x="17" y="13" width="4" height="3" fill="currentColor"/>
                   <rect x="13" y="17" width="8" height="4" fill="currentColor"/>
-                  <rect x="15" y="19" width="4" height="1" fill="#065f46"/>
+                  <rect x="15" y="19" width="4" height="1" fill="#22c55e"/>
                 </svg>
               </button>
             </div>
 
             <button
               onClick={handleDownload}
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-lg text-sm transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
+              className="btn btn-primary btn-sm font-medium px-4"
             >
               Download
             </button>
             <button
               onClick={handleClose}
-              className="text-green-100 hover:text-white transition-colors duration-200 p-1 hover:bg-green-500/20 rounded"
+              className="text-base-content/60 hover:text-base-content transition-colors duration-200 p-1 hover:bg-base-300/50 rounded"
               aria-label="Close banner"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

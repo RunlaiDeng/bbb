@@ -148,8 +148,8 @@ const Withdraw = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-green-100 py-12 px-4">
-      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
+    <div className="min-h-screen bg-gradient-to-b from-primary/10 to-green-100 py-12 px-4">
+      <div className="max-w-md mx-auto bg-base-200 rounded-2xl shadow-xl p-8 border border-emerald-100">
         <h1 className="text-3xl font-bold text-center mb-8 text-emerald-800">Send Tokens</h1>
 
         <div className="space-y-6">
@@ -184,7 +184,7 @@ const Withdraw = () => {
               placeholder="0x..."
               value={data?.to || ""}
               onChange={(e) => setData({ ...data, to: e.target.value })}
-              className="input input-bordered w-full focus:outline-none focus:border-emerald-500 hover:border-emerald-300 transition-colors bg-white"
+              className="input input-bordered w-full focus:outline-none focus:border-emerald-500 hover:border-emerald-300 transition-colors bg-base-200"
             />
           </div>
 
@@ -195,7 +195,7 @@ const Withdraw = () => {
                 Available: {Number(currentBalance?.formatted || 0)?.toLocaleString()} {selectedTokenConfig?.symbol}
               </span>
             </label>
-            <label className="input input-bordered flex items-center gap-2 focus-within:border-emerald-500 hover:border-emerald-300 transition-colors bg-white">
+            <label className="input input-bordered flex items-center gap-2 focus-within:border-emerald-500 hover:border-emerald-300 transition-colors bg-base-200">
               <input
                 type="text"
                 className="grow bg-transparent focus:outline-none"

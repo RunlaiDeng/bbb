@@ -759,10 +759,10 @@ const StakingPool = ({
 
   if (!poolData) {
     return (
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden p-6">
+      <div className="bg-base-200 rounded-lg shadow-sm overflow-hidden p-6">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-          <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-base-300 rounded w-1/4 mb-2"></div>
+          <div className="h-6 bg-base-300 rounded w-1/2"></div>
         </div>
       </div>
     );
@@ -1075,7 +1075,7 @@ const StakingPool = ({
     <>
       <div
         id={poolId}
-        className="space-y-3 mb-8 bg-white rounded-lg shadow-sm overflow-hidden"
+        className="space-y-3 mb-8 bg-base-200 rounded-lg shadow-sm overflow-hidden"
       >
         <div className="p-4 md:p-6 cursor-pointer" onClick={toggleExpand}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
@@ -1181,12 +1181,12 @@ const StakingPool = ({
                 <a
                   href={poolConfig.hashTag}
                   onClick={(e) => e.preventDefault()}
-                  className="hover:text-green-600 transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
                   {poolConfig.title}
                 </a>
               </h2>
-              <div className="ml-2 text-gray-500">
+              <div className="ml-2 text-base-content/50">
                 {isExpanded ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1214,7 +1214,7 @@ const StakingPool = ({
               <div className="flex gap-2">
                 <Link
                   href={poolConfig.getTokenLink}
-                  className="text-xs text-green-600 hover:underline"
+                  className="text-xs text-primary hover:underline"
                   target="_blank"
                 >
                   Get {poolConfig.symbol}
@@ -1233,7 +1233,7 @@ const StakingPool = ({
                 )}
               </div>
               <div
-                className="text-green-600 font-bold text-lg cursor-help relative group underline"
+                className="text-primary font-bold text-lg cursor-help relative group underline"
                 title={getAprTooltip()}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -1251,8 +1251,8 @@ const StakingPool = ({
             <div className="space-y-4">
               {isConnected ? (
                 <>
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-500">Your Staked</span>
+                  <div className="flex justify-between items-center py-2 border-b border-base-300">
+                    <span className="text-base-content/50">Your Staked</span>
                     <div className="font-medium truncate max-w-[60%] text-right">
                       {poolData.isUsdbPool || poolData.issUSDBPool
                         ? Number(
@@ -1273,8 +1273,8 @@ const StakingPool = ({
                   </div>
 
                   {poolData.isUsdbPool ? (
-                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-500">Pending Rewards</span>
+                    <div className="flex justify-between items-center py-2 border-b border-base-300">
+                      <span className="text-base-content/50">Pending Rewards</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
                         {Number(
                           formatUnits(
@@ -1296,8 +1296,8 @@ const StakingPool = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-500">Pending Rewards</span>
+                    <div className="flex justify-between items-center py-2 border-b border-base-300">
+                      <span className="text-base-content/50">Pending Rewards</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
                         {Number(
                           formatEther(poolData.pendingReward)
@@ -1312,8 +1312,8 @@ const StakingPool = ({
                 </>
               ) : null}
 
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Total Staked</span>
+              <div className="flex justify-between items-center py-2 border-b border-base-300">
+                <span className="text-base-content/50">Total Staked</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
                   {poolData.isUsdbPool || poolData.issUSDBPool
                     ? Number(formatUnits(poolData.totalStaked, poolData.decimals || 6))?.toLocaleString(
@@ -1334,8 +1334,8 @@ const StakingPool = ({
                 </div>
               </div>
 
-              <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Rewards per Block</span>
+              <div className="flex justify-between items-center py-2 border-b border-base-300">
+                <span className="text-base-content/50">Rewards per Block</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
                   {poolData.rewardPerBlock
                     ? Number(formatEther(poolData.rewardPerBlock)).toLocaleString()
@@ -1370,7 +1370,7 @@ const StakingPool = ({
                     Stake
                   </button>
                   <button
-                    className="flex-1 py-2 px-4 text-green-600 border border-green-500 rounded-md hover:bg-green-50 transition-colors text-sm md:text-base"
+                    className="flex-1 py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary/10 transition-colors text-sm md:text-base"
                     onClick={(e) => {
                       e.stopPropagation();
                       setLocalState(prev => ({
@@ -1400,8 +1400,8 @@ const StakingPool = ({
                 </div>
               </>
             ) : (
-              <div className="text-center p-4 mt-4 bg-gray-50 rounded-lg">
-                <p className="mb-4 text-gray-600 text-sm md:text-base">
+              <div className="text-center p-4 mt-4 bg-base-200/60 rounded-lg">
+                <p className="mb-4 text-base-content/60 text-sm md:text-base">
                   Connect your wallet to stake and earn rewards
                 </p>
                 <button
@@ -1425,9 +1425,9 @@ const StakingPool = ({
           localState.showStakeModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
+        <div className="bg-base-200 rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
-            <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+            <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               Stake {poolConfig.symbol}
             </h3>
             <button
@@ -1441,7 +1441,7 @@ const StakingPool = ({
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-1 w-full bg-gray-50 h-14">
+            <label className="input input-bordered flex items-center gap-1 w-full bg-base-200/60 h-14">
               <input
                 type="number"
                 className="grow text-base min-w-0"
@@ -1457,11 +1457,11 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium text-sm whitespace-nowrap text-gray-600 max-w-[120px] truncate" title={poolConfig.symbol}>
+              <div className="font-medium text-sm whitespace-nowrap text-base-content/60 max-w-[120px] truncate" title={poolConfig.symbol}>
                 {poolConfig.symbol}
               </div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 ml-1 flex-shrink-0"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10 px-2 py-1 ml-1 flex-shrink-0"
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
@@ -1475,7 +1475,7 @@ const StakingPool = ({
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Available</span>
               <span className="truncate max-w-[70%] text-right">
                 {poolData.isUsdbPool || poolData.issUSDBPool
@@ -1503,18 +1503,18 @@ const StakingPool = ({
             poolData.allowance < parseEther(localState.stakeAmount || "0") ? (
               <WriteButton
                 {...poolActions.approve}
-                className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+                className="btn w-full h-12 btn btn-primary border-none hover:shadow-lg"
               />
             ) : (poolData.isUsdbPool || poolData.issUSDBPool) &&
               poolData.allowance < parseUnits(localState.stakeAmount || "0", poolData.decimals || 6) ? (
               <WriteButton
                 {...poolActions.approve}
-                className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+                className="btn w-full h-12 btn btn-primary border-none hover:shadow-lg"
               />
             ) : (
               <WriteButton
                 {...poolActions.stake}
-                className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+                className="btn w-full h-12 btn btn-primary border-none hover:shadow-lg"
               />
             )}
           </div>
@@ -1527,9 +1527,9 @@ const StakingPool = ({
           localState.showUnstakeModal ? "" : "hidden"
         }`}
       >
-        <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
+        <div className="bg-base-200 rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
-            <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
+            <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               Unstake {poolConfig.symbol}
             </h3>
             <button
@@ -1543,7 +1543,7 @@ const StakingPool = ({
           </div>
 
           <div className="space-y-4">
-            <label className="input input-bordered flex items-center gap-1 w-full bg-gray-50 h-14">
+            <label className="input input-bordered flex items-center gap-1 w-full bg-base-200/60 h-14">
               <input
                 type="number"
                 className="grow text-base min-w-0"
@@ -1559,11 +1559,11 @@ const StakingPool = ({
                   }
                 }}
               />
-              <div className="font-medium text-sm whitespace-nowrap text-gray-600 max-w-[120px] truncate" title={poolConfig.symbol}>
+              <div className="font-medium text-sm whitespace-nowrap text-base-content/60 max-w-[120px] truncate" title={poolConfig.symbol}>
                 {poolConfig.symbol}
               </div>
               <kbd
-                className="kbd kbd-sm cursor-pointer hover:bg-green-50 px-2 py-1 ml-1 flex-shrink-0"
+                className="kbd kbd-sm cursor-pointer hover:bg-primary/10 px-2 py-1 ml-1 flex-shrink-0"
                 onClick={() => {
                   setLocalState(prev => ({
                     ...prev,
@@ -1577,7 +1577,7 @@ const StakingPool = ({
               </kbd>
             </label>
 
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-sm text-base-content/50">
               <span>Staked</span>
               <span className="truncate max-w-[70%] text-right">
                 {poolData.isUsdbPool || poolData.issUSDBPool
@@ -1600,7 +1600,7 @@ const StakingPool = ({
 
             <WriteButton
               {...poolActions.unstake}
-              className="btn w-full h-12 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
+              className="btn w-full h-12 btn btn-primary border-none hover:shadow-lg"
             />
           </div>
         </div>

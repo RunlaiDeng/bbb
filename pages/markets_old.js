@@ -200,18 +200,18 @@ const Home = () => {
   return (
     mount && (
       <>
-        <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 p-8 rounded-2xl shadow-xl m-4 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-gradient-to-br from-primary/90 via-base-300 to-base-200 p-8 rounded-2xl shadow-xl m-4 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
           <div className="text-center">
-            <div className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+            <div className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-base-content to-primary">
               Launch a memecoin that is instantly tradable in one click
             </div>
 
-            <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+            <div className="text-sm bg-base-200/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
               🚀 Create your own token and start trading immediately
             </div>
 
             <button
-              className="btn bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-green-50 transition-all shadow-lg transform hover:-translate-y-1"
+              className="btn bg-base-200 text-primary px-8 py-4 rounded-xl font-bold hover:bg-primary/10 transition-all shadow-lg transform hover:-translate-y-1"
               onClick={() => {
                 router.push("/launch");
               }}
@@ -226,13 +226,13 @@ const Home = () => {
             <div className="font-bold text-xs gap-2 flex flex-col md:flex-row items-stretch  whitespace-nowrap ">
               {latestTrade?.index > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-                  <div className="card bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100">
+                  <div className="card bg-base-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-primary/20">
                     <div className="card-body p-4">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 text-green-600"
+                            className="h-4 w-4 text-primary"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                           >
@@ -243,7 +243,7 @@ const Home = () => {
                             />
                           </svg>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-800">
+                        <h3 className="text-lg font-semibold text-base-content/80">
                           Latest Trade
                         </h3>
                       </div>
@@ -256,7 +256,7 @@ const Home = () => {
                           className="rounded-full"
                         />
                         <span
-                          className="hover:text-green-600 cursor-pointer transition-colors"
+                          className="hover:text-primary cursor-pointer transition-colors"
                           onClick={() => {
                             router.push("/dashboard/" + latestTrade?.account);
                           }}
@@ -266,7 +266,7 @@ const Home = () => {
                         <span
                           className={
                             latestTrade?.tradeType === "buy"
-                              ? "text-green-600 font-medium"
+                              ? "text-primary font-medium"
                               : "text-red-600 font-medium"
                           }
                         >
@@ -280,7 +280,7 @@ const Home = () => {
                         </span>
                         <span>of</span>
                         <div
-                          className="hover:text-green-600 cursor-pointer transition-colors flex items-center gap-1"
+                          className="hover:text-primary cursor-pointer transition-colors flex items-center gap-1"
                           onClick={() => {
                             router.push("/swap/" + latestTrade?.token);
                           }}
@@ -301,20 +301,20 @@ const Home = () => {
                   </div>
 
                   {latestDrop?.index > 0 && (
-                    <div className="card bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100">
+                    <div className="card bg-base-200 shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-primary/20">
                       <div className="card-body p-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4 text-green-600"
+                              className="h-4 w-4 text-primary"
                               viewBox="0 0 20 20"
                               fill="currentColor"
                             >
                               <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
                             </svg>
                           </div>
-                          <h3 className="text-lg font-semibold text-gray-800">
+                          <h3 className="text-lg font-semibold text-base-content/80">
                             Latest Creation
                           </h3>
                         </div>
@@ -327,7 +327,7 @@ const Home = () => {
                             className="rounded-full"
                           />
                           <span
-                            className="hover:text-green-600 cursor-pointer transition-colors"
+                            className="hover:text-primary cursor-pointer transition-colors"
                             onClick={() => {
                               router.push("/dashboard/" + latestDrop?.deployer);
                             }}
@@ -336,7 +336,7 @@ const Home = () => {
                           </span>
                           <span>created</span>
                           <div
-                            className="hover:text-green-600 cursor-pointer transition-colors flex items-center gap-1"
+                            className="hover:text-primary cursor-pointer transition-colors flex items-center gap-1"
                             onClick={() => {
                               router.push("/swap/" + latestDrop?.token);
                             }}
@@ -362,17 +362,17 @@ const Home = () => {
 
                   {showList && latestKing?.index > 0 && (
                     <div
-                      className="card bg-white cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-green-100"
+                      className="card bg-base-200 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 rounded-xl border border-primary/20"
                       onClick={() => {
                         router.push("/swap/" + latestKing?.token);
                       }}
                     >
                       <div className="card-body p-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4 text-green-600"
+                              className="h-4 w-4 text-primary"
                               viewBox="0 0 20 20"
                               fill="currentColor"
                             >
@@ -383,7 +383,7 @@ const Home = () => {
                               />
                             </svg>
                           </div>
-                          <h3 className="text-lg font-semibold text-gray-800">
+                          <h3 className="text-lg font-semibold text-base-content/80">
                             Market King
                           </h3>
                         </div>
@@ -406,19 +406,19 @@ const Home = () => {
                               <div className="font-semibold">
                                 {latestKing?.name}
                               </div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-base-content/50">
                                 ${latestKing?.symbol}
                               </div>
                             </div>
                           </div>
                           <div className="text-sm">
                             <div className="flex justify-between items-center mb-1">
-                              <span className="text-gray-500">Process</span>
+                              <span className="text-base-content/50">Process</span>
                               <span className="font-medium">
                                 {((100 * latestKing?.xdcAmount?.toString()) / latestKing?.maxXdc?.toString())?.toFixed(2)}%
                               </span>
                             </div>
-                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                            <div className="w-full bg-base-300 rounded-full h-1.5">
                               <div
                                 className="bg-green-500 h-1.5 rounded-full"
                                 style={{
@@ -439,12 +439,12 @@ const Home = () => {
             </div>
             <div className="p-4">
               <div className="flex items-center gap-2">
-                <label className="w-full flex items-center input input-bordered gap-2 input-sm bg-gray-50 rounded-xl focus-within:ring-2 focus-within:ring-green-500 transition-all duration-300">
+                <label className="w-full flex items-center input input-bordered gap-2 input-sm bg-base-200/60 rounded-xl focus-within:ring-2 focus-within:ring-green-500 transition-all duration-300">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
                     fill="currentColor"
-                    className="h-4 w-4 text-gray-400"
+                    className="h-4 w-4 text-base-content/40"
                   >
                     <path
                       fillRule="evenodd"
@@ -463,7 +463,7 @@ const Home = () => {
                 </label>
 
                 <button
-                  className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
+                  className="btn btn-sm btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                   onClick={() => {
                     if (formData?.search) {
                       router.push("/swap/" + formData?.search);
@@ -482,15 +482,15 @@ const Home = () => {
                 <div className="overflow-x-auto p-4">
                   <table className="table w-full">
                     <thead>
-                      <tr className="bg-gray-50">
-                        <th className="w-4/8 text-gray-600 font-semibold p-4">
+                      <tr className="bg-base-200/60">
+                        <th className="w-4/8 text-base-content/60 font-semibold p-4">
                           Coin / Ca
                         </th>
-                        <th className="w-4/8 text-right text-gray-600 font-semibold p-4">
+                        <th className="w-4/8 text-right text-base-content/60 font-semibold p-4">
                           Price / 24h
                         </th>
                         <th
-                          className="cursor-pointer hidden md:flex items-center w-1/8 justify-end text-gray-600 font-semibold p-4"
+                          className="cursor-pointer hidden md:flex items-center w-1/8 justify-end text-base-content/60 font-semibold p-4"
                           onClick={() => {
                             let setSort = tokens?.sort == 1 ? 2 : 1;
                             setMarketState((prev) => ({
@@ -535,7 +535,7 @@ const Home = () => {
                     </thead>
                     <tbody>
                       <tr
-                        className="hover:bg-green-50 transition-colors duration-200 cursor-pointer border-b"
+                        className="hover:bg-primary/10 transition-colors duration-200 cursor-pointer border-b"
                         onClick={() => {
                           router.push(dexLink);
                         }}
@@ -553,7 +553,7 @@ const Home = () => {
                             </div>
                             <div>
                               <div className="font-semibold">BBB</div>
-                              <div className="text-sm text-gray-500">
+                              <div className="text-sm text-base-content/50">
                                 {bbbInfo.address.slice(-6)}
                               </div>
                             </div>
@@ -566,7 +566,7 @@ const Home = () => {
                           <div
                             className={
                               bbbPriceChange24h >= 0
-                                ? "text-green-600 font-medium text-sm"
+                                ? "text-primary font-medium text-sm"
                                 : "text-red-600 font-medium text-sm"
                             }
                           >
@@ -579,7 +579,7 @@ const Home = () => {
                             <div className="font-medium">
                               100%
                             </div>
-                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                            <div className="w-full bg-base-300 rounded-full h-1.5">
                               <div
                                 className="bg-green-500 h-1.5 rounded-full"
                                 style={{ width: "100%" }}
@@ -604,7 +604,7 @@ const Home = () => {
                         return (
                           <tr
                             key={item?.index}
-                            className="hover:bg-green-50 transition-colors duration-200 cursor-pointer border-b"
+                            className="hover:bg-primary/10 transition-colors duration-200 cursor-pointer border-b"
                             onClick={() => {
                               router.push("/swap/" + item?.token);
                             }}
@@ -624,7 +624,7 @@ const Home = () => {
                                   <div className="font-semibold whitespace-nowrap">
                                     {item?.symbol}
                                   </div>
-                                  <div className="text-sm text-gray-500 whitespace-nowrap">
+                                  <div className="text-sm text-base-content/50 whitespace-nowrap">
                                     {item?.token?.slice(-6)}
                                   </div>
                                 </div>
@@ -637,7 +637,7 @@ const Home = () => {
                               <div
                                 className={
                                   priceChangeH24 >= 0
-                                    ? "text-green-600 font-medium text-sm"
+                                    ? "text-primary font-medium text-sm"
                                     : "text-red-600 font-medium text-sm"
                                 }
                               >
@@ -650,7 +650,7 @@ const Home = () => {
                                 <div className="font-medium">
                                   {percent > 100 ? 100 : percent?.toFixed(2)}%
                                 </div>
-                                <div className="w-full bg-gray-100 rounded-full h-1.5">
+                                <div className="w-full bg-base-300 rounded-full h-1.5">
                                   <div
                                     className="bg-green-500 h-1.5 rounded-full"
                                     style={{
@@ -674,7 +674,7 @@ const Home = () => {
                       className={`${
                         tokens.pageNumber == 1
                           ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer hover:bg-green-50"
+                          : "cursor-pointer hover:bg-primary/10"
                       } rounded-lg`}
                       onClick={() => {
                         if (tokens.pageNumber > 1) {
@@ -716,7 +716,7 @@ const Home = () => {
                               className={`min-w-[32px] px-2 py-1 rounded-lg ${
                                 item == tokens?.pageNumber
                                   ? "bg-green-500 text-white"
-                                  : "hover:bg-green-50 text-gray-700"
+                                  : "hover:bg-primary/10 text-base-content/70"
                               }`}
                               onClick={() => {
                                 setMarketState((prev) => ({
@@ -740,7 +740,7 @@ const Home = () => {
                       className={`${
                         tokens.pageNumber == tokens.totalPage
                           ? "opacity-50 cursor-not-allowed"
-                          : "cursor-pointer hover:bg-green-50"
+                          : "cursor-pointer hover:bg-primary/10"
                       } rounded-lg`}
                       onClick={() => {
                         if (tokens.pageNumber < tokens.totalPage) {

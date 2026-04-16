@@ -291,7 +291,7 @@ const Swap = () => {
 
   return showData ? (
     <>
-      <div className="bg-white rounded-2xl shadow-lg p-2 m-2">
+      <div className="bg-base-200 rounded-2xl shadow-lg p-2 m-2">
         {graduate ? (
           <TokenHeadPool {...tHeadPool} />
         ) : (
@@ -300,21 +300,21 @@ const Swap = () => {
       </div>
       <div className="m-auto grid lg:grid-cols-5 gap-4 lg:h-[960px] p-2">
         {windowWidth > 1024 && (
-          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
+          <div className="bg-base-200 rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
             <TokenMarkets {...tMarkets} />
           </div>
         )}
 
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg overflow-x-auto text-center">
+        <div className="lg:col-span-3 bg-base-200 rounded-2xl shadow-lg overflow-x-auto text-center">
           <div className="card">
             <div className="card-body p-4">
-              <div className="flex gap-2 text-gray-500 font-bold">
+              <div className="flex gap-2 text-base-content/50 font-bold">
                 <div role="tablist" className="tabs tabs-bordered w-full">
                   <a
                     role="tab"
                     className={
                       "tab " +
-                      (type === "chart" ? "tab-active text-green-700" : "")
+                      (type === "chart" ? "tab-active text-success" : "")
                     }
                     onClick={() => {
                       setType("chart");
@@ -326,7 +326,7 @@ const Swap = () => {
                     role="tab"
                     className={
                       "tab " +
-                      (type === "info" ? "tab-active text-green-700" : "")
+                      (type === "info" ? "tab-active text-success" : "")
                     }
                     onClick={() => {
                       setType("info");
@@ -338,7 +338,7 @@ const Swap = () => {
                     role="tab"
                     className={
                       "tab " +
-                      (type === "chat" ? "tab-active text-green-700" : "")
+                      (type === "chat" ? "tab-active text-success" : "")
                     }
                     onClick={() => {
                       setType("chat");
@@ -350,7 +350,7 @@ const Swap = () => {
                     role="tab"
                     className={
                       "tab lg:hidden " +
-                      (type === "trades" ? "tab-active text-green-700" : "")
+                      (type === "trades" ? "tab-active text-success" : "")
                     }
                     onClick={() => {
                       setType("trades");
@@ -362,7 +362,7 @@ const Swap = () => {
                     role="tab"
                     className={
                       "tab lg:hidden " +
-                      (type === "markets" ? "tab-active text-green-700" : "")
+                      (type === "markets" ? "tab-active text-success" : "")
                     }
                     onClick={() => {
                       setType("markets");
@@ -384,7 +384,7 @@ const Swap = () => {
                 {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
-              <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+              <div className="p-4 bg-gradient-to-br from-primary/10 to-base-200 rounded-xl m-4 border border-primary/20">
                 <button 
                   onClick={() => router.push({
                     pathname: '/swap',
@@ -412,14 +412,14 @@ const Swap = () => {
                 {type == "markets" && <TokenMarkets {...tMarkets} />}
               </div>
               <div className="divider my-1"></div>
-              <div className=" bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
+              <div className=" bg-gradient-to-br from-primary/10 to-base-200 rounded-xl m-4 border border-primary/20">
                 <TokenSwapFun {...tSwapFun} />
               </div>
             </>
           )}
         </div>
         {windowWidth > 1024 && (
-          <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
+          <div className="bg-base-200 rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
             {graduate ? (
               <TokenTradePool {...tTradePool} />
             ) : (
@@ -432,7 +432,7 @@ const Swap = () => {
   ) : (
     <>
       <Loading />
-      <div className="text-center mt-10 text-gray-600">
+      <div className="text-center mt-10 text-base-content/60">
         Searching for {token}
       </div>
     </>

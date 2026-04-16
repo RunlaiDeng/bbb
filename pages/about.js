@@ -22,13 +22,13 @@ const About = () => {
   const user = stats?.user;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-base-200">
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
           <div className="flex-1">
-            <h1 className="text-6xl font-bold text-gray-900 mb-6">Welcome to BBBFI</h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <h1 className="text-6xl font-bold text-base-content mb-6">Welcome to BBBFI</h1>
+            <p className="text-xl text-base-content/60 leading-relaxed">
               At BBBFI, we believe that everyone should have the freedom to earn, hold, spend, share and give their money - no matter who you are or where you come from.
             </p>
           </div>
@@ -144,12 +144,12 @@ const About = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-green-50 py-16">
+      <div className="bg-primary/10 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-base-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-xl">
+                <div className="p-3 bg-primary/15 rounded-xl">
                   <svg viewBox="0 0 100 100" width="32" height="32">
                     <circle cx="50" cy="50" r="20" fill="#4ade80">
                       <animate attributeName="r" values="20;22;20" dur="2s" repeatCount="indefinite" />
@@ -168,15 +168,15 @@ const About = () => {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">{user?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Users</div>
+                  <div className="text-2xl font-bold text-base-content">{user?.toLocaleString()}</div>
+                  <div className="text-sm text-base-content/50">Total Users</div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-base-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-xl">
+                <div className="p-3 bg-primary/15 rounded-xl">
                   <svg viewBox="0 0 100 100" width="32" height="32">
                     <path d="M20,80 L50,20 L80,80" fill="none" stroke="#4ade80" strokeWidth="4" strokeLinecap="round">
                       <animate attributeName="stroke-dasharray" values="0,1000;180,0" dur="2s" />
@@ -194,15 +194,15 @@ const About = () => {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">${volume?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Volume</div>
+                  <div className="text-2xl font-bold text-base-content">${volume?.toLocaleString()}</div>
+                  <div className="text-sm text-base-content/50">Total Volume</div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-base-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-xl">
+                <div className="p-3 bg-primary/15 rounded-xl">
                   <svg viewBox="0 0 100 100" width="32" height="32">
                     <circle cx="50" cy="50" r="30" fill="none" stroke="#4ade80" strokeWidth="4" strokeDasharray="188.5">
                       <animate attributeName="stroke-dashoffset" from="188.5" to="0" dur="2s" repeatCount="indefinite" />
@@ -213,8 +213,8 @@ const About = () => {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gray-900">${fee?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Fee</div>
+                  <div className="text-2xl font-bold text-base-content">${fee?.toLocaleString()}</div>
+                  <div className="text-sm text-base-content/50">Total Fee</div>
                 </div>
               </div>
             </div>
@@ -261,8 +261,8 @@ const About = () => {
             </svg>
           </div>
           <div className="flex-1">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Vision</h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <h2 className="text-5xl font-bold text-base-content mb-6">Our Vision</h2>
+            <p className="text-xl text-base-content/60 leading-relaxed">
               Our vision is to increase the freedom of money globally. We believe that by spreading this freedom, we can significantly improve lives around the world.
             </p>
           </div>
@@ -270,15 +270,15 @@ const About = () => {
       </div>
 
       {/* Ecosystem Section */}
-      <div className="bg-green-50 py-24">
+      <div className="bg-primary/10 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Ecosystem</h2>
-          <p className="text-xl text-gray-600 mb-12">
+          <h2 className="text-5xl font-bold text-base-content mb-6">Our Ecosystem</h2>
+          <p className="text-xl text-base-content/60 mb-12">
             Our platform is trusted by millions worldwide, and features an unmatched portfolio of financial product offerings.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
-              <div className="p-4 bg-green-100 rounded-xl inline-block mb-4">
+            <div className="bg-base-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-4 bg-primary/15 rounded-xl inline-block mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8">
                   <defs>
                     <linearGradient id="exchangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -367,8 +367,8 @@ const About = () => {
                   </circle>
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">BBBFI Exchange</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold text-base-content mb-4">BBBFI Exchange</h3>
+              <p className="text-base-content/60">
                 BBBFI Exchange is the largest crypto exchange by trade volume on xdc network.
               </p>
             </div>

@@ -118,40 +118,40 @@ const Launch = () => {
 
   return (
     <div className="m-auto md:w-3/4 w-96 mt-2 pb-1">
-      <div className="bg-gradient-to-br from-green-600 via-emerald-500 to-teal-600 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
-        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-green-100">
+      <div className="bg-gradient-to-br from-primary/90 via-base-300 to-base-200 rounded-2xl shadow-xl p-8 mb-8 text-white text-center transform hover:scale-[1.02] transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-base-content to-primary">
           Launch Your Token
         </h1>
-        <div className="text-sm bg-white/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
+        <div className="text-sm bg-base-200/20 backdrop-blur-sm p-3 rounded-xl mb-6 border border-white/30">
           🚀 Create your own token on XDC Network in minutes
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
+      <div className="bg-base-200 rounded-2xl shadow-lg p-8 mb-8 hover:shadow-xl transition-all duration-300">
         <div className="space-y-6">
           <label className="form-control w-full">
             <div className="label">
-              <span className="label-text font-semibold text-gray-700">
-                Token Image <span className="text-green-700">*</span>
+              <span className="label-text font-semibold text-base-content/70">
+                Token Image <span className="text-success">*</span>
               </span>
             </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
+            <div className="bg-gradient-to-br from-primary/10 to-base-200 p-6 rounded-xl border border-primary/20">
               <ImageUpload {...imageUpload} />
             </div>
           </label>
 
           <label className="form-control w-full">
             <div className="label">
-              <span className="label-text font-semibold text-gray-700">
-                Token Name <span className="text-green-700">*</span>
+              <span className="label-text font-semibold text-base-content/70">
+                Token Name <span className="text-success">*</span>
               </span>
-              <span className="text-right text-gray-500">
+              <span className="text-right text-base-content/50">
                 {getBytesLength(formData?.dName)}/20
               </span>
             </div>
             <input
               type="text"
-              className="input input-bordered w-full bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              className="input input-bordered w-full bg-gradient-to-br from-primary/10 to-base-200 border-primary/20"
               value={formData?.dName}
               onChange={(e) => {
                 const newValue = e.target.value;
@@ -164,16 +164,16 @@ const Launch = () => {
 
           <label className="form-control w-full">
             <div className="label">
-              <span className="label-text font-semibold text-gray-700">
-                Token Symbol <span className="text-green-700">*</span>
+              <span className="label-text font-semibold text-base-content/70">
+                Token Symbol <span className="text-success">*</span>
               </span>
-              <span className="text-right text-gray-500">
+              <span className="text-right text-base-content/50">
                 {getBytesLength(formData?.dSymbol)}/10
               </span>
             </div>
             <input
               type="text"
-              className="input input-bordered w-full bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              className="input input-bordered w-full bg-gradient-to-br from-primary/10 to-base-200 border-primary/20"
               value={formData?.dSymbol}
               onChange={(e) => {
                 const newValue = e.target.value;
@@ -196,15 +196,15 @@ const Launch = () => {
 
           <label className="form-control">
             <div className="label">
-              <span className="label-text font-semibold text-gray-700">
-                Token Description <span className="text-green-700">*</span>
+              <span className="label-text font-semibold text-base-content/70">
+                Token Description <span className="text-success">*</span>
               </span>
-              <span className="text-right text-gray-500">
+              <span className="text-right text-base-content/50">
                 {getBytesLength(formData?.dDesciption)}/256
               </span>
             </div>
             <textarea
-              className="textarea textarea-bordered h-20 bg-gradient-to-br from-emerald-50 to-green-50 border-green-100"
+              className="textarea textarea-bordered h-20 bg-gradient-to-br from-primary/10 to-base-200 border-primary/20"
               value={formData?.dDesciption}
               onChange={(e) => {
                 const newValue = e.target.value;
@@ -215,11 +215,11 @@ const Launch = () => {
             ></textarea>
           </label>
 
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
+          <div className="bg-gradient-to-br from-primary/10 to-base-200 p-6 rounded-xl border border-primary/20">
             <div className="flex items-center justify-between mb-4">
-              <span className="font-semibold text-gray-700">Max Curve (minimum 10000 XDC)</span>
+              <span className="font-semibold text-base-content/70">Max Curve (minimum 10000 XDC)</span>
               <button
-                className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                className="btn btn-sm btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (formData.maxSymbol == "XDC") {
                     setFormData({
@@ -236,7 +236,7 @@ const Launch = () => {
             </div>
 
             {formData?.maxSymbol == "XDC" && (
-              <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+              <label className="input input-bordered flex items-center gap-2 w-full bg-base-200">
                 <input
                   type="text"
                   className="grow"
@@ -264,12 +264,12 @@ const Launch = () => {
                     }
                   }}
                 />
-                <div className="font-bold text-gray-700">XDC</div>
+                <div className="font-bold text-base-content/70">XDC</div>
               </label>
             )}
 
             {formData?.dSymbol == formData?.maxSymbol && (
-              <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+              <label className="input input-bordered flex items-center gap-2 w-full bg-base-200">
                 <input
                   type="text"
                   className="grow"
@@ -297,12 +297,12 @@ const Launch = () => {
                     }
                   }}
                 />
-                <div className="font-bold text-gray-700">{formData?.dSymbol}</div>
+                <div className="font-bold text-base-content/70">{formData?.dSymbol}</div>
               </label>
             )}
           </div>
 
-          <div className="collapse bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-green-100">
+          <div className="collapse bg-gradient-to-br from-primary/10 to-base-200 rounded-xl border border-primary/20">
             <input
               type="checkbox"
               value={formData?.showOptions}
@@ -313,19 +313,19 @@ const Launch = () => {
                 });
               }}
             />
-            <div className="collapse-title text-left pl-4 text-green-700 font-semibold">
+            <div className="collapse-title text-left pl-4 text-success font-semibold">
               Show more options {formData?.showOptions ? "↑" : "↓"}
             </div>
             <div className="collapse-content p-4">
               <div className="space-y-4">
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text font-semibold text-gray-700">Website</span>
-                    <span className="text-right text-gray-500">
+                    <span className="label-text font-semibold text-base-content/70">Website</span>
+                    <span className="text-right text-base-content/50">
                       {getBytesLength(formData?.dWebiste)}/64
                     </span>
                   </div>
-                  <label className="input input-bordered flex items-center gap-2 bg-white">
+                  <label className="input input-bordered flex items-center gap-2 bg-base-200">
                     https://
                     <input
                       type="text"
@@ -344,12 +344,12 @@ const Launch = () => {
 
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text font-semibold text-gray-700">Telegram</span>
-                    <span className="text-right text-gray-500">
+                    <span className="label-text font-semibold text-base-content/70">Telegram</span>
+                    <span className="text-right text-base-content/50">
                       {getBytesLength(formData?.dTelegram)}/64
                     </span>
                   </div>
-                  <label className="input input-bordered flex items-center gap-2 bg-white">
+                  <label className="input input-bordered flex items-center gap-2 bg-base-200">
                     https://t.me/
                     <input
                       type="text"
@@ -368,12 +368,12 @@ const Launch = () => {
 
                 <label className="form-control">
                   <div className="label">
-                    <span className="label-text font-semibold text-gray-700">Twitter</span>
-                    <span className="text-right text-gray-500">
+                    <span className="label-text font-semibold text-base-content/70">Twitter</span>
+                    <span className="text-right text-base-content/50">
                       {getBytesLength(formData?.dTwitter)}/64
                     </span>
                   </div>
-                  <label className="input input-bordered flex items-center gap-2 bg-white">
+                  <label className="input input-bordered flex items-center gap-2 bg-base-200">
                     https://x.com/
                     <input
                       type="text"
@@ -392,9 +392,9 @@ const Launch = () => {
 
                 <div className="mt-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-gray-700">How many you want to buy</span>
+                    <span className="font-semibold text-base-content/70">How many you want to buy</span>
                     <button
-                      className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+                      className="btn btn-sm btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                       onClick={() => {
                         if (formData.buySymbol == "XDC") {
                           setFormData({
@@ -411,7 +411,7 @@ const Launch = () => {
                   </div>
 
                   {formData?.buySymbol == "XDC" && (
-                    <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+                    <label className="input input-bordered flex items-center gap-2 w-full bg-base-200">
                       <input
                         type="text"
                         className="grow"
@@ -439,12 +439,12 @@ const Launch = () => {
                           }
                         }}
                       />
-                      <div className="font-bold text-gray-700">XDC</div>
+                      <div className="font-bold text-base-content/70">XDC</div>
                     </label>
                   )}
 
                   {formData?.buySymbol == formData?.dSymbol && (
-                    <label className="input input-bordered flex items-center gap-2 w-full bg-white">
+                    <label className="input input-bordered flex items-center gap-2 w-full bg-base-200">
                       <input
                         type="text"
                         className="grow"
@@ -472,7 +472,7 @@ const Launch = () => {
                           }
                         }}
                       />
-                      <div className="font-bold text-gray-700">{formData?.dSymbol}</div>
+                      <div className="font-bold text-base-content/70">{formData?.dSymbol}</div>
                     </label>
                   )}
                 </div>
@@ -480,19 +480,19 @@ const Launch = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-green-100">
+          <div className="bg-gradient-to-br from-primary/10 to-base-200 p-6 rounded-xl border border-primary/20">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-lg font-semibold text-gray-700 mb-1">Launch Cost</div>
-                <div className="text-3xl font-bold text-green-600">
+                <div className="text-lg font-semibold text-base-content/70 mb-1">Launch Cost</div>
+                <div className="text-3xl font-bold text-primary">
                   {formatEther(totalCost || 0)} XDC
                 </div>
-                <div className="text-sm text-gray-500 mt-1">
+                <div className="text-sm text-base-content/50 mt-1">
                   Available: {balance?.formatted} XDC
                 </div>
               </div>
               <Link
-                className="text-green-600 hover:text-green-700 underline text-sm"
+                className="text-primary hover:text-success underline text-sm"
                 href={buyXDCLink}
                 target="_blank"
               >
@@ -509,7 +509,7 @@ const Launch = () => {
 
           <WriteButton
             {...drop}
-            className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
           />
         </div>
       </div>

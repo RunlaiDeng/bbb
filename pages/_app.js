@@ -38,8 +38,8 @@ const config = createConfig({
 
 const privyConfig = {
   appearance: {
-    accentColor: "#6A6FF5",
-    theme: "#FFFFFF",
+    accentColor: "#22c55e",
+    theme: "#0b0e14",
     showWalletLoginFirst: false,
     logo: "https://bbbpump.fun/bbbpump-card.png",
     walletChainType: "ethereum-only",

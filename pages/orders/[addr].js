@@ -96,7 +96,7 @@ const Orders = () => {
                 <div
                   className={
                     "btn btn-sm px-6 " +
-                    (data?.type == 1 ? "bg-green-500 text-white hover:bg-green-600" : "bg-gray-100 hover:bg-gray-200 text-gray-700")
+                    (data?.type == 1 ? "bg-green-500 text-white hover:bg-green-600" : "bg-base-300 hover:bg-base-300 text-base-content/70")
                   }
                   onClick={() => {
                     setData({ ...data, type: 1 });
@@ -107,7 +107,7 @@ const Orders = () => {
                 <div
                   className={
                     "btn btn-sm px-6 " +
-                    (data?.type == 2 ? "bg-green-500 text-white hover:bg-green-600" : "bg-gray-100 hover:bg-gray-200 text-gray-700")
+                    (data?.type == 2 ? "bg-green-500 text-white hover:bg-green-600" : "bg-base-300 hover:bg-base-300 text-base-content/70")
                   }
                   onClick={() => {
                     setData({ ...data, type: 2 });
@@ -136,7 +136,7 @@ const Orders = () => {
                             return (
                               <tr
                                 key={item?.tid}
-                                className="whitespace-nowrap hover:bg-gray-50 transition-colors duration-150"
+                                className="whitespace-nowrap hover:bg-base-200/60 transition-colors duration-150"
                               >
                                 <td>{getDateSpecifics(item?.createTime)}</td>
                                 <td className="flex gap-2 items-center">
@@ -217,7 +217,7 @@ const Orders = () => {
                             const drop = drops?.[index];
 
                             return (
-                              <tr key={item?.tid} className="whitespace-nowrap hover:bg-gray-50 transition-colors duration-150">
+                              <tr key={item?.tid} className="whitespace-nowrap hover:bg-base-200/60 transition-colors duration-150">
                                 <td>{getDateSpecifics(item?.time)}</td>
                                 <td className="flex gap-1 items-center">
                                   <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
@@ -263,7 +263,7 @@ const Orders = () => {
                                 <td
                                   className={
                                     item?.tradeType == "buy"
-                                      ? "text-green-700"
+                                      ? "text-success"
                                       : "text-red-700"
                                   }
                                 >
@@ -298,7 +298,7 @@ const Orders = () => {
               {showList && (
                 <div className="flex justify-center items-center gap-1 mt-8 whitespace-nowrap overflow-x-auto">
                   <button 
-                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-base-300 hover:bg-base-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => {
                       setOrders({
                         ...orders,
@@ -307,7 +307,7 @@ const Orders = () => {
                     }}
                     disabled={orders.pageNumber == 1}
                   >
-                    <span className="text-gray-600">&lt;</span>
+                    <span className="text-base-content/60">&lt;</span>
                   </button>
 
                   {Array.from({ length: orders.totalPage }, (_, i) => i + 1).map((page, index) => {
@@ -349,7 +349,7 @@ const Orders = () => {
                         className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center transition-colors ${
                           page === orders.pageNumber
                             ? 'bg-green-500 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            : 'bg-base-300 hover:bg-base-300 text-base-content/70'
                         }`}
                       >
                         {page}
@@ -358,7 +358,7 @@ const Orders = () => {
                   })}
 
                   <button
-                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center min-w-[32px] h-8 rounded-lg bg-base-300 hover:bg-base-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => {
                       setOrders({
                         ...orders,
@@ -367,7 +367,7 @@ const Orders = () => {
                     }}
                     disabled={orders.pageNumber == orders.totalPage}
                   >
-                    <span className="text-gray-600">&gt;</span>
+                    <span className="text-base-content/60">&gt;</span>
                   </button>
                 </div>
               )}

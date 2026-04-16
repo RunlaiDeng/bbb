@@ -134,7 +134,7 @@ const FarmCard = (props) => {
   let burnTokenIsEnough = false;
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+    <div className="bg-base-200 rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl">
       <div className="p-4 md:p-6">
         <div className="space-y-6">
           {/* Farmer Info Section */}
@@ -148,27 +148,27 @@ const FarmCard = (props) => {
                 className="rounded-xl"
               />
               <div className="flex-1">
-                <h3 className="text-lg md:text-xl font-bold text-gray-800">{farmerName}</h3>
-                <p className="text-xs md:text-sm text-gray-600">Stake {burnTokenName} to earn rewards</p>
+                <h3 className="text-lg md:text-xl font-bold text-base-content/80">{farmerName}</h3>
+                <p className="text-xs md:text-sm text-base-content/60">Stake {burnTokenName} to earn rewards</p>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100">
+            <div className="bg-gradient-to-br from-primary/10 to-base-200 p-4 rounded-xl border border-primary/20">
               <div className="text-center">
-                <p className="text-3xl md:text-4xl font-bold text-green-600">X {data.value}</p>
-                <p className="text-xs md:text-sm text-gray-600 mt-1">Multiplier</p>
+                <p className="text-3xl md:text-4xl font-bold text-primary">X {data.value}</p>
+                <p className="text-xs md:text-sm text-base-content/60 mt-1">Multiplier</p>
               </div>
             </div>
           </div>
 
           {/* Buy Section */}
           <div className="space-y-4">
-            <h3 className="text-base md:text-lg font-bold text-gray-800">Buy {farmerName}</h3>
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-xl border border-green-100">
+            <h3 className="text-base md:text-lg font-bold text-base-content/80">Buy {farmerName}</h3>
+            <div className="bg-gradient-to-br from-primary/10 to-base-200 p-4 rounded-xl border border-primary/20">
               <div className="flex items-center gap-2 mb-4">
                 <input
                   type="text"
                   placeholder="0"
-                  className="input input-bordered w-full bg-white text-sm"
+                  className="input input-bordered w-full bg-base-200 text-sm"
                   value={data.value * 257000 + " " + burnTokenName}
                   onChange={(e) => {
                     const newValue = e.target.value;
@@ -179,7 +179,7 @@ const FarmCard = (props) => {
                   disabled
                 />
                 <button
-                  className="btn btn-circle btn-sm bg-white hover:bg-gray-100"
+                  className="btn btn-circle btn-sm bg-base-200 hover:bg-base-300"
                   onClick={() => {
                     if (data.value >= 1) {
                       setData({ ...data, value: data.value - 1 });
@@ -197,7 +197,7 @@ const FarmCard = (props) => {
                   -
                 </button>
                 <button
-                  className="btn btn-circle btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-md"
+                  className="btn btn-circle btn-sm btn-primary border-none hover:shadow-md"
                   onClick={() => {
                     setData({ ...data, value: data.value + 1 });
                   }}
@@ -215,25 +215,25 @@ const FarmCard = (props) => {
               {showApprove ? (
                 <WriteButton
                   {...approve}
-                  className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
+                  className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
                 />
               ) : (
                 <WriteButton
                   {...buy}
-                  className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
+                  className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
                 />
               )}
             </div>
             <div className="space-y-2">
-              <p className="text-xs md:text-sm text-gray-500">
+              <p className="text-xs md:text-sm text-base-content/50">
                 Available: {((burnTokenBalance || 0n) / BigInt(1e18))?.toString()} {burnTokenName}
               </p>
-              <p className="text-xs md:text-sm text-gray-500">
+              <p className="text-xs md:text-sm text-base-content/50">
                 Purchase at least one to unlock the referral bonus
               </p>
               {!burnTokenIsEnough && (
                 <Link 
-                  className="text-xs md:text-sm text-green-600 hover:text-green-700" 
+                  className="text-xs md:text-sm text-primary hover:text-success" 
                   href={dexLink}
                 >
                   Need more {burnTokenName}?
@@ -244,11 +244,11 @@ const FarmCard = (props) => {
 
           {/* Workshop Section */}
           <div className="space-y-4">
-            <h3 className="text-base md:text-lg font-bold text-gray-800">Workshop</h3>
+            <h3 className="text-base md:text-lg font-bold text-base-content/80">Workshop</h3>
             <div className="grid grid-cols-2 gap-3 md:gap-4">
               <div 
-                className={`bg-gradient-to-br from-emerald-50 to-green-50 p-3 md:p-4 rounded-xl border border-green-100 cursor-pointer hover:shadow-md transition-all duration-300 ${
-                  isCopied ? "border-green-500" : ""
+                className={`bg-gradient-to-br from-primary/10 to-base-200 p-3 md:p-4 rounded-xl border border-primary/20 cursor-pointer hover:shadow-md transition-all duration-300 ${
+                  isCopied ? "border-primary" : ""
                 }`}
                 onClick={() => handleCopyClick(farmer?.address)}
                 data-tip={tooltipText}
@@ -261,14 +261,14 @@ const FarmCard = (props) => {
                     width={32}
                     className="rounded-full mb-2"
                   />
-                  <p className="font-bold text-gray-800 text-sm md:text-base">X{stake?.toString() || 0}</p>
-                  <p className="text-xs text-gray-600">Staked</p>
+                  <p className="font-bold text-base-content/80 text-sm md:text-base">X{stake?.toString() || 0}</p>
+                  <p className="text-xs text-base-content/60">Staked</p>
                 </div>
               </div>
 
               <div 
-                className={`bg-gradient-to-br from-emerald-50 to-green-50 p-3 md:p-4 rounded-xl border border-green-100 cursor-pointer hover:shadow-md transition-all duration-300 ${
-                  isCopied ? "border-green-500" : ""
+                className={`bg-gradient-to-br from-primary/10 to-base-200 p-3 md:p-4 rounded-xl border border-primary/20 cursor-pointer hover:shadow-md transition-all duration-300 ${
+                  isCopied ? "border-primary" : ""
                 }`}
                 onClick={() => handleCopyClick(pointToken)}
                 data-tip={tooltipText}
@@ -281,15 +281,15 @@ const FarmCard = (props) => {
                     width={32}
                     className="rounded-full mb-2"
                   />
-                  <p className="font-bold text-gray-800 text-sm md:text-base">X{pendingPoint?.toString() || 0}</p>
-                  <p className="text-xs text-gray-600">Pending</p>
+                  <p className="font-bold text-base-content/80 text-sm md:text-base">X{pendingPoint?.toString() || 0}</p>
+                  <p className="text-xs text-base-content/60">Pending</p>
                 </div>
               </div>
             </div>
 
             <WriteButton
               {...collect}
-              className="btn w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
+              className="btn w-full btn-primary border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-sm md:text-base"
             />
           </div>
         </div>

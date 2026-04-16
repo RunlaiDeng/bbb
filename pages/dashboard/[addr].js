@@ -252,7 +252,7 @@ const Address = () => {
                   ${totalBalance?.toLocaleString()}
                 </div>
                 <div className="flex items-center gap-2 mt-2 text-sm">
-                  <span className="text-gray-600">24h Change</span>
+                  <span className="text-base-content/60">24h Change</span>
                   <span
                     className={
                       total24hChange >= 0 ? "text-success" : "text-error"
@@ -354,7 +354,7 @@ const Address = () => {
                           </div>
                           <div>
                             <div className="font-medium">XDC</div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-base-content/50">
                               XDC Network
                             </div>
                           </div>
@@ -364,7 +364,7 @@ const Address = () => {
                         <div className="font-medium">
                           {Number(xdcBalance)?.toLocaleString() || 0}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-base-content/50">
                           ${xdcUsdBalance?.toLocaleString() || 0}
                         </div>
                       </td>
@@ -422,10 +422,10 @@ const Address = () => {
                             </div>
                             <div>
                               <div className="font-medium">{item.symbol}</div>
-                              <div className="text-sm text-gray-500 hidden sm:block">
+                              <div className="text-sm text-base-content/50 hidden sm:block">
                                 {item.name}
                               </div>
-                              <div className="text-sm text-gray-500 sm:hidden">
+                              <div className="text-sm text-base-content/50 sm:hidden">
                                 {item.name?.length > 10
                                   ? item.name?.substr(0, 10) + "..."
                                   : item.name}
@@ -441,7 +441,7 @@ const Address = () => {
                                 )?.toLocaleString()
                               : formatEther(item?.balance)}
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-sm text-base-content/50">
                             ${item?.usdBalance?.toLocaleString() || 0}
                           </div>
                         </td>
