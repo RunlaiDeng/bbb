@@ -119,9 +119,9 @@ const Navbar = () => {
   return (
     mount && (
       <>
-        <div className="w-full">
-          <div className="w-full h-18">
-            <div className="navbar items-center font-bold">
+        <div className="sticky top-0 z-50 w-full border-b border-base-300/60 bg-base-100/90 shadow-shell backdrop-blur-md supports-[backdrop-filter]:bg-base-100/80">
+          <div className="w-full min-h-18">
+            <div className="navbar min-h-18 w-full max-w-content mx-auto items-center px-2 font-bold sm:px-4">
               <div className="navbar-start">
                 <Image
                   src={"/logo.png"}

@@ -17,7 +17,7 @@ const MobileNav = () => {
   }
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200/50 z-40 shadow-lg">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-base-300/60 bg-base-100/90 pb-[env(safe-area-inset-bottom,0px)] shadow-shell backdrop-blur-md supports-[backdrop-filter]:bg-base-100/85">
 
       
       {/* Main navigation bar with enhanced styling */}

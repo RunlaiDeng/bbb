@@ -1,17 +1,11 @@
-import Head from "next/head";
 import Navbar from "../Navbar";
-import { useRouter } from "next/router";
 import Footer from "../Footer";
 import MobileNav from "../MobileNav";
 import AppDownloadBanner from "../AppDownloadBanner";
-import { useAccount } from "wagmi";
 
 const Layout = ({ children }) => {
-  const router = useRouter();
-  const { address } = useAccount();
-
   return (
-    <main>
+    <main className="min-h-screen">
       <div className="min-h-screen mobile-safe-bottom">
         <Navbar />
         {children}

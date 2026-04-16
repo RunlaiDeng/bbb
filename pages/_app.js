@@ -38,7 +38,7 @@ const config = createConfig({
 
 const privyConfig = {
   appearance: {
-    accentColor: "#6A6FF5",
+    accentColor: "#16a34a",
     theme: "#FFFFFF",
     showWalletLoginFirst: false,
     logo: "https://bbbpump.fun/bbbpump-card.png",

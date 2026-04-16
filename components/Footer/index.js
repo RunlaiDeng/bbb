@@ -4,7 +4,7 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <>
-      <footer className="footer p-10">
+      <footer className="footer border-t border-base-300/50 bg-base-200/30 p-10">
         <nav>
           <h6 className="footer-title">Community</h6>
           <div className="grid grid-flow-col sm:grid-cols-5 gap-4">
