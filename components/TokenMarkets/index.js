@@ -19,9 +19,12 @@ const TokenMarkets = (props) => {
 
   const [data, setData] = useState({});
   const [show, setShow] = useState(2);
+  const [loading, setLoading] = useState(true);
 
   const { follow, setFollow } = useFollow();
   async function fetchData() {
+    setLoading(true);
+    try {
     const bbbPool = await getPool(bbbInfo.address);
 
     const bbb = {
@@ -78,7 +81,10 @@ const TokenMarkets = (props) => {
       findTokens = { list: marketsWithPools };
     }
 
-    setData({ ...data, tokenList: findTokens?.list, bbb, usdb });
+    setData((prev) => ({ ...prev, tokenList: findTokens?.list, bbb, usdb }));
+    } finally {
+      setLoading(false);
+    }
   }
   useEffect(() => {
     fetchData();
@@ -102,11 +108,11 @@ const TokenMarkets = (props) => {
 
   return (
     <>
-      <div className="card h-full flex flex-col">
-        <div className="sticky top-0 bg-base-100 z-10">
+      <div className="card h-full flex flex-col overflow-hidden rounded-2xl border border-base-300/50 bg-base-100 shadow-card">
+        <div className="sticky top-0 z-10 border-b border-base-300/40 bg-base-100/95 backdrop-blur-sm">
           {searchBar && (
-            <div className="p-2 flex items-center gap-2">
-              <label className=" w-full flex items-center input input-bordered gap-2 input-sm">
+            <div className="flex items-center gap-2 p-3">
+              <label className="input input-bordered input-sm flex w-full items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
@@ -130,7 +136,7 @@ const TokenMarkets = (props) => {
               </label>
 
               <div
-                className="btn btn-sm cursor-pointer"
+                className="btn btn-primary btn-sm shrink-0"
                 onClick={() => {
                   if (data?.search) {
                     router.push("/swap/" + data?.search);
@@ -144,7 +150,7 @@ const TokenMarkets = (props) => {
             </div>
           )}
           {showBar && (
-            <div className="flex gap-2 text-slate-500 font-bold">
+            <div className="flex gap-2 px-3 pb-2 font-bold text-slate-500">
               <div role="tablist" className="tabs tabs-bordered w-full">
                 <a
                   role="tab"
@@ -172,10 +178,10 @@ const TokenMarkets = (props) => {
             </div>
           )}
         </div>
-        <div className="card-body p-0 overflow-auto">
+        <div className="card-body min-h-[12rem] flex-1 overflow-auto p-0">
           <div className="overflow-auto">
-            <table className={"table table-" + tableSize}>
-              <thead className="sticky top-0 bg-base-100 z-10">
+            <table className={"table table-zebra table-" + tableSize}>
+              <thead className="sticky top-0 z-10 bg-base-200/80 backdrop-blur-sm">
                 <tr>
                   <th>Coin / Ca</th>
                   <th className="text-right">Price / 24h</th>
@@ -183,7 +189,18 @@ const TokenMarkets = (props) => {
               </thead>
 
               <tbody>
-                {showBBB && (
+                {loading && (
+                  <tr>
+                    <td
+                      colSpan="2"
+                      className="py-12 text-center text-sm text-base-content/60"
+                    >
+                      <span className="loading loading-spinner loading-md text-primary" />
+                      <span className="ml-2 align-middle">Loading markets…</span>
+                    </td>
+                  </tr>
+                )}
+                {!loading && showBBB && (
                   <tr
                     className="hover cursor-pointer"
                     onClick={() => {
@@ -241,7 +258,7 @@ const TokenMarkets = (props) => {
                   </tr>
                 )}
 
-                {showUSDB && (
+                {!loading && showUSDB && (
                   <tr
                     className="hover cursor-pointer"
                     onClick={() => {
@@ -299,7 +316,7 @@ const TokenMarkets = (props) => {
                   </tr>
                 )}
 
-                {showList ? (
+                {!loading && showList ? (
                   tokenList?.map((item, index) => {
                     const isFollowed = follow?.[item?.symbol];
                     // For both watchlist and trending, price is already in USD
@@ -409,11 +426,15 @@ const TokenMarkets = (props) => {
                     );
                   })
                 ) : (
+                  !loading && (
                   <tr>
-                    <td colSpan="2" className="text-center py-4 text-gray-500">
-                      {show == 1 ? "No tokens in watchlist. Star tokens from trending to add them here." : "No data available"}
+                    <td colSpan="2" className="py-10 text-center text-sm text-base-content/60">
+                      {show == 1
+                        ? "No tokens in watchlist. Star tokens from trending to add them here."
+                        : "No data available"}
                     </td>
                   </tr>
+                  )
                 )}
               </tbody>
             </table>

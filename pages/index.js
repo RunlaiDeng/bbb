@@ -690,18 +690,20 @@ const HomeContent = memo(() => {
       `}</style>
       <WaveBackground />
       <FloatingCoins />
-      <div className="relative min-h-screen pt-32">
-        <div className="card sm:w-3/4 m-auto">
-          <div className="card-body backdrop-blur-sm bg-white/10 rounded-lg">
+      <div className="relative min-h-screen px-3 pb-8 pt-28 sm:px-4 sm:pt-32">
+        <div className="mx-auto w-full max-w-content">
+          <div className="card border border-base-300/40 bg-white/80 shadow-card backdrop-blur-md">
+            <div className="card-body gap-6 rounded-2xl p-4 sm:p-6 md:p-8">
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon />
             ) : (
               <XDCStakeCard address={address} chainId={chainId ?? 50} onConnect={handleTryNow} />
             )}
-            <div className="mt-6">
-              <div className="glass p-4 rounded-xl backdrop-blur-md bg-white/10">
+            <div className="mt-2 border-t border-base-300/30 pt-6">
+              <div className="rounded-2xl border border-base-300/30 bg-white/60 p-3 shadow-inner backdrop-blur-sm sm:p-4">
                 <TokenMarkets {...tMarkets} />
               </div>
+            </div>
             </div>
           </div>
         </div>

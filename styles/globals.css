@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply text-base-content bg-base-100;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-base-content;
+  }
+}
+
 @keyframes shake-anima {
   0%,
   100% {
@@ -81,23 +100,23 @@
   animation: ranbow-outline 5s linear infinite;
 }
 
-/* Mobile navigation safe areas */
+/* Mobile navigation safe areas — align with MobileNav h-20 (5rem) */
 .mobile-safe-bottom {
-  padding-bottom: 5rem; /* 80px - mobile nav height */
+  padding-bottom: 5rem;
 }
 
 @media (min-width: 1024px) {
   .mobile-safe-bottom {
-    padding-bottom: 1rem; /* 16px - normal desktop padding */
+    padding-bottom: 1rem;
   }
 }
 
 .mobile-safe-modal {
-  padding-bottom: 5rem; /* 80px - mobile nav height */
+  padding-bottom: 5rem;
 }
 
 @media (min-width: 640px) {
   .mobile-safe-modal {
-    padding-bottom: 1rem; /* 16px - normal desktop padding */
+    padding-bottom: 1rem;
   }
 }
