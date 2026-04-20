@@ -36,8 +36,8 @@ export const rpcUrl = "https://api.bbbpump.fun";
 
 // export const rpcUrl = "http://192.168.0.145:10033";
 
-/** Liquidity Staking: true = show Coming Soon, false = show full functionality. Overridden by URL ?ComingSoon=false */
-export const liquidityStakingComingSoon = true;
+/** Liquidity Staking: true = Coming Soon placeholder; false = full user UI. URL ?ComingSoon=true|false overrides. */
+export const liquidityStakingComingSoon = false;
 
 export const dashboardConfig = {
   "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {

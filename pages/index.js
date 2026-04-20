@@ -7,8 +7,7 @@ import { useAccount, useBalance, useBlockNumber, useChainId, useReadContracts } 
 import { formatEther, parseEther } from "viem";
 import TokenMarkets from "@/components/TokenMarkets";
 import { getXDCPrice } from "@/components/Utils";
-import { contracts } from "@/config";
-import LiqudityStakingABI from "@/abi/LiqudityStakingABI.json";
+import { contracts, liquidityStakingComingSoon as liquidityStakingComingSoonDefault } from "@/config";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import WriteButton from "@/components/WriteButton";
 
@@ -545,8 +544,14 @@ const HomeContent = memo(() => {
   const privyLogin = usePrivyLogin();
   const router = useRouter();
   const [mount, setMount] = useState(false);
-  /** URL ?ComingSoon=false 显示完整功能，默认 true 显示 Coming Soon */
-  const liquidityStakingComingSoon = router.query.ComingSoon === "false" ? false : true;
+  /** Default from config; ?ComingSoon=true 显示占位，?ComingSoon=false 强制完整功能 */
+  const comingSoonParam = router.query.ComingSoon;
+  const liquidityStakingComingSoon =
+    comingSoonParam === "true"
+      ? true
+      : comingSoonParam === "false"
+        ? false
+        : liquidityStakingComingSoonDefault;
   const { address } = useAccount();
   const chainId = useChainId();
 
@@ -694,6 +699,21 @@ const HomeContent = memo(() => {
         <div className="mx-auto w-full max-w-content">
           <div className="card border border-base-300/40 bg-white/80 shadow-card backdrop-blur-md">
             <div className="card-body gap-6 rounded-2xl p-4 sm:p-6 md:p-8">
+            {!liquidityStakingComingSoon && (
+              <div className="mb-2 text-center sm:text-left">
+                <p className="text-xs font-semibold uppercase tracking-wider text-green-700/80">Liquidity staking</p>
+                <h1 className="mt-1 text-2xl font-bold tracking-tight text-green-900 sm:text-3xl">
+                  Stake XDC · bXDC
+                </h1>
+                <p className="mt-2 max-w-2xl text-sm text-gray-600 sm:text-base">
+                  连接钱包即可质押原生 XDC、持有流动性质押凭证 bXDC，并在解锁后赎回。更多奖励矿池请前往{" "}
+                  <Link href="/stake" className="font-medium text-green-700 underline-offset-2 hover:underline">
+                    Stake
+                  </Link>
+                  页面。
+                </p>
+              </div>
+            )}
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon />
             ) : (
