@@ -1,4 +1,4 @@
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -542,7 +542,7 @@ const FloatingCoins = () => (
 
 
 const HomeContent = memo(() => {
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   const router = useRouter();
   const [mount, setMount] = useState(false);
   /** URL ?ComingSoon=false 显示完整功能，默认 true 显示 Coming Soon */
@@ -572,13 +572,13 @@ const HomeContent = memo(() => {
   const handleTryNow = useCallback(async () => {
     try {
       if (!address) {
-        await privyLogin();
+        await openConnect();
         router.push("/");
       }
     } catch (error) {
       console.error("Login failed:", error);
     }
-  }, [privyLogin, router, address]);
+  }, [openConnect, router, address]);
 
   const tMarkets = {
     showBar: false,

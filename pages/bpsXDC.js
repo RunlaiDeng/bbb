@@ -9,7 +9,7 @@ import {
 } from "wagmi";
 import WriteButton from "@/components/WriteButton";
 import Link from "next/link";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 
 const BpsXDC = () => {
   const [data, setData] = useState({
@@ -21,7 +21,7 @@ const BpsXDC = () => {
 
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   // Get contract addresses from config
   const psXDCAddress = contracts[chainId]?.psXDC?.address;
@@ -272,7 +272,7 @@ const BpsXDC = () => {
             </p>
             <button
               className="btn bg-green-600 text-white hover:bg-green-700 py-2 px-6 rounded-md"
-              onClick={privyLogin}
+              onClick={openConnect}
             >
               Connect Wallet
             </button>

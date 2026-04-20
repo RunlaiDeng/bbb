@@ -4,7 +4,7 @@ import { contracts } from "../config";
 import { formatEther } from "viem";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import usePrivyLogin from "../components/Hook/usePrivyLogin";
+import useConnectWallet from "../components/Hook/useConnectWallet";
 
 export default function BBBGame() {
   const { address, isConnected } = useAccount();
@@ -13,7 +13,7 @@ export default function BBBGame() {
   const [isFighting, setIsFighting] = useState(false);
   const { writeContract } = useWriteContract();
   const router = useRouter();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   // Get user info from contract
   const { data: userInfoData, refetch: refetchUserInfo } = useReadContract({
@@ -77,10 +77,10 @@ export default function BBBGame() {
 
   // Start mining function or handle login
   const handleStartMining = async () => {
-    // If not connected, trigger Privy login
+    // If not connected, open wallet connect modal
     if (!isConnected) {
       try {
-        await privyLogin();
+        await openConnect();
         return;
       } catch (error) {
         console.error("Login failed:", error);

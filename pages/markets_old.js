@@ -25,7 +25,6 @@ import {
   getBBBPrice,
 } from "@/components/Utils";
 import { useNotification } from "@/components/Context/notice";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 import Loading from "@/components/Loading";
 
 const Home = () => {

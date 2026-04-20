@@ -5,7 +5,7 @@ import { handleSrc } from "../Utils";
 import copy from "copy-to-clipboard";
 import { useNotification } from "../Context/notice";
 import { useAccount, useWatchAsset } from "wagmi";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
 import { formatEther } from "viem";
 const TokenHeadFun = (props) => {
   let {
@@ -28,7 +28,7 @@ const TokenHeadFun = (props) => {
   index = index?.toString();
 
   const { watchAsset } = useWatchAsset();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   const { isConnected } = useAccount();
   const { success } = useNotification();
   const price = (Number(tokenInfo?.price || 0) * xdcPrice * 2) / 1e18;
@@ -160,7 +160,7 @@ const TokenHeadFun = (props) => {
                   data-tip="Add To Wallet"
                   onClick={() => {
                     if (!isConnected) {
-                      privyLogin();
+                      openConnect();
                     } else {
                       watchAsset({
                         type: "ERC20",

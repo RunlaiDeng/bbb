@@ -525,7 +525,7 @@ const Ido = () => {
             onClick={() => {
               // This will trigger the wallet modal to open through your UI's existing wallet connection flow
               document
-                .querySelector('header button[aria-label="Sign Up"]')
+                .querySelector('header button[aria-label="Connect"]')
                 ?.click();
             }}
           >

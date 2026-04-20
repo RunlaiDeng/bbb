@@ -4,7 +4,7 @@ import Image from "next/image";
 import { handleSrc } from "../Utils";
 import copy from "copy-to-clipboard";
 import { useAccount, useWatchAsset } from "wagmi";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
 import { useNotification } from "../Context/notice";
 
 const TokenHead = (props) => {
@@ -23,7 +23,7 @@ const TokenHead = (props) => {
   
   const { isConnected } = useAccount();
   const { watchAsset } = useWatchAsset();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   
   const { success } = useNotification();
   const price = pool?.price;
@@ -170,7 +170,7 @@ const TokenHead = (props) => {
                   data-tip="Add To Wallet"
                   onClick={() => {
                     if (!isConnected) {
-                      privyLogin();
+                      openConnect();
                     } else {
                       watchAsset({
                         type: "ERC20",

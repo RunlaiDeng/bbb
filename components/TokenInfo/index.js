@@ -14,7 +14,7 @@ import { contracts } from "@/config";
 import { formatEther } from "viem";
 import { useNotification } from "../Context/notice";
 import copy from "copy-to-clipboard";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
 const TokenInfo = (props) => {
   const {
     token,
@@ -88,7 +88,7 @@ const TokenInfo = (props) => {
   const { watchAsset } = useWatchAsset();
   const { success } = useNotification();
 
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   return (
     <>
@@ -246,7 +246,7 @@ const TokenInfo = (props) => {
               data-tip="Add To Wallet"
               onClick={() => {
                 if (!isConnected) {
-                  privyLogin();
+                  openConnect();
                 } else {
                   watchAsset({
                     type: "ERC20",
