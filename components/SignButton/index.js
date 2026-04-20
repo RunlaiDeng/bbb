@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSignMessage, useAccount } from "wagmi";
-import usePrivyLogin from "../Hook/usePrivyLogin";
-import { usePrivy } from "@privy-io/react-auth";
+import useConnectWallet from "../Hook/useConnectWallet";
 
 function SignButton(props) {
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const [mounted, setMounted] = useState(false);
-  const { user } = usePrivy();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   useEffect(() => {
     setMounted(true);
@@ -49,10 +47,10 @@ function SignButton(props) {
       <div
         className="btn btn-sm"
         onClick={() => {
-          privyLogin();
+          openConnect();
         }}
       >
-        Sign Up
+        Connect
       </div>
     ))
   );

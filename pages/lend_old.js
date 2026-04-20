@@ -8,7 +8,7 @@ import {
   maxUint256,
 } from "viem";
 import WriteButton from "@/components/WriteButton";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import { contracts } from "@/config";
 import Head from "next/head";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const Lend = () => {
 
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   const router = useRouter();
 
   // Ray Math functions (AAVE V3 style)
@@ -1347,7 +1347,7 @@ const Lend = () => {
                                 </button>
                               ) : (
                                 <button
-                                  onClick={privyLogin}
+                                  onClick={openConnect}
                                   className="bg-gray-400 text-white px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-500 transition-colors"
                                 >
                                   Connect
@@ -1404,7 +1404,7 @@ const Lend = () => {
                                 </button>
                               ) : (
                                 <button
-                                  onClick={privyLogin}
+                                  onClick={openConnect}
                                   className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                                 >
                                   Connect
@@ -1500,7 +1500,7 @@ const Lend = () => {
                               </button>
                             ) : (
                               <button
-                                onClick={privyLogin}
+                                onClick={openConnect}
                                 className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                               >
                                 Connect
@@ -1568,7 +1568,7 @@ const Lend = () => {
                               </button>
                             ) : (
                               <button
-                                onClick={privyLogin}
+                                onClick={openConnect}
                                 className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
                               >
                                 Connect
@@ -1607,7 +1607,7 @@ const Lend = () => {
                     Connect your wallet to supply assets, borrow against them, and manage your positions.
                   </p>
                   <button
-                    onClick={privyLogin}
+                    onClick={openConnect}
                     className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
                   >
                     Connect wallet

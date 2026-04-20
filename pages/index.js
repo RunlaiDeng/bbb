@@ -1,4 +1,4 @@
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -142,7 +142,7 @@ const FloatingCoins = () => (
 );
 
 const HomeContent = memo(() => {
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   const router = useRouter();
 
   /** Stable first paint (matches SSR) — avoids hydration mismatch from empty `router.query` */
@@ -194,13 +194,13 @@ const HomeContent = memo(() => {
   const handleTryNow = useCallback(async () => {
     try {
       if (!address) {
-        await privyLogin();
+        await openConnect();
         router.push("/");
       }
     } catch (error) {
       console.error("Login failed:", error);
     }
-  }, [privyLogin, router, address]);
+  }, [openConnect, router, address]);
 
   const tMarkets = {
     showBar: false,

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { dexLink } from "@/config";
 import copy from "copy-to-clipboard";
 import { formatEther, parseEther } from "viem";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import rpc from "@/components/Rpc";
 const Stake = () => {
   const [tooltipText, setTooltipText] = useState("Click copy contract address");
@@ -121,7 +121,7 @@ const Stake = () => {
 
   const graduateTokkens = data?.graduateTokkens;
 
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   const searchGraduatedTokens = graduateTokkens?.map((item) => {
     return {
@@ -174,7 +174,7 @@ const Stake = () => {
                 className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (!isConnected) {
-                    privyLogin();
+                    openConnect();
                   } else {
                     setData((prev) => ({ ...prev, showDepositModal: true }));
                   }
@@ -186,7 +186,7 @@ const Stake = () => {
                 className="btn bg-white border-2 border-green-500 text-green-600 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
                 onClick={() => {
                   if (!isConnected) {
-                    privyLogin();
+                    openConnect();
                   } else {
                     setData((prev) => ({ ...prev, showWithdrawModal: true }));
                   }

@@ -3,7 +3,7 @@ import { formatEther, parseEther } from "viem";
 import { contracts } from "@/config";
 import { useChainId, useAccount, useBalance, useReadContracts } from "wagmi";
 import WriteButton from "@/components/WriteButton";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import Link from "next/link";
 const BBBubu = () => {
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   // Local state
   const [data, setData] = useState({

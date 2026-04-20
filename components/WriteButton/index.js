@@ -7,9 +7,9 @@ import {
 import { useEffect, useState } from "react";
 
 import { useNotification } from "../Context/notice";
-import { usePrivy } from "@privy-io/react-auth";
-import { encodeFunctionData } from "viem";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+
 const WriteButton = (props) => {
   const { success, failure } = useNotification();
   const [mounted, setMounted] = useState(false);
@@ -18,6 +18,7 @@ const WriteButton = (props) => {
   }, []);
 
   const { isConnected } = useAccount();
+  const addRecentTransaction = useAddRecentTransaction();
 
   const {
     data: hash,
@@ -70,12 +71,9 @@ const WriteButton = (props) => {
         console.error(e);
       }
     }
-  }, [hash]);
+  }, [hash, addRecentTransaction]);
 
-  const { sendTransaction, user } = usePrivy();
-  const connectorType = user?.wallet?.connectorType;
-
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   return (
     mounted &&
     (isConnected ? (
@@ -87,14 +85,13 @@ const WriteButton = (props) => {
         disabled={
           (props?.disabled || !write || isLoading || isStarted || !props?.data) && !txSuccess
         }
-        style={{ minWidth: 112, cursor: 'pointer' }}
+        style={{ minWidth: 112, cursor: "pointer" }}
         onClick={async () => {
           if (!isConnected) {
             alert("please connect wallet");
             return;
           }
-          
-          // Check if data exists and is valid
+
           if (!props?.data) {
             console.error("No transaction data provided");
             failure("Transaction data is missing");
@@ -105,27 +102,13 @@ const WriteButton = (props) => {
 
           try {
             const gas = await client.estimateContractGas({ ...writeData });
-            console.log(gas)
+            console.log(gas);
             writeData.gas = (gas * 30n) / 10n;
           } catch (e) {
             console.error(e);
           }
           props?.before?.();
-          if (connectorType == "embedded") {
-            const d = encodeFunctionData({
-              ...writeData,
-            });
-            writeData.data = d;
-            writeData.type = 0;
-            writeData.to = writeData?.address;
-            try {
-              await sendTransaction(writeData);
-            } catch (e) {}
-
-            props?.callback?.(true);
-          } else {
-            write?.(writeData);
-          }
+          write?.(writeData);
         }}
       >
         {isLoading && "Waiting for approval"}
@@ -140,10 +123,10 @@ const WriteButton = (props) => {
       <div
         className="btn btn-sm"
         onClick={() => {
-          privyLogin();
+          openConnect();
         }}
       >
-        Sign Up
+        Connect
       </div>
     ))
   );

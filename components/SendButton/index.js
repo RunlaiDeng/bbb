@@ -1,6 +1,5 @@
 import {
   useAccount,
-  useWriteContract,
   useWaitForTransactionReceipt,
   usePublicClient,
   useSendTransaction,
@@ -8,8 +7,9 @@ import {
 import { useEffect, useState } from "react";
 
 import { useNotification } from "../Context/notice";
-import { usePrivy } from "@privy-io/react-auth";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+
 const WriteButton = (props) => {
   const { success, failure } = useNotification();
   const [mounted, setMounted] = useState(false);
@@ -18,6 +18,7 @@ const WriteButton = (props) => {
   }, []);
 
   const { isConnected } = useAccount();
+  const addRecentTransaction = useAddRecentTransaction();
 
   const {
     data: hash,
@@ -70,10 +71,9 @@ const WriteButton = (props) => {
         console.error(e);
       }
     }
-  }, [hash]);
-  const privyLogin = usePrivyLogin();
-  const { sendTransaction: sendTXPrivy, user } = usePrivy();
-  const connectorType = user?.wallet?.connectorType;
+  }, [hash, addRecentTransaction]);
+
+  const openConnect = useConnectWallet();
   return (
     mounted &&
     (isConnected ? (
@@ -102,17 +102,7 @@ const WriteButton = (props) => {
           } catch (e) {}
           props?.before?.();
 
-          if (connectorType == "embedded") {
-            writeData.type = 0;
-            try {
-              console.log(writeData)
-              await sendTXPrivy(writeData);
-            } catch (e) {}
-
-            props?.callback?.(true);
-          } else {
-            sendTransaction?.(writeData);
-          }
+          sendTransaction?.(writeData);
         }}
       >
         {isLoading && "Waiting for approval"}
@@ -127,10 +117,10 @@ const WriteButton = (props) => {
       <div
         className="btn"
         onClick={() => {
-          privyLogin();
+          openConnect();
         }}
       >
-        Sign Up
+        Connect
       </div>
     ))
   );

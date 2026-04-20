@@ -6,16 +6,16 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
-import { WagmiProvider, createConfig } from "@privy-io/wagmi";
-import { http } from "wagmi";
+import { WagmiProvider } from "wagmi";
 import Head from "next/head";
-import { PrivyProvider } from "@privy-io/react-auth";
 import { FollowProvider } from "@/components/Context/follow";
 import { xdc } from "../config/chains";
 import Script from "next/script";
-import { cookieStorage, createStorage } from "wagmi";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
+import { wagmiConfig } from "../config/wagmi";
+import { LanguageProvider, useLanguage } from "@/components/Context/LanguageContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,43 +26,26 @@ const queryClient = new QueryClient({
   },
 });
 
-const config = createConfig({
-  chains: [xdc],
-  transports: {
-    [xdc.id]: http(),
-  },
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
+const rkTheme = lightTheme({
+  accentColor: "#16a34a",
+  borderRadius: "large",
 });
 
-const privyConfig = {
-  appearance: {
-    accentColor: "#16a34a",
-    theme: "#FFFFFF",
-    showWalletLoginFirst: false,
-    logo: "https://bbbpump.fun/bbbpump-card.png",
-    walletChainType: "ethereum-only",
-  },
-  loginMethods: ["wallet", "sms", "email", "google"],
-  fundingMethodConfig: {
-    moonpay: {
-      useSandbox: true,
-    },
-  },
-  defaultChain: xdc,
-  supportedChains: [xdc],
-  embeddedWallets: {
-    createOnLogin: "users-without-wallets",
-    requireUserPasswordOnCreate: false,
-  },
-  mfa: {
-    noPromptOnMfaRequired: false,
-  },
-};
+function RainbowKitWithLocale({ children }) {
+  const { locale } = useLanguage();
+  return (
+    <RainbowKitProvider
+      locale={locale === "zh" ? "zh-CN" : "en-US"}
+      initialChain={xdc}
+      theme={rkTheme}
+    >
+      {children}
+    </RainbowKitProvider>
+  );
+}
 
 const MyApp = ({ Component, pageProps }) => {
-  const { locale } = useRouter();
+  useRouter();
 
   return (
     <>
@@ -83,19 +66,21 @@ const MyApp = ({ Component, pageProps }) => {
           gtag('config', 'G-FLNW2BCHW0');
         `}
       </Script>
-      <NotificationProvider>
-        <FollowProvider>
-          <PrivyProvider appId="cm3uezqn203md3kangodaq4u6" config={privyConfig}>
+      <LanguageProvider>
+        <NotificationProvider>
+          <FollowProvider>
             <QueryClientProvider client={queryClient}>
-              <WagmiProvider config={config}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+              <WagmiProvider config={wagmiConfig}>
+                <RainbowKitWithLocale>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </RainbowKitWithLocale>
               </WagmiProvider>
             </QueryClientProvider>
-          </PrivyProvider>
-        </FollowProvider>
-      </NotificationProvider>
+          </FollowProvider>
+        </NotificationProvider>
+      </LanguageProvider>
       <Analytics />
       <SpeedInsights />
     </>

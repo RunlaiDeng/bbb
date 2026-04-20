@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAccount, useBalance, useChainId, useReadContract } from "wagmi";
 import { parseEther, parseUnits, formatUnits, maxUint256 } from "viem";
 import WriteButton from "@/components/WriteButton";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import { contracts } from "@/config";
 import Link from "next/link";
 import Head from "next/head";
@@ -30,7 +30,7 @@ const USDB = () => {
 
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
   const router = useRouter();
 
   // 检查客户端是否已挂载
@@ -1042,7 +1042,7 @@ const USDB = () => {
                       ) : (
                         <>
                           <button
-                            onClick={privyLogin}
+                            onClick={openConnect}
                             className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-2xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                           >
                             Connect Wallet to Start
@@ -1470,7 +1470,7 @@ const USDB = () => {
                               </>
                             ) : (
                               <button
-                                onClick={privyLogin}
+                                onClick={openConnect}
                                 className="w-full px-6 py-4 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-blue-700 transition-all duration-200 text-center shadow-lg"
                               >
                                 Connect Wallet to Start Staking
@@ -1556,7 +1556,7 @@ const USDB = () => {
                             />
                           ) : (
                             <button
-                              onClick={privyLogin}
+                              onClick={openConnect}
                               className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold rounded-xl hover:from-red-600 hover:to-pink-700 transition-all duration-200 text-center shadow-lg mb-4"
                             >
                               Connect Wallet to Withdraw

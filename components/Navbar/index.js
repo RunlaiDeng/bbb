@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useNotification } from "../Context/notice";
 import { useAccount, useDisconnect } from "wagmi";
 import copy from "copy-to-clipboard";
-import { usePrivy } from "@privy-io/react-auth";
-import usePrivyLogin from "../Hook/usePrivyLogin";
+import useConnectWallet from "../Hook/useConnectWallet";
+import { useLanguage } from "../Context/LanguageContext";
 import { buyXDCLink } from "@/config";
 
 const AnniversaryBanner = ({ router }) => {
@@ -107,11 +107,9 @@ const Navbar = () => {
   const { disconnect } = useDisconnect();
   const { success } = useNotification();
 
-  const privyLogin = usePrivyLogin();
-
-  const { login, logout, user } = usePrivy();
-
-  const connectorType = user?.wallet?.connectorType;
+  const { connector } = useAccount();
+  const { locale, setLocale } = useLanguage();
+  const openConnect = useConnectWallet();
   useEffect(() => {
     setMount(true);
   }, []);
@@ -435,10 +433,10 @@ const Navbar = () => {
                           <div
                             className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                             onClick={async () => {
-                              if (connectorType == "injected") {
+                              if (connector?.type === "injected") {
                                 info("Please disconnect your wallet manually");
                               } else {
-                                await logout();
+                                await disconnect();
                               }
                               setData({ ...data, showUserItems: false });
                             }}
@@ -467,9 +465,9 @@ const Navbar = () => {
                         id="userDrawer"
                         type="checkbox"
                         className="drawer-toggle"
-                        checked={data?.userItemsOpen}
-                        onChange={() => {
-                          setData({ ...data, userItemsOpen: true });
+                        checked={!!data?.userItemsOpen}
+                        onChange={(e) => {
+                          setData({ ...data, userItemsOpen: e.target.checked });
                         }}
                       />
                       <div className="drawer-content">
@@ -673,12 +671,12 @@ const Navbar = () => {
                               <div
                                 className="flex items-center gap-2 hover:bg-green-50 transition-all duration-300 cursor-pointer p-4"
                                 onClick={async () => {
-                                  if (connectorType == "injected") {
+                                  if (connector?.type === "injected") {
                                     info(
                                       "Please disconnect your wallet manually"
                                     );
                                   } else {
-                                    await logout();
+                                    await disconnect();
                                   }
                                   setData({ ...data, showUserItems: false });
                                 }}
@@ -707,24 +705,42 @@ const Navbar = () => {
                   </div>
                 )}
                 {!isConnected && (
-                  <div
-                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl hidden lg:flex"
-                    onClick={async () => {
-                      privyLogin();
-                    }}
+                  <button
+                    type="button"
+                    className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl shrink-0"
+                    onClick={openConnect}
+                    aria-label="Connect"
                   >
-                    Sign Up
-                  </div>
+                    Connect
+                  </button>
                 )}
+
+                <div className="hidden lg:flex items-center gap-1 ml-1 shrink-0">
+                  <button
+                    type="button"
+                    className={`btn btn-ghost btn-xs rounded-lg ${locale === "en" ? "text-green-600 bg-green-50" : ""}`}
+                    onClick={() => setLocale("en")}
+                  >
+                    EN
+                  </button>
+                  <span className="text-base-content/40">|</span>
+                  <button
+                    type="button"
+                    className={`btn btn-ghost btn-xs rounded-lg ${locale === "zh" ? "text-green-600 bg-green-50" : ""}`}
+                    onClick={() => setLocale("zh")}
+                  >
+                    中文
+                  </button>
+                </div>
 
                 <div className="drawer drawer-end lg:hidden w-max">
                   <input
                     id="my-drawer"
                     type="checkbox"
                     className="drawer-toggle"
-                    checked={data?.menuItemsOpen}
-                    onChange={() => {
-                      setData({ ...data, menuItemsOpen: true });
+                    checked={!!data?.menuItemsOpen}
+                    onChange={(e) => {
+                      setData({ ...data, menuItemsOpen: e.target.checked });
                     }}
                   />
                   <div className="drawer-content">
@@ -749,13 +765,34 @@ const Navbar = () => {
                     </label>
                   </div>
                   <div className="drawer-side z-50 font-bold">
+                    <label
+                      htmlFor="my-drawer"
+                      aria-label="Close menu"
+                      className="drawer-overlay"
+                    />
                     <div className="card bg-base-200 text-base-content min-h-full w-full p-2 font-full">
                       <div className="card-body p-0 text-xl font-medium">
-                        <div className="flex justify-between items-center p-4">
-                          <div></div>
+                        <div className="flex justify-between items-center gap-2 p-4">
+                          <div className="flex items-center gap-1 text-sm font-semibold">
+                            <button
+                              type="button"
+                              className={`btn btn-ghost btn-xs rounded-lg ${locale === "en" ? "text-green-600 bg-green-50" : ""}`}
+                              onClick={() => setLocale("en")}
+                            >
+                              EN
+                            </button>
+                            <span className="text-base-content/40">|</span>
+                            <button
+                              type="button"
+                              className={`btn btn-ghost btn-xs rounded-lg ${locale === "zh" ? "text-green-600 bg-green-50" : ""}`}
+                              onClick={() => setLocale("zh")}
+                            >
+                              中文
+                            </button>
+                          </div>
 
                           <div
-                            className="text-right w-max"
+                            className="text-right w-max cursor-pointer"
                             onClick={(e) => {
                               setData({ ...data, menuItemsOpen: false });
                             }}
@@ -778,6 +815,86 @@ const Navbar = () => {
                         </div>
                         {/* MobileNav More Content */}
                         <div className="grid grid-cols-2 gap-4 p-4">
+                          <a
+                            href="https://jumper.exchange/zh?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=50&toToken=0x0000000000000000000000000000000000000000"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() =>
+                              setData({ ...data, menuItemsOpen: false })
+                            }
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg
+                                viewBox="0 0 24 24"
+                                width="20"
+                                height="20"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
+                                <path d="M12 2v20" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Bridge</span>
+                          </a>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push(
+                                "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
+                              );
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                  d="M3 3H21V21H3V3Z"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M12 3V21"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M3 12H21"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">Markets</span>
+                          </div>
+
+                          <div
+                            className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
+                            onClick={() => {
+                              router.push("/ido");
+                              setData({ ...data, menuItemsOpen: false });
+                            }}
+                          >
+                            <div className="p-2 rounded-xl bg-gray-100">
+                              <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                                <path
+                                  d="M12 2C12 2 15.5 5.5 15.5 10.5C15.5 12.5 14.5 14 12 14C9.5 14 8.5 12.5 8.5 10.5C8.5 5.5 12 2 12 2Z"
+                                  fill="currentColor"
+                                  fillOpacity="0.9"
+                                />
+                              </svg>
+                            </div>
+                            <span className="ml-3 font-medium">IDO</span>
+                          </div>
+
                           <div
                             className="flex items-center p-4 rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:shadow-md border border-transparent"
                             onClick={() => {

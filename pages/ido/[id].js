@@ -672,7 +672,7 @@ const IdoDetail = () => {
                 className="btn btn-success px-8"
                 onClick={() => {
                   document
-                    .querySelector('header button[aria-label="Sign Up"]')
+                    .querySelector('header button[aria-label="Connect"]')
                     ?.click();
                 }}
               >

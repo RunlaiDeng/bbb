@@ -5,7 +5,7 @@ import { useChainId, useAccount, useBalance, useReadContracts } from "wagmi";
 import WriteButton from "@/components/WriteButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import usePrivyLogin from "@/components/Hook/usePrivyLogin";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
 import LpStakeABI from "@/abi/LpStakeABI.json";
 import XDCStakeABI from "@/abi/XDCStakeABI.json";
 import USDBStakeABI from "@/abi/USDBStakeABI.json";
@@ -24,7 +24,7 @@ const StakingPool = ({
   const router = useRouter();
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
-  const privyLogin = usePrivyLogin();
+  const openConnect = useConnectWallet();
 
   // Local state for modals and amounts
   const [localState, setLocalState] = useState({
@@ -1408,7 +1408,7 @@ const StakingPool = ({
                   className="btn bg-green-600 text-white hover:bg-green-700 text-sm md:text-base"
                   onClick={(e) => {
                     e.stopPropagation();
-                    privyLogin();
+                    openConnect();
                   }}
                 >
                   Connect Wallet
