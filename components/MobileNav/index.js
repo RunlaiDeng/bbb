@@ -1,14 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAccount } from "wagmi";
 
 const MobileNav = () => {
   const router = useRouter();
-  const { address, isConnected } = useAccount();
-
-  if (!isConnected) {
-    return null;
-  }
+  const onStake =
+    router.pathname === "/" && (router.asPath.includes("#stake") || router.asPath.includes("/#stake"));
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-base-300/60 bg-base-100/90 pb-[env(safe-area-inset-bottom,0px)] shadow-shell backdrop-blur-md supports-[backdrop-filter]:bg-base-100/85">
@@ -16,14 +12,14 @@ const MobileNav = () => {
         <Link
           href="/"
           className={`flex flex-col items-center p-2 rounded-2xl transition-all duration-300 min-w-[72px] ${
-            router.pathname === "/"
+            router.pathname === "/" && !onStake
               ? "text-green-600 font-semibold bg-green-50"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
           }`}
         >
           <div
             className={`p-2 rounded-xl ${
-              router.pathname === "/" ? "bg-green-100" : "bg-transparent"
+              router.pathname === "/" && !onStake ? "bg-green-100" : "bg-transparent"
             }`}
           >
             <svg viewBox="0 0 1024 1024" width="22" height="22">
@@ -37,35 +33,34 @@ const MobileNav = () => {
         </Link>
 
         <Link
-          href={address ? `/dashboard/${address}` : "/dashboard"}
+          href="/#stake"
           className={`flex flex-col items-center p-2 rounded-2xl transition-all duration-300 min-w-[72px] ${
-            router.pathname.startsWith("/dashboard")
+            onStake || router.pathname === "/stake"
               ? "text-green-600 font-semibold bg-green-50"
               : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
           }`}
         >
           <div
             className={`p-2 rounded-xl ${
-              router.pathname.startsWith("/dashboard")
-                ? "bg-green-100"
-                : "bg-transparent"
+              onStake || router.pathname === "/stake" ? "bg-green-100" : "bg-transparent"
             }`}
           >
-            <svg
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              width="22"
-              height="22"
-            >
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
-                d="M4 8.5A4.5 4.5 0 018.5 4H20v16H8.5A4.5 4.5 0 014 15.5v-7zM8.5 7H17v3H8.5a1.5 1.5 0 110-3zm4.5 6h4v4h-4v-4z"
-                fill="currentColor"
+                d="M3 3H21V21H3V3Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
+              <path d="M3 9H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </div>
-          <span className="text-xs mt-1 font-medium">Dashboard</span>
+          <span className="text-xs mt-1 font-medium">Stake</span>
         </Link>
       </div>
     </div>
