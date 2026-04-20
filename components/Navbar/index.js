@@ -8,6 +8,7 @@ import copy from "copy-to-clipboard";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useLanguage } from "../Context/LanguageContext";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
+import { MORE_NAV_ITEMS } from "@/lib/navMore";
 
 function shortenAddress(addr) {
   if (!addr || typeof addr !== "string") return "";
@@ -154,37 +155,11 @@ const Navbar = () => {
                 />
 
                 <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
-                  <a
-                    href="https://jumper.exchange/zh?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=50&toToken=0x0000000000000000000000000000000000000000"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    Bridge
-                  </a>
-                  <Link
-                    href={"/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    Markets
-                  </Link>
-                  <Link
-                    href={"/ido"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    IDO
-                  </Link>
                   <Link
                     href={"/stake"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
                     Stake
-                  </Link>
-                  <Link
-                    href={"/usdb"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
-                  >
-                    USDB
                   </Link>
 
                   <div className="dropdown dropdown-hover font-bold">
@@ -197,56 +172,29 @@ const Navbar = () => {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50"
+                      className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50 max-h-[min(70vh,28rem)] overflow-y-auto"
                     >
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/merch"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          Merch
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/mbbb"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg "
-                        >
-                          mBBB
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/farm"}
-                          className="hover:text-green-600 hover:bg-green-50  rounded-lg "
-                        >
-                          Farm
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/bbbubu"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          BBBubu
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/bbbgame"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          🎮 BBBGame
-                        </Link>
-                      </li>
-                      <li className="rounded-lg">
-                        <Link
-                          href={"/airdrophub"}
-                          className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          Airdrop Hub
-                        </Link>
-                      </li>
+                      {MORE_NAV_ITEMS.map((item) => (
+                        <li key={item.key} className="rounded-lg">
+                          {item.external ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                            >
+                              {item.label}
+                            </a>
+                          ) : (
+                            <Link
+                              href={item.href}
+                              className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                            >
+                              {item.label}
+                            </Link>
+                          )}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

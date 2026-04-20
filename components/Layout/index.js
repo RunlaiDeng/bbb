@@ -1,7 +1,6 @@
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import MobileNav from "../MobileNav";
-import AppDownloadBanner from "../AppDownloadBanner";
 
 const Layout = ({ children }) => {
   return (
@@ -15,7 +14,6 @@ const Layout = ({ children }) => {
         <Footer/>
       </div>
       <MobileNav />
-      <AppDownloadBanner />
     </main>
   );
 };
