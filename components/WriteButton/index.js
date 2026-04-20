@@ -60,7 +60,7 @@ const WriteButton = (props) => {
   const client = usePublicClient();
 
   useEffect(() => {
-    if (hash) {
+    if (hash && typeof addRecentTransaction === "function") {
       try {
         addRecentTransaction({
           hash: hash,
