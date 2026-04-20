@@ -9,6 +9,7 @@ import {
   useReadContracts,
 } from "wagmi";
 import { formatEther, parseEther } from "viem";
+import { toBigIntSafe } from "@/lib/safeBigInt";
 import { contracts } from "@/config";
 import ERC20ABI from "@/abi/ERC20ABI.json";
 import ERC721EnumerableABI from "@/abi/ERC721EnumerableABI.json";
@@ -55,17 +56,23 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     query: { enabled: !!stakeAddress },
   });
 
+  const ONE_ETHER = BigInt("1000000000000000000");
+
   const bxdcTokenAddress = poolData?.[0]?.result;
   const withdrawalNftAddress = poolData?.[1]?.result;
-  const exchangeRate = poolData?.[2]?.result ?? 10n ** 18n;
-  const totalPooled = poolData?.[3]?.result ?? 0n;
-  const minStake = poolData?.[4]?.result ?? parseEther("1");
-  const minWithdrawXdc = poolData?.[5]?.result ?? 0n;
-  const withdrawDelayBlocks = poolData?.[6]?.result ?? 0n;
-  const bufferHealth = poolData?.[7]?.result ?? 0n;
-  const instantExitBuffer = poolData?.[8]?.result ?? 0n;
+  const exchangeRate = toBigIntSafe(poolData?.[2]?.result, ONE_ETHER);
+  const totalPooled = toBigIntSafe(poolData?.[3]?.result, 0n);
+  const minStake = toBigIntSafe(poolData?.[4]?.result, parseEther("1"));
+  const minWithdrawXdc = toBigIntSafe(poolData?.[5]?.result, 0n);
+  const withdrawDelayBlocks = toBigIntSafe(poolData?.[6]?.result, 0n);
+  const bufferHealth = toBigIntSafe(poolData?.[7]?.result, 0n);
+  const instantExitBuffer = toBigIntSafe(poolData?.[8]?.result, 0n);
 
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const currentBlock =
+    blockNumber !== undefined && blockNumber !== null
+      ? toBigIntSafe(blockNumber, 0n)
+      : undefined;
 
   const { data: userBase, refetch: refetchUser } = useReadContracts({
     contracts:
@@ -82,7 +89,7 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     query: { enabled: !!bxdcTokenAddress && !!address },
   });
 
-  const bxdcBalance = userBase?.[0]?.result ?? 0n;
+  const bxdcBalance = toBigIntSafe(userBase?.[0]?.result, 0n);
 
   const { data: nftBalData } = useReadContracts({
     contracts:
@@ -99,7 +106,7 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     query: { enabled: !!withdrawalNftAddress && !!address },
   });
 
-  const nftBalance = nftBalData?.[0]?.result ?? 0n;
+  const nftBalance = toBigIntSafe(nftBalData?.[0]?.result, 0n);
   const nftCountRaw = typeof nftBalance === "bigint" ? Number(nftBalance) : Number(nftBalance ?? 0);
   const nftCount = Number.isFinite(nftCountRaw) ? nftCountRaw : 0;
   const safeNftCount = Math.min(Math.max(0, Math.floor(nftCount)), 64);
@@ -167,7 +174,7 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     query: { enabled: !!stakeAddress && unstakeWei > 0n },
   });
 
-  const previewXdcOut = previewOut?.[0]?.result ?? 0n;
+  const previewXdcOut = toBigIntSafe(previewOut?.[0]?.result, 0n);
   const canInstantExit =
     unstakeWei > 0n &&
     previewXdcOut >= minWithdrawXdc &&
@@ -181,11 +188,11 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
       .map((id, i) => {
         const detail = ticketDetails[i]?.result;
         if (!detail) return null;
-        const [xdcAmount, unlockBlock, redeemed] = detail;
+        const [xdcAmountRaw, unlockBlockRaw, redeemed] = detail;
         return {
           id,
-          xdcAmount,
-          unlockBlock,
+          xdcAmount: toBigIntSafe(xdcAmountRaw, 0n),
+          unlockBlock: toBigIntSafe(unlockBlockRaw, 0n),
           redeemed,
         };
       })
@@ -205,7 +212,7 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
       : [],
     query: { enabled: !!bxdcTokenAddress },
   });
-  const bxdcTotalSupply = supplyData?.[0]?.result ?? 1n;
+  const bxdcTotalSupply = toBigIntSafe(supplyData?.[0]?.result, 1n);
   const userXdcValueCalc =
     bxdcBalance > 0n && totalPooled > 0n && bxdcTotalSupply > 0n
       ? (bxdcBalance * totalPooled) / bxdcTotalSupply
@@ -323,10 +330,14 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
               <div className="max-h-48 overflow-y-auto space-y-2">
                 {withdrawalOrders.map((order) => {
                   const matured =
-                    blockNumber !== undefined && !order.redeemed && blockNumber >= order.unlockBlock;
+                    currentBlock !== undefined &&
+                    !order.redeemed &&
+                    currentBlock >= order.unlockBlock;
                   const blocksLeft =
-                    blockNumber !== undefined && !order.redeemed && blockNumber < order.unlockBlock
-                      ? order.unlockBlock - blockNumber
+                    currentBlock !== undefined &&
+                    !order.redeemed &&
+                    currentBlock < order.unlockBlock
+                      ? order.unlockBlock - currentBlock
                       : 0n;
                   let statusLabel = t.pending;
                   if (order.redeemed) statusLabel = t.redeemed;
@@ -370,7 +381,7 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
                               address: stakeAddress,
                               abi: stakeAbi,
                               functionName: "claimWithdrawalHead",
-                              args: [order.id],
+                              args: [toBigIntSafe(order.id, 0n)],
                             }}
                             callback={refreshStake}
                           />
