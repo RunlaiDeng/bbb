@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { memo, useCallback, useMemo, useState } from "react";
-import useWindowSize from "@/components/Hook/useWindowSize";
 import {
   useAccount,
   useBalance,
@@ -21,17 +19,11 @@ import WriteButton from "@/components/WriteButton";
  * XDCLiquidityStaking (spec v1.5): native stake, burn bXDC to withdraw,
  * delayed exits via NFT + claimWithdrawalHead, optional instant redeem when buffer allows.
  */
-const MOBILE_MAX_WIDTH = 767;
-
 const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
-  const router = useRouter();
-  const { width } = useWindowSize();
-  const isMobileLayout =
-    typeof width === "number" ? width <= MOBILE_MAX_WIDTH : false;
-
   const [stakeAmount, setStakeAmount] = useState("");
   const [unstakeAmount, setUnstakeAmount] = useState("");
   const [showUnstakeModal, setShowUnstakeModal] = useState(false);
+  const [poolStatsOpen, setPoolStatsOpen] = useState(false);
 
   const { address } = useAccount();
   const chainId = useChainId();
@@ -247,10 +239,6 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     }
   };
 
-  const goStakePage = useCallback(() => {
-    router.push("/stake");
-  }, [router]);
-
   const nftListBroken = address && withdrawalNftAddress && nftCount > 0 && ticketIds.length === 0;
 
   const xdcBal = xdcBalance?.value ?? 0n;
@@ -267,69 +255,72 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
     <>
       <div className="rounded-2xl border border-emerald-200/90 bg-white shadow-xl shadow-emerald-900/5 overflow-hidden mb-6">
         <div className="p-5 sm:p-6">
-              <div className="mb-6">
+              <div className="mb-5">
                 <h3 className="text-lg font-semibold text-gray-900">{t.liquidityStaking}</h3>
-                <p className="text-xs text-gray-500 mt-1">{t.specHint}</p>
+                <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{t.specHint}</p>
               </div>
 
-              <div className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4 mb-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Image src="/xdc.png" alt="XDC" width={36} height={36} className="rounded-full" />
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50/50 p-4 mb-4">
+                <div className="flex items-start gap-3">
+                  <Image src="/xdc.png" alt="XDC" width={40} height={40} className="rounded-full shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
-                    <label className="text-xs text-emerald-700/80 uppercase tracking-wide" htmlFor="stake-xdc-inline">
-                      XDC
-                    </label>
+                    <div className="flex items-baseline justify-between gap-2 mb-1">
+                      <label className="text-sm font-semibold text-gray-800" htmlFor="stake-xdc-inline">
+                        {t.stakeXdc}
+                      </label>
+                      <button
+                        type="button"
+                        className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                        onClick={() => address && setStakeAmount(formatEther(xdcBal))}
+                        disabled={!address}
+                      >
+                        {t.max}
+                      </button>
+                    </div>
                     <input
                       id="stake-xdc-inline"
                       type="text"
                       inputMode="decimal"
+                      autoComplete="off"
                       placeholder={t.xdcAmountPlaceholder}
-                      className="w-full bg-transparent text-xl font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none tabular-nums"
+                      className="w-full bg-white/80 rounded-lg border border-emerald-100/90 px-3 py-2.5 text-lg font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 tabular-nums"
                       value={stakeAmount}
                       onChange={(e) => {
                         const v = e.target.value;
                         if (/^(0|[1-9]\d*)(\.\d*)?$/.test(v) || v === "") setStakeAmount(v);
                       }}
                     />
+                    {!address ? (
+                      <p className="text-xs text-gray-500 mt-2">{t.connectToSeeBalances}</p>
+                    ) : (
+                      <div className="mt-3 space-y-1.5 text-xs border-t border-emerald-100/90 pt-3">
+                        <div className="flex justify-between gap-3 text-gray-600">
+                          <span>{t.walletXdc}</span>
+                          <span className="tabular-nums font-medium text-gray-900">{formatEther(xdcBal)} XDC</span>
+                        </div>
+                        <div className="flex justify-between gap-3 text-gray-600">
+                          <span>
+                            {t.balance} (bXDC)
+                          </span>
+                          <span className="tabular-nums font-medium text-gray-900">{formatEther(bxdcBalance)}</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <button
-                    type="button"
-                    className="text-sm font-medium text-emerald-600 hover:text-emerald-700 shrink-0"
-                    onClick={() => address && setStakeAmount(formatEther(xdcBal))}
-                    disabled={!address}
-                  >
-                    {t.max}
-                  </button>
                 </div>
-                {address && (
-                  <div className="flex justify-between text-xs text-gray-500 border-t border-emerald-100 pt-3">
-                    <span>
-                      {t.balance} · bXDC
-                    </span>
-                    <span className="tabular-nums text-gray-800">{formatEther(bxdcBalance)}</span>
-                  </div>
-                )}
               </div>
 
               {!address ? (
                 <button
                   type="button"
-                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3.5 transition-colors shadow-md shadow-emerald-900/10"
+                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3.5 min-h-[52px] transition-colors shadow-md shadow-emerald-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
                   onClick={handlePrimaryStake}
                 >
                   {t.connectWallet}
                 </button>
-              ) : isMobileLayout ? (
-                <button
-                  type="button"
-                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3.5 min-h-[52px] shadow-md shadow-emerald-900/10"
-                  onClick={goStakePage}
-                >
-                  {t.stake}
-                </button>
               ) : (
                 <WriteButton
-                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3.5 border-0 min-h-[52px] flex items-center justify-center"
+                  className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3.5 border-0 min-h-[52px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
                   buttonName={t.stake}
                   disabled={!!stakeDisabledReason || stakeWei === 0n}
                   data={{
@@ -344,57 +335,81 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
                   }}
                 />
               )}
-              {address && stakeDisabledReason && stakeAmount.trim() !== "" && !isMobileLayout && (
-                <p className="text-xs text-amber-700 mt-2 text-center">{stakeDisabledReason}</p>
+              {address && stakeDisabledReason && stakeAmount.trim() !== "" && (
+                <p className="text-xs text-amber-800 mt-2.5 text-center bg-amber-50 border border-amber-100 rounded-lg px-2 py-1.5" role="status">
+                  {stakeDisabledReason}
+                </p>
               )}
 
-              <dl className="mt-6 space-y-3 text-sm">
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.youWillReceive}</dt>
-                  <dd className="text-emerald-600 font-medium tabular-nums text-right">
+              <div className="mt-5 rounded-xl border border-emerald-100 bg-white overflow-hidden">
+                <div className="flex justify-between items-center gap-3 px-3 py-2.5 bg-emerald-50/40 border-b border-emerald-100/80">
+                  <span className="text-sm font-medium text-gray-800">{t.youWillReceive}</span>
+                  <span className="text-emerald-700 font-semibold tabular-nums text-sm sm:text-base">
                     {stakeWei > 0n ? `${formatEther(previewBxdcReceive)} bXDC` : `0 bXDC`}
-                  </dd>
+                  </span>
                 </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.rate}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">
-                    1 bXDC = {formatEther(exchangeRate)} XDC
-                  </dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.protocolApr}</dt>
-                  <dd className="text-gray-600 text-right">{t.aprNotOnChain}</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.totalStaked}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">{formatEther(totalPooled)} XDC</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.bufferHealth}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">{String(bufferHealth)}%</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.instantBuffer}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">{formatEther(instantExitBuffer)} XDC</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.minStake}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">{formatEther(minStake)} XDC</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.unbondingDelay}</dt>
-                  <dd className="text-gray-800 tabular-nums text-right">{String(withdrawDelayBlocks)} blocks</dd>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <dt className="text-gray-500">{t.estimatedNetworkFee}</dt>
-                  <dd className="text-gray-600 text-right">~0.002 XDC</dd>
-                </div>
-              </dl>
-
-              <div className="mt-6 pt-4 border-t border-emerald-100 flex flex-wrap items-center justify-between gap-3">
                 <button
                   type="button"
-                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                  onClick={() => setPoolStatsOpen((o) => !o)}
+                  aria-expanded={poolStatsOpen}
+                  className="w-full flex items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-medium text-emerald-800 hover:bg-emerald-50/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400/50"
+                >
+                  <span>{t.poolStatsToggle}</span>
+                  <svg
+                    className={`w-5 h-5 shrink-0 text-emerald-600 transition-transform ${poolStatsOpen ? "rotate-180" : ""}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {poolStatsOpen && (
+                  <dl className="px-3 pb-3 pt-0 space-y-2.5 text-sm border-t border-emerald-100/80">
+                    <div className="flex justify-between gap-4 pt-2">
+                      <dt className="text-gray-500">{t.rate}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">
+                        1 bXDC = {formatEther(exchangeRate)} XDC
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.protocolApr}</dt>
+                      <dd className="text-gray-600 text-right">{t.aprNotOnChain}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.totalStaked}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">{formatEther(totalPooled)} XDC</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.bufferHealth}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">{String(bufferHealth)}%</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.instantBuffer}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">{formatEther(instantExitBuffer)} XDC</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.minStake}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">{formatEther(minStake)} XDC</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.unbondingDelay}</dt>
+                      <dd className="text-gray-800 tabular-nums text-right">{String(withdrawDelayBlocks)} blocks</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-gray-500">{t.estimatedNetworkFee}</dt>
+                      <dd className="text-gray-600 text-right">~0.002 XDC</dd>
+                    </div>
+                  </dl>
+                )}
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-emerald-100 flex flex-wrap items-center justify-between gap-3">
+                <button
+                  type="button"
+                  className="min-h-[44px] px-1 text-sm text-emerald-700 hover:text-emerald-800 font-semibold rounded-lg hover:bg-emerald-50/80 -ml-1 transition-colors"
                   onClick={() => {
                     if (!address) onConnect?.();
                     else setShowUnstakeModal(true);
@@ -402,7 +417,10 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
                 >
                   {address ? t.withdraw : t.connectWallet}
                 </button>
-                <Link href="/stake" className="text-sm text-gray-500 hover:text-emerald-600">
+                <Link
+                  href="/stake"
+                  className="min-h-[44px] inline-flex items-center text-sm text-gray-600 hover:text-emerald-700 font-medium rounded-lg px-1 py-1 -mr-1 hover:bg-gray-50 transition-colors"
+                >
                   {t.viewPools} →
                 </Link>
               </div>

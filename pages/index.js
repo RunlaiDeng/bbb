@@ -2,7 +2,7 @@ import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
 import { HOME_LANG_QUERY, getHomeStrings } from "@/lib/i18n/homeLocale";
@@ -70,13 +70,35 @@ const LiquidityStakingComingSoon = memo(({ strings: t }) => (
 ));
 LiquidityStakingComingSoon.displayName = "LiquidityStakingComingSoon";
 
-const StakingHero = memo(({ strings: t }) => (
+const StakingHero = memo(({ strings: t, riskOpen, onRiskToggle }) => (
   <header className="text-center mb-4 sm:mb-5">
     <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-2">{t.heroTitle}</h1>
-    <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-snug mb-3">{t.heroSubtitle}</p>
-    <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed border-t border-emerald-100 pt-3">
-      {t.heroDisclaimer}
-    </p>
+    <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto leading-snug">{t.heroSubtitle}</p>
+    <div className="mt-3 flex justify-center">
+      <button
+        type="button"
+        onClick={onRiskToggle}
+        aria-expanded={riskOpen}
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-800 rounded-lg px-2 py-1 -mx-2 hover:bg-emerald-50/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
+      >
+        <svg
+          className={`w-4 h-4 shrink-0 transition-transform ${riskOpen ? "rotate-180" : ""}`}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+        {t.heroRiskToggle}
+      </button>
+    </div>
+    {riskOpen && (
+      <p className="text-xs sm:text-sm text-gray-500 max-w-xl mx-auto leading-relaxed mt-2 text-left sm:text-center rounded-xl bg-emerald-50/60 border border-emerald-100/80 px-3 py-2.5">
+        {t.heroDisclaimer}
+      </p>
+    )}
   </header>
 ));
 StakingHero.displayName = "StakingHero";
@@ -87,6 +109,7 @@ const HomeContent = memo(() => {
   const { locale, setLocale } = useLanguage();
 
   const [liquidityStakingComingSoon, setLiquidityStakingComingSoon] = useState(liquidityStakingDefault);
+  const [heroRiskOpen, setHeroRiskOpen] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -104,7 +127,7 @@ const HomeContent = memo(() => {
     else if (q === "en") setLocale("en");
   }, [router.isReady, router.query, setLocale]);
 
-  const t = getHomeStrings(locale);
+  const t = useMemo(() => getHomeStrings(locale), [locale]);
 
   const { address } = useAccount();
 
@@ -165,9 +188,13 @@ const HomeContent = memo(() => {
       `}</style>
       <WaveBackground />
       <div className="relative min-h-screen px-3 pb-8 pt-20 sm:px-4 sm:pt-24">
-        <div className="mx-auto w-full max-w-lg">
+        <div className="mx-auto w-full max-w-md sm:max-w-xl">
           <div id="stake" className="scroll-mt-20 sm:scroll-mt-24">
-            <StakingHero strings={t} />
+            <StakingHero
+              strings={t}
+              riskOpen={heroRiskOpen}
+              onRiskToggle={() => setHeroRiskOpen((v) => !v)}
+            />
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon strings={t} />
             ) : (

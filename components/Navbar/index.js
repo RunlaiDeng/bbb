@@ -60,7 +60,7 @@ const Navbar = () => {
                   }}
                 />
 
-                <div className="ml-2 hidden lg:flex items-center pt-1 space-x-2">
+                <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
                   <Link
                     href={"/stake"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
