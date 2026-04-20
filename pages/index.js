@@ -4,8 +4,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import TokenMarkets from "@/components/TokenMarkets";
-import { getXDCPrice } from "@/components/Utils";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
 import {
   HOME_LANG_QUERY,
@@ -127,6 +125,21 @@ const LiquidityStakingComingSoon = memo(({ strings: t }) => (
 ));
 LiquidityStakingComingSoon.displayName = "LiquidityStakingComingSoon";
 
+const StakingHero = memo(({ strings: t }) => (
+  <header className="text-center mb-8 sm:mb-10">
+    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-green-950 mb-3">
+      {t.heroTitle}
+    </h1>
+    <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-6">
+      {t.heroSubtitle}
+    </p>
+    <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed border-t border-base-300/40 pt-5">
+      {t.heroDisclaimer}
+    </p>
+  </header>
+));
+StakingHero.displayName = "StakingHero";
+
 const FloatingCoins = () => (
   <div className="floating-coins absolute w-full h-full overflow-hidden pointer-events-none">
     <div className="coin coin1">
@@ -175,22 +188,6 @@ const HomeContent = memo(() => {
 
   const { address } = useAccount();
 
-  const [price, setPrice] = useState({});
-
-  const fetchData = useCallback(async () => {
-    const xdc = await getXDCPrice();
-
-    setPrice((prevPrice) => ({ ...prevPrice, xdc }));
-  }, []);
-
-  const xdcPrice = price?.xdc?.price;
-
-  const xdcPriceChangeH24 = price?.xdc?.priceChange24h;
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   const handleTryNow = useCallback(async () => {
     try {
       if (!address) {
@@ -201,16 +198,6 @@ const HomeContent = memo(() => {
       console.error("Login failed:", error);
     }
   }, [privyLogin, router, address]);
-
-  const tMarkets = {
-    showBar: false,
-    searchBar: false,
-    pageSize: 4,
-    xdcPrice,
-    xdcPriceChangeH24,
-    showLogo: true,
-    tableSize: "lg",
-  };
 
   return (
     <>
@@ -322,18 +309,14 @@ const HomeContent = memo(() => {
               }}
             />
           </div>
-          <div className="card border border-base-300/40 bg-white/80 shadow-card backdrop-blur-md">
-            <div className="card-body gap-6 rounded-2xl p-4 sm:p-6 md:p-8">
+          <div className="rounded-2xl border border-base-300/40 bg-white/90 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.08),0_0_0_1px_rgba(34,197,94,0.06)] backdrop-blur-md">
+            <div className="rounded-2xl p-5 sm:p-8 md:p-10">
+              <StakingHero strings={t} />
               {liquidityStakingComingSoon ? (
                 <LiquidityStakingComingSoon strings={t} />
               ) : (
                 <XDCLiquidStakingCard strings={t} onConnect={handleTryNow} />
               )}
-              <div className="mt-2 border-t border-base-300/30 pt-6">
-                <div className="rounded-2xl border border-base-300/30 bg-white/60 p-3 shadow-inner backdrop-blur-sm sm:p-4">
-                  <TokenMarkets {...tMarkets} />
-                </div>
-              </div>
             </div>
           </div>
         </div>
