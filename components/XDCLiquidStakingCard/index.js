@@ -100,8 +100,9 @@ const XDCLiquidStakingCard = memo(({ strings: t, onConnect }) => {
   });
 
   const nftBalance = nftBalData?.[0]?.result ?? 0n;
-  const nftCount = Number(nftBalance);
-  const safeNftCount = Math.min(nftCount, 64);
+  const nftCountRaw = typeof nftBalance === "bigint" ? Number(nftBalance) : Number(nftBalance ?? 0);
+  const nftCount = Number.isFinite(nftCountRaw) ? nftCountRaw : 0;
+  const safeNftCount = Math.min(Math.max(0, Math.floor(nftCount)), 64);
 
   const tokenIndexContracts = useMemo(() => {
     if (!withdrawalNftAddress || !address || safeNftCount <= 0) return [];

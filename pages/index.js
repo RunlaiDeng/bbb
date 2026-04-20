@@ -1,17 +1,24 @@
 import usePrivyLogin from "@/components/Hook/usePrivyLogin";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import TokenMarkets from "@/components/TokenMarkets";
 import { getXDCPrice } from "@/components/Utils";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
-import XDCLiquidStakingCard from "@/components/XDCLiquidStakingCard";
 import {
   HOME_LANG_QUERY,
   getHomeLocale,
   getHomeStrings,
 } from "@/lib/i18n/homeLocale";
+
+const XDCLiquidStakingCard = dynamic(() => import("@/components/XDCLiquidStakingCard"), {
+  ssr: false,
+  loading: () => (
+    <div className="card bg-white/10 backdrop-blur-sm border border-green-200/50 rounded-xl mb-6 animate-pulse min-h-[200px]" />
+  ),
+});
 
 const WaveBackground = () => (
   <div className="wave-container fixed top-0 left-0 w-full h-full overflow-hidden">
@@ -137,11 +144,25 @@ const FloatingCoins = () => (
 const HomeContent = memo(() => {
   const privyLogin = usePrivyLogin();
   const router = useRouter();
-  const qsComing = router.query.ComingSoon;
-  const liquidityStakingComingSoon =
-    qsComing === "false" ? false : qsComing === "true" ? true : liquidityStakingDefault;
 
-  const locale = getHomeLocale(router);
+  /** Stable first paint (matches SSR) — avoids hydration mismatch from empty `router.query` */
+  const [homeUi, setHomeUi] = useState(() => ({
+    locale: "en",
+    liquidityStakingComingSoon: liquidityStakingDefault,
+  }));
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const qsComing = router.query.ComingSoon;
+    const comingSoon =
+      qsComing === "false" ? false : qsComing === "true" ? true : liquidityStakingDefault;
+    setHomeUi({
+      locale: getHomeLocale(router),
+      liquidityStakingComingSoon: comingSoon,
+    });
+  }, [router.isReady, router.asPath]);
+
+  const { locale, liquidityStakingComingSoon } = homeUi;
   const t = getHomeStrings(locale);
 
   const setLang = useCallback(
