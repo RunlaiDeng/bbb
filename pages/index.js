@@ -71,10 +71,10 @@ const LiquidityStakingComingSoon = memo(({ strings: t }) => (
 LiquidityStakingComingSoon.displayName = "LiquidityStakingComingSoon";
 
 const StakingHero = memo(({ strings: t }) => (
-  <header className="text-center mb-8 sm:mb-10">
-    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-3">{t.heroTitle}</h1>
-    <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-6">{t.heroSubtitle}</p>
-    <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed border-t border-emerald-100 pt-5">
+  <header className="text-center mb-4 sm:mb-5">
+    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-2">{t.heroTitle}</h1>
+    <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-snug mb-3">{t.heroSubtitle}</p>
+    <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed border-t border-emerald-100 pt-3">
       {t.heroDisclaimer}
     </p>
   </header>
@@ -164,9 +164,9 @@ const HomeContent = memo(() => {
         }
       `}</style>
       <WaveBackground />
-      <div className="relative min-h-screen px-3 pb-8 pt-28 sm:px-4 sm:pt-32">
+      <div className="relative min-h-screen px-3 pb-8 pt-20 sm:px-4 sm:pt-24">
         <div className="mx-auto w-full max-w-lg">
-          <div id="stake" className="scroll-mt-28">
+          <div id="stake" className="scroll-mt-20 sm:scroll-mt-24">
             <StakingHero strings={t} />
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon strings={t} />
