@@ -17,7 +17,7 @@ import mTransferABI from "../abi/mTransferABI.json";
 import sUSDBABI from "../abi/sUSDBABI.json";
 import lendABI from "../abi/LendABI.json";
 import BBBGameABI from "../abi/BBBGameABI.json";
-import LiqudityStakingABI from "../abi/LiqudityStakingABI.json";
+import XDCLiquidityStakingV15ABI from "../abi/XDCLiquidityStakingV15ABI.json";
 
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
@@ -37,7 +37,7 @@ export const rpcUrl = "https://api.bbbpump.fun";
 // export const rpcUrl = "http://192.168.0.145:10033";
 
 /** Liquidity Staking: true = show Coming Soon, false = show full functionality. Overridden by URL ?ComingSoon=false */
-export const liquidityStakingComingSoon = true;
+export const liquidityStakingComingSoon = false;
 
 export const dashboardConfig = {
   "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1": {
@@ -185,8 +185,10 @@ export const contracts = {
       abi: XDCStakeABI,
     },
     liqudityStaking: {
-      address: "0x884f9B2c2f5Ae2FBB27d89413AF64A9Fa4C91f26",
-      abi: LiqudityStakingABI,
+      address:
+        (typeof process !== "undefined" && process.env.NEXT_PUBLIC_LSP_STAKING_ADDRESS) ||
+        "0x884f9B2c2f5Ae2FBB27d89413AF64A9Fa4C91f26",
+      abi: XDCLiquidityStakingV15ABI,
     },
     usdb: {
       address: "0xA23885c8E0743C734Bd6Da0df66e2631Ee9Bc6D8",
