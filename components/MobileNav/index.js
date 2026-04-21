@@ -120,7 +120,7 @@ const MobileNav = () => {
           </Link>
 
           <Link
-            href="/#stake"
+            href="/stake"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] ${
               onStake || router.pathname === "/stake"
                 ? "text-green-600 font-semibold bg-green-50"
