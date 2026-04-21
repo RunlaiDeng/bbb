@@ -10,7 +10,7 @@ export const wagmiConfig = getDefaultConfig({
   appName: "BBBFI",
   projectId:
     walletConnectProjectId ||
-    "00000000000000000000000000000000",
+    "2a612b9a18e81ce3fda2f82787eb6a4a",
   chains: [xdc],
   transports: {
     [xdc.id]: http("https://rpc.ankr.com/xdc"),
