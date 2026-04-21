@@ -1,26 +1,32 @@
 import Head from 'next/head';
+import { useMemo } from 'react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 const BrandAssets = () => {
-  const assets = [
-    {
-      name: 'BBB Favicon',
-      description: 'Official BBB favicon for browser tab icons',
-      path: '/logosm.png',
-      fileName: 'logosm.png',
-    },
-    {
-      name: 'BBB Pump Card',
-      description: 'Official BBB pump card image',
-      path: '/bbbpump-card.png',
-      fileName: 'bbbpump-card.png',
-    },
-    {
-      name: 'BBB Logo',
-      description: 'Official BBB logo image',
-      path: '/logo.png',
-      fileName: 'logo.png',
-    },
-  ];
+  const t = useTranslation();
+  const assets = useMemo(
+    () => [
+      {
+        name: t.brandPage.faviconName,
+        description: t.brandPage.faviconDesc,
+        path: '/logosm.png',
+        fileName: 'logosm.png',
+      },
+      {
+        name: t.brandPage.pumpCardName,
+        description: t.brandPage.pumpCardDesc,
+        path: '/bbbpump-card.png',
+        fileName: 'bbbpump-card.png',
+      },
+      {
+        name: t.brandPage.logoName,
+        description: t.brandPage.logoDesc,
+        path: '/logo.png',
+        fileName: 'logo.png',
+      },
+    ],
+    [t]
+  );
 
   const handleDownload = (path, fileName) => {
     const link = document.createElement('a');
@@ -34,14 +40,14 @@ const BrandAssets = () => {
   return (
     <>
       <Head>
-        <title>BBB Brand Assets</title>
+        <title>{t.pageMeta.brandTitle}</title>
       </Head>
       
       <div className="container mx-auto px-4 py-16 min-h-screen bg-gradient-to-b from-green-50 to-green-100">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4 text-green-800">Brand Assets</h1>
+          <h1 className="text-4xl font-bold mb-4 text-green-800">{t.pageMeta.brandH1}</h1>
           <p className="text-green-600">
-            Download official BBB brand assets and logos
+            {t.pageMeta.brandLead}
           </p>
         </div>
         
@@ -77,7 +83,7 @@ const BrandAssets = () => {
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                       />
                     </svg>
-                    Download
+                    {t.brandPage.download}
                   </button>
                 </div>
               </div>

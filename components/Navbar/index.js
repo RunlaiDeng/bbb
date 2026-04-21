@@ -6,7 +6,8 @@ import { useAccount } from "wagmi";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useLanguage } from "../Context/LanguageContext";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
-import { MORE_NAV_ITEMS } from "@/lib/navMore";
+import { MORE_NAV_META } from "@/lib/navMore";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function shortenAddress(addr) {
   if (!addr || typeof addr !== "string") return "";
@@ -22,6 +23,7 @@ const Navbar = () => {
   const { address, isConnected } = useAccount();
 
   const { locale, setLocale } = useLanguage();
+  const t = useTranslation();
   const openConnect = useConnectWallet();
   const { openAccountModal } = useAccountModal();
 
@@ -65,7 +67,7 @@ const Navbar = () => {
                     href={"/stake"}
                     className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
                   >
-                    Stake
+                    {t.nav.stake}
                   </Link>
 
                   <div className="dropdown dropdown-hover font-bold">
@@ -74,13 +76,13 @@ const Navbar = () => {
                       role="button"
                       className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
                     >
-                      More
+                      {t.nav.more}
                     </div>
                     <ul
                       tabIndex={0}
                       className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50 max-h-[min(70vh,28rem)] overflow-y-auto"
                     >
-                      {MORE_NAV_ITEMS.map((item) => (
+                      {MORE_NAV_META.map((item) => (
                         <li key={item.key} className="rounded-lg">
                           {item.external ? (
                             <a
@@ -89,14 +91,14 @@ const Navbar = () => {
                               rel="noopener noreferrer"
                               className="hover:text-green-600 hover:bg-green-50 rounded-lg"
                             >
-                              {item.label}
+                              {t.navMore[item.key]}
                             </a>
                           ) : (
                             <Link
                               href={item.href}
                               className="hover:text-green-600 hover:bg-green-50 rounded-lg"
                             >
-                              {item.label}
+                              {t.navMore[item.key]}
                             </Link>
                           )}
                         </li>
@@ -113,16 +115,16 @@ const Navbar = () => {
                       type="button"
                       className="btn btn-sm bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 rounded-xl"
                       onClick={openConnect}
-                      aria-label="Connect"
+                      aria-label={t.nav.connect}
                     >
-                      Connect
+                      {t.nav.connect}
                     </button>
                   ) : (
                     <button
                       type="button"
                       className="btn btn-sm bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100 font-mono text-xs max-w-[11rem] truncate px-3"
                       onClick={() => openAccountModal?.()}
-                      aria-label="Wallet account"
+                      aria-label={t.nav.walletAccount}
                     >
                       {walletLabel}
                     </button>

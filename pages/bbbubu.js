@@ -7,8 +7,11 @@ import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { formatSiteString } from "@/lib/i18n/siteStrings";
 
 const BBBubu = () => {
+  const t = useTranslation();
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const openConnect = useConnectWallet();
@@ -135,10 +138,10 @@ const BBBubu = () => {
   // WriteButton 配置对象
   const mint = {
     buttonName: data.isLoading
-      ? "Minting..."
+      ? t.bbbubu.minting
       : !xdcBalance || xdcBalance.value < totalCost
-      ? "Insufficient Balance"
-      : "Mint",
+      ? t.bbbubu.insufficientBalance
+      : t.bbbubu.mint,
     data: {
       address: bbbubuAddress,
       abi: contracts[chainId]?.bbbubu?.abi || [],
@@ -159,7 +162,7 @@ const BBBubu = () => {
   };
 
   const approve = {
-    buttonName: data.isLoading ? "Approving..." : "Approve NFTs",
+    buttonName: data.isLoading ? t.bbbubu.approvingEllipsis : t.bbbubu.approveNfts,
     data: {
       address: carrotFarmerAddress,
       abi: contracts[chainId]?.carrotFarmer?.abi || [],
@@ -179,7 +182,7 @@ const BBBubu = () => {
   };
 
   const approveForTransfer = {
-    buttonName: data.isLoading ? "Approving..." : "Approve for Transfer",
+    buttonName: data.isLoading ? t.bbbubu.approvingEllipsis : t.bbbubu.approveForTransfer,
     data: {
       address: bbbubuAddress,
       abi: contracts[chainId]?.bbbubu?.abi || [],
@@ -219,10 +222,10 @@ const BBBubu = () => {
 
   const swap = {
     buttonName: data.isLoading
-      ? "Swapping..."
+      ? t.bbbubu.swappingEllipsis
       : data.selectedTokenIds.length === 0
-      ? "Select NFTs to Swap"
-      : `Swap ${data.selectedTokenIds.length} NFTs`,
+      ? t.bbbubu.selectNftsToSwap
+      : formatSiteString(t.bbbubu.swapNfts, { count: data.selectedTokenIds.length }),
     data: {
       address: bbbubuAddress,
       abi: contracts[chainId]?.bbbubu?.abi || [],
@@ -243,10 +246,10 @@ const BBBubu = () => {
 
   const transfer = {
     buttonName: data.isLoading
-      ? "Transferring..."
+      ? t.bbbubu.transferringEllipsis
       : data.selectedTransferTokenIds.length === 0
-      ? "Select NFTs to Transfer"
-      : `Transfer ${data.selectedTransferTokenIds.length} NFTs`,
+      ? t.bbbubu.selectNftsToTransfer
+      : formatSiteString(t.bbbubu.transferNfts, { count: data.selectedTransferTokenIds.length }),
     data: {
       address: multiTransferAddress,
       abi: contracts[chainId]?.multitransfer?.abi || [],
@@ -518,10 +521,10 @@ const BBBubu = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4 mobile-safe-bottom">
       <Head>
-        <title>BBBubu - Mystery Box NFT Collection</title>
+        <title>{t.pageMeta.bbbubuTitle}</title>
         <meta
           name="description"
-          content="Mint exclusive BBBubu mystery box NFTs"
+          content={t.pageMeta.bbbubuDescription}
         />
       </Head>
 
@@ -529,17 +532,17 @@ const BBBubu = () => {
         {/* Sale Title */}
         <div className="text-center mb-4">
           <h1 className="text-2xl font-bold text-gray-800 mb-1">
-            BBBubu NFT Sale
+            {t.pageMeta.bbbubuH1}
           </h1>
           <p className="text-gray-600 text-sm">
-            Exclusive Mystery Box Collection
+            {t.pageMeta.bbbubuSub}
           </p>
         </div>
 
         {/* Progress Section */}
         <div className="mb-6 bg-white border-2 border-gray-300 rounded-xl p-4 shadow-sm">
           <div className="flex justify-between text-gray-600 mb-2 text-sm">
-            <span>Minting Progress</span>
+            <span>{t.bbbubu.mintingProgress}</span>
             <span>
               {totalSupply.toString()}/
               {Number(totalSupply) + Number(remainingSupply)}
@@ -558,8 +561,8 @@ const BBBubu = () => {
             />
           </div>
           <div className="flex justify-between text-gray-500 mt-2 text-xs">
-            <span>Minted</span>
-            <span>Total Supply</span>
+            <span>{t.bbbubu.minted}</span>
+            <span>{t.bbbubu.totalSupplyLabel}</span>
           </div>
         </div>
 
@@ -572,7 +575,7 @@ const BBBubu = () => {
           )}
           <Image
             src="/bbbubu.gif"
-            alt="BBBubu NFT"
+            alt={t.bbbubu.nftAlt}
             fill
             className="object-cover"
             priority
@@ -589,41 +592,39 @@ const BBBubu = () => {
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
           <div className="text-center">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">
-              How to Get BBBubu NFTs
+              {t.bbbubu.howToGetTitle}
             </h3>
 
             {/* Limited Supply Warning */}
             <div className="mb-4 p-2 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-600 text-sm font-semibold">
-                ⚠️ Limited Supply - First Come, First Served!
+                {t.bbbubu.limitedWarning}
               </p>
             </div>
 
             {/* Direct Purchase Option */}
             <div className="mb-4 p-3 bg-white rounded-lg border border-blue-200">
               <h4 className="font-semibold text-gray-800 mb-2">
-                💰 Direct Purchase
+                {t.bbbubu.directPurchaseTitle}
               </h4>
               <p className="text-gray-600 text-sm">
-                You can directly purchase BBBubu NFTs with{" "}
-                <span className="font-semibold text-blue-600">600 XDC</span>{" "}
-                each
+                {formatSiteString(t.bbbubu.directPurchaseBody, { price: "600 XDC" })}
               </p>
             </div>
 
             {/* Swap Option */}
             <div className="mb-4 p-3 bg-white rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-gray-800 mb-2">🔄 1:1 Swap</h4>
+              <h4 className="font-semibold text-gray-800 mb-2">{t.bbbubu.swapSectionTitle}</h4>
               <p className="text-gray-600 text-sm mb-2">
-                If you hold Farm NFTs, you can use{" "}
-                <span className="font-semibold text-blue-600">Swap</span> to
-                exchange them 1:1 for BBBubu NFTs
+                {formatSiteString(t.bbbubu.swapBody, {
+                  swap: <span className="font-semibold text-blue-600">{t.bbbubu.swapWord}</span>,
+                })}
               </p>
               <Link
                 href="/farm"
                 className="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors"
               >
-                View My Farm NFTs →
+                {t.bbbubu.viewFarmNfts}
               </Link>
             </div>
           </div>
@@ -638,7 +639,7 @@ const BBBubu = () => {
             className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-4 text-xl font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
             disabled={false}
           >
-            Mint
+            {t.bbbubu.mintBtn}
           </button>
           <button
             onClick={() =>
@@ -647,7 +648,7 @@ const BBBubu = () => {
             className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-4 text-xl font-bold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
             disabled={false}
           >
-            Swap
+            {t.bbbubu.swapBtn}
           </button>
         </div>
 
@@ -656,11 +657,10 @@ const BBBubu = () => {
           <div className="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-4">
             <div className="text-center mb-4">
               <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                Your BBBubu NFTs
+                {t.bbbubu.yourBbbubuTitle}
               </h3>
               <p className="text-gray-600 text-sm">
-                You own {userBBBubuNFTs.length} BBBubu NFT
-                {userBBBubuNFTs.length !== 1 ? "s" : ""}
+                {formatSiteString(t.bbbubu.youOwnBbbubu, { count: userBBBubuNFTs.length })}
               </p>
               
               {/* Play BBBGame Button */}
@@ -669,10 +669,10 @@ const BBBubu = () => {
                   href="/bbbgame"
                   className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  🎮 Play BBBGame
+                  {t.bbbubu.playBbbGame}
                 </Link>
                 <p className="text-xs text-gray-500 mt-2">
-                  Use your BBBubu NFTs to battle and earn rewards!
+                  {t.bbbubu.playBbbGameHint}
                 </p>
               </div>
             </div>
@@ -687,7 +687,7 @@ const BBBubu = () => {
                   data.selectedTransferTokenIds.length === userBBBubuNFTs.length
                 }
               >
-                Select All ({userBBBubuNFTs.length})
+                {formatSiteString(t.bbbubu.selectAll, { count: userBBBubuNFTs.length })}
               </button>
               <button
                 onClick={deselectAllTransferNFTs}
@@ -696,10 +696,10 @@ const BBBubu = () => {
                   data.isLoading || data.selectedTransferTokenIds.length === 0
                 }
               >
-                Clear Selection
+                {t.bbbubu.clearSelection}
               </button>
               <span className="text-xs text-gray-500 self-center">
-                {data.selectedTransferTokenIds.length} selected
+                {formatSiteString(t.bbbubu.selectedShort, { count: data.selectedTransferTokenIds.length })}
               </span>
             </div>
 
@@ -781,7 +781,7 @@ const BBBubu = () => {
                   onClick={resetLoadingState}
                   className="w-full py-2 text-sm bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
-                  Reset Loading State (Debug)
+                  {t.bbbubu.resetDebug}
                 </button>
               </div>
             )}
@@ -794,7 +794,7 @@ const BBBubu = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Mint BBBubu</h2>
+              <h2 className="text-2xl font-bold text-gray-800">{t.bbbubu.mintModalTitle}</h2>
               <button
                 onClick={() =>
                   setData((prev) => ({ ...prev, showMintModal: false }))
@@ -808,7 +808,7 @@ const BBBubu = () => {
             {/* Progress Section */}
             <div className="mb-6">
               <div className="flex justify-between text-gray-600 mb-2 text-sm">
-                <span>Progress</span>
+                <span>{t.bbbubu.progress}</span>
                 <span>
                   {totalSupply.toString()}/
                   {Number(totalSupply) + Number(remainingSupply)}
@@ -831,7 +831,7 @@ const BBBubu = () => {
             {/* Progress Bars */}
             {data.mintProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Minting...</div>
+                <div className="text-gray-600 text-sm mb-1">{t.bbbubu.mintingEllipsis}</div>
                 <ProgressBar progress={data.mintProgress} />
               </div>
             )}
@@ -839,23 +839,23 @@ const BBBubu = () => {
             {/* Cost Info */}
             <div className="bg-gray-50 rounded-2xl p-4 mb-6 space-y-3 border border-gray-200">
               <div className="flex justify-between">
-                <span className="text-gray-600">Amount:</span>
+                <span className="text-gray-600">{t.bbbubu.amount}</span>
                 <span className="text-gray-800 font-semibold">
                   {data.quantity} BBBUBU
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Unit Price:</span>
+                <span className="text-gray-600">{t.bbbubu.unitPrice}</span>
                 <span className="text-gray-600">600 XDC</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Total Price:</span>
+                <span className="text-gray-600">{t.bbbubu.totalPrice}</span>
                 <span className="text-gray-800 font-semibold">
                   {formatEther(totalCost)} XDC
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Your Balance:</span>
+                <span className="text-gray-600">{t.bbbubu.yourBalance}</span>
                 <span className="text-gray-800 font-semibold">
                   {xdcBalance ? parseFloat(formatEther(xdcBalance.value)).toFixed(2) : "0"} XDC
                 </span>
@@ -876,7 +876,7 @@ const BBBubu = () => {
                   {data.quantity}
                 </span>
                 <div className="text-xs text-gray-500 mt-1">
-                  max: {Number(remainingSupply)}
+                  {t.bbbubu.maxLabel} {Number(remainingSupply)}
                 </div>
               </div>
               <button
@@ -907,7 +907,7 @@ const BBBubu = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 mobile-safe-modal">
           <div className="bg-white rounded-3xl p-8 max-w-md w-full max-h-[80vh] overflow-y-auto shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Swap Farm</h2>
+              <h2 className="text-2xl font-bold text-gray-800">{t.bbbubu.swapFarmTitle}</h2>
               <button
                 onClick={() =>
                   setData((prev) => ({
@@ -925,13 +925,13 @@ const BBBubu = () => {
             {/* Progress Bars */}
             {data.approveProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Approving...</div>
+                <div className="text-gray-600 text-sm mb-1">{t.bbbubu.approvingEllipsis}</div>
                 <ProgressBar progress={data.approveProgress} />
               </div>
             )}
             {data.swapProgress > 0 && (
               <div className="mb-4">
-                <div className="text-gray-600 text-sm mb-1">Swapping...</div>
+                <div className="text-gray-600 text-sm mb-1">{t.bbbubu.swappingEllipsis}</div>
                 <ProgressBar progress={data.swapProgress} />
               </div>
             )}
@@ -940,10 +940,10 @@ const BBBubu = () => {
               <>
                 <div className="mb-6">
                   <p className="text-gray-600 mb-4">
-                    You own {userCarrotFarmerNFTs.length} CarrotFarmer NFTs
+                    {formatSiteString(t.bbbubu.youOwnCarrot, { count: userCarrotFarmerNFTs.length })}
                   </p>
                   <p className="text-gray-500 mb-3 text-sm">
-                    Select NFTs to swap (1:1 exchange ratio):
+                    {t.bbbubu.selectToSwapHint}
                   </p>
 
                   {/* Select All Controls */}
@@ -957,7 +957,7 @@ const BBBubu = () => {
                           userCarrotFarmerNFTs.length
                       }
                     >
-                      Select All ({userCarrotFarmerNFTs.length})
+                      {formatSiteString(t.bbbubu.selectAll, { count: userCarrotFarmerNFTs.length })}
                     </button>
                     <button
                       onClick={deselectAllNFTs}
@@ -966,10 +966,10 @@ const BBBubu = () => {
                         data.isLoading || data.selectedTokenIds.length === 0
                       }
                     >
-                      Clear Selection
+                      {t.bbbubu.clearSelection}
                     </button>
                     <span className="text-xs text-gray-500 self-center">
-                      {data.selectedTokenIds.length} selected
+                      {formatSiteString(t.bbbubu.selectedShort, { count: data.selectedTokenIds.length })}
                     </span>
                   </div>
 
@@ -1019,7 +1019,7 @@ const BBBubu = () => {
                           />
                         </div>
                         <span className="text-[10px] text-center">
-                          Farm #{tokenId.toString()}
+                          {formatSiteString(t.bbbubu.farmTokenLabel, { id: tokenId.toString() })}
                         </span>
                       </button>
                     ))}
@@ -1028,29 +1028,29 @@ const BBBubu = () => {
 
                 <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Selected:</span>
+                    <span className="text-gray-600">{t.bbbubu.selectedLabel}</span>
                     <span className="text-gray-800 font-semibold">
-                      {data.selectedTokenIds.length} NFTs
+                      {data.selectedTokenIds.length} {t.bbbubu.nftsWord}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Exchange Ratio:</span>
+                    <span className="text-gray-600">{t.bbbubu.exchangeRatio}</span>
                     <span className="text-gray-800">1:1</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Will Receive:</span>
+                    <span className="text-gray-600">{t.bbbubu.willReceive}</span>
                     <span className="text-gray-800 font-semibold">
-                      {data.selectedTokenIds.length} BBBubu NFTs
+                      {formatSiteString(t.bbbubu.receiveBbbubu, { count: data.selectedTokenIds.length })}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Approval Status:</span>
+                    <span className="text-gray-600">{t.bbbubu.approvalStatus}</span>
                     <span
                       className={`font-semibold ${
                         isApprovedForAll ? "text-green-600" : "text-red-600"
                       }`}
                     >
-                      {isApprovedForAll ? "Approved" : "Not Approved"}
+                      {isApprovedForAll ? t.bbbubu.approved : t.bbbubu.notApproved}
                     </span>
                   </div>
                 </div>
@@ -1059,8 +1059,7 @@ const BBBubu = () => {
                 {!isApprovedForAll ? (
                   <div className="space-y-3">
                     <div className="text-center text-gray-600 text-sm">
-                      You need to approve CarrotFarmer NFTs first to proceed
-                      with swapping
+                      {t.bbbubu.needApproveCarrot}
                     </div>
                     <WriteButton
                       {...approve}
@@ -1078,16 +1077,16 @@ const BBBubu = () => {
               <div className="text-center py-12">
                 <div className="text-6xl mb-4 opacity-50">🥕</div>
                 <p className="text-gray-600 text-lg mb-2">
-                  You don&apos;t have any CarrotFarmer NFTs
+                  {t.bbbubu.noCarrotTitle}
                 </p>
                 <p className="text-gray-500 text-sm">
-                  Please get CarrotFarmer NFTs first to swap
+                  {t.bbbubu.noCarrotHint}
                 </p>
                 <button
                   onClick={() => refetchPublicData()}
                   className="mt-4 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  Refresh Data
+                  {t.bbbubu.refreshData}
                 </button>
               </div>
             )}
@@ -1101,7 +1100,7 @@ const BBBubu = () => {
           <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
-                Transfer BBBubu NFTs
+                {t.bbbubu.transferModalTitle}
               </h2>
               <button
                 onClick={() =>
@@ -1122,7 +1121,7 @@ const BBBubu = () => {
             {data.transferProgress > 0 && (
               <div className="mb-4">
                 <div className="text-gray-600 text-sm mb-1">
-                  Transferring...
+                  {t.bbbubu.transferringEllipsis}
                 </div>
                 <ProgressBar progress={data.transferProgress} />
               </div>
@@ -1130,7 +1129,7 @@ const BBBubu = () => {
             {data.approveProgress > 0 && (
               <div className="mb-4">
                 <div className="text-gray-600 text-sm mb-1">
-                  Approving for Transfer...
+                  {t.bbbubu.approvingForTransferEllipsis}
                 </div>
                 <ProgressBar progress={data.approveProgress} />
               </div>
@@ -1139,16 +1138,16 @@ const BBBubu = () => {
             {/* Transfer Info */}
             <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-200">
               <div className="flex justify-between mb-2">
-                <span className="text-gray-600">Selected NFTs:</span>
+                <span className="text-gray-600">{t.bbbubu.selectedNftsLabel}</span>
                 <span className="text-gray-800 font-semibold">
                   {data.selectedTransferTokenIds.length}
                 </span>
               </div>
               <div className="text-xs text-gray-500 mb-2">
-                Token IDs: {data.selectedTransferTokenIds.join(", ")}
+                {t.bbbubu.tokenIdsLabel} {data.selectedTransferTokenIds.join(", ")}
               </div>
               <div className="flex justify-between mb-2">
-                <span className="text-gray-600">Transfer Approval:</span>
+                <span className="text-gray-600">{t.bbbubu.transferApproval}</span>
                 <span
                   className={`font-semibold text-xs ${
                     isApprovedForMultiTransfer
@@ -1157,25 +1156,25 @@ const BBBubu = () => {
                   }`}
                 >
                   {isApprovedForMultiTransfer
-                    ? "✅ Approved"
-                    : "❌ Not Approved"}
+                    ? t.bbbubu.approvedEmoji
+                    : t.bbbubu.notApprovedEmoji}
                 </span>
               </div>
               {data.isLoading && (
                 <div className="flex justify-between mb-2">
-                  <span className="text-gray-600">Status:</span>
+                  <span className="text-gray-600">{t.bbbubu.status}</span>
                   <span className="text-blue-600 text-xs font-semibold">
                     {data.approveProgress > 0
-                      ? "Approving..."
+                      ? t.bbbubu.statusApproving
                       : data.transferProgress > 0
-                      ? "Transferring..."
-                      : "Processing..."}
+                      ? t.bbbubu.statusTransferring
+                      : t.bbbubu.statusProcessing}
                   </span>
                 </div>
               )}
               {data.selectedTransferTokenIds.length > 1 && (
                 <div className="text-xs text-green-600 bg-green-50 p-2 rounded">
-                  ✅ All NFTs will be transferred in a single transaction
+                  {t.bbbubu.batchSingleTx}
                 </div>
               )}
             </div>
@@ -1183,7 +1182,7 @@ const BBBubu = () => {
             {/* Recipient Address Input */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Recipient Address
+                {t.bbbubu.recipientAddress}
               </label>
               <input
                 type="text"
@@ -1194,7 +1193,7 @@ const BBBubu = () => {
                     transferAddress: e.target.value,
                   }))
                 }
-                placeholder="Enter recipient wallet address (0x...)"
+                placeholder={t.bbbubu.recipientPlaceholder}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 disabled={data.isLoading}
               />
@@ -1202,11 +1201,11 @@ const BBBubu = () => {
                 <div className="mt-2">
                   {data.transferAddress.match(/^0x[a-fA-F0-9]{40}$/) ? (
                     <span className="text-xs text-green-600">
-                      ✓ Valid address format
+                      {t.bbbubu.validAddress}
                     </span>
                   ) : (
                     <span className="text-xs text-red-600">
-                      ⚠ Invalid address format
+                      {t.bbbubu.invalidAddress}
                     </span>
                   )}
                 </div>
@@ -1216,13 +1215,11 @@ const BBBubu = () => {
             {/* Warning */}
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6">
               <p className="text-yellow-800 text-sm">
-                <span className="font-semibold">⚠️ Warning:</span> Please
-                double-check the recipient address. NFT transfers cannot be
-                reversed!
+                <span className="font-semibold">{t.bbbubu.transferWarningTitle}</span>{" "}
+                {t.bbbubu.transferWarningBody}
               </p>
               <p className="text-yellow-700 text-xs mt-1">
-                Using secure batch transfer contract for efficient multi-NFT
-                transfers.
+                {t.bbbubu.transferWarningSub}
               </p>
             </div>
 
@@ -1230,7 +1227,7 @@ const BBBubu = () => {
             {!isApprovedForMultiTransfer ? (
               <div className="space-y-3">
                 <div className="text-center text-gray-600 text-sm">
-                  You need to approve BBBubu NFTs for batch transfer first
+                  {t.bbbubu.needApproveTransfer}
                 </div>
                 <WriteButton
                   {...approveForTransfer}
@@ -1251,7 +1248,7 @@ const BBBubu = () => {
                   onClick={resetLoadingState}
                   className="w-full py-2 text-sm bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                 >
-                  Reset Loading State (Debug)
+                  {t.bbbubu.resetDebug}
                 </button>
               </div>
             )}

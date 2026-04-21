@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { getBBBPrice } from "@/components/Utils";
 import { useRouter } from "next/router";
 import StakingPool from "@/components/StakingPool";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { formatSiteString } from "@/lib/i18n/siteStrings";
 
 // Process pool ids for hash navigation (move outside component to avoid dependency issues)
 const POOL_HASH_MAP = {
@@ -9,33 +11,35 @@ const POOL_HASH_MAP = {
   "susdb": "lpv2-4",
 };
 
-// Pool configurations (move outside component)
-const POOL_CONFIGS = [
-  { 
-    id: 'lp-2', 
-    pid: 2, 
-    poolType: 'lp', 
-    title: 'BBB Staking', 
-    symbol: 'BBB',
-    icon: "/bbb.jpg",
-    getTokenLink: "/buy",
-    hashTag: "#bbb"
-  },
-
-  { 
-    id: 'lpv2-4', 
-    pid: 4, 
-    poolType: 'lpstakev2', 
-    title: 'sUSDB Staking', 
-    symbol: 'sUSDB',
-    icon: "/susdb.png",
-    getTokenLink: "/usdb",
-    hashTag: "#susdb",
-    decimals: 6
-  },
-];
-
 const Stake = () => {
+  const t = useTranslation();
+
+  const POOL_CONFIGS = useMemo(
+    () => [
+      {
+        id: "lp-2",
+        pid: 2,
+        poolType: "lp",
+        title: t.stakePage.poolTitleBbb,
+        symbol: "BBB",
+        icon: "/bbb.jpg",
+        getTokenLink: "/buy",
+        hashTag: "#bbb",
+      },
+      {
+        id: "lpv2-4",
+        pid: 4,
+        poolType: "lpstakev2",
+        title: t.stakePage.poolTitleSusdb,
+        symbol: "sUSDB",
+        icon: "/susdb.png",
+        getTokenLink: "/usdb",
+        hashTag: "#susdb",
+        decimals: 6,
+      },
+    ],
+    [t]
+  );
   const [data, setData] = useState({
     bbbPrice: 0,
     lpTokenPrice: 0,
@@ -192,13 +196,13 @@ const Stake = () => {
   return (
     <div className="m-auto md:w-3/4 w-full px-4 md:px-0 mt-6 pb-20">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-green-600">Stake</h1>
-        <div className="text-sm text-green-700">🌊 Stake to earn</div>
+        <h1 className="text-2xl font-bold text-green-600">{t.stakePage.title}</h1>
+        <div className="text-sm text-green-700">{t.stakePage.subtitle}</div>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 mb-6">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Sort by:</span>
+          <span className="text-sm text-gray-600">{t.stakePage.sortBy}</span>
           <select
             value={data.sortBy}
             onChange={(e) =>
@@ -206,16 +210,16 @@ const Stake = () => {
             }
             className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white min-w-[140px]"
           >
-            <option value="apr">APR</option>
-            <option value="latest">Latest</option>
+            <option value="apr">{t.stakePage.sortApr}</option>
+            <option value="latest">{t.stakePage.sortLatest}</option>
           </select>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Search:</span>
+          <span className="text-sm text-gray-600">{t.stakePage.search}</span>
           <div className="relative">
             <input
               type="text"
-              placeholder="Search pools..."
+              placeholder={t.stakePage.searchPoolsPlaceholder}
               value={data.searchQuery}
               onChange={(e) =>
                 setData((prev) => ({ ...prev, searchQuery: e.target.value }))
@@ -238,11 +242,10 @@ const Stake = () => {
 
       {data.searchQuery && (
         <div className="mb-4 text-sm text-gray-600">
-          Found {filteredPools.length} pool
-          {filteredPools.length !== 1 ? "s" : ""}
-          {filteredPools.length > 0
-            ? ` matching \`${data.searchQuery}\``
-            : ` for \`${data.searchQuery}\``}
+          {formatSiteString(
+            filteredPools.length > 0 ? t.stakePage.foundPools : t.stakePage.foundPoolsNone,
+            { count: filteredPools.length, query: data.searchQuery }
+          )}
         </div>
       )}
 
@@ -258,6 +261,7 @@ const Stake = () => {
             addTokenToWallet={addTokenToWallet}
             bbbTokenAddress="0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
             onAPRChange={(apr) => handleAPRChange(poolConfig.id, apr)}
+            strings={t}
           />
         ))
       ) : data.searchQuery ? (
@@ -278,16 +282,16 @@ const Stake = () => {
             </svg>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No pools found
+            {t.stakePage.noPoolsFound}
           </h3>
           <p className="text-gray-500 mb-4">
-            No pools match your search for `{data.searchQuery}`
+            {formatSiteString(t.stakePage.noPoolsMatch, { query: data.searchQuery })}
           </p>
           <button
             onClick={() => setData((prev) => ({ ...prev, searchQuery: "" }))}
             className="text-green-600 hover:text-green-700 font-medium"
           >
-            Clear search
+            {t.stakePage.clearSearch}
           </button>
         </div>
       ) : null}

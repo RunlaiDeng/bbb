@@ -9,8 +9,10 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../Context/notice";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const WriteButton = (props) => {
+  const wb = useTranslation();
   const { success, failure } = useNotification();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -54,7 +56,7 @@ const WriteButton = (props) => {
   useEffect(() => {
     if (txSuccess) {
       props?.callback?.(txSuccess, hash);
-      success("Transaction successful!");
+      success(wb.writeButton.txSuccess);
     }
   }, [txSuccess]);
 
@@ -88,13 +90,13 @@ const WriteButton = (props) => {
         style={{ minWidth: 112, cursor: "pointer" }}
         onClick={async () => {
           if (!isConnected) {
-            alert("please connect wallet");
+            alert(wb.writeButton.pleaseConnectWallet);
             return;
           }
 
           if (!props?.data) {
             console.error("No transaction data provided");
-            failure("Transaction data is missing");
+            failure(wb.writeButton.txDataMissing);
             return;
           }
 
@@ -111,10 +113,11 @@ const WriteButton = (props) => {
           write?.(writeData);
         }}
       >
-        {isLoading && "Waiting for approval"}
+        {isLoading && wb.writeButton.waitingApproval}
         {isStarted && !txSuccess && (
           <>
-            <span className="loading loading-spinner"></span>loading
+            <span className="loading loading-spinner"></span>
+            {wb.writeButton.loading}
           </>
         )}
         {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
@@ -126,7 +129,7 @@ const WriteButton = (props) => {
           openConnect();
         }}
       >
-        Connect
+        {wb.writeButton.connect}
       </div>
     ))
   );

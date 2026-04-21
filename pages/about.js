@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import rpc from "@/components/Rpc";
 import { getKline, getXDCPrice } from "@/components/Utils";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const About = () => {
+  const t = useTranslation();
   const [data, setData] = useState({});
 
   async function fetchData(params) {
@@ -27,9 +29,9 @@ const About = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
           <div className="flex-1">
-            <h1 className="text-6xl font-bold text-gray-900 mb-6">Welcome to BBBFI</h1>
+            <h1 className="text-6xl font-bold text-gray-900 mb-6">{t.about.welcomeTitle}</h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              At BBBFI, we believe that everyone should have the freedom to earn, hold, spend, share and give their money - no matter who you are or where you come from.
+              {t.about.welcomeLead}
             </p>
           </div>
           <div className="flex-1">
@@ -169,7 +171,7 @@ const About = () => {
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-gray-900">{user?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Users</div>
+                  <div className="text-sm text-gray-500">{t.about.totalUsers}</div>
                 </div>
               </div>
             </div>
@@ -195,7 +197,7 @@ const About = () => {
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-gray-900">${volume?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Volume</div>
+                  <div className="text-sm text-gray-500">{t.about.totalVolume}</div>
                 </div>
               </div>
             </div>
@@ -214,7 +216,7 @@ const About = () => {
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-gray-900">${fee?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-500">Total Fee</div>
+                  <div className="text-sm text-gray-500">{t.about.totalFee}</div>
                 </div>
               </div>
             </div>
@@ -261,9 +263,9 @@ const About = () => {
             </svg>
           </div>
           <div className="flex-1">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Vision</h2>
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.about.visionTitle}</h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Our vision is to increase the freedom of money globally. We believe that by spreading this freedom, we can significantly improve lives around the world.
+              {t.about.visionBody}
             </p>
           </div>
         </div>
@@ -272,9 +274,9 @@ const About = () => {
       {/* Ecosystem Section */}
       <div className="bg-green-50 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Ecosystem</h2>
+          <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.about.ecosystemTitle}</h2>
           <p className="text-xl text-gray-600 mb-12">
-            Our platform is trusted by millions worldwide, and features an unmatched portfolio of financial product offerings.
+            {t.about.ecosystemLead}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
@@ -367,9 +369,9 @@ const About = () => {
                   </circle>
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">BBBFI Exchange</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">{t.about.exchangeCardTitle}</h3>
               <p className="text-gray-600">
-                BBBFI Exchange is the largest crypto exchange by trade volume on xdc network.
+                {t.about.exchangeCardBody}
               </p>
             </div>
           </div>

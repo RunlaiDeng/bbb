@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { MORE_NAV_ITEMS } from "@/lib/navMore";
+import { MORE_NAV_META } from "@/lib/navMore";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function isMoreSectionActive(router) {
   const p = router.pathname;
@@ -11,6 +12,7 @@ function isMoreSectionActive(router) {
 
 const MobileNav = () => {
   const router = useRouter();
+  const t = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
   const onStake =
@@ -43,29 +45,29 @@ const MobileNav = () => {
           className="fixed inset-0 z-[100] lg:hidden flex flex-col justify-end"
           role="dialog"
           aria-modal="true"
-          aria-label="More navigation"
+          aria-label={t.nav.more}
         >
           <button
             type="button"
             className="absolute inset-0 bg-black/45 border-0 cursor-default"
             onClick={closeMore}
-            aria-label="Close menu"
+            aria-label={t.mobileNav.closeMenu}
           />
           <div className="relative bg-base-100 rounded-t-2xl border-t border-base-300/60 shadow-2xl max-h-[min(78vh,520px)] flex flex-col">
             <div className="flex items-center justify-between px-4 py-3 border-b border-base-300/50">
-              <span className="font-bold text-base">More</span>
+              <span className="font-bold text-base">{t.mobileNav.moreSheetTitle}</span>
               <button
                 type="button"
                 className="btn btn-ghost btn-sm btn-circle"
                 onClick={closeMore}
-                aria-label="Close"
+                aria-label={t.mobileNav.close}
               >
                 ✕
               </button>
             </div>
             <nav className="overflow-y-auto px-3 pb-[env(safe-area-inset-bottom,12px)] pt-2">
               <ul className="grid grid-cols-2 gap-2 pb-4">
-                {MORE_NAV_ITEMS.map((item) => (
+                {MORE_NAV_META.map((item) => (
                   <li key={item.key}>
                     {item.external ? (
                       <a
@@ -75,7 +77,7 @@ const MobileNav = () => {
                         className="flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl bg-base-200/80 hover:bg-green-50 text-sm font-medium text-base-content"
                         onClick={closeMore}
                       >
-                        {item.label}
+                        {t.navMore[item.key]}
                       </a>
                     ) : (
                       <Link
@@ -83,7 +85,7 @@ const MobileNav = () => {
                         className="flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl bg-base-200/80 hover:bg-green-50 text-sm font-medium text-base-content"
                         onClick={closeMore}
                       >
-                        {item.label}
+                        {t.navMore[item.key]}
                       </Link>
                     )}
                   </li>
@@ -116,7 +118,7 @@ const MobileNav = () => {
                 />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">Home</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.home}</span>
           </Link>
 
           <Link
@@ -147,7 +149,7 @@ const MobileNav = () => {
                 <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">Stake</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.stake}</span>
           </Link>
 
           <button
@@ -178,7 +180,7 @@ const MobileNav = () => {
                 <circle cx="19" cy="18" r="1.5" fill="currentColor" stroke="none" />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">More</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.more}</span>
           </button>
         </div>
       </div>
