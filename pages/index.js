@@ -2,7 +2,7 @@ import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
 import { HOME_LANG_QUERY, getHomeStrings } from "@/lib/i18n/homeLocale";
@@ -11,15 +11,15 @@ import { useLanguage } from "@/components/Context/LanguageContext";
 const XDCLiquidStakingCard = dynamic(() => import("@/components/XDCLiquidStakingCard"), {
   ssr: false,
   loading: () => (
-    <div className="rounded-2xl border border-slate-700/80 bg-slate-900/40 mb-6 animate-pulse min-h-[280px]" />
+    <div className="rounded-2xl border border-emerald-100 bg-white mb-6 animate-pulse min-h-[280px] shadow-md" />
   ),
 });
 
 const WaveBackground = () => (
   <div className="wave-container fixed top-0 left-0 w-full h-full overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
+    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-emerald-50/90 via-white to-green-50/80" />
     <svg
-      className="waves absolute bottom-0 w-full opacity-40"
+      className="waves absolute bottom-0 w-full opacity-50"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 24 150 28"
       preserveAspectRatio="none"
@@ -31,20 +31,20 @@ const WaveBackground = () => (
         />
       </defs>
       <g className="wave-parallax1">
-        <use href="#wave" x="50" y="3" fill="rgba(56, 189, 248, 0.06)" />
+        <use href="#wave" x="50" y="3" fill="rgba(34, 197, 94, 0.12)" />
       </g>
       <g className="wave-parallax2">
-        <use href="#wave" x="50" y="0" fill="rgba(34, 197, 94, 0.05)" />
+        <use href="#wave" x="50" y="0" fill="rgba(16, 185, 129, 0.1)" />
       </g>
       <g className="wave-parallax3">
-        <use href="#wave" x="50" y="9" fill="rgba(56, 189, 248, 0.04)" />
+        <use href="#wave" x="50" y="9" fill="rgba(74, 222, 128, 0.08)" />
       </g>
     </svg>
   </div>
 );
 
 const LiquidityStakingComingSoon = memo(({ strings: t }) => (
-  <div className="relative mb-6 overflow-hidden rounded-2xl border border-slate-700/80 bg-slate-900/50 backdrop-blur-md">
+  <div className="relative mb-6 overflow-hidden rounded-2xl border border-emerald-200/80 bg-white shadow-lg shadow-emerald-900/5">
     <div className="relative z-10 p-8 sm:p-10">
       <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
         <div className="flex-shrink-0 relative">
@@ -53,14 +53,14 @@ const LiquidityStakingComingSoon = memo(({ strings: t }) => (
             alt="XDC"
             width={72}
             height={72}
-            className="rounded-2xl shadow-xl ring-2 ring-cyan-500/20 relative z-10"
+            className="rounded-2xl shadow-lg ring-2 ring-emerald-200/80 relative z-10"
           />
         </div>
         <div className="flex-1 text-center sm:text-left">
-          <h3 className="font-bold text-white text-xl sm:text-2xl tracking-tight mb-2">{t.comingSoonTitle}</h3>
-          <p className="text-slate-400 text-sm sm:text-base mb-5 max-w-md leading-relaxed">{t.comingSoonBody}</p>
-          <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-200 font-semibold text-sm tracking-wide">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          <h3 className="font-bold text-gray-900 text-xl sm:text-2xl tracking-tight mb-2">{t.comingSoonTitle}</h3>
+          <p className="text-gray-600 text-sm sm:text-base mb-5 max-w-md leading-relaxed">{t.comingSoonBody}</p>
+          <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 font-semibold text-sm tracking-wide">
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             {t.comingSoonBadge}
           </span>
         </div>
@@ -70,13 +70,35 @@ const LiquidityStakingComingSoon = memo(({ strings: t }) => (
 ));
 LiquidityStakingComingSoon.displayName = "LiquidityStakingComingSoon";
 
-const StakingHero = memo(({ strings: t }) => (
-  <header className="text-center mb-8 sm:mb-10">
-    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-3">{t.heroTitle}</h1>
-    <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mb-6">{t.heroSubtitle}</p>
-    <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mx-auto leading-relaxed border-t border-slate-700/60 pt-5">
-      {t.heroDisclaimer}
-    </p>
+const StakingHero = memo(({ strings: t, riskOpen, onRiskToggle }) => (
+  <header className="text-center mb-4 sm:mb-5">
+    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-2">{t.heroTitle}</h1>
+    <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto leading-snug">{t.heroSubtitle}</p>
+    <div className="mt-3 flex justify-center">
+      <button
+        type="button"
+        onClick={onRiskToggle}
+        aria-expanded={riskOpen}
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-800 rounded-lg px-2 py-1 -mx-2 hover:bg-emerald-50/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2"
+      >
+        <svg
+          className={`w-4 h-4 shrink-0 transition-transform ${riskOpen ? "rotate-180" : ""}`}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+        {t.heroRiskToggle}
+      </button>
+    </div>
+    {riskOpen && (
+      <p className="text-xs sm:text-sm text-gray-500 max-w-xl mx-auto leading-relaxed mt-2 text-left sm:text-center rounded-xl bg-emerald-50/60 border border-emerald-100/80 px-3 py-2.5">
+        {t.heroDisclaimer}
+      </p>
+    )}
   </header>
 ));
 StakingHero.displayName = "StakingHero";
@@ -87,6 +109,7 @@ const HomeContent = memo(() => {
   const { locale, setLocale } = useLanguage();
 
   const [liquidityStakingComingSoon, setLiquidityStakingComingSoon] = useState(liquidityStakingDefault);
+  const [heroRiskOpen, setHeroRiskOpen] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -104,7 +127,7 @@ const HomeContent = memo(() => {
     else if (q === "en") setLocale("en");
   }, [router.isReady, router.query, setLocale]);
 
-  const t = getHomeStrings(locale);
+  const t = useMemo(() => getHomeStrings(locale), [locale]);
 
   const { address } = useAccount();
 
@@ -164,10 +187,14 @@ const HomeContent = memo(() => {
         }
       `}</style>
       <WaveBackground />
-      <div className="relative min-h-screen px-3 pb-8 pt-28 sm:px-4 sm:pt-32">
-        <div className="mx-auto w-full max-w-lg">
-          <div id="stake" className="scroll-mt-28">
-            <StakingHero strings={t} />
+      <div className="relative min-h-screen px-3 pb-8 pt-20 sm:px-4 sm:pt-24">
+        <div className="mx-auto w-full max-w-md sm:max-w-xl">
+          <div id="stake" className="scroll-mt-20 sm:scroll-mt-24">
+            <StakingHero
+              strings={t}
+              riskOpen={heroRiskOpen}
+              onRiskToggle={() => setHeroRiskOpen((v) => !v)}
+            />
             {liquidityStakingComingSoon ? (
               <LiquidityStakingComingSoon strings={t} />
             ) : (

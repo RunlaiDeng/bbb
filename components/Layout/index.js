@@ -1,5 +1,4 @@
 import Navbar from "../Navbar";
-import Footer from "../Footer";
 import MobileNav from "../MobileNav";
 
 const Layout = ({ children }) => {
@@ -10,9 +9,6 @@ const Layout = ({ children }) => {
         {children}
       </div>
 
-      <div className="pb-16 lg:pb-0 hidden lg:block">
-        <Footer/>
-      </div>
       <MobileNav />
     </main>
   );
