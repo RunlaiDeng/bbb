@@ -187,7 +187,7 @@ export const contracts = {
     liqudityStaking: {
       address:
         (typeof process !== "undefined" && process.env.NEXT_PUBLIC_LSP_STAKING_ADDRESS) ||
-        "0x884f9B2c2f5Ae2FBB27d89413AF64A9Fa4C91f26",
+        "0x0000000000000000000000000000000000000000",
       abi: XDCLiquidityStakingV15ABI,
     },
     usdb: {
