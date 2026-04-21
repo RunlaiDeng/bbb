@@ -6,6 +6,7 @@ import WriteButton from "@/components/WriteButton";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useConnectWallet from "@/components/Hook/useConnectWallet";
+import { formatSiteString } from "@/lib/i18n/siteStrings";
 import LpStakeABI from "@/abi/LpStakeABI.json";
 import XDCStakeABI from "@/abi/XDCStakeABI.json";
 import USDBStakeABI from "@/abi/USDBStakeABI.json";
@@ -20,6 +21,7 @@ const StakingPool = ({
   addTokenToWallet,
   bbbTokenAddress,
   onAPRChange, // Callback to report APR to parent for sorting
+  strings: s,
 }) => {
   const router = useRouter();
   const chainId = useChainId();
@@ -750,7 +752,7 @@ const StakingPool = ({
   if (!hasValidParams) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        <strong>Error:</strong> Invalid pool parameters
+        <strong>{s.stakingPool.errorInvalidParams}</strong> {s.stakingPool.invalidPoolParams}
         <br />
         <small>poolType: {poolType}, pid: {pid}</small>
       </div>
@@ -782,12 +784,18 @@ const StakingPool = ({
   const getAprTooltip = () => {
     if (poolData.isUsdbPool) {
       const interestRate = poolData.annualInterestRate ? Number(poolData.annualInterestRate) / 100 : 0;
-      return `BBB ${apr.bbbAPR}% + USDB ${interestRate.toFixed(2)}%`;
+      return formatSiteString(s.stakingPool.aprTooltipUsdb, {
+        bbbApr: apr.bbbAPR,
+        usdbApr: interestRate.toFixed(2),
+      });
     }
     if (poolData.symbol === "psXDC" || poolData.symbol === "bpsXDC") {
-      return `${poolData.symbol} 0% + BBB ${apr.bbbAPR}%`;
+      return formatSiteString(s.stakingPool.aprTooltipHybrid, {
+        symbol: poolData.symbol,
+        bbbApr: apr.bbbAPR,
+      });
     }
-    return `BBB ${apr.bbbAPR}%`;
+    return formatSiteString(s.stakingPool.aprTooltipBbb, { bbbApr: apr.bbbAPR });
   };
 
   // Toggle pool expansion
@@ -835,7 +843,7 @@ const StakingPool = ({
     if (poolType === 'xdc') {
       return {
         stake: {
-          buttonName: "Stake",
+          buttonName: s.stakingPool.stake,
           data: {
             address: xdcStakeAddress,
             abi: XDCStakeABI,
@@ -853,7 +861,7 @@ const StakingPool = ({
           },
         },
         unstake: {
-          buttonName: "Unstake",
+          buttonName: s.stakingPool.unstake,
           data: {
             address: xdcStakeAddress,
             abi: XDCStakeABI,
@@ -870,7 +878,7 @@ const StakingPool = ({
           },
         },
         claim: {
-          buttonName: "Claim",
+          buttonName: s.stakingPool.claim,
           data: {
             address: xdcStakeAddress,
             abi: XDCStakeABI,
@@ -885,7 +893,7 @@ const StakingPool = ({
     } else if (poolType === 'usdb') {
       return {
         approve: {
-          buttonName: "Approve",
+          buttonName: s.stakingPool.approve,
           data: {
             address: usdbTokenAddress,
             abi: ERC20ABI,
@@ -897,7 +905,7 @@ const StakingPool = ({
           },
         },
         stake: {
-          buttonName: "Stake",
+          buttonName: s.stakingPool.stake,
           data: {
             address: usdbStakeAddress,
             abi: USDBStakeABI,
@@ -914,7 +922,7 @@ const StakingPool = ({
           },
         },
         unstake: {
-          buttonName: "Unstake",
+          buttonName: s.stakingPool.unstake,
           data: {
             address: usdbStakeAddress,
             abi: USDBStakeABI,
@@ -931,7 +939,7 @@ const StakingPool = ({
           },
         },
         claimReward: {
-          buttonName: "Claim",
+          buttonName: s.stakingPool.claim,
           data: {
             address: usdbStakeAddress,
             abi: USDBStakeABI,
@@ -946,7 +954,7 @@ const StakingPool = ({
     } else if (poolType === 'lpstakev2') {
       return {
         approve: {
-          buttonName: "Approve",
+          buttonName: s.stakingPool.approve,
           data: {
             address: poolData.tokenAddress,
             abi: ERC20ABI,
@@ -958,7 +966,7 @@ const StakingPool = ({
           },
         },
         stake: {
-          buttonName: "Stake",
+          buttonName: s.stakingPool.stake,
           data: {
             address: lpStakev2Address,
             abi: LpStakeABI,
@@ -975,7 +983,7 @@ const StakingPool = ({
           },
         },
         unstake: {
-          buttonName: "Unstake",
+          buttonName: s.stakingPool.unstake,
           data: {
             address: lpStakev2Address,
             abi: LpStakeABI,
@@ -992,7 +1000,7 @@ const StakingPool = ({
           },
         },
         claim: {
-          buttonName: "Claim",
+          buttonName: s.stakingPool.claim,
           data: {
             address: lpStakev2Address,
             abi: LpStakeABI,
@@ -1008,7 +1016,7 @@ const StakingPool = ({
       // LP pool
       return {
         approve: {
-          buttonName: "Approve",
+          buttonName: s.stakingPool.approve,
           data: {
             address: poolData.tokenAddress,
             abi: ERC20ABI,
@@ -1020,7 +1028,7 @@ const StakingPool = ({
           },
         },
         stake: {
-          buttonName: "Stake",
+          buttonName: s.stakingPool.stake,
           data: {
             address: lpStakeAddress,
             abi: LpStakeABI,
@@ -1037,7 +1045,7 @@ const StakingPool = ({
           },
         },
         unstake: {
-          buttonName: "Unstake",
+          buttonName: s.stakingPool.unstake,
           data: {
             address: lpStakeAddress,
             abi: LpStakeABI,
@@ -1054,7 +1062,7 @@ const StakingPool = ({
           },
         },
         claim: {
-          buttonName: "Claim",
+          buttonName: s.stakingPool.claim,
           data: {
             address: lpStakeAddress,
             abi: LpStakeABI,
@@ -1217,7 +1225,7 @@ const StakingPool = ({
                   className="text-xs text-green-600 hover:underline"
                   target="_blank"
                 >
-                  Get {poolConfig.symbol}
+                  {formatSiteString(s.stakingPool.getToken, { symbol: poolConfig.symbol })}
                 </Link>
                 {isConnected && poolData.tokenAddress && !poolData.isXdcPool && (
                   <button
@@ -1226,9 +1234,11 @@ const StakingPool = ({
                       addTokenToWallet(poolData.tokenAddress, poolData.symbol);
                     }}
                     className="text-xs text-blue-600 hover:underline"
-                    title={`Add ${poolData.symbol} to wallet`}
+                    title={formatSiteString(s.stakingPool.addTokenToWalletTitle, {
+                      symbol: poolData.symbol,
+                    })}
                   >
-                    Add to Wallet
+                    {s.stakingPool.addToWallet}
                   </button>
                 )}
               </div>
@@ -1237,7 +1247,8 @@ const StakingPool = ({
                 title={getAprTooltip()}
                 onClick={(e) => e.stopPropagation()}
               >
-                {apr.total}% APR
+                {apr.total}
+                {s.stakingPool.aprSuffix}
                 <div className="opacity-0 bg-black text-white text-xs rounded p-1 absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 -translate-y-1 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                   {getAprTooltip()}
                 </div>
@@ -1252,7 +1263,7 @@ const StakingPool = ({
               {isConnected ? (
                 <>
                   <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                    <span className="text-gray-500">Your Staked</span>
+                    <span className="text-gray-500">{s.stakingPool.yourStaked}</span>
                     <div className="font-medium truncate max-w-[60%] text-right">
                       {poolData.isUsdbPool || poolData.issUSDBPool
                         ? Number(
@@ -1274,7 +1285,7 @@ const StakingPool = ({
 
                   {poolData.isUsdbPool ? (
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-500">Pending Rewards</span>
+                      <span className="text-gray-500">{s.stakingPool.pendingRewards}</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
                         {Number(
                           formatUnits(
@@ -1297,7 +1308,7 @@ const StakingPool = ({
                     </div>
                   ) : (
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-500">Pending Rewards</span>
+                      <span className="text-gray-500">{s.stakingPool.pendingRewards}</span>
                       <div className="font-medium truncate max-w-[60%] text-right">
                         {Number(
                           formatEther(poolData.pendingReward)
@@ -1313,7 +1324,7 @@ const StakingPool = ({
               ) : null}
 
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Total Staked</span>
+                <span className="text-gray-500">{s.stakingPool.totalStaked}</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
                   {poolData.isUsdbPool || poolData.issUSDBPool
                     ? Number(formatUnits(poolData.totalStaked, poolData.decimals || 6))?.toLocaleString(
@@ -1335,7 +1346,7 @@ const StakingPool = ({
               </div>
 
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                <span className="text-gray-500">Rewards per Block</span>
+                <span className="text-gray-500">{s.stakingPool.rewardsPerBlock}</span>
                 <div className="font-medium truncate max-w-[60%] text-right">
                   {poolData.rewardPerBlock
                     ? Number(formatEther(poolData.rewardPerBlock)).toLocaleString()
@@ -1345,9 +1356,9 @@ const StakingPool = ({
                     <button
                       onClick={() => addTokenToWallet(bbbTokenAddress, "BBB")}
                       className="ml-1 text-xs text-blue-600 hover:underline"
-                      title="Add BBB to wallet"
+                      title={s.stakingPool.addBbbToWallet}
                     >
-                      Add to Wallet
+                      {s.stakingPool.addToWallet}
                     </button>
                   )}
                 </div>
@@ -1367,7 +1378,7 @@ const StakingPool = ({
                       }));
                     }}
                   >
-                    Stake
+                    {s.stakingPool.stake}
                   </button>
                   <button
                     className="flex-1 py-2 px-4 text-green-600 border border-green-500 rounded-md hover:bg-green-50 transition-colors text-sm md:text-base"
@@ -1380,7 +1391,7 @@ const StakingPool = ({
                     }}
                     disabled={poolData.userStaked <= 0}
                   >
-                    Unstake
+                    {s.stakingPool.unstake}
                   </button>
                   {(poolData.pendingReward > 0 || (poolData.isUsdbPool && poolData.pendingInterestReward > 0)) && (
                     <>
@@ -1402,7 +1413,7 @@ const StakingPool = ({
             ) : (
               <div className="text-center p-4 mt-4 bg-gray-50 rounded-lg">
                 <p className="mb-4 text-gray-600 text-sm md:text-base">
-                  Connect your wallet to stake and earn rewards
+                  {s.stakingPool.connectToStake}
                 </p>
                 <button
                   className="btn bg-green-600 text-white hover:bg-green-700 text-sm md:text-base"
@@ -1411,7 +1422,7 @@ const StakingPool = ({
                     openConnect();
                   }}
                 >
-                  Connect Wallet
+                  {s.stakingPool.connectWallet}
                 </button>
               </div>
             )}
@@ -1428,7 +1439,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Stake {poolConfig.symbol}
+              {formatSiteString(s.stakingPool.stakeModalTitle, { symbol: poolConfig.symbol })}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1471,12 +1482,12 @@ const StakingPool = ({
                   }));
                 }}
               >
-                max
+                {s.stakingPool.max}
               </kbd>
             </label>
 
             <div className="flex justify-between text-sm text-gray-500">
-              <span>Available</span>
+              <span>{s.stakingPool.available}</span>
               <span className="truncate max-w-[70%] text-right">
                 {poolData.isUsdbPool || poolData.issUSDBPool
                   ? Number(formatUnits(poolData.balance, poolData.decimals || 6))?.toLocaleString(
@@ -1530,7 +1541,7 @@ const StakingPool = ({
         <div className="bg-white rounded-2xl p-4 md:p-6 w-[90%] max-w-sm mx-2">
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h3 className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-600">
-              Unstake {poolConfig.symbol}
+              {formatSiteString(s.stakingPool.unstakeModalTitle, { symbol: poolConfig.symbol })}
             </h3>
             <button
               className="btn btn-sm btn-circle btn-ghost"
@@ -1573,12 +1584,12 @@ const StakingPool = ({
                   }));
                 }}
               >
-                max
+                {s.stakingPool.max}
               </kbd>
             </label>
 
             <div className="flex justify-between text-sm text-gray-500">
-              <span>Staked</span>
+              <span>{s.stakingPool.staked}</span>
               <span className="truncate max-w-[70%] text-right">
                 {poolData.isUsdbPool || poolData.issUSDBPool
                   ? Number(

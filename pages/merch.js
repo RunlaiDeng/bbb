@@ -1,28 +1,32 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Head from "next/head";
 import { useNotification } from "@/components/Context/notice";
-
-const products = [
-  {
-    id: 1,
-    name: "BBB Hat",
-    price: 100000,
-    image: "/merch/hat.png",
-    description: "Stylish BBB hat for crypto enthusiasts",
-    inStock: true,
-  },
-  {
-    id: 2,
-    name: "BBB Socks",
-    price: 75000,
-    image: "/merch/sock.png",
-    description: "Comfortable BBB socks for everyday wear",
-    inStock: true,
-  },
-];
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const Merch = () => {
+  const t = useTranslation();
+  const products = useMemo(
+    () => [
+      {
+        id: 1,
+        name: t.merch.hatName,
+        price: 100000,
+        image: "/merch/hat.png",
+        description: t.merch.hatDesc,
+        inStock: true,
+      },
+      {
+        id: 2,
+        name: t.merch.socksName,
+        price: 75000,
+        image: "/merch/sock.png",
+        description: t.merch.socksDesc,
+        inStock: true,
+      },
+    ],
+    [t]
+  );
   const [cart, setCart] = useState([]);
   const { info } = useNotification();
   const addToCart = (product) => {
@@ -40,8 +44,8 @@ const Merch = () => {
   return (
     <>
       <Head>
-        <title>BBB Merchandise | Shop</title>
-        <meta name="description" content="Official BBB merchandise shop" />
+        <title>{t.pageMeta.merchTitle}</title>
+        <meta name="description" content={t.pageMeta.merchDescription} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-100">
@@ -49,10 +53,10 @@ const Merch = () => {
         <div className="bg-green-600 text-white py-8">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold text-center">
-              BBB Merchandise Shop
+              {t.pageMeta.merchH1}
             </h1>
             <p className="text-center mt-2">
-              Official BBB merchandise for our community
+              {t.pageMeta.merchSub}
             </p>
           </div>
         </div>
@@ -62,7 +66,7 @@ const Merch = () => {
             {/* Products Section */}
             <div className="flex-1">
               <h2 className="text-2xl font-semibold mb-6 text-green-800">
-                Available Products
+                {t.merch.availableProducts}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {products.map((product) => (
@@ -94,7 +98,7 @@ const Merch = () => {
                           onClick={() => addToCart(product)}
                           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                         >
-                          Add to Cart
+                          {t.merch.addToCart}
                         </button>
                       </div>
                     </div>
@@ -106,10 +110,10 @@ const Merch = () => {
             {/* Cart Section */}
             <div className="w-full md:w-80 bg-white p-6 rounded-lg shadow-lg h-fit sticky top-4 border border-green-200">
               <h2 className="text-xl font-semibold mb-4 text-green-800">
-                Your Cart
+                {t.merch.yourCart}
               </h2>
               {cart.length === 0 ? (
-                <p className="text-gray-500">Your cart is empty</p>
+                <p className="text-gray-500">{t.pageMeta.merchEmptyCart}</p>
               ) : (
                 <>
                   <ul className="divide-y divide-green-100">
@@ -126,23 +130,23 @@ const Merch = () => {
                           onClick={() => removeFromCart(item.id)}
                           className="text-red-500 hover:text-red-700"
                         >
-                          Remove
+                          {t.merch.remove}
                         </button>
                       </li>
                     ))}
                   </ul>
                   <div className="mt-4 pt-4 border-t border-green-100">
                     <div className="flex justify-between font-semibold">
-                      <span>Total:</span>
+                      <span>{t.pageMeta.merchTotal}</span>
                       <span>{getTotalPrice()} BBB</span>
                     </div>
                     <button
                       className="w-full mt-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                       onClick={() => {
-                        info("Coming soon");
+                        info(t.merch.comingSoonToast);
                       }}
                     >
-                      Checkout
+                      {t.merch.checkout}
                     </button>
                   </div>
                 </>

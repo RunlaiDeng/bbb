@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
-import { HOME_LANG_QUERY, getHomeStrings } from "@/lib/i18n/homeLocale";
+import { HOME_LANG_QUERY } from "@/lib/i18n/homeLocale";
+import { getSiteStrings } from "@/lib/i18n/siteStrings";
 import { useLanguage } from "@/components/Context/LanguageContext";
 
 const XDCLiquidStakingCard = dynamic(() => import("@/components/XDCLiquidStakingCard"), {
@@ -127,7 +128,7 @@ const HomeContent = memo(() => {
     else if (q === "en") setLocale("en");
   }, [router.isReady, router.query, setLocale]);
 
-  const t = useMemo(() => getHomeStrings(locale), [locale]);
+  const t = useMemo(() => getSiteStrings(locale), [locale]);
 
   const { address } = useAccount();
 

@@ -5,8 +5,11 @@ import { formatEther, formatUnits, parseEther, parseUnits } from "viem";
 import { contracts } from "@/config";
 import Head from "next/head";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { formatSiteString } from "@/lib/i18n/siteStrings";
 
 const AssetDetail = () => {
+  const t = useTranslation();
   const router = useRouter();
   const { address: assetAddress } = router.query;
   const chainId = useChainId();
@@ -224,8 +227,11 @@ const AssetDetail = () => {
   return (
     <>
       <Head>
-        <title>{assetData.symbol} - Asset Details | BBB Finance</title>
-        <meta name="description" content={`Detailed information about ${assetData.name} lending and borrowing on BBB Finance`} />
+        <title>{formatSiteString(t.pageMeta.assetTitle, { symbol: assetData.symbol })}</title>
+        <meta
+          name="description"
+          content={formatSiteString(t.pageMeta.assetDescription, { name: assetData.name })}
+        />
       </Head>
 
       <div className="min-h-screen bg-white">
@@ -237,7 +243,7 @@ const AssetDetail = () => {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                Back to Lending
+                {t.pageMeta.assetBack}
               </Link>
             </div>
             

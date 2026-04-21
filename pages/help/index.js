@@ -1,10 +1,13 @@
+import { useTranslation } from "@/lib/i18n/useTranslation";
+
 const Help = () => {
+  const t = useTranslation();
   return (
     <>
       <div className="grid grid-cols-3 m-auto md:w-3/4 w-96  pb-1">
         <div></div>
         <div className="text-center font-bold mt-2">
-          Frequently Asked Questions
+          {t.help.title}
         </div>
         <div></div>
       </div>
@@ -13,53 +16,44 @@ const Help = () => {
           <div className="collapse collapse-plus bg-base-200">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
-              <kbd className="kbd">1</kbd> What is farm ?
+              <kbd className="kbd">1</kbd> {t.help.q1}
             </div>
             <div className="collapse-content">
               <p>
-                Use your $BBB or tokens to buy farmers who can harvest tokens.
-                tokens is liquid and can be swapped easily.
+                {t.help.a1}
               </p>
             </div>
           </div>
           <div className="collapse collapse-plus bg-base-200">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
-              <kbd className="kbd">2</kbd> What is referral program ?
+              <kbd className="kbd">2</kbd> {t.help.q2}
             </div>
             <div className="collapse-content">
               <p>
-                A referral program is a marketing strategy where existing
-                customers are rewarded for referring new customers. Refer
-                friends to earn 10% of their mining rewards.
+                {t.help.a2}
               </p>
             </div>
           </div>
           <div className="collapse collapse-plus bg-base-200">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
-              <kbd className="kbd">2</kbd> What is Stake ?
+              <kbd className="kbd">2</kbd> {t.help.q3}
             </div>
             <div className="collapse-content">
               <p>
-                Stake allows you to stake BBB to receive MBBB, and you can
-                unstake MBBB to get BBB back. While holding MBBB, you will
-                periodically receive various airdrops.
+                {t.help.a3}
               </p>
             </div>
           </div>
           <div className="collapse collapse-plus bg-base-200">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
-              <kbd className="kbd">2</kbd> What is drop ?
+              <kbd className="kbd">2</kbd> {t.help.q4}
             </div>
             <div className="collapse-content">
               <p>
-                There are two types of airdrops: official airdrops and community
-                airdrops. Official airdrops are distributed by the project team
-                based on MBBB snapshots, while community airdrops can be created
-                by anyone. Creating a community airdrop requires spending
-                257,000 BBB.
+                {t.help.a4}
               </p>
             </div>
           </div>

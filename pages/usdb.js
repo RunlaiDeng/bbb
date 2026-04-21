@@ -7,8 +7,10 @@ import { contracts } from "@/config";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const USDB = () => {
+  const t = useTranslation();
   const [data, setData] = useState({
     currentApr: "5",
     expandedFaq: null,
@@ -442,32 +444,32 @@ const USDB = () => {
     isMounted && (
       <>
         <Head>
-          <title>USDB & sUSDB - Synthetic USD Staking | BBBPump</title>
+          <title>{t.pageMeta.usdbTitle}</title>
           <meta
             name="description"
-            content="Earn yields with USDB and sUSDB. Deposit stablecoins to get USDB, then stake to sUSDB for automatic compound rewards. Delta hedging strategy with 5%+ yields."
+            content={t.pageMeta.usdbDescription}
           />
           <meta
             name="keywords"
-            content="USDB, sUSDB, staking, synthetic USD, delta hedging, yield farming, auto-compound rewards"
+            content={t.pageMeta.usdbKeywords}
           />
           <meta
             property="og:title"
-            content="USDB & sUSDB - Synthetic USD Staking"
+            content={t.pageMeta.usdbOgTitle}
           />
           <meta
             property="og:description"
-            content="Stake USDB to earn automatic compound rewards with sUSDB. Flexible withdrawal options with 7-day waiting period."
+            content={t.pageMeta.usdbOgDescription}
           />
           <meta property="og:image" content="/usdb.png" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta
             name="twitter:title"
-            content="USDB & sUSDB - Synthetic USD Staking"
+            content={t.pageMeta.usdbTwitterTitle}
           />
           <meta
             name="twitter:description"
-            content="Earn automatic compound rewards by staking your USDB to sUSDB"
+            content={t.pageMeta.usdbTwitterDescription}
           />
         </Head>
 
