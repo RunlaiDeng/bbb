@@ -113,11 +113,14 @@ const HomeFaq = memo(({ strings: t }) => {
 
   return (
     <section
-      className="relative w-full border-t border-white/10 bg-[#111317] px-4 py-12 sm:py-16"
+      className="relative w-full border-t border-emerald-100/80 bg-gradient-to-b from-white via-emerald-50/40 to-green-50/50 px-4 py-12 sm:py-16"
       aria-labelledby={`${baseId}-faq-heading`}
     >
       <div className="mx-auto w-full max-w-md sm:max-w-xl">
-        <h2 id={`${baseId}-faq-heading`} className="text-left text-lg font-bold tracking-tight text-white sm:text-xl mb-4 sm:mb-5">
+        <h2
+          id={`${baseId}-faq-heading`}
+          className="text-left text-lg font-bold tracking-tight text-gray-900 sm:text-xl mb-5 sm:mb-6"
+        >
           {t.faqTitle}
         </h2>
         <ul className="list-none m-0 p-0 space-y-3 sm:space-y-4">
@@ -128,7 +131,7 @@ const HomeFaq = memo(({ strings: t }) => {
             return (
               <li key={qId} className="m-0 p-0 list-none">
                 <div
-                  className="rounded-2xl bg-[#272B34] px-5 py-4 sm:px-6 sm:py-5 shadow-sm"
+                  className="rounded-2xl border border-emerald-200/80 bg-white px-5 py-4 sm:px-6 sm:py-5 shadow-md shadow-emerald-900/5"
                   data-state={isOpen ? "open" : "closed"}
                 >
                   <h3 className="m-0 p-0">
@@ -138,11 +141,11 @@ const HomeFaq = memo(({ strings: t }) => {
                       aria-expanded={isOpen}
                       aria-controls={panelId}
                       onClick={() => setOpenIndex((prev) => (prev === index ? -1 : index))}
-                      className="flex w-full items-center justify-between gap-3 text-left text-base font-bold text-white sm:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#272B34] rounded-lg"
+                      className="group flex w-full items-center justify-between gap-3 text-left text-base font-bold text-gray-900 sm:text-lg rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white -m-0.5 p-0.5 hover:text-emerald-800 transition-colors"
                     >
                       <span className="pr-2">{row.q}</span>
                       <svg
-                        className={`h-5 w-5 shrink-0 text-[#9FA3A9] transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                        className={`h-5 w-5 shrink-0 text-emerald-600 transition-transform duration-200 group-hover:text-emerald-700 ${isOpen ? "rotate-180" : ""}`}
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -162,7 +165,9 @@ const HomeFaq = memo(({ strings: t }) => {
                   >
                     <div className="min-h-0 overflow-hidden">
                       <p
-                        className={`text-sm sm:text-base leading-relaxed text-[#9FA3A9] ${isOpen ? "mt-4" : "mt-0"}`}
+                        className={`text-sm sm:text-base leading-relaxed text-gray-600 border-l-2 border-emerald-200/90 pl-3.5 -ml-0.5 ${
+                          isOpen ? "mt-4" : "mt-0"
+                        }`}
                       >
                         {row.a}
                       </p>
