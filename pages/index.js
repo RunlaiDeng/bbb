@@ -2,7 +2,7 @@ import useConnectWallet from "@/components/Hook/useConnectWallet";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { liquidityStakingComingSoon as liquidityStakingDefault } from "@/config";
 import { HOME_LANG_QUERY } from "@/lib/i18n/homeLocale";
@@ -104,6 +104,86 @@ const StakingHero = memo(({ strings: t, riskOpen, onRiskToggle }) => (
 ));
 StakingHero.displayName = "StakingHero";
 
+const HomeFaq = memo(({ strings: t }) => {
+  const baseId = useId();
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const items = t.faq ?? [];
+  if (!items.length) return null;
+
+  return (
+    <section
+      className="relative w-full border-t border-emerald-100/80 bg-gradient-to-b from-white via-emerald-50/40 to-green-50/50 px-4 py-12 sm:py-16"
+      aria-labelledby={`${baseId}-faq-heading`}
+    >
+      <div className="mx-auto w-full max-w-md sm:max-w-xl">
+        <h2
+          id={`${baseId}-faq-heading`}
+          className="text-left text-lg font-bold tracking-tight text-gray-900 sm:text-xl mb-5 sm:mb-6"
+        >
+          {t.faqTitle}
+        </h2>
+        <ul className="list-none m-0 p-0 space-y-3 sm:space-y-4">
+          {items.map((row, index) => {
+            const isOpen = openIndex === index;
+            const panelId = `${baseId}-faq-panel-${index}`;
+            const qId = `${baseId}-faq-q-${index}`;
+            return (
+              <li key={qId} className="m-0 p-0 list-none">
+                <div
+                  className="rounded-2xl border border-emerald-200/80 bg-white px-5 py-4 sm:px-6 sm:py-5 shadow-md shadow-emerald-900/5"
+                  data-state={isOpen ? "open" : "closed"}
+                >
+                  <h3 className="m-0 p-0">
+                    <button
+                      type="button"
+                      id={qId}
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => setOpenIndex((prev) => (prev === index ? -1 : index))}
+                      className="group flex w-full items-center justify-between gap-3 text-left text-base font-bold text-gray-900 sm:text-lg rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white -m-0.5 p-0.5 hover:text-emerald-800 transition-colors"
+                    >
+                      <span className="pr-2">{row.q}</span>
+                      <svg
+                        className={`h-5 w-5 shrink-0 text-emerald-600 transition-transform duration-200 group-hover:text-emerald-700 ${isOpen ? "rotate-180" : ""}`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        aria-hidden
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </h3>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={qId}
+                    className="grid transition-[grid-template-rows] duration-200 ease-out"
+                    style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                  >
+                    <div className="min-h-0 overflow-hidden">
+                      <p
+                        className={`text-sm sm:text-base leading-relaxed text-gray-600 border-l-2 border-emerald-200/90 pl-3.5 -ml-0.5 ${
+                          isOpen ? "mt-4" : "mt-0"
+                        }`}
+                      >
+                        {row.a}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+});
+HomeFaq.displayName = "HomeFaq";
+
 const HomeContent = memo(() => {
   const openConnect = useConnectWallet();
   const router = useRouter();
@@ -203,6 +283,7 @@ const HomeContent = memo(() => {
             )}
           </div>
         </div>
+        <HomeFaq strings={t} />
       </div>
     </>
   );
