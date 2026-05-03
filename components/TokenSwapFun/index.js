@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 import { parseEther, formatEther, erc20Abi } from "viem";
 import { deleteSame, getXDCPrice, handleSrc } from "../Utils";
 import WriteButton from "../WriteButton";
-import { useAccount, useBalance, useChainId, useReadContracts } from "wagmi";
+import { useAccount, useBalance, useChainId, useReadContracts, useSwitchChain } from "wagmi";
 import { contracts } from "@/config";
 
 import Image from "next/image";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { xdc } from "@/config/chains";
+
 const TokenSwapFun = (props) => {
+  const t = useTranslation();
   const [mount, setMount] = useState(false);
   const [type, setType] = useState("buy");
   let { index, symbol, imageUrl, token, xdcPrice } = props;
@@ -18,14 +22,16 @@ const TokenSwapFun = (props) => {
   });
 
   const chainId = useChainId();
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
   const { address } = useAccount();
+  const wrongChain = chainId !== xdc.id;
 
   const { data: balance } = useBalance({ address });
   const tokenContract = { address: token, abi: erc20Abi };
 
   const mbbb = contracts[chainId]?.mbbbv2;
 
-  const { data: reads0, refetch: refetch0 } = useReadContracts({
+  const { data: reads0, refetch: refetch0, isFetching: isFetching0 } = useReadContracts({
     contracts: [
       {
         ...tokenContract,
@@ -43,7 +49,7 @@ const TokenSwapFun = (props) => {
   const totalSupply = reads0?.[1]?.result || 0n;
   const xdcBalance = balance?.value || 0n;
 
-  const { data: reads1, refetch: refetch1 } = useReadContracts({
+  const { data: reads1, refetch: refetch1, isFetching: isFetching1 } = useReadContracts({
     contracts: [
       {
         ...mbbb,
@@ -78,8 +84,47 @@ const TokenSwapFun = (props) => {
   const buyTokenAmount = reads1?.[2]?.result;
   const sellXDCAmount = reads1?.[3]?.result;
 
-  const disableBuy = !data?.buyAmount;
-  const disableSell = !data?.sellAmount;
+  const buyAmountBn = data?.buyAmount;
+  const sellAmountBn = data?.sellAmount;
+  const invalidBuyZero =
+    buyAmountBn !== undefined &&
+    buyAmountBn !== null &&
+    typeof buyAmountBn === "bigint" &&
+    buyAmountBn <= 0n;
+  const invalidSellZero =
+    sellAmountBn !== undefined &&
+    sellAmountBn !== null &&
+    typeof sellAmountBn === "bigint" &&
+    sellAmountBn <= 0n;
+  const buyMissing = buyAmountBn === undefined || buyAmountBn === null;
+  const sellMissing = sellAmountBn === undefined || sellAmountBn === null;
+  const buyExceedsBalance =
+    !buyMissing &&
+    typeof buyAmountBn === "bigint" &&
+    buyAmountBn > 0n &&
+    buyAmountBn > xdcBalance;
+  const sellExceedsBalance =
+    !sellMissing &&
+    typeof sellAmountBn === "bigint" &&
+    sellAmountBn > 0n &&
+    sellAmountBn > tokenBalance;
+
+  const disableBuy =
+    wrongChain ||
+    buyMissing ||
+    invalidBuyZero ||
+    buyExceedsBalance ||
+    isFetching0 ||
+    isFetching1;
+  const disableSell =
+    wrongChain ||
+    sellMissing ||
+    invalidSellZero ||
+    sellExceedsBalance ||
+    isFetching0 ||
+    isFetching1;
+
+  const isRefreshingQuotes = isFetching0 || isFetching1;
 
   const refetch = () => {
     refetch0();
@@ -170,6 +215,52 @@ const TokenSwapFun = (props) => {
     <>
       <div className="card" id="swap">
         <div className="card-body font-bold  p-2">
+          {wrongChain && (
+            <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              <p className="mb-2">{t.journey.wrongNetwork}</p>
+              <button
+                type="button"
+                className="btn btn-sm btn-warning w-full"
+                disabled={isSwitchingChain}
+                onClick={() => switchChain?.({ chainId: xdc.id })}
+                aria-busy={isSwitchingChain}
+              >
+                {isSwitchingChain ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm" aria-hidden />
+                    {t.writeButton.loading}
+                  </>
+                ) : (
+                  t.journey.switchNetwork
+                )}
+              </button>
+            </div>
+          )}
+          {isRefreshingQuotes && !wrongChain && (
+            <p className="mb-2 text-xs font-medium text-emerald-700" role="status" aria-live="polite">
+              {t.swapForm.refreshingData}
+            </p>
+          )}
+          {type === "buy" && buyExceedsBalance && (
+            <p className="mb-2 text-xs text-error" role="alert">
+              {t.swapForm.insufficientXdc}
+            </p>
+          )}
+          {type === "sell" && sellExceedsBalance && (
+            <p className="mb-2 text-xs text-error" role="alert">
+              {t.swapForm.insufficientToken}
+            </p>
+          )}
+          {type === "buy" && invalidBuyZero && (
+            <p className="mb-2 text-xs text-error" role="alert">
+              {t.swapForm.invalidAmount}
+            </p>
+          )}
+          {type === "sell" && invalidSellZero && (
+            <p className="mb-2 text-xs text-error" role="alert">
+              {t.swapForm.invalidAmount}
+            </p>
+          )}
           <div className="grid grid-cols-2 gap-2">
             <div
               className={"btn w-full " + (type == "buy" && "btn-success")}

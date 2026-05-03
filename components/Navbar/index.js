@@ -7,6 +7,7 @@ import useConnectWallet from "../Hook/useConnectWallet";
 import { useLanguage } from "../Context/LanguageContext";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
 import { MORE_NAV_META } from "@/lib/navMore";
+import { isMoreNavRouteActive, isMoreNavItemActive } from "@/lib/navActive";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function shortenAddress(addr) {
@@ -31,6 +32,9 @@ const Navbar = () => {
     if (!address) return null;
     return shortenAddress(address);
   }, [address]);
+
+  const stakeActive = router.pathname === "/stake";
+  const moreSectionActive = isMoreNavRouteActive(router.pathname);
 
   useEffect(() => {
     setMount(true);
@@ -65,7 +69,13 @@ const Navbar = () => {
                 <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
                   <Link
                     href={"/stake"}
-                    className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl"
+                    className={
+                      "btn btn-ghost transition-all duration-300 rounded-xl " +
+                      (stakeActive
+                        ? "text-green-700 bg-green-50 font-semibold"
+                        : "hover:text-green-600 hover:bg-green-50")
+                    }
+                    aria-current={stakeActive ? "page" : undefined}
                   >
                     {t.nav.stake}
                   </Link>
@@ -74,7 +84,13 @@ const Navbar = () => {
                     <div
                       tabIndex={0}
                       role="button"
-                      className="btn btn-ghost hover:text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none"
+                      className={
+                        "btn btn-ghost transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none " +
+                        (moreSectionActive
+                          ? "text-green-700 bg-green-50 font-semibold"
+                          : "hover:text-green-600 hover:bg-green-50")
+                      }
+                      aria-current={moreSectionActive ? "true" : undefined}
                     >
                       {t.nav.more}
                     </div>
@@ -96,7 +112,16 @@ const Navbar = () => {
                           ) : (
                             <Link
                               href={item.href}
-                              className="hover:text-green-600 hover:bg-green-50 rounded-lg"
+                              className={
+                                isMoreNavItemActive(router.pathname, item)
+                                  ? "text-green-700 bg-green-50 font-semibold rounded-lg"
+                                  : "hover:text-green-600 hover:bg-green-50 rounded-lg"
+                              }
+                              aria-current={
+                                isMoreNavItemActive(router.pathname, item)
+                                  ? "page"
+                                  : undefined
+                              }
                             >
                               {t.navMore[item.key]}
                             </Link>

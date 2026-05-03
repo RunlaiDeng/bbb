@@ -1,4 +1,4 @@
-import FarmCard from "@/components/FarmCard";
+import FarmCard from "@/lib/farmDynamic";
 import Link from "next/link";
 import { contracts } from "@/config";
 import { useChainId } from "wagmi";
