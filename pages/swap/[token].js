@@ -3,20 +3,18 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount, useChainId, useReadContracts } from "wagmi";
 import { getDate, getPool, getXDCPrice } from "@/components/Utils";
-import TokenInfo from "@/components/TokenInfo";
-import TokenChat from "@/components/TokenChat";
-import TokenTradePool from "@/components/TokenTradePool";
 import useWindowSize from "@/components/Hook/useWindowSize";
-import TokenSwapPool from "@/components/TokenSwapPool";
 import TokenHeadPool from "@/components/TokenHeadPool";
-import TokenSwapFun from "@/components/TokenSwapFun";
-import TokenTradeFun from "@/components/TokenTradeFun";
 import TokenHeadFun from "@/components/TokenHeadFun";
-import TokenChartPool from "@/components/TokenChartPool";
-import TokenChartFun from "@/components/TokenChartFun";
+import {
+  DynamicTokenChartPool,
+  DynamicTokenChat,
+  DynamicTokenInfo,
+  DynamicTokenMarkets,
+  DynamicTokenTradePool,
+} from "@/lib/swapDynamicChunks";
 import { erc20Abi } from "viem";
 import rpc from "@/components/Rpc";
-import TokenMarkets from "@/components/TokenMarkets";
 import Loading from "@/components/Loading";
 
 const Swap = () => {
@@ -269,7 +267,7 @@ const Swap = () => {
       <div className="m-auto grid lg:grid-cols-5 gap-4 lg:h-[960px] p-2">
         {windowWidth > 1024 && (
           <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
-            <TokenMarkets {...tMarkets} />
+            <DynamicTokenMarkets {...tMarkets} />
           </div>
         )}
 
@@ -343,11 +341,11 @@ const Swap = () => {
             </div>
           </div>
           <div className="h-[300px] lg:h-[450px]">
-            {type == "chart" && <TokenChartPool {...tChartPool} />}
-            {type == "info" && <TokenInfo {...tInfo} />}
-            {type == "chat" && <TokenChat {...tChat} />}
-            {type == "trades" && <TokenTradePool {...tTradePool} />}
-            {type == "markets" && <TokenMarkets {...tMarkets} />}
+            {type == "chart" && <DynamicTokenChartPool {...tChartPool} />}
+            {type == "info" && <DynamicTokenInfo {...tInfo} />}
+            {type == "chat" && <DynamicTokenChat {...tChat} />}
+            {type == "trades" && <DynamicTokenTradePool {...tTradePool} />}
+            {type == "markets" && <DynamicTokenMarkets {...tMarkets} />}
           </div>
           <div className="divider my-1"></div>
           <div className="p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl m-4 border border-green-100">
@@ -361,7 +359,7 @@ const Swap = () => {
         </div>
         {windowWidth > 1024 && (
           <div className="bg-white rounded-2xl shadow-lg p-4 text-center overflow-y-auto">
-            <TokenTradePool {...tTradePool} />
+            <DynamicTokenTradePool {...tTradePool} />
           </div>
         )}
       </div>

@@ -1,19 +1,33 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { cookieStorage, createStorage } from "wagmi";
-import { http } from "wagmi";
+import { http, fallback } from "viem";
 import { xdc } from "./chains";
 
 const walletConnectProjectId =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
 
+const walletConnectFallbackId = "2a612b9a18e81ce3fda2f82787eb6a4a";
+
+if (typeof window === "undefined" && !walletConnectProjectId) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "[wagmi] NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not set. Set it in production; a temporary fallback is used so the app can build and run locally."
+  );
+}
+
 export const wagmiConfig = getDefaultConfig({
   appName: "BBBFI",
-  projectId:
-    walletConnectProjectId ||
-    "2a612b9a18e81ce3fda2f82787eb6a4a",
+  projectId: walletConnectProjectId || walletConnectFallbackId,
   chains: [xdc],
   transports: {
-    [xdc.id]: http("https://rpc.ankr.com/xdc"),
+    [xdc.id]: fallback(
+      [
+        http("https://rpc.ankr.com/xdc"),
+        http("https://rpc.xdcrpc.com"),
+        http("https://erpc.xdcrpc.com"),
+      ],
+      { retryCount: 2 }
+    ),
   },
   ssr: true,
   storage: createStorage({

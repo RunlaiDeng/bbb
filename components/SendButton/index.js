@@ -9,8 +9,11 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../Context/notice";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { formatTxErrorMessage } from "@/lib/formatTxError";
 
 const WriteButton = (props) => {
+  const wb = useTranslation();
   const { success, failure } = useNotification();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -43,20 +46,20 @@ const WriteButton = (props) => {
   useEffect(() => {
     if (error) {
       console.error(error);
-      failure(error.shortMessage);
+      failure(formatTxErrorMessage(error, wb.txErrors));
     }
     if (txError) {
       console.error(txError);
-      failure(txError.shortMessage);
+      failure(formatTxErrorMessage(txError, wb.txErrors));
     }
-  }, [error, txError]);
+  }, [error, txError, failure, wb.txErrors]);
 
   useEffect(() => {
     if (txSuccess) {
       props?.callback?.(txSuccess, hash);
-      success("Transaction successful!");
+      success(wb.writeButton.txSuccess);
     }
-  }, [txSuccess]);
+  }, [txSuccess, hash, props, success, wb.writeButton.txSuccess]);
 
   const client = usePublicClient();
 
@@ -91,7 +94,7 @@ const WriteButton = (props) => {
         style={{ minWidth: 112 }}
         onClick={async () => {
           if (!isConnected) {
-            alert("please connect wallet");
+            openConnect();
             return;
           }
           const writeData = { ...props?.data, type: "legacy" };
@@ -105,10 +108,11 @@ const WriteButton = (props) => {
           sendTransaction?.(writeData);
         }}
       >
-        {isLoading && "Waiting for approval"}
+        {isLoading && wb.writeButton.waitingApproval}
         {isStarted && !txSuccess && (
           <>
-            <span className="loading loading-spinner"></span>loading
+            <span className="loading loading-spinner"></span>
+            {wb.writeButton.loading}
           </>
         )}
         {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
@@ -120,7 +124,7 @@ const WriteButton = (props) => {
           openConnect();
         }}
       >
-        Connect
+        {wb.writeButton.connect}
       </div>
     ))
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { getBBBPrice } from "@/components/Utils";
 import { useRouter } from "next/router";
-import StakingPool from "@/components/StakingPool";
+import StakingPool from "@/lib/stakeDynamic";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { formatSiteString } from "@/lib/i18n/siteStrings";
 

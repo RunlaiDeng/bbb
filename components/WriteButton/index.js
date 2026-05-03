@@ -10,6 +10,7 @@ import { useNotification } from "../Context/notice";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import { useTranslation } from "@/lib/i18n/useTranslation";
+import { formatTxErrorMessage } from "@/lib/formatTxError";
 
 const WriteButton = (props) => {
   const wb = useTranslation();
@@ -45,20 +46,20 @@ const WriteButton = (props) => {
   useEffect(() => {
     if (error) {
       console.error(error);
-      failure(error.shortMessage);
+      failure(formatTxErrorMessage(error, wb.txErrors));
     }
     if (txError) {
       console.error(txError);
-      failure(txError.shortMessage);
+      failure(formatTxErrorMessage(txError, wb.txErrors));
     }
-  }, [error, txError]);
+  }, [error, txError, failure, wb.txErrors]);
 
   useEffect(() => {
     if (txSuccess) {
       props?.callback?.(txSuccess, hash);
       success(wb.writeButton.txSuccess);
     }
-  }, [txSuccess]);
+  }, [txSuccess, hash, props, success, wb.writeButton.txSuccess]);
 
   const client = usePublicClient();
 
@@ -89,11 +90,6 @@ const WriteButton = (props) => {
         }
         style={{ minWidth: 112, cursor: "pointer" }}
         onClick={async () => {
-          if (!isConnected) {
-            alert(wb.writeButton.pleaseConnectWallet);
-            return;
-          }
-
           if (!props?.data) {
             console.error("No transaction data provided");
             failure(wb.writeButton.txDataMissing);

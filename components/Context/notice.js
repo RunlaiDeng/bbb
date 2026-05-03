@@ -13,12 +13,12 @@ export const NotificationProvider = ({ children }) => {
     const newNotification = { id, type, message };
     setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
 
-    // 为每个通知设置2秒后移除的定时器
+    const dismissMs = type === "failure" ? 5500 : 2800;
     setTimeout(() => {
-      setNotifications((prevNotifications) => 
+      setNotifications((prevNotifications) =>
         prevNotifications.filter((notification) => notification.id !== id)
       );
-    }, 2000);
+    }, dismissMs);
   };
 
   const success = (message) => addNotification("success", message);
