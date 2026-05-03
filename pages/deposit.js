@@ -5,10 +5,14 @@ import { useNotification } from "@/components/Context/notice";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { buyXDCLink } from "@/config";
+import useConnectWallet from "@/components/Hook/useConnectWallet";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const Deposit = () => {
   const { address } = useAccount();
   const { success } = useNotification();
+  const t = useTranslation();
+  const openConnect = useConnectWallet();
   const [data, setData] = useState({ type: 0 });
   const [isAnimating, setIsAnimating] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -28,7 +32,7 @@ const Deposit = () => {
   const handleCopyAddress = () => {
     copy(address);
     setCopied(true);
-    success("Address copied to clipboard!");
+    success(t.flow.addressCopied);
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -107,7 +111,7 @@ const Deposit = () => {
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    <span>Back</span>
+                    <span>{t.flow.back}</span>
                   </button>
                   <h2 className="text-3xl font-bold text-white">
                     Deposit XDC
@@ -177,14 +181,14 @@ const Deposit = () => {
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    <span>Copied!</span>
+                                    <span>{t.flow.copied}</span>
                                   </>
                                 ) : (
                                   <>
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                     </svg>
-                                    <span>Copy</span>
+                                    <span>{t.flow.copy}</span>
                                   </>
                                 )}
                               </button>
@@ -217,8 +221,15 @@ const Deposit = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-700 mb-2">Connect Your Wallet</h3>
-                    <p className="text-gray-600">Please connect your wallet to view your deposit address</p>
+                    <h3 className="text-xl font-semibold text-gray-700 mb-2">{t.flow.needWalletTitle}</h3>
+                    <p className="text-gray-600 mb-6 max-w-md mx-auto">{t.flow.needWalletBody}</p>
+                    <button
+                      type="button"
+                      className="btn bg-gradient-to-r from-green-500 to-emerald-600 text-white border-none hover:shadow-lg rounded-xl px-8"
+                      onClick={() => openConnect()}
+                    >
+                      {t.flow.connectWallet}
+                    </button>
                   </div>
                 )}
               </div>
@@ -237,7 +248,7 @@ const Deposit = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
-                  <span>Back</span>
+                  <span>{t.flow.back}</span>
                 </button>
                 
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-6 shadow-lg">

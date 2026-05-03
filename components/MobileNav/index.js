@@ -2,13 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MORE_NAV_META } from "@/lib/navMore";
+import { isMoreNavRouteActive, isMoreNavItemActive } from "@/lib/navActive";
 import { useTranslation } from "@/lib/i18n/useTranslation";
-
-function isMoreSectionActive(router) {
-  const p = router.pathname;
-  if (p.startsWith("/swap")) return true;
-  return ["/merch", "/mbbb", "/farm", "/bbbubu", "/bbbgame", "/airdrophub", "/ido", "/usdb"].includes(p);
-}
 
 const MobileNav = () => {
   const router = useRouter();
@@ -18,7 +13,7 @@ const MobileNav = () => {
   const onStake =
     router.pathname === "/" && (router.asPath.includes("#stake") || router.asPath.includes("/#stake"));
 
-  const moreActive = useMemo(() => isMoreSectionActive(router), [router.pathname]);
+  const moreActive = useMemo(() => isMoreNavRouteActive(router.pathname), [router.pathname]);
 
   useEffect(() => {
     if (!moreOpen) return;
@@ -82,7 +77,15 @@ const MobileNav = () => {
                     ) : (
                       <Link
                         href={item.href}
-                        className="flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl bg-base-200/80 hover:bg-green-50 text-sm font-medium text-base-content"
+                        className={
+                          "flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl text-sm font-medium " +
+                          (isMoreNavItemActive(router.pathname, item)
+                            ? "bg-green-50 text-green-800 ring-1 ring-green-200/80"
+                            : "bg-base-200/80 hover:bg-green-50 text-base-content")
+                        }
+                        aria-current={
+                          isMoreNavItemActive(router.pathname, item) ? "page" : undefined
+                        }
                         onClick={closeMore}
                       >
                         {t.navMore[item.key]}
