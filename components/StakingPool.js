@@ -510,7 +510,7 @@ const StakingPool = ({
           rewardPerBlock: contractData[0]?.result?.[5] || BigInt(0),
           isActive: contractData[0]?.result?.[6] || false,
           tokenAddress: lpTokenAddress,
-          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : pid === 1 ? "3XDC" : pid === 3 ? "BBBXDC" : pid === 4 ? "sUSDB" : "LP"),
+          symbol: poolConfig?.symbol || (pid === 0 ? "4POOL" : pid === 1 ? "3XDC" : pid === 3 ? "BBBXDC" : pid === 4 ? "sUSDB" : pid === 5 ? "USDC" : "LP"),
           balance: tokenData?.[0]?.result || BigInt(0),
           allowance: tokenData?.[1]?.result || BigInt(0),
           lpTotalSupply: tokenData?.[3]?.result || BigInt(0),
@@ -539,8 +539,8 @@ const StakingPool = ({
             bbb: bbbxdcPoolTokenBalances?.[0]?.result || BigInt(0),
             wxdc: bbbxdcPoolTokenBalances?.[1]?.result || BigInt(0),
           };
-        } else if (pid === 4) {
-          // sUSDB pool - special handling for 6 decimals
+        } else if (pid === 4 || pid === 5) {
+          // sUSDB / USDC pools — 6 decimals on lpStakev2
           pool.issUSDBPool = true;
         }
       } else {
@@ -695,8 +695,8 @@ const StakingPool = ({
         const totalBBBXDCPoolValueUSD = bbbValue + wxdcValue;
         const lpTokenPrice = totalBBBXDCPoolValueUSD / Number(formatEther(pool.lpTotalSupply));
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * lpTokenPrice;
-      } else if (poolType === 'lpstakev2' && pid === 4 && pool.issUSDBPool) {
-        // Special handling for sUSDB pool - use 6 decimals and $1 value
+      } else if (poolType === 'lpstakev2' && pool.issUSDBPool) {
+        // sUSDB / USDC — 6 decimals, ~$1 staked value for APR denominator
         totalStakedUSD = Number(formatUnits(pool.totalStaked, 6)) * 1;
       } else if (isPsXdcPool) {
         totalStakedUSD = Number(formatEther(pool.totalStaked)) * xdcPrice;
@@ -814,24 +814,25 @@ const StakingPool = ({
     }
   };
 
-  // Refresh data
+  // Refresh data (parallel refetch so balances update after one tx confirmation)
   const refreshData = () => {
-    refetchData();
+    const tasks = [refetchData()];
     if (poolType === 'lp' || poolType === 'lpstakev2') {
-      refetchTokenData?.();
-      if (pid === 3 || pid === 5) {
-        refetchPairData?.();
+      tasks.push(refetchTokenData());
+      if (poolType === 'lp' && (pid === 3 || pid === 5)) {
+        tasks.push(refetchPairData());
       }
       if (poolType === 'lpstakev2' && pid === 0) {
-        refetch4PoolTokenBalances?.();
+        tasks.push(refetch4PoolTokenBalances());
       }
       if (poolType === 'lpstakev2' && pid === 1) {
-        refetch3xdcPoolTokenBalances?.();
+        tasks.push(refetch3xdcPoolTokenBalances());
       }
       if (poolType === 'lpstakev2' && pid === 3) {
-        refetchBBBXDCPoolTokenBalances?.();
+        tasks.push(refetchBBBXDCPoolTokenBalances());
       }
     }
+    void Promise.all(tasks);
   };
 
   // Create pool actions based on pool type

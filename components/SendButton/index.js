@@ -20,6 +20,9 @@ const SendButton = (props) => {
   const { success, failure, info } = useNotification();
   const [mounted, setMounted] = useState(false);
   const pendingToastSent = useRef(false);
+  const callbackRef = useRef(props?.callback);
+  callbackRef.current = props?.callback;
+  const successHandledForHashRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -61,11 +64,16 @@ const SendButton = (props) => {
   }, [error, txError, failure, wb.txErrors]);
 
   useEffect(() => {
-    if (txSuccess) {
-      props?.callback?.(txSuccess, hash);
-      success(wb.writeButton.txSuccess);
+    if (!hash) {
+      successHandledForHashRef.current = null;
+      return;
     }
-  }, [txSuccess, hash, props, success, wb.writeButton.txSuccess]);
+    if (!txSuccess) return;
+    if (successHandledForHashRef.current === hash) return;
+    successHandledForHashRef.current = hash;
+    callbackRef.current?.(txSuccess, hash);
+    success(wb.writeButton.txSuccess);
+  }, [txSuccess, hash, success, wb.writeButton.txSuccess]);
 
   useEffect(() => {
     if (hash && isStarted && !txSuccess && !pendingToastSent.current) {

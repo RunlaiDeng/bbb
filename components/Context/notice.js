@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 // 创建通知上下文
 const NotificationContext = createContext();
@@ -8,8 +8,11 @@ export const useNotification = () => useContext(NotificationContext);
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
-  const addNotification = (type, message) => {
-    const id = Date.now(); // 为每个通知生成唯一的ID
+  const addNotification = useCallback((type, message) => {
+    const id =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const newNotification = { id, type, message };
     setNotifications((prevNotifications) => [...prevNotifications, newNotification]);
 
@@ -19,20 +22,29 @@ export const NotificationProvider = ({ children }) => {
         prevNotifications.filter((notification) => notification.id !== id)
       );
     }, dismissMs);
-  };
+  }, []);
 
-  const success = (message) => addNotification("success", message);
-  const info = (message) => addNotification("info", message);
-  const failure = (message) => addNotification("failure", message);
+  const success = useCallback(
+    (message) => addNotification("success", message),
+    [addNotification]
+  );
+  const info = useCallback(
+    (message) => addNotification("info", message),
+    [addNotification]
+  );
+  const failure = useCallback(
+    (message) => addNotification("failure", message),
+    [addNotification]
+  );
 
   return (
     <NotificationContext.Provider value={{ success, info, failure }}>
       <div className="toast toast-top toast-center text-xs z-50">
-        {notifications.map((notification, index) => {
+        {notifications.map((notification) => {
           const type = notification.type;
           return (
             <div
-              key={index}
+              key={notification.id}
               className={`flex items-center gap-2 min-w-[200px] py-2 px-4 rounded-lg shadow-lg backdrop-blur-md bg-opacity-95 border-l-4 ${
                 type === "success" ? "bg-white border-green-500" :
                 type === "info" ? "bg-white border-blue-500" :

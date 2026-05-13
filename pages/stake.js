@@ -8,7 +8,8 @@ import { formatSiteString } from "@/lib/i18n/siteStrings";
 // Process pool ids for hash navigation (move outside component to avoid dependency issues)
 const POOL_HASH_MAP = {
   bbb: "lp-2",
-  "susdb": "lpv2-4",
+  susdb: "lpv2-4",
+  usdc: "lpv2-5",
 };
 
 const Stake = () => {
@@ -35,6 +36,17 @@ const Stake = () => {
         icon: "/susdb.png",
         getTokenLink: "/usdb",
         hashTag: "#susdb",
+        decimals: 6,
+      },
+      {
+        id: "lpv2-5",
+        pid: 5,
+        poolType: "lpstakev2",
+        title: t.stakePage.poolTitleUsdc,
+        symbol: "USDC",
+        icon: "/usdc.jpg",
+        getTokenLink: "/swap/0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
+        hashTag: "#usdc",
         decimals: 6,
       },
     ],
@@ -182,6 +194,8 @@ const Stake = () => {
           poolConfig.symbol?.toLowerCase().includes("usdb")) ||
         (searchTerm.includes("susdb") &&
           poolConfig.symbol?.toLowerCase().includes("susdb")) ||
+        (searchTerm.includes("usdc") &&
+          poolConfig.symbol?.toLowerCase().includes("usdc")) ||
         searchTerm.includes("stake") ||
         searchTerm.includes("staking");
 
