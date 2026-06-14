@@ -33,7 +33,8 @@ const Navbar = () => {
     return shortenAddress(address);
   }, [address]);
 
-  const stakeActive = router.pathname === "/stake";
+  const idoHomeActive =
+    router.pathname === "/" && (router.asPath.includes("#ido") || router.asPath.includes("/#ido"));
   const moreSectionActive = isMoreNavRouteActive(router.pathname);
 
   useEffect(() => {
@@ -68,16 +69,16 @@ const Navbar = () => {
 
                 <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
                   <Link
-                    href={"/stake"}
+                    href={"/#ido"}
                     className={
                       "btn btn-ghost transition-all duration-300 rounded-xl " +
-                      (stakeActive
+                      (idoHomeActive
                         ? "text-green-700 bg-green-50 font-semibold"
                         : "hover:text-green-600 hover:bg-green-50")
                     }
-                    aria-current={stakeActive ? "page" : undefined}
+                    aria-current={idoHomeActive ? "page" : undefined}
                   >
-                    {t.nav.stake}
+                    {t.nav.ido}
                   </Link>
 
                   <div className="dropdown dropdown-hover font-bold">

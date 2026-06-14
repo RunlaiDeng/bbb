@@ -10,8 +10,8 @@ const MobileNav = () => {
   const t = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
-  const onStake =
-    router.pathname === "/" && (router.asPath.includes("#stake") || router.asPath.includes("/#stake"));
+  const onHomeIdo =
+    router.pathname === "/" && (router.asPath.includes("#ido") || router.asPath.includes("/#ido"));
 
   const moreActive = useMemo(() => isMoreNavRouteActive(router.pathname), [router.pathname]);
 
@@ -104,14 +104,14 @@ const MobileNav = () => {
           <Link
             href="/"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] ${
-              router.pathname === "/" && !onStake
+              router.pathname === "/" && !onHomeIdo
                 ? "text-green-600 font-semibold bg-green-50"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
             <div
               className={`p-1.5 rounded-xl ${
-                router.pathname === "/" && !onStake ? "bg-green-100" : "bg-transparent"
+                router.pathname === "/" && !onHomeIdo ? "bg-green-100" : "bg-transparent"
               }`}
             >
               <svg viewBox="0 0 1024 1024" width="22" height="22">
@@ -125,16 +125,16 @@ const MobileNav = () => {
           </Link>
 
           <Link
-            href="/stake"
+            href="/#ido"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] ${
-              onStake || router.pathname === "/stake"
+              onHomeIdo
                 ? "text-green-600 font-semibold bg-green-50"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
             <div
               className={`p-1.5 rounded-xl ${
-                onStake || router.pathname === "/stake" ? "bg-green-100" : "bg-transparent"
+                onHomeIdo ? "bg-green-100" : "bg-transparent"
               }`}
             >
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
@@ -152,7 +152,7 @@ const MobileNav = () => {
                 <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.stake}</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.ido}</span>
           </Link>
 
           <button
