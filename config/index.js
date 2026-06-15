@@ -78,7 +78,7 @@ export const dashboardConfig = {
     name: "Staked USDB",
     imageUrl: "/susdb.png",
     price: "susdb",
-    tradeLink: "/stake",
+    tradeLink: "/usdb",
   },
   "0x9B8e12b0BAC165B86967E771d98B520Ec3F665A6": {
     symbol: "psXDC",
