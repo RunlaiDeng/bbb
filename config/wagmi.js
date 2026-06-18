@@ -1,7 +1,7 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { cookieStorage, createStorage } from "wagmi";
 import { http, fallback } from "viem";
-import { xdc } from "./chains";
+import { bsc, xdc } from "./chains";
 
 const walletConnectProjectId =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
@@ -18,13 +18,20 @@ if (typeof window === "undefined" && !walletConnectProjectId) {
 export const wagmiConfig = getDefaultConfig({
   appName: "BBBFI",
   projectId: walletConnectProjectId || walletConnectFallbackId,
-  chains: [xdc],
+  chains: [xdc, bsc],
   transports: {
     [xdc.id]: fallback(
       [
         http("https://rpc.ankr.com/xdc"),
         http("https://rpc.xdcrpc.com"),
         http("https://erpc.xdcrpc.com"),
+      ],
+      { retryCount: 2 }
+    ),
+    [bsc.id]: fallback(
+      [
+        http("https://bsc-dataseed.binance.org"),
+        http("https://bsc-rpc.publicnode.com"),
       ],
       { retryCount: 2 }
     ),

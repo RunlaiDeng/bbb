@@ -23,6 +23,31 @@ export const xdc = {
   },
 };
 
+export const bsc = {
+  id: 56,
+  name: "BNB Smart Chain",
+  nativeCurrency: {
+    decimals: 18,
+    name: "BNB",
+    symbol: "BNB",
+  },
+  rpcUrls: {
+    default: { http: ["https://bsc-dataseed.binance.org"] },
+  },
+  blockExplorers: {
+    default: {
+      name: "BscScan",
+      url: "https://bscscan.com",
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: "0xcA11bde05977b3631167028862bE2a173976CA11",
+      blockCreated: 15921452,
+    },
+  },
+};
+
 export const xdcParentNet = {
   id: 551,
   name: "XDC Devnet",

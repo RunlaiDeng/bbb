@@ -4,11 +4,12 @@ import ERC20ABI from "@/abi/ERC20ABI.json";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useId, useMemo, useState } from "react";
-import { useAccount, useReadContracts } from "wagmi";
+import { useAccount, useReadContracts, useSwitchChain } from "wagmi";
 import { formatUnits, parseUnits } from "viem";
 import { HOME_LANG_QUERY } from "@/lib/i18n/homeLocale";
 import { getSiteStrings } from "@/lib/i18n/siteStrings";
 import { useLanguage } from "@/components/Context/LanguageContext";
+import { bsc } from "@/config/chains";
 
 const BBB_TOKEN_ADDRESS = "0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1";
 const BBB_IDO_CONTRACT_ADDRESS = "0x6dfda506A1B0513d941E7778c7B8F90e8Fa1C21D";
@@ -210,7 +211,16 @@ const BbbfiLogo = memo(({ className = "h-8 w-8 rounded-lg" }) => (
 ));
 BbbfiLogo.displayName = "BbbfiLogo";
 
-const HomeIdoCard = memo(({ strings: t, onConnect, status, totalParticipatedBBB, onParticipated }) => {
+const HomeIdoCard = memo(
+  ({
+    strings: t,
+    onConnect,
+    status,
+    totalParticipatedBBB,
+    onParticipated,
+    onSwitchToBsc,
+    isSwitchingToBsc,
+  }) => {
   const { address } = useAccount();
   const [amount, setAmount] = useState("");
 
@@ -395,13 +405,38 @@ const HomeIdoCard = memo(({ strings: t, onConnect, status, totalParticipatedBBB,
           </div>
         </div>
 
-        {address && disabledReason && (
+        {status === "ended" && (
+          <p className="rounded-lg border border-sky-100 bg-sky-50 px-3 py-2 text-xs font-medium text-sky-800">
+            {t.idoEndedSwitchHint}
+          </p>
+        )}
+
+        {address && disabledReason && status !== "ended" && (
           <p className="rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
             {disabledReason}
           </p>
         )}
 
-        {!address ? (
+        {status === "ended" ? (
+          <button
+            type="button"
+            className="btn w-full rounded-xl border-none bg-gradient-to-r from-yellow-400 to-amber-500 text-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
+            onClick={onSwitchToBsc}
+            disabled={isSwitchingToBsc}
+            aria-busy={isSwitchingToBsc}
+          >
+            {isSwitchingToBsc ? (
+              <>
+                <span className="loading loading-spinner loading-sm" aria-hidden />
+                {t.switchingToBsc}
+              </>
+            ) : address ? (
+              t.switchToBsc
+            ) : (
+              t.connectAndSwitchToBsc
+            )}
+          </button>
+        ) : !address ? (
           <button
             type="button"
             className="btn w-full rounded-xl border-none bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-lg"
@@ -534,6 +569,7 @@ const HomeContent = memo(() => {
 
   const [heroRiskOpen, setHeroRiskOpen] = useState(false);
   const [nowTs, setNowTs] = useState(null);
+  const { switchChain, isPending: isSwitchingToBsc } = useSwitchChain();
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -604,6 +640,14 @@ const HomeContent = memo(() => {
     }
   }, [openConnect, router, address]);
 
+  const handleSwitchToBsc = useCallback(() => {
+    if (!address) {
+      openConnect();
+      return;
+    }
+    switchChain?.({ chainId: bsc.id });
+  }, [address, openConnect, switchChain]);
+
   return (
     <>
       <style jsx global>{`
@@ -667,6 +711,8 @@ const HomeContent = memo(() => {
               status={idoStatus}
               totalParticipatedBBB={totalParticipatedBBB}
               onParticipated={refetchIdoReads}
+              onSwitchToBsc={handleSwitchToBsc}
+              isSwitchingToBsc={isSwitchingToBsc}
             />
           </div>
         </div>
