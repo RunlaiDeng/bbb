@@ -43,6 +43,13 @@ const BBB_IDO_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "participatedBBBOf",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 function formatTokenAmount(value, decimals = 18, fractionDigits = 4) {
@@ -241,6 +248,12 @@ const HomeIdoCard = memo(
               functionName: "allowance",
               args: [address, BBB_IDO_CONTRACT_ADDRESS],
             },
+            {
+              address: BBB_IDO_CONTRACT_ADDRESS,
+              abi: BBB_IDO_ABI,
+              functionName: "participatedBBBOf",
+              args: [address],
+            },
           ]
         : []),
     ],
@@ -255,6 +268,7 @@ const HomeIdoCard = memo(
   const decimals = Number(tokenReads?.[0]?.result ?? 18);
   const balance = address ? tokenReads?.[1]?.result ?? 0n : 0n;
   const allowance = address ? tokenReads?.[2]?.result ?? 0n : 0n;
+  const participatedBBB = address ? tokenReads?.[3]?.result : 0n;
   const amountWei = useMemo(() => parseTokenInput(amount, decimals), [amount, decimals]);
   const needsApproval = amountWei > 0n && allowance < amountWei;
 
@@ -398,7 +412,7 @@ const HomeIdoCard = memo(
             <div className="flex items-center justify-between gap-3">
               <span className="text-gray-500">{t.youWillReceive}</span>
               <span className="font-bold text-gray-900">
-                {amountWei > 0n ? formatTokenAmount(amountWei, decimals, 4) : "0"} BBB
+                {participatedBBB == null ? t.loadingShort : formatTokenAmount(participatedBBB, decimals, 4)} BBB
               </span>
             </div>
             <div className="mt-1 text-xs leading-relaxed text-gray-500">{t.oneToOneRule}</div>
