@@ -55,30 +55,31 @@ const BscHome = ({ t }) => {
   };
 
   return (
-    <section className="min-h-[calc(100vh-4.5rem)] bg-white px-4 py-10">
-      <div className="mx-auto flex w-full max-w-lg flex-col items-center text-center">
-        <Image
-          src="/favicon.ico"
-          alt={t.bscHome.imageAlt}
-          width={80}
-          height={80}
-          priority
-          className="h-20 w-20 object-contain"
-        />
+    <section className="relative h-[calc(100vh-4.5rem)] w-full overflow-hidden bg-white">
+      <div className="absolute inset-0">
+        <TokenChartPool poolAddress={bscBbbPoolAddress} network="bsc" plain />
+      </div>
 
-        <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
-
-        <div className="mt-8 w-full space-y-6">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
-              {t.bscHome.contractAddressLabel}
-            </p>
-            <div className="mt-2 flex items-center justify-center gap-2">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-3 sm:p-4">
+        <div className="pointer-events-auto inline-flex max-w-[calc(100%-1.5rem)] items-center gap-3 rounded-2xl bg-white/90 px-3 py-2.5 shadow-sm backdrop-blur-md sm:px-4 sm:py-3">
+          <Image
+            src="/favicon.ico"
+            alt={t.bscHome.imageAlt}
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10 shrink-0 object-contain"
+          />
+          <div className="min-w-0 text-left">
+            <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
+              {t.bscHome.title}
+            </h1>
+            <div className="mt-0.5 flex items-center gap-1.5">
               <a
                 href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-sm text-emerald-700 hover:text-emerald-900 hover:underline"
+                className="truncate font-mono text-xs text-emerald-700 hover:text-emerald-900 hover:underline sm:text-sm"
                 title={bscBbbTokenAddress}
               >
                 {shortenAddress(bscBbbTokenAddress)}
@@ -86,7 +87,7 @@ const BscHome = ({ t }) => {
               <button
                 type="button"
                 onClick={handleCopyAddress}
-                className="text-gray-400 transition hover:text-gray-600"
+                className="shrink-0 text-gray-400 transition hover:text-gray-600"
                 title={copyHint}
                 aria-label={copyHint}
               >
@@ -94,32 +95,28 @@ const BscHome = ({ t }) => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-4">
+        <div className="pointer-events-auto mx-auto flex w-full max-w-xl flex-col gap-3 rounded-2xl bg-white/92 px-4 py-3 shadow-md backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="min-w-0 text-left">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
               {t.bscHome.balanceLabel}
             </p>
-            <p className="mt-2 text-2xl font-semibold tabular-nums text-gray-900">{balanceText}</p>
+            <p className="mt-0.5 truncate text-lg font-semibold tabular-nums text-gray-900 sm:text-xl">
+              {balanceText}
+            </p>
           </div>
+          <a
+            href={bscBbbPancakeSwapLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:min-w-[9rem]"
+          >
+            {t.bscHome.buyBbb}
+          </a>
         </div>
-
-        <div className="mt-8 w-full">
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
-            {t.bscHome.chartLabel}
-          </p>
-          <div className="mt-2 h-[320px] w-full overflow-hidden sm:h-[360px]">
-            <TokenChartPool poolAddress={bscBbbPoolAddress} network="bsc" plain />
-          </div>
-        </div>
-
-        <a
-          href={bscBbbPancakeSwapLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-10 inline-flex w-full items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-emerald-700"
-        >
-          {t.bscHome.buyBbb}
-        </a>
       </div>
     </section>
   );
