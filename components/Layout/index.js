@@ -9,7 +9,8 @@ import { bsc } from "@/config/chains";
 import { useRouter } from "next/router";
 import { formatUnits } from "viem";
 import copy from "copy-to-clipboard";
-import { bscBbbPancakeSwapLink, bscBbbTokenAddress } from "@/config";
+import { bscBbbPancakeSwapLink, bscBbbPoolAddress, bscBbbTokenAddress } from "@/config";
+import TokenChartPool from "../TokenChartPool";
 
 function formatTokenAmount(value, decimals = 18, fractionDigits = 4) {
   if (value == null) return "0";
@@ -54,8 +55,8 @@ const BscHome = ({ t }) => {
   };
 
   return (
-    <section className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center bg-white px-4 py-12">
-      <div className="mx-auto flex w-full max-w-sm flex-col items-center text-center">
+    <section className="min-h-[calc(100vh-4.5rem)] bg-white px-4 py-10">
+      <div className="mx-auto flex w-full max-w-lg flex-col items-center text-center">
         <Image
           src="/favicon.ico"
           alt={t.bscHome.imageAlt}
@@ -66,7 +67,6 @@ const BscHome = ({ t }) => {
         />
 
         <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
-        <p className="mt-1 text-base text-gray-500">{t.bscHome.tokenName}</p>
 
         <div className="mt-8 w-full space-y-6">
           <div>
@@ -100,6 +100,15 @@ const BscHome = ({ t }) => {
               {t.bscHome.balanceLabel}
             </p>
             <p className="mt-2 text-2xl font-semibold tabular-nums text-gray-900">{balanceText}</p>
+          </div>
+        </div>
+
+        <div className="mt-8 w-full">
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+            {t.bscHome.chartLabel}
+          </p>
+          <div className="mt-2 h-[320px] w-full overflow-hidden sm:h-[360px]">
+            <TokenChartPool poolAddress={bscBbbPoolAddress} network="bsc" plain />
           </div>
         </div>
 
