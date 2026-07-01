@@ -54,31 +54,25 @@ const BscHome = ({ t }) => {
   };
 
   return (
-    <section className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center bg-white px-4 py-10">
-      <div className="mx-auto flex w-full max-w-md flex-col items-center text-center">
-        <div className="mt-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
-          BSC
-        </div>
+    <section className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center bg-white px-4 py-12">
+      <div className="mx-auto flex w-full max-w-sm flex-col items-center text-center">
+        <Image
+          src="/favicon.ico"
+          alt={t.bscHome.imageAlt}
+          width={80}
+          height={80}
+          priority
+          className="h-20 w-20 object-contain"
+        />
 
-        <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg shadow-gray-900/5">
-          <div className="flex flex-col items-center px-6 pb-6 pt-8">
-            <Image
-              src="/bbb.jpg"
-              alt={t.bscHome.imageAlt}
-              width={96}
-              height={96}
-              priority
-              className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
-            />
-            <h1 className="mt-4 text-3xl font-bold text-gray-900">{t.bscHome.title}</h1>
-            <p className="mt-1 text-sm text-gray-500">{t.bscHome.tokenName}</p>
-            <p className="mt-2 text-sm leading-relaxed text-gray-600">{t.bscHome.description}</p>
-          </div>
+        <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
+        <p className="mt-1 text-base text-gray-500">{t.bscHome.tokenName}</p>
 
-          <div className="border-t border-gray-100 bg-gray-50/80 px-6 py-5">
-            <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <div className="mt-8 w-full space-y-6">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
               {t.bscHome.contractAddressLabel}
-            </div>
+            </p>
             <div className="mt-2 flex items-center justify-center gap-2">
               <a
                 href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
@@ -92,27 +86,20 @@ const BscHome = ({ t }) => {
               <button
                 type="button"
                 onClick={handleCopyAddress}
-                className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600 hover:bg-gray-100"
+                className="text-gray-400 transition hover:text-gray-600"
                 title={copyHint}
+                aria-label={copyHint}
               >
                 {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
               </button>
             </div>
-            <a
-              href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 inline-block text-xs text-gray-400 hover:text-emerald-700"
-            >
-              {t.bscHome.viewOnBscscan}
-            </a>
           </div>
 
-          <div className="border-t border-emerald-100 bg-emerald-50/70 px-6 py-5">
-            <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
               {t.bscHome.balanceLabel}
-            </div>
-            <div className="mt-2 text-2xl font-bold text-gray-900">{balanceText}</div>
+            </p>
+            <p className="mt-2 text-2xl font-semibold tabular-nums text-gray-900">{balanceText}</p>
           </div>
         </div>
 
@@ -120,7 +107,7 @@ const BscHome = ({ t }) => {
           href={bscBbbPancakeSwapLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 inline-flex w-full max-w-md items-center justify-center rounded-xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-md shadow-emerald-900/20 transition hover:bg-emerald-700"
+          className="mt-10 inline-flex w-full items-center justify-center rounded-lg bg-emerald-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-emerald-700"
         >
           {t.bscHome.buyBbb}
         </a>
