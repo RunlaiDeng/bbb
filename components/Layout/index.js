@@ -11,12 +11,40 @@ import { formatUnits } from "viem";
 import copy from "copy-to-clipboard";
 import { bscBbbPancakeSwapLink, bscBbbPoolAddress, bscBbbTokenAddress } from "@/config";
 import TokenChartPool from "../TokenChartPool";
+import { getPrice } from "../Utils";
 
-function formatTokenAmount(value, decimals = 18, fractionDigits = 4) {
-  if (value == null) return "0";
-  const [whole, fraction = ""] = formatUnits(value, decimals).split(".");
-  const trimmed = fraction.slice(0, fractionDigits).replace(/0+$/, "");
-  return trimmed ? `${whole}.${trimmed}` : whole;
+function formatBalanceAmount(value, decimals = 18, fractionDigits = 4) {
+  const amount = Number(formatUnits(value ?? 0n, decimals));
+  if (!Number.isFinite(amount)) return "0";
+  return amount.toLocaleString(undefined, {
+    maximumFractionDigits: fractionDigits,
+    minimumFractionDigits: 0,
+  });
+}
+
+function formatUsdApprox(value) {
+  if (value == null || !Number.isFinite(value)) return null;
+  if (value >= 1_000_000) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      maximumFractionDigits: 2,
+    }).format(value);
+  }
+  if (value >= 1000) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(value);
+  }
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
 }
 
 function shortenAddress(addr) {
@@ -28,6 +56,8 @@ function shortenAddress(addr) {
 const BscHome = ({ t }) => {
   const { address } = useAccount();
   const [copyHint, setCopyHint] = useState(t.bscHome.copyAddress);
+  const [bbbPriceUsd, setBbbPriceUsd] = useState(null);
+  const [isLoadingPrice, setIsLoadingPrice] = useState(true);
 
   const {
     data: bbbBalance,
@@ -40,13 +70,55 @@ const BscHome = ({ t }) => {
     query: { enabled: !!address },
   });
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchPrice = async () => {
+      setIsLoadingPrice(true);
+      try {
+        const { price } = await getPrice(bscBbbPoolAddress, "bsc");
+        if (!cancelled) setBbbPriceUsd(Number(price) || 0);
+      } catch (error) {
+        console.error("Failed to load BBB price:", error);
+        if (!cancelled) setBbbPriceUsd(null);
+      } finally {
+        if (!cancelled) setIsLoadingPrice(false);
+      }
+    };
+
+    fetchPrice();
+    const timer = setInterval(fetchPrice, 60_000);
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, []);
+
+  const balanceUsd =
+    address &&
+    bbbBalance?.value != null &&
+    bbbPriceUsd != null &&
+    !balanceError
+      ? Number(formatUnits(bbbBalance.value, bbbBalance.decimals ?? 18)) * bbbPriceUsd
+      : null;
+
   const balanceText = !address
     ? t.bscHome.connectToViewBalance
     : isLoadingBalance
       ? t.bscHome.loadingBalance
       : balanceError
         ? t.bscHome.balanceUnavailable
-        : `${formatTokenAmount(bbbBalance?.value, bbbBalance?.decimals ?? 18, 4)} BBB`;
+        : `${formatBalanceAmount(bbbBalance?.value, bbbBalance?.decimals ?? 18, 4)} BBB`;
+
+  const balanceUsdText =
+    !address || balanceError
+      ? null
+      : isLoadingBalance || isLoadingPrice
+        ? t.bscHome.loadingBalanceUsd
+        : balanceUsd == null
+          ? t.bscHome.balanceUsdUnavailable
+          : t.bscHome.balanceUsdApprox.replace("{amount}", formatUsdApprox(balanceUsd));
 
   const handleCopyAddress = () => {
     copy(bscBbbTokenAddress);
@@ -57,65 +129,72 @@ const BscHome = ({ t }) => {
   return (
     <section className="relative h-[calc(100vh-4.5rem)] w-full overflow-hidden bg-white">
       <div className="absolute inset-0">
-        <TokenChartPool poolAddress={bscBbbPoolAddress} network="bsc" plain />
-      </div>
-
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-3 sm:p-4">
-        <div className="pointer-events-auto inline-flex max-w-[calc(100%-1.5rem)] items-center gap-3 rounded-2xl bg-white/90 px-3 py-2.5 shadow-sm backdrop-blur-md sm:px-4 sm:py-3">
-          <Image
-            src="/favicon.ico"
-            alt={t.bscHome.imageAlt}
-            width={40}
-            height={40}
-            priority
-            className="h-10 w-10 shrink-0 object-contain"
-          />
-          <div className="min-w-0 text-left">
-            <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-              {t.bscHome.title}
-            </h1>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <a
-                href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="truncate font-mono text-xs text-emerald-700 hover:text-emerald-900 hover:underline sm:text-sm"
-                title={bscBbbTokenAddress}
-              >
-                {shortenAddress(bscBbbTokenAddress)}
-              </a>
-              <button
-                type="button"
-                onClick={handleCopyAddress}
-                className="shrink-0 text-gray-400 transition hover:text-gray-600"
-                title={copyHint}
-                aria-label={copyHint}
-              >
-                {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
-              </button>
-            </div>
-          </div>
-        </div>
+        <TokenChartPool
+          poolAddress={bscBbbPoolAddress}
+          network="bsc"
+          plain
+          resolution="15m"
+          chartType="line"
+        />
       </div>
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-4">
-        <div className="pointer-events-auto mx-auto flex w-full max-w-xl flex-col gap-3 rounded-2xl bg-white/92 px-4 py-3 shadow-md backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <div className="min-w-0 text-left">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
-              {t.bscHome.balanceLabel}
-            </p>
-            <p className="mt-0.5 truncate text-lg font-semibold tabular-nums text-gray-900 sm:text-xl">
-              {balanceText}
-            </p>
+        <div className="pointer-events-auto mx-auto w-full max-w-xl rounded-2xl bg-white/92 px-4 py-3 shadow-md backdrop-blur-md">
+          <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
+            <Image
+              src="/favicon.ico"
+              alt={t.bscHome.imageAlt}
+              width={36}
+              height={36}
+              priority
+              className="h-9 w-9 shrink-0 object-contain"
+            />
+            <div className="min-w-0 flex-1 text-left">
+              <h1 className="text-lg font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <a
+                  href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate font-mono text-xs text-emerald-700 hover:text-emerald-900 hover:underline"
+                  title={bscBbbTokenAddress}
+                >
+                  {shortenAddress(bscBbbTokenAddress)}
+                </a>
+                <button
+                  type="button"
+                  onClick={handleCopyAddress}
+                  className="shrink-0 text-gray-400 transition hover:text-gray-600"
+                  title={copyHint}
+                  aria-label={copyHint}
+                >
+                  {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
+                </button>
+              </div>
+            </div>
           </div>
-          <a
-            href={bscBbbPancakeSwapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:min-w-[9rem]"
-          >
-            {t.bscHome.buyBbb}
-          </a>
+
+          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="min-w-0 text-left">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+                {t.bscHome.balanceLabel}
+              </p>
+              <p className="mt-0.5 truncate text-lg font-semibold tabular-nums text-gray-900 sm:text-xl">
+                {balanceText}
+              </p>
+              {balanceUsdText ? (
+                <p className="mt-0.5 text-sm tabular-nums text-gray-500">{balanceUsdText}</p>
+              ) : null}
+            </div>
+            <a
+              href={bscBbbPancakeSwapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:min-w-[9rem]"
+            >
+              {t.bscHome.buyBbb}
+            </a>
+          </div>
         </div>
       </div>
     </section>

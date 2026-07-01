@@ -226,11 +226,11 @@ const getKline = async (pool) => {
   }
 };
 
-const getPrice = async (pool) => {
+const getPrice = async (pool, network = "xdc") => {
   if (!pool) return { price: 0, priceChange24h: 0, cap: 0, volumeH24: 0 };
   try {
     const json = await send(
-      `${API_ENDPOINTS.GECKOTERMINAL}/networks/xdc/pools/${pool}?include=dex`
+      `${API_ENDPOINTS.GECKOTERMINAL}/networks/${network}/pools/${pool}?include=dex`
     );
     const item = json?.data?.attributes;
     return {

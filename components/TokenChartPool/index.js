@@ -1,15 +1,26 @@
-const TokenChartPool = ({ poolAddress, network = "xdc", plain = false }) => {
+const TokenChartPool = ({
+  poolAddress,
+  network = "xdc",
+  plain = false,
+  resolution,
+  chartType,
+}) => {
+  const params = new URLSearchParams({
+    embed: "1",
+    info: "0",
+    swaps: "0",
+    light_chart: "1",
+  });
+  if (resolution) params.set("default_resolution", resolution);
+  if (chartType) params.set("chart_type", chartType);
+
   const iframe = (
     <iframe
       height="100%"
       width="100%"
       id="geckoterminal-embed"
       title="GeckoTerminal Embed"
-      src={
-        `https://www.geckoterminal.com/${network}/pools/` +
-        poolAddress +
-        "?embed=1&info=0&swaps=0&light_chart=1"
-      }
+      src={`https://www.geckoterminal.com/${network}/pools/${poolAddress}?${params.toString()}`}
       frameBorder="0"
       allow="clipboard-write"
       allowFullScreen
