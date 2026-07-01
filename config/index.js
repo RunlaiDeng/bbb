@@ -22,6 +22,10 @@ import XDCLiquidityStakingV15ABI from "../abi/XDCLiquidityStakingV15ABI.json";
 // export const dexLink =
 //   "https://icecreamswap.com/swap?chain=xdc&outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const dexLink = "/swap/0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1";
+
+export const bscBbbTokenAddress = "0xE7D366A8064232B7EdEFcEA7Fab853EB5cB9CC83";
+export const bscBbbPancakeSwapLink =
+  "https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0xE7D366A8064232B7EdEFcEA7Fab853EB5cB9CC83";
 export const xswapDexLink =
   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =

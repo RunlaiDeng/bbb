@@ -4,13 +4,12 @@ import Navbar from "../Navbar";
 import MobileNav from "../MobileNav";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { useEffect, useMemo, useState } from "react";
-import { useAccount, useChainId, usePublicClient } from "wagmi";
-import { bsc, xdc } from "@/config/chains";
+import { useAccount, useBalance, useChainId } from "wagmi";
+import { bsc } from "@/config/chains";
 import { useRouter } from "next/router";
-import { decodeAbiParameters, encodeAbiParameters, formatUnits } from "viem";
-
-const BBB_IDO_CONTRACT_ADDRESS = "0x6dfda506A1B0513d941E7778c7B8F90e8Fa1C21D";
-const BBB_IDO_USER_PARTICIPATION_SELECTOR = "0xc2e962ed";
+import { formatUnits } from "viem";
+import copy from "copy-to-clipboard";
+import { bscBbbPancakeSwapLink, bscBbbTokenAddress } from "@/config";
 
 function formatTokenAmount(value, decimals = 18, fractionDigits = 4) {
   if (value == null) return "0";
@@ -19,102 +18,112 @@ function formatTokenAmount(value, decimals = 18, fractionDigits = 4) {
   return trimmed ? `${whole}.${trimmed}` : whole;
 }
 
-const BscUnderConstruction = ({ t }) => {
+function shortenAddress(addr) {
+  if (!addr || typeof addr !== "string") return "";
+  if (addr.length < 12) return addr;
+  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+}
+
+const BscHome = ({ t }) => {
   const { address } = useAccount();
-  const xdcPublicClient = usePublicClient({ chainId: xdc.id });
-  const [participatedBBB, setParticipatedBBB] = useState(null);
-  const [isLoadingParticipation, setIsLoadingParticipation] = useState(false);
-  const [participationError, setParticipationError] = useState(false);
+  const [copyHint, setCopyHint] = useState(t.bscHome.copyAddress);
 
-  useEffect(() => {
-    if (!address) {
-      setParticipatedBBB(null);
-      setIsLoadingParticipation(false);
-      setParticipationError(false);
-      return;
-    }
-    if (!xdcPublicClient) return;
+  const {
+    data: bbbBalance,
+    isLoading: isLoadingBalance,
+    isError: balanceError,
+  } = useBalance({
+    address,
+    token: bscBbbTokenAddress,
+    chainId: bsc.id,
+    query: { enabled: !!address },
+  });
 
-    let cancelled = false;
+  const balanceText = !address
+    ? t.bscHome.connectToViewBalance
+    : isLoadingBalance
+      ? t.bscHome.loadingBalance
+      : balanceError
+        ? t.bscHome.balanceUnavailable
+        : `${formatTokenAmount(bbbBalance?.value, bbbBalance?.decimals ?? 18, 4)} BBB`;
 
-    const fetchParticipation = async () => {
-      setIsLoadingParticipation(true);
-      setParticipationError(false);
-
-      try {
-        const encodedAddress = encodeAbiParameters([{ type: "address" }], [address]).slice(2);
-        const { data } = await xdcPublicClient.call({
-          to: BBB_IDO_CONTRACT_ADDRESS,
-          data: `${BBB_IDO_USER_PARTICIPATION_SELECTOR}${encodedAddress}`,
-        });
-        const [amount] = decodeAbiParameters([{ type: "uint256" }], data);
-
-        if (!cancelled) setParticipatedBBB(amount);
-      } catch (error) {
-        console.error("Failed to load IDO participation:", error);
-        if (!cancelled) {
-          setParticipatedBBB(null);
-          setParticipationError(true);
-        }
-      } finally {
-        if (!cancelled) setIsLoadingParticipation(false);
-      }
-    };
-
-    fetchParticipation();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [address, xdcPublicClient]);
-
-  const participationText = !address
-    ? t.bscHome.connectToViewIdo
-    : isLoadingParticipation
-      ? t.bscHome.loadingIdoParticipation
-      : participationError
-        ? t.bscHome.idoParticipationUnavailable
-        : `${formatTokenAmount(participatedBBB, 18, 4)} BBB`;
+  const handleCopyAddress = () => {
+    copy(bscBbbTokenAddress);
+    setCopyHint(t.bscHome.addressCopied);
+    setTimeout(() => setCopyHint(t.bscHome.copyAddress), 1500);
+  };
 
   return (
     <section className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center bg-white px-4 py-10">
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-        <div className="w-full max-w-xl">
-          <Image
-            src="/bbbpump-card.png"
-            alt={t.bscHome.imageAlt}
-            width={1600}
-            height={776}
-            priority
-            className="h-auto w-full object-contain"
-          />
-        </div>
-        <div className="mt-7 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center text-center">
+        <div className="mt-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-800">
           BSC
         </div>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-          {t.bscHome.title}
-        </h1>
-        <p className="mt-3 max-w-md text-base leading-relaxed text-gray-600">
-          {t.bscHome.description}
-        </p>
-        <div className="mt-6 w-full max-w-sm rounded-lg border border-emerald-100 bg-emerald-50/70 p-4 shadow-sm shadow-emerald-900/5">
-          <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-            {t.bscHome.idoParticipationLabel}
-          </div>
-          <div className="mt-2 flex items-center justify-center gap-2">
-            <span
-              className="h-8 w-8 rounded-lg border border-white bg-white bg-contain bg-center bg-no-repeat shadow-sm"
-              style={{ backgroundImage: "url('/favicon.ico')" }}
-              aria-label="BBBFI BBB"
-              role="img"
+
+        <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg shadow-gray-900/5">
+          <div className="flex flex-col items-center px-6 pb-6 pt-8">
+            <Image
+              src="/bbb.jpg"
+              alt={t.bscHome.imageAlt}
+              width={96}
+              height={96}
+              priority
+              className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-md"
             />
-            <span className="text-xl font-bold text-gray-900">{participationText}</span>
+            <h1 className="mt-4 text-3xl font-bold text-gray-900">{t.bscHome.title}</h1>
+            <p className="mt-1 text-sm text-gray-500">{t.bscHome.tokenName}</p>
+            <p className="mt-2 text-sm leading-relaxed text-gray-600">{t.bscHome.description}</p>
           </div>
-          {address && !participationError && (
-            <div className="mt-1 text-xs text-gray-500">{t.bscHome.idoParticipationHint}</div>
-          )}
+
+          <div className="border-t border-gray-100 bg-gray-50/80 px-6 py-5">
+            <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              {t.bscHome.contractAddressLabel}
+            </div>
+            <div className="mt-2 flex items-center justify-center gap-2">
+              <a
+                href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-sm text-emerald-700 hover:text-emerald-900 hover:underline"
+                title={bscBbbTokenAddress}
+              >
+                {shortenAddress(bscBbbTokenAddress)}
+              </a>
+              <button
+                type="button"
+                onClick={handleCopyAddress}
+                className="rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600 hover:bg-gray-100"
+                title={copyHint}
+              >
+                {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
+              </button>
+            </div>
+            <a
+              href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-xs text-gray-400 hover:text-emerald-700"
+            >
+              {t.bscHome.viewOnBscscan}
+            </a>
+          </div>
+
+          <div className="border-t border-emerald-100 bg-emerald-50/70 px-6 py-5">
+            <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+              {t.bscHome.balanceLabel}
+            </div>
+            <div className="mt-2 text-2xl font-bold text-gray-900">{balanceText}</div>
+          </div>
         </div>
+
+        <a
+          href={bscBbbPancakeSwapLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 inline-flex w-full max-w-md items-center justify-center rounded-xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-md shadow-emerald-900/20 transition hover:bg-emerald-700"
+        >
+          {t.bscHome.buyBbb}
+        </a>
       </div>
     </section>
   );
@@ -152,7 +161,7 @@ const Layout = ({ children }) => {
       </Head>
       <div className={`min-h-screen ${isBscChain ? "bg-white" : "mobile-safe-bottom"}`}>
         <Navbar />
-        {isBscChain ? <BscUnderConstruction t={t} /> : children}
+        {isBscChain ? <BscHome t={t} /> : children}
       </div>
 
       {!isBscChain && <MobileNav />}
