@@ -9,7 +9,7 @@ import { NotificationProvider } from "@/components/Context/notice";
 import { WagmiProvider } from "wagmi";
 import Head from "next/head";
 import { FollowProvider } from "@/components/Context/follow";
-import { xdc } from "../config/chains";
+import { bsc } from "../config/chains";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -38,7 +38,7 @@ function RainbowKitWithLocale({ children }) {
   return (
     <RainbowKitProvider
       locale={locale === "zh" ? "zh-CN" : "en-US"}
-      initialChain={xdc}
+      initialChain={bsc}
       theme={rkTheme}
     >
       {children}

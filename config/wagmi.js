@@ -18,7 +18,7 @@ if (typeof window === "undefined" && !walletConnectProjectId) {
 export const wagmiConfig = getDefaultConfig({
   appName: "BBBFI",
   projectId: walletConnectProjectId || walletConnectFallbackId,
-  chains: [xdc, bsc],
+  chains: [bsc, xdc],
   transports: {
     [xdc.id]: fallback(
       [
