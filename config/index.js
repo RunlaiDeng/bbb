@@ -27,6 +27,7 @@ export const bscBbbTokenAddress = "0xE7D366A8064232B7EdEFcEA7Fab853EB5cB9CC83";
 export const bscBbbPoolAddress = "0x77842e56c1a6fd494d4cad2743fad55e45bde442";
 export const bscBbbPancakeSwapLink =
   "https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0xE7D366A8064232B7EdEFcEA7Fab853EB5cB9CC83";
+export const bscBbbIntroVideoId = "YhFKJBUqrfU";
 export const xswapDexLink =
   "https://app.xspswap.finance/#/swap?outputCurrency=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1&inputCurrency=XDC";
 export const chartLink =

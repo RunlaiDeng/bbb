@@ -9,7 +9,7 @@ import { bsc } from "@/config/chains";
 import { useRouter } from "next/router";
 import { formatUnits } from "viem";
 import copy from "copy-to-clipboard";
-import { bscBbbPancakeSwapLink, bscBbbPoolAddress, bscBbbTokenAddress } from "@/config";
+import { bscBbbIntroVideoId, bscBbbPancakeSwapLink, bscBbbPoolAddress, bscBbbTokenAddress } from "@/config";
 import TokenChartPool from "../TokenChartPool";
 import { getPrice } from "../Utils";
 
@@ -127,74 +127,111 @@ const BscHome = ({ t }) => {
   };
 
   return (
-    <section className="relative h-[calc(100vh-4.5rem)] w-full overflow-hidden bg-white">
-      <div className="absolute inset-0">
-        <TokenChartPool
-          poolAddress={bscBbbPoolAddress}
-          network="bsc"
-          plain
-          resolution="15m"
-          chartType="line"
-        />
-      </div>
+    <section className="w-full bg-white">
+      <div className="relative h-[calc(100vh-4.5rem)] w-full">
+        <div className="absolute inset-0">
+          <TokenChartPool
+            poolAddress={bscBbbPoolAddress}
+            network="bsc"
+            plain
+            resolution="15m"
+            chartType="line"
+          />
+        </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-4">
-        <div className="pointer-events-auto mx-auto w-full max-w-xl rounded-2xl bg-white/92 px-4 py-3 shadow-md backdrop-blur-md">
-          <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
-            <Image
-              src="/favicon.ico"
-              alt={t.bscHome.imageAlt}
-              width={36}
-              height={36}
-              priority
-              className="h-9 w-9 shrink-0 object-contain"
-            />
-            <div className="min-w-0 flex-1 text-left">
-              <h1 className="text-lg font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
-              <div className="mt-0.5 flex items-center gap-1.5">
-                <a
-                  href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="truncate font-mono text-xs text-emerald-700 hover:text-emerald-900 hover:underline"
-                  title={bscBbbTokenAddress}
-                >
-                  {shortenAddress(bscBbbTokenAddress)}
-                </a>
-                <button
-                  type="button"
-                  onClick={handleCopyAddress}
-                  className="shrink-0 text-gray-400 transition hover:text-gray-600"
-                  title={copyHint}
-                  aria-label={copyHint}
-                >
-                  {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
-                </button>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-4">
+          <div className="pointer-events-auto mx-auto w-full max-w-xl rounded-2xl bg-white/92 px-4 py-3 shadow-md backdrop-blur-md">
+            <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
+              <Image
+                src="/favicon.ico"
+                alt={t.bscHome.imageAlt}
+                width={36}
+                height={36}
+                priority
+                className="h-9 w-9 shrink-0 object-contain"
+              />
+              <div className="min-w-0 flex-1 text-left">
+                <h1 className="text-lg font-bold tracking-tight text-gray-900">{t.bscHome.title}</h1>
+                <div className="mt-0.5 flex items-center gap-1.5">
+                  <a
+                    href={`https://bscscan.com/token/${bscBbbTokenAddress}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="truncate font-mono text-xs text-emerald-700 hover:text-emerald-900 hover:underline"
+                    title={bscBbbTokenAddress}
+                  >
+                    {shortenAddress(bscBbbTokenAddress)}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleCopyAddress}
+                    className="shrink-0 text-gray-400 transition hover:text-gray-600"
+                    title={copyHint}
+                    aria-label={copyHint}
+                  >
+                    {copyHint === t.bscHome.addressCopied ? "✓" : "⎘"}
+                  </button>
+                </div>
               </div>
             </div>
+
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0 text-left">
+                <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
+                  {t.bscHome.balanceLabel}
+                </p>
+                <p className="mt-0.5 truncate text-lg font-semibold tabular-nums text-gray-900 sm:text-xl">
+                  {balanceText}
+                </p>
+                {balanceUsdText ? (
+                  <p className="mt-0.5 text-sm tabular-nums text-gray-500">{balanceUsdText}</p>
+                ) : null}
+              </div>
+              <a
+                href={bscBbbPancakeSwapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:min-w-[9rem]"
+              >
+                {t.bscHome.buyBbb}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-100 bg-white px-4 py-10 sm:px-6 sm:py-12">
+        <div className="mx-auto w-full max-w-3xl text-center">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+            {t.bscHome.aboutTitle}
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-gray-600">
+            {t.bscHome.aboutLead}
+          </p>
+          <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-gray-500">
+            {t.bscHome.aboutBody}
+          </p>
+
+          <div className="relative mx-auto mt-8 aspect-video w-full overflow-hidden rounded-2xl bg-gray-100 shadow-lg ring-1 ring-gray-200">
+            <iframe
+              src={`https://www.youtube.com/embed/${bscBbbIntroVideoId}`}
+              title="BBBFI | The 2D Sandbox MMORPG"
+              className="absolute inset-0 h-full w-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
           </div>
 
-          <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div className="min-w-0 text-left">
-              <p className="text-[10px] font-medium uppercase tracking-wider text-gray-400">
-                {t.bscHome.balanceLabel}
-              </p>
-              <p className="mt-0.5 truncate text-lg font-semibold tabular-nums text-gray-900 sm:text-xl">
-                {balanceText}
-              </p>
-              {balanceUsdText ? (
-                <p className="mt-0.5 text-sm tabular-nums text-gray-500">{balanceUsdText}</p>
-              ) : null}
-            </div>
-            <a
-              href={bscBbbPancakeSwapLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:min-w-[9rem]"
-            >
-              {t.bscHome.buyBbb}
-            </a>
-          </div>
+          <a
+            href="https://bbbfi.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex w-full max-w-md items-center justify-center rounded-xl bg-emerald-600 px-6 py-3.5 text-base font-semibold text-white shadow-md transition hover:bg-emerald-700 sm:w-auto sm:min-w-[16rem]"
+          >
+            {t.bscHome.learnMore}
+          </a>
         </div>
       </div>
     </section>
