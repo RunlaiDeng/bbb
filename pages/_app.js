@@ -1,14 +1,11 @@
 import "../styles/globals.css";
 import React from "react";
-import PropTypes from "prop-types";
 import Layout from "../components/Layout";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { NotificationProvider } from "@/components/Context/notice";
 import { WagmiProvider } from "wagmi";
 import Head from "next/head";
-import { FollowProvider } from "@/components/Context/follow";
 import { xdc } from "../config/chains";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
@@ -47,8 +44,6 @@ function RainbowKitWithLocale({ children }) {
 }
 
 const MyApp = ({ Component, pageProps }) => {
-  useRouter();
-
   return (
     <>
       <Head>
@@ -69,28 +64,21 @@ const MyApp = ({ Component, pageProps }) => {
       </Script>
       <LanguageProvider>
         <NotificationProvider>
-          <FollowProvider>
-            <QueryClientProvider client={queryClient}>
-              <WagmiProvider config={wagmiConfig}>
-                <RainbowKitWithLocale>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </RainbowKitWithLocale>
-              </WagmiProvider>
-            </QueryClientProvider>
-          </FollowProvider>
+          <QueryClientProvider client={queryClient}>
+            <WagmiProvider config={wagmiConfig}>
+              <RainbowKitWithLocale>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </RainbowKitWithLocale>
+            </WagmiProvider>
+          </QueryClientProvider>
         </NotificationProvider>
       </LanguageProvider>
       <Analytics />
       <SpeedInsights />
     </>
   );
-};
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
 };
 
 export default MyApp;

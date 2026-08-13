@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useAccount, useChainId, useSwitchChain } from "wagmi";
+import { useAccount } from "wagmi";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useLanguage } from "../Context/LanguageContext";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
-import { MORE_NAV_META } from "@/lib/navMore";
-import { isMoreNavRouteActive, isMoreNavItemActive } from "@/lib/navActive";
 import { useTranslation } from "@/lib/i18n/useTranslation";
-import { bsc, xdc } from "@/config/chains";
 
 function shortenAddress(addr) {
   if (!addr || typeof addr !== "string") return "";
@@ -23,9 +20,6 @@ const Navbar = () => {
   const [mount, setMount] = useState(false);
 
   const { address, isConnected } = useAccount();
-  const chainId = useChainId();
-  const isBscChain = chainId === bsc.id;
-  const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
 
   const { locale, setLocale } = useLanguage();
   const t = useTranslation();
@@ -36,19 +30,10 @@ const Navbar = () => {
     if (!address) return null;
     return shortenAddress(address);
   }, [address]);
-  const currentChainLabel = isBscChain ? "BSC" : "XDC";
-  const chainOptions = useMemo(
-    () => [
-      { id: xdc.id, label: "XDC" },
-      { id: bsc.id, label: "BSC" },
-    ],
-    []
-  );
-
   const homeTab = Array.isArray(router.query.tab) ? router.query.tab[0] : router.query.tab;
   const dexHomeActive = router.pathname === "/" && homeTab !== "liquidity";
   const liquidityHomeActive = router.pathname === "/" && homeTab === "liquidity";
-  const moreSectionActive = isMoreNavRouteActive(router.pathname);
+  const stakeActive = router.pathname === "/stake";
 
   useEffect(() => {
     setMount(true);
@@ -61,14 +46,6 @@ const Navbar = () => {
     if (q === "zh" || q === "zh-CN" || q === "cn") setLocale("zh");
     else if (q === "en") setLocale("en");
   }, [router.isReady, router.query.lang, setLocale]);
-
-  const handleSelectChain = useCallback(
-    (nextChainId) => {
-      if (nextChainId === chainId) return;
-      switchChain?.({ chainId: nextChainId });
-    },
-    [chainId, switchChain]
-  );
 
   return (
     mount && (
@@ -88,8 +65,7 @@ const Navbar = () => {
                   }}
                 />
 
-                {(!isBscChain || router.pathname === "/") && (
-                  <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
+                <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
                     <Link
                       href="/?tab=swap"
                       className={
@@ -115,58 +91,19 @@ const Navbar = () => {
                       {t.nav.liquidity}
                     </Link>
 
-                    <div className="dropdown dropdown-hover font-bold">
-                      <div
-                        tabIndex={0}
-                        role="button"
-                        className={
-                          "btn btn-ghost transition-all duration-300 rounded-xl border-none hover:border-none focus:border-none active:border-none " +
-                          (moreSectionActive
-                            ? "text-green-700 bg-green-50 font-semibold"
-                            : "hover:text-green-600 hover:bg-green-50")
-                        }
-                        aria-current={moreSectionActive ? "true" : undefined}
-                      >
-                        {t.nav.more}
-                      </div>
-                      <ul
-                        tabIndex={0}
-                        className="dropdown-content menu bg-white rounded-xl z-50 w-52 p-2 shadow-lg border border-green-100/50 max-h-[min(70vh,28rem)] overflow-y-auto"
-                      >
-                        {MORE_NAV_META.map((item) => (
-                          <li key={item.key} className="rounded-lg">
-                            {item.external ? (
-                              <a
-                                href={item.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:text-green-600 hover:bg-green-50 rounded-lg"
-                              >
-                                {t.navMore[item.key]}
-                              </a>
-                            ) : (
-                              <Link
-                                href={item.href}
-                                className={
-                                  isMoreNavItemActive(router.pathname, item)
-                                    ? "text-green-700 bg-green-50 font-semibold rounded-lg"
-                                    : "hover:text-green-600 hover:bg-green-50 rounded-lg"
-                                }
-                                aria-current={
-                                  isMoreNavItemActive(router.pathname, item)
-                                    ? "page"
-                                    : undefined
-                                }
-                              >
-                                {t.navMore[item.key]}
-                              </Link>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
+                    <Link
+                      href="/stake"
+                      className={
+                        "btn btn-ghost transition-all duration-300 rounded-xl " +
+                        (stakeActive
+                          ? "text-green-700 bg-green-50 font-semibold"
+                          : "hover:text-green-600 hover:bg-green-50")
+                      }
+                      aria-current={stakeActive ? "page" : undefined}
+                    >
+                      {t.nav.stake}
+                    </Link>
+                </div>
               </div>
               <div className="navbar-center hidden xl:flex"></div>
               <div className="navbar-end">
@@ -191,62 +128,11 @@ const Navbar = () => {
                     </button>
                   )}
 
-                  <div className="dropdown dropdown-end">
-                    <button
-                      type="button"
-                      tabIndex={0}
-                      className="btn btn-sm rounded-xl border border-amber-200 bg-amber-50 px-2 text-xs font-bold text-amber-800 hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-70 sm:px-3"
-                      disabled={isSwitchingChain}
-                      aria-label={t.nav.switchChain}
-                      aria-haspopup="menu"
-                      aria-busy={isSwitchingChain}
-                    >
-                      {isSwitchingChain ? (
-                        <span className="loading loading-spinner loading-xs" aria-hidden />
-                      ) : (
-                        <>
-                          <span>{currentChainLabel}</span>
-                          <svg
-                            className="h-3.5 w-3.5"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-                    <ul
-                      tabIndex={0}
-                      role="menu"
-                      className="dropdown-content menu z-50 mt-2 w-28 rounded-xl border border-amber-100 bg-white p-2 text-sm font-bold shadow-lg"
-                    >
-                      {chainOptions.map((option) => {
-                        const selected = option.id === chainId;
-                        return (
-                          <li key={option.id}>
-                            <button
-                              type="button"
-                              role="menuitem"
-                              className={
-                                selected
-                                  ? "rounded-lg bg-amber-50 text-amber-800"
-                                  : "rounded-lg hover:bg-amber-50 hover:text-amber-800"
-                              }
-                              onClick={() => handleSelectChain(option.id)}
-                              aria-current={selected ? "true" : undefined}
-                            >
-                              {option.label}
-                            </button>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                  <div
+                    className="btn btn-sm cursor-default rounded-xl border border-amber-200 bg-amber-50 px-3 text-xs font-bold text-amber-800 hover:bg-amber-50"
+                    aria-label={t.nav.network}
+                  >
+                    XDC
                   </div>
 
                   <div className="flex items-center gap-1 ml-1 shrink-0">

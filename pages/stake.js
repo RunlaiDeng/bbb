@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getBBBPrice } from "@/components/Utils";
-import { useRouter } from "next/router";
+import { getBBBPrice } from "@/lib/prices";
 import StakingPool from "@/lib/stakeDynamic";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { formatSiteString } from "@/lib/i18n/siteStrings";
@@ -23,7 +22,7 @@ const Stake = () => {
         title: t.stakePage.poolTitleBbb,
         symbol: "BBB",
         icon: "/bbb.jpg",
-        getTokenLink: "/buy",
+        getTokenLink: "/?token=0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1",
         hashTag: "#bbb",
       },
       {
@@ -33,7 +32,7 @@ const Stake = () => {
         title: t.stakePage.poolTitleUsdc,
         symbol: "USDC",
         icon: "/usdc.jpg",
-        getTokenLink: "/swap/0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
+        getTokenLink: "/?token=0xfA2958CB79b0491CC627c1557F441eF849Ca8eb1",
         hashTag: "#usdc",
         decimals: 6,
       },
@@ -42,18 +41,13 @@ const Stake = () => {
   );
   const [data, setData] = useState({
     bbbPrice: 0,
-    lpTokenPrice: 0,
-    basePrice: 0, // BBB/XDC price ratio
-    xdcPrice: 0, // XDC price in USD
-    expandedPools: {}, // Track which pools are expanded
-    sortBy: "apr", // apr, latest
-    searchQuery: "", // Search keyword for filtering pools
+    expandedPools: {},
+    sortBy: "apr",
+    searchQuery: "",
   });
 
   // Pool APR values for sorting
   const [poolAPRs, setPoolAPRs] = useState({});
-
-  const router = useRouter();
 
   // Handle hash-based navigation to expand specific pools
   useEffect(() => {
@@ -86,20 +80,15 @@ const Stake = () => {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  // Load BBB and XDC prices
+  // Load BBB price for reward APR calculations.
   useEffect(() => {
     const fetchPrices = async () => {
       try {
         const bbbPriceData = await getBBBPrice();
         const bbbPrice = bbbPriceData.price || 0;
-        const basePrice = bbbPriceData.basePrice || 0; // BBB/XDC price ratio
-        const xdcPrice = basePrice > 0 ? bbbPrice / basePrice : 0;
-
         setData((prev) => ({
           ...prev,
-          bbbPrice: bbbPrice,
-          basePrice: basePrice,
-          xdcPrice: xdcPrice,
+          bbbPrice,
         }));
       } catch (error) {
         console.error("Error calculating prices:", error);
@@ -260,7 +249,7 @@ const Stake = () => {
             setData={setData}
             addTokenToWallet={addTokenToWallet}
             bbbTokenAddress="0xFa4dDcFa8E3d0475f544d0de469277CF6e0A6Fd1"
-            onAPRChange={(apr) => handleAPRChange(poolConfig.id, apr)}
+            onAPRChange={handleAPRChange}
             strings={t}
           />
         ))

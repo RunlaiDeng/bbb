@@ -1,105 +1,19 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { MORE_NAV_META } from "@/lib/navMore";
-import { isMoreNavRouteActive, isMoreNavItemActive } from "@/lib/navActive";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const MobileNav = () => {
   const router = useRouter();
   const t = useTranslation();
-  const [moreOpen, setMoreOpen] = useState(false);
 
   const homeTab = Array.isArray(router.query.tab) ? router.query.tab[0] : router.query.tab;
   const swapHomeActive = router.pathname === "/" && homeTab !== "liquidity";
   const liquidityHomeActive = router.pathname === "/" && homeTab === "liquidity";
 
-  const moreActive = useMemo(() => isMoreNavRouteActive(router.pathname), [router.pathname]);
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const onRoute = () => setMoreOpen(false);
-    router.events.on("routeChangeComplete", onRoute);
-    return () => router.events.off("routeChangeComplete", onRoute);
-  }, [moreOpen, router.events]);
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [moreOpen]);
-
-  const closeMore = useCallback(() => setMoreOpen(false), []);
+  const stakeActive = router.pathname === "/stake";
 
   return (
     <>
-      {moreOpen && (
-        <div
-          className="fixed inset-0 z-[100] lg:hidden flex flex-col justify-end"
-          role="dialog"
-          aria-modal="true"
-          aria-label={t.nav.more}
-        >
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/45 border-0 cursor-default"
-            onClick={closeMore}
-            aria-label={t.mobileNav.closeMenu}
-          />
-          <div className="relative bg-base-100 rounded-t-2xl border-t border-base-300/60 shadow-2xl max-h-[min(78vh,520px)] flex flex-col">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-base-300/50">
-              <span className="font-bold text-base">{t.mobileNav.moreSheetTitle}</span>
-              <button
-                type="button"
-                className="btn btn-ghost btn-sm btn-circle"
-                onClick={closeMore}
-                aria-label={t.mobileNav.close}
-              >
-                ✕
-              </button>
-            </div>
-            <nav className="overflow-y-auto px-3 pb-[env(safe-area-inset-bottom,12px)] pt-2">
-              <ul className="grid grid-cols-2 gap-2 pb-4">
-                {MORE_NAV_META.map((item) => (
-                  <li key={item.key}>
-                    {item.external ? (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl bg-base-200/80 hover:bg-green-50 text-sm font-medium text-base-content"
-                        onClick={closeMore}
-                      >
-                        {t.navMore[item.key]}
-                      </a>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={
-                          "flex items-center justify-center text-center min-h-[3rem] px-3 py-2 rounded-xl text-sm font-medium " +
-                          (isMoreNavItemActive(router.pathname, item)
-                            ? "bg-green-50 text-green-800 ring-1 ring-green-200/80"
-                            : "bg-base-200/80 hover:bg-green-50 text-base-content")
-                        }
-                        aria-current={
-                          isMoreNavItemActive(router.pathname, item) ? "page" : undefined
-                        }
-                        onClick={closeMore}
-                      >
-                        {t.navMore[item.key]}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
-
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] border-t border-base-300/60 bg-base-100/95 pb-[env(safe-area-inset-bottom,0px)] shadow-shell backdrop-blur-md supports-[backdrop-filter]:bg-base-100/90">
         <div className="flex justify-around items-center h-16 px-2 py-1">
           <Link
@@ -146,36 +60,28 @@ const MobileNav = () => {
             <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.liquidity}</span>
           </Link>
 
-          <button
-            type="button"
-            onClick={() => setMoreOpen(true)}
+          <Link
+            href="/stake"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] border-0 bg-transparent ${
-              moreOpen || moreActive
+              stakeActive
                 ? "text-green-600 font-semibold bg-green-50"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
-            aria-expanded={moreOpen}
-            aria-haspopup="dialog"
+            aria-current={stakeActive ? "page" : undefined}
           >
             <div
               className={`p-1.5 rounded-xl ${
-                moreOpen || moreActive ? "bg-green-100" : "bg-transparent"
+                stakeActive ? "bg-green-100" : "bg-transparent"
               }`}
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="5" cy="6" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="19" cy="6" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="5" cy="18" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="12" cy="18" r="1.5" fill="currentColor" stroke="none" />
-                <circle cx="19" cy="18" r="1.5" fill="currentColor" stroke="none" />
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3v18" />
+                <path d="M17 8l-5-5-5 5" />
+                <path d="M7 16l5 5 5-5" />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.more}</span>
-          </button>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.stake}</span>
+          </Link>
         </div>
       </div>
     </>

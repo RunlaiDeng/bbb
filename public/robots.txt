@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 Allow: /
-Sitemap: https://bbbpump.fun/sitemap.xml
+Sitemap: https://defi.bbbfi.com/sitemap.xml
