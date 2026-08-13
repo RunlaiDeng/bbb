@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import { BBB_TOKEN_ADDRESS } from "@/config/bbbfiswap";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function CarrotTokenMark() {
@@ -90,9 +89,10 @@ export default function Stake() {
 
             <div className="mt-4 rounded-[1.25rem] border border-slate-100 bg-white px-4 py-3">
               <p className="text-xs font-medium text-slate-400">{t.contractLabel}</p>
-              <p className="mt-1 truncate font-mono text-xs text-slate-600" title={BBB_TOKEN_ADDRESS}>
-                {BBB_TOKEN_ADDRESS}
-              </p>
+              <div className="mt-1.5 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-amber-400" aria-hidden />
+                <p className="font-semibold text-slate-950">{t.contractNotDeployed}</p>
+              </div>
             </div>
 
             <button
