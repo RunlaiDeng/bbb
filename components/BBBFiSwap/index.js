@@ -25,6 +25,7 @@ import {
   BBBFISWAP_ROUTER_ABI,
   BBBFISWAP_ROUTER_ADDRESS,
   BBBFISWAP_WXDC_ADDRESS,
+  BBB_TOKEN_ADDRESS,
   XDC_USDC_ADDRESS,
   ZERO_ADDRESS,
 } from "@/config/bbbfiswap";
@@ -33,6 +34,18 @@ const MAX_UINT256 = BigInt(
   "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 );
 const XDC_GAS_RESERVE = BigInt("10000000000000000");
+const COMMON_TOKENS = [
+  {
+    symbol: "USDC",
+    name: "USD Coin",
+    address: XDC_USDC_ADDRESS,
+  },
+  {
+    symbol: "BBB",
+    name: "BBBFi",
+    address: BBB_TOKEN_ADDRESS,
+  },
+];
 
 function normalizeAmountInput(value) {
   return value === "" || /^(?:0|[1-9]\d*)(?:\.\d*)?$/.test(value)
@@ -66,33 +79,112 @@ function shortenAddress(value) {
   return `${value.slice(0, 8)}…${value.slice(-6)}`;
 }
 
-function TokenMark({ symbol }) {
+function TokenMark({ symbol, address, native = false, size = "md" }) {
+  const normalizedAddress = address?.toLowerCase();
+  const imageSrc =
+    native || symbol === "XDC"
+      ? "/xdc.png"
+      : normalizedAddress === XDC_USDC_ADDRESS.toLowerCase() || symbol === "USDC"
+        ? "/usdc.jpg"
+        : normalizedAddress === BBB_TOKEN_ADDRESS.toLowerCase() || symbol === "BBB"
+          ? "/bbb.jpg"
+          : null;
+  const dimensions = size === "sm" ? "h-7 w-7" : "h-9 w-9";
+
+  if (imageSrc) {
+    return (
+      <Image
+        src={imageSrc}
+        alt={`${symbol || "Token"} icon`}
+        width={36}
+        height={36}
+        className={`${dimensions} shrink-0 rounded-full object-cover ring-1 ring-black/5`}
+      />
+    );
+  }
+
   return (
-    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-green-700 text-xs font-black text-white shadow-sm ring-2 ring-white">
+    <span
+      className={`inline-flex ${dimensions} shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-950 text-[10px] font-black text-white ring-1 ring-black/10`}
+    >
       {(symbol || "TKN").slice(0, 4).toUpperCase()}
     </span>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden>
+      <path d="m6 8 4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TokenPill({ symbol, address, native, onClick, selectLabel = "Select token" }) {
+  const content = (
+    <>
+      <TokenMark symbol={symbol} address={address} native={native} />
+      <span className="max-w-[7rem] truncate text-base font-semibold tracking-tight text-slate-950">
+        {symbol}
+      </span>
+      {onClick ? <ChevronDownIcon /> : null}
+    </>
+  );
+
+  return onClick ? (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex h-11 shrink-0 items-center gap-2 rounded-full border border-black/[0.06] bg-white px-2.5 pr-3 shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition hover:border-black/10 hover:bg-slate-50"
+      aria-label={`${selectLabel}: ${symbol}`}
+    >
+      {content}
+    </button>
+  ) : (
+    <div className="flex h-11 shrink-0 items-center gap-2 rounded-full border border-black/[0.06] bg-white px-2.5 pr-3 shadow-[0_1px_2px_rgba(0,0,0,0.08)]">
+      {content}
+    </div>
   );
 }
 
 function AssetField({
   label,
   symbol,
+  address,
   value,
   onChange,
   balance,
   onMax,
   readOnly = false,
   native = false,
+  onSelectToken,
+  selectLabel,
+  hasError = false,
 }) {
   return (
-    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/45 p-4 transition focus-within:border-emerald-300 focus-within:ring-2 focus-within:ring-emerald-100">
-      <div className="mb-3 flex items-center justify-between gap-3 text-xs font-medium text-gray-500">
-        <span>{label}</span>
-        <span className="truncate text-right tabular-nums">
+    <div
+      className={`rounded-[1.35rem] border p-4 transition sm:p-4 ${
+        hasError
+          ? "border-red-200 bg-red-50/70"
+          : "border-transparent bg-[#f4f4f4] hover:border-black/[0.06] focus-within:border-emerald-300 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.10)]"
+      }`}
+    >
+      <div className="mb-3 flex items-center justify-between gap-3 text-sm font-medium text-slate-500">
+        <span className="font-semibold">{label}</span>
+        <span className="flex min-w-0 items-center gap-1.5 truncate text-right text-xs tabular-nums">
           {balance != null ? balance : "—"}
+          {onMax ? (
+            <button
+              type="button"
+              onClick={onMax}
+              className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-black text-emerald-800 transition hover:bg-emerald-200"
+            >
+              MAX
+            </button>
+          ) : null}
         </span>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
         <input
           type="text"
           inputMode="decimal"
@@ -102,28 +194,154 @@ function AssetField({
           readOnly={readOnly}
           placeholder="0.0"
           aria-label={`${label} ${symbol}`}
-          className="min-w-0 flex-1 bg-transparent text-2xl font-semibold tabular-nums text-gray-900 outline-none placeholder:text-gray-300 sm:text-3xl"
+          className="min-w-0 flex-1 bg-transparent text-[2rem] font-medium leading-none tracking-[-0.03em] tabular-nums text-slate-950 outline-none placeholder:text-slate-300 sm:text-[2.15rem]"
         />
-        <div className="flex shrink-0 items-center gap-2 rounded-xl border border-emerald-100 bg-white px-3 py-2 font-bold text-gray-800 shadow-sm">
-          {native ? (
-            <Image src="/xdc.png" alt="XDC" width={28} height={28} className="h-7 w-7 rounded-full" />
-          ) : (
-            <TokenMark symbol={symbol} />
-          )}
-          <span className="max-w-[6rem] truncate">{symbol}</span>
-        </div>
+        <TokenPill
+          symbol={symbol}
+          address={address}
+          native={native}
+          onClick={onSelectToken}
+          selectLabel={selectLabel}
+        />
       </div>
-      {onMax ? (
-        <div className="mt-2 flex justify-end">
+    </div>
+  );
+}
+
+function TokenSelectorModal({ open, onClose, onSelect, currentAddress, t }) {
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    if (!open) return undefined;
+    setSearchValue("");
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose, open]);
+
+  if (!open) return null;
+
+  const normalizedSearch = searchValue.trim().toLowerCase();
+  const visibleTokens = COMMON_TOKENS.filter((token) =>
+    !normalizedSearch ||
+    token.symbol.toLowerCase().includes(normalizedSearch) ||
+    token.name.toLowerCase().includes(normalizedSearch) ||
+    token.address.toLowerCase().includes(normalizedSearch)
+  );
+  const customAddress = isAddress(searchValue.trim())
+    ? getAddress(searchValue.trim())
+    : null;
+  const customAddressAllowed = Boolean(
+    customAddress &&
+      customAddress.toLowerCase() !== BBBFISWAP_WXDC_ADDRESS.toLowerCase() &&
+      !COMMON_TOKENS.some(
+        (token) => token.address.toLowerCase() === customAddress.toLowerCase()
+      )
+  );
+
+  return (
+    <div
+      className="fixed inset-0 z-[140] flex items-end justify-center bg-slate-950/35 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="token-selector-title"
+        className="w-full max-w-md rounded-t-[2rem] border border-black/[0.06] bg-white p-5 shadow-[0_24px_80px_rgba(15,23,42,0.24)] sm:rounded-[2rem]"
+      >
+        <div className="flex items-center justify-between gap-4">
+          <h2 id="token-selector-title" className="text-lg font-semibold tracking-tight text-slate-950">
+            {t.selectToken}
+          </h2>
           <button
             type="button"
-            onClick={onMax}
-            className="rounded-lg px-2 py-1 text-xs font-bold text-emerald-700 hover:bg-emerald-100"
+            onClick={onClose}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-2xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+            aria-label={t.close}
           >
-            MAX
+            ×
           </button>
         </div>
-      ) : null}
+
+        <div className="mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 focus-within:border-emerald-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-100">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden className="shrink-0 text-slate-400">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+            <path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <input
+            type="text"
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+            placeholder={t.searchToken}
+            autoComplete="off"
+            autoFocus
+            className="min-w-0 flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+          />
+        </div>
+
+        <p className="mt-5 px-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">
+          {t.commonTokens}
+        </p>
+        <div className="mt-2 space-y-1">
+          {visibleTokens.map((token) => {
+            const selected = currentAddress?.toLowerCase() === token.address.toLowerCase();
+            return (
+              <button
+                key={token.address}
+                type="button"
+                onClick={() => onSelect(token.address)}
+                className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition hover:bg-slate-100"
+              >
+                <TokenMark symbol={token.symbol} address={token.address} />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold text-slate-950">{token.symbol}</span>
+                  <span className="block truncate text-xs text-slate-500">{token.name}</span>
+                </span>
+                {selected ? (
+                  <span className="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-800">
+                    {t.current}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+
+        {customAddressAllowed ? (
+          <button
+            type="button"
+            onClick={() => onSelect(customAddress)}
+            className="mt-2 flex w-full items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-left transition hover:bg-emerald-100"
+          >
+            <TokenMark symbol="TKN" address={customAddress} />
+            <span className="min-w-0 flex-1">
+              <span className="block font-semibold text-emerald-950">{t.useCustomToken}</span>
+              <span className="block truncate font-mono text-xs text-emerald-700">
+                {customAddress}
+              </span>
+            </span>
+          </button>
+        ) : null}
+
+        {visibleTokens.length === 0 && !customAddressAllowed ? (
+          <p className="py-8 text-center text-sm text-slate-500">{t.noTokenResults}</p>
+        ) : null}
+
+        <p className="mt-4 border-t border-slate-100 px-1 pt-4 text-xs leading-relaxed text-slate-500">
+          {t.tokenSafety}
+        </p>
+      </div>
     </div>
   );
 }
@@ -140,6 +358,9 @@ export default function BBBFiSwap() {
   const [liquidityTokenAmount, setLiquidityTokenAmount] = useState("");
   const [liquidityXdcAmount, setLiquidityXdcAmount] = useState("");
   const [slippage, setSlippage] = useState("0.5");
+  const [tokenSelectorOpen, setTokenSelectorOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [quoteDetailsOpen, setQuoteDetailsOpen] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -159,7 +380,30 @@ export default function BBBFiSwap() {
   const setTab = useCallback(
     (nextTab) => {
       setActiveTab(nextTab);
+      setSettingsOpen(false);
       const nextQuery = { ...router.query, tab: nextTab };
+      router.replace({ pathname: "/", query: nextQuery }, undefined, {
+        shallow: true,
+        scroll: false,
+      });
+    },
+    [router]
+  );
+
+  const closeTokenSelector = useCallback(() => {
+    setTokenSelectorOpen(false);
+  }, []);
+
+  const selectToken = useCallback(
+    (nextAddress) => {
+      const normalized = getAddress(nextAddress);
+      setTokenInput(normalized);
+      setSwapAmount("");
+      setLiquidityTokenAmount("");
+      setLiquidityXdcAmount("");
+      setQuoteDetailsOpen(false);
+      setTokenSelectorOpen(false);
+      const nextQuery = { ...router.query, token: normalized };
       router.replace({ pathname: "/", query: nextQuery }, undefined, {
         shallow: true,
         scroll: false,
@@ -538,6 +782,10 @@ export default function BBBFiSwap() {
   const swapInputBalanceLabel = address
     ? `${t.balance}: ${formatAmount(swapBalance, swapInputDecimals ?? 18)}`
     : t.connectForBalance;
+  const swapOutputBalance = direction === "buy" ? tokenBalance : xdcBalance;
+  const swapOutputBalanceLabel = address
+    ? `${t.balance}: ${formatAmount(swapOutputBalance, swapOutputDecimals ?? 18)}`
+    : t.connectForBalance;
   const tokenBalanceLabel = address
     ? `${t.balance}: ${formatAmount(tokenBalance, tokenDecimals ?? 18)}`
     : t.connectForBalance;
@@ -550,96 +798,140 @@ export default function BBBFiSwap() {
   else if (tokenInvalid) swapHint = t.tokenReadFailed;
   else if (!pairAddress) swapHint = t.noPair;
   else if (!hasLiquidity) swapHint = t.emptyPool;
-  else if (swapAmountWei > swapBalance) swapHint = t.insufficientBalance;
+  else if (!address && swapAmountWei > 0n) swapHint = t.connectToTrade;
+  else if (address && swapAmountWei > swapBalance) swapHint = t.insufficientBalance;
   else if (quoteFetching) swapHint = t.refreshingQuote;
 
-  return (
-    <section className="relative min-h-[calc(100vh-4.5rem)] overflow-hidden bg-[#f6fbf7] px-3 py-6 sm:px-6 sm:py-10">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-32 top-20 h-80 w-80 rounded-full bg-emerald-200/35 blur-3xl" />
-        <div className="absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-lime-200/35 blur-3xl" />
-      </div>
+  const swapRate =
+    quoteOut > 0n && swapAmountWei > 0n && swapInputDecimals != null && swapOutputDecimals != null
+      ? Number(formatUnits(quoteOut, swapOutputDecimals)) /
+        Number(formatUnits(swapAmountWei, swapInputDecimals))
+      : 0;
+  const swapRateLabel =
+    Number.isFinite(swapRate) && swapRate > 0
+      ? `1 ${swapInputSymbol} ≈ ${swapRate.toLocaleString(undefined, {
+          maximumSignificantDigits: 7,
+        })} ${swapOutputSymbol}`
+      : t.liveQuote;
+  const tokenStatus = tokenReadsPending && tokenAddress
+    ? t.loadingToken
+    : tokenInvalid
+      ? t.tokenReadFailed
+      : tokenReady
+        ? `${tokenName || tokenSymbol} · ${shortenAddress(tokenAddress)}`
+        : t.invalidTokenAddress;
 
-      <div className="relative mx-auto grid w-full max-w-5xl gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="min-w-0">
-          <div className="mb-6 text-center lg:text-left">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1 text-xs font-bold text-emerald-800 shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+  return (
+    <>
+      <section className="dex-surface relative min-h-[calc(100vh-4.5rem)] overflow-hidden px-3 pb-24 pt-8 sm:px-6 sm:pb-16 sm:pt-14">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <div className="dex-orb dex-orb-left" />
+          <div className="dex-orb dex-orb-right" />
+          <div className="dex-grid absolute inset-0 opacity-30" />
+        </div>
+
+        <div className="relative mx-auto w-full max-w-[31rem]">
+          <div className="mb-4 flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-xl">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]" />
               {t.networkBadge}
-            </div>
-            <h1 className="text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
-              {t.title}
-            </h1>
-            <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-gray-600 sm:text-base lg:mx-0">
-              {t.subtitle}
-            </p>
+            </span>
+            <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-xl">
+              {t.nonCustodial}
+            </span>
           </div>
 
-          <div className="min-w-0 rounded-3xl border border-emerald-100/90 bg-white/95 p-4 shadow-card backdrop-blur sm:p-6">
-            <div className="mb-5 grid grid-cols-2 rounded-2xl bg-gray-100 p-1">
-              <button
-                id="swap"
-                type="button"
-                onClick={() => setTab("swap")}
-                className={`rounded-xl px-4 py-2.5 text-sm font-bold transition ${
-                  activeTab === "swap"
-                    ? "bg-white text-emerald-700 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {t.swapTab}
-              </button>
-              <button
-                id="liquidity"
-                type="button"
-                onClick={() => setTab("liquidity")}
-                className={`rounded-xl px-4 py-2.5 text-sm font-bold transition ${
-                  activeTab === "liquidity"
-                    ? "bg-white text-emerald-700 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {t.liquidityTab}
-              </button>
-            </div>
+          <div className="relative rounded-[2rem] border border-black/[0.06] bg-white/90 p-2 shadow-[0_24px_80px_-32px_rgba(15,23,42,0.42)] backdrop-blur-2xl">
+            <div className="relative flex items-center justify-between px-3 pb-3 pt-2">
+              <div className="flex items-center gap-1 rounded-full bg-slate-100/90 p-1">
+                <button
+                  id="swap"
+                  type="button"
+                  onClick={() => setTab("swap")}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    activeTab === "swap"
+                      ? "bg-white text-slate-950 shadow-sm"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  {t.swapTab}
+                </button>
+                <button
+                  id="liquidity"
+                  type="button"
+                  onClick={() => setTab("liquidity")}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                    activeTab === "liquidity"
+                      ? "bg-white text-slate-950 shadow-sm"
+                      : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  {t.liquidityTab}
+                </button>
+              </div>
 
-            <div className="mb-5">
-              <label htmlFor="bbbfiswap-token" className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-500">
-                {t.tokenAddress}
-              </label>
-              <div className={`flex items-center gap-3 rounded-2xl border bg-white px-4 py-3 ${tokenInvalid || (!tokenAddress && tokenInput) ? "border-red-200" : "border-gray-200 focus-within:border-emerald-400"}`}>
-                <TokenMark symbol={tokenReady ? tokenSymbol : "TKN"} />
-                <input
-                  id="bbbfiswap-token"
-                  type="text"
-                  value={tokenInput}
-                  onChange={(event) => setTokenInput(event.target.value)}
-                  placeholder="0x..."
-                  className="min-w-0 flex-1 bg-transparent font-mono text-xs text-gray-800 outline-none sm:text-sm"
-                />
-              </div>
-              <div className="mt-2 flex min-h-5 flex-wrap items-center justify-between gap-2 text-xs">
-                <span className={tokenInvalid ? "text-red-600" : "text-gray-500"}>
-                  {tokenReadsPending && tokenAddress
-                    ? t.loadingToken
-                    : tokenReady
-                      ? `${tokenName || tokenSymbol} · ${tokenSymbol}`
-                      : tokenInvalid
-                        ? t.tokenReadFailed
-                        : tokenInput.trim()
-                          ? t.invalidTokenAddress
-                        : t.customTokenHint}
-                </span>
-                {tokenAddress && tokenInput !== XDC_USDC_ADDRESS ? (
-                  <button
-                    type="button"
-                    onClick={() => setTokenInput(XDC_USDC_ADDRESS)}
-                    className="font-bold text-emerald-700 hover:text-emerald-900"
-                  >
-                    {t.useUsdc}
-                  </button>
-                ) : null}
-              </div>
+              <button
+                type="button"
+                onClick={() => setSettingsOpen((current) => !current)}
+                className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
+                  settingsOpen
+                    ? "bg-emerald-100 text-emerald-800"
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                }`}
+                aria-label={t.settings}
+                aria-expanded={settingsOpen}
+              >
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" aria-hidden>
+                  <path d="M12 15.25A3.25 3.25 0 1 0 12 8.75a3.25 3.25 0 0 0 0 6.5Z" stroke="currentColor" strokeWidth="1.8" />
+                  <path d="m19.2 13.1 1.4 1.1-1.8 3.1-1.7-.7c-.5.4-1 .7-1.6.9l-.2 1.8h-3.6l-.2-1.8a7 7 0 0 1-1.6-.9l-1.7.7-1.8-3.1 1.4-1.1a7 7 0 0 1 0-2.2L5.8 9.8l1.8-3.1 1.7.7c.5-.4 1-.7 1.6-.9l.2-1.8h3.6l.2 1.8c.6.2 1.1.5 1.6.9l1.7-.7L20 9.8l-1.4 1.1a7 7 0 0 1 0 2.2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {settingsOpen ? (
+                <div className="absolute right-2 top-14 z-30 w-[18rem] rounded-[1.35rem] border border-black/[0.07] bg-white p-4 shadow-[0_18px_60px_rgba(15,23,42,0.18)]">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold text-slate-950">{t.transactionSettings}</h2>
+                    <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700">
+                      {t.settingsApplied}
+                    </span>
+                  </div>
+                  <label htmlFor="bbbfiswap-slippage" className="mt-4 block text-xs font-medium text-slate-500">
+                    {t.slippage}
+                  </label>
+                  <div className="mt-2 grid grid-cols-4 gap-1.5">
+                    {["0.5", "1", "3"].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setSlippage(preset)}
+                        className={`rounded-xl px-2 py-2 text-xs font-bold transition ${
+                          slippage === preset
+                            ? "bg-emerald-100 text-emerald-800"
+                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        }`}
+                      >
+                        {preset}%
+                      </button>
+                    ))}
+                    <div className={`flex items-center rounded-xl border px-2 ${slippageValid ? "border-slate-200" : "border-red-300"}`}>
+                      <input
+                        id="bbbfiswap-slippage"
+                        type="number"
+                        min="0.1"
+                        max="20"
+                        step="0.1"
+                        value={slippage}
+                        onChange={(event) => setSlippage(event.target.value)}
+                        className="min-w-0 w-full bg-transparent text-right text-xs font-bold outline-none"
+                      />
+                      <span className="text-xs text-slate-400">%</span>
+                    </div>
+                  </div>
+                  <p className={`mt-2 text-xs ${slippageValid ? "text-slate-400" : "text-red-600"}`}>
+                    {slippageValid ? t.slippageHelper : t.slippageRange}
+                  </p>
+                </div>
+              ) : null}
             </div>
 
             {activeTab === "swap" ? (
@@ -647,30 +939,37 @@ export default function BBBFiSwap() {
                 <AssetField
                   label={t.youPay}
                   symbol={swapInputSymbol}
+                  address={direction === "sell" ? tokenAddress : undefined}
                   value={swapAmount}
                   onChange={(event) => {
                     const next = normalizeAmountInput(event.target.value);
                     if (next != null) setSwapAmount(next);
                   }}
                   balance={swapInputBalanceLabel}
-                  onMax={setSwapMax}
+                  onMax={address ? setSwapMax : undefined}
                   native={direction === "buy"}
+                  onSelectToken={direction === "sell" ? () => setTokenSelectorOpen(true) : undefined}
+                  selectLabel={t.selectToken}
+                  hasError={Boolean(address && swapAmountWei > swapBalance && swapAmountWei > 0n)}
                 />
 
-                <div className="relative z-10 -my-2 flex justify-center">
+                <div className="relative z-10 -my-2.5 flex justify-center">
                   <button
                     type="button"
                     onClick={toggleDirection}
                     aria-label={t.reversePair}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border-4 border-white bg-emerald-100 text-lg font-black text-emerald-800 shadow-sm transition hover:rotate-180 hover:bg-emerald-200"
+                    className="group flex h-10 w-10 items-center justify-center rounded-xl border-4 border-white bg-slate-100 text-slate-700 shadow-sm transition hover:bg-emerald-100 hover:text-emerald-800"
                   >
-                    ↓
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden className="transition duration-300 group-hover:rotate-180">
+                      <path d="M12 5v14m0 0-4-4m4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </button>
                 </div>
 
                 <AssetField
                   label={t.youReceive}
                   symbol={swapOutputSymbol}
+                  address={direction === "buy" ? tokenAddress : undefined}
                   value={
                     quoteOut > 0n && swapOutputDecimals != null
                       ? formatAmount(quoteOut, swapOutputDecimals, 8)
@@ -678,39 +977,66 @@ export default function BBBFiSwap() {
                   }
                   onChange={() => {}}
                   readOnly
+                  balance={swapOutputBalanceLabel}
                   native={direction === "sell"}
+                  onSelectToken={direction === "buy" ? () => setTokenSelectorOpen(true) : undefined}
+                  selectLabel={t.selectToken}
                 />
 
-                <div className="mt-4 rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-xs text-gray-600">
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.minimumReceived}</span>
-                    <span className="font-semibold tabular-nums text-gray-800">
-                      {minimumOut > 0n && swapOutputDecimals != null
-                        ? `${formatAmount(minimumOut, swapOutputDecimals, 8)} ${swapOutputSymbol}`
-                        : "—"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.priceImpact}</span>
-                    <span className={`font-semibold ${priceImpactBps > 500 ? "text-red-600" : "text-gray-800"}`}>
-                      {quoteOut > 0n ? `${(priceImpactBps / 100).toFixed(2)}%` : "—"}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.fee}</span>
-                    <span className="font-semibold text-gray-800">0.30%</span>
-                  </div>
+                <div className={`mx-2 mt-3 flex items-start gap-2 text-xs leading-relaxed ${tokenInvalid ? "text-red-600" : "text-slate-500"}`}>
+                  <span className={`mt-1 h-1.5 w-1.5 shrink-0 rounded-full ${tokenInvalid ? "bg-red-500" : tokenReady ? "bg-emerald-500" : "bg-amber-400"}`} />
+                  <span className="min-w-0 flex-1 truncate">{tokenStatus}</span>
                 </div>
 
-                <p className="mt-3 min-h-5 text-center text-xs text-gray-500">{swapHint}</p>
+                <div className="mx-2 mt-2 rounded-2xl border border-slate-100 bg-white/80">
+                  <button
+                    type="button"
+                    onClick={() => setQuoteDetailsOpen((current) => !current)}
+                    className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-xs transition hover:bg-slate-50"
+                    aria-expanded={quoteDetailsOpen}
+                  >
+                    <span className="min-w-0 truncate font-semibold text-slate-700">{swapRateLabel}</span>
+                    <span className={`shrink-0 text-slate-400 transition ${quoteDetailsOpen ? "rotate-180" : ""}`}>
+                      <ChevronDownIcon />
+                    </span>
+                  </button>
+                  {quoteDetailsOpen ? (
+                    <dl className="space-y-2 border-t border-slate-100 px-3 py-3 text-xs">
+                      <div className="flex items-center justify-between gap-4">
+                        <dt className="text-slate-500">{t.minimumReceived}</dt>
+                        <dd className="text-right font-semibold tabular-nums text-slate-800">
+                          {minimumOut > 0n && swapOutputDecimals != null
+                            ? `${formatAmount(minimumOut, swapOutputDecimals, 8)} ${swapOutputSymbol}`
+                            : "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <dt className="text-slate-500">{t.priceImpact}</dt>
+                        <dd className={`font-semibold ${priceImpactBps > 500 ? "text-red-600" : "text-slate-800"}`}>
+                          {quoteOut > 0n ? `${(priceImpactBps / 100).toFixed(2)}%` : "—"}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <dt className="text-slate-500">{t.fee}</dt>
+                        <dd className="font-semibold text-slate-800">0.30%</dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <dt className="text-slate-500">{t.route}</dt>
+                        <dd className="font-semibold text-slate-800">{swapInputSymbol} → {swapOutputSymbol}</dd>
+                      </div>
+                    </dl>
+                  ) : null}
+                </div>
 
-                <div className="mt-3">
+                <p className="mx-3 mt-3 min-h-5 text-center text-xs text-slate-500">{swapHint}</p>
+
+                <div className="mt-2">
                   {swapNeedsApproval ? (
                     <WriteButton
                       data={approveSwapData}
                       disabled={!tokenReady || swapAmountWei <= 0n || swapAmountWei > tokenBalance}
                       buttonName={t.approve.replace("{symbol}", tokenSymbol)}
-                      className="btn h-12 w-full rounded-2xl border-none bg-emerald-600 text-white hover:bg-emerald-700"
+                      className="btn h-14 w-full rounded-[1.35rem] border-none bg-emerald-600 text-base font-semibold text-white shadow-none hover:bg-emerald-700"
                       callback={refetchToken}
                     />
                   ) : (
@@ -724,7 +1050,7 @@ export default function BBBFiSwap() {
                               .replace("{from}", swapInputSymbol)
                               .replace("{to}", swapOutputSymbol)
                       }
-                      className="btn h-12 w-full rounded-2xl border-none bg-gradient-to-r from-emerald-500 to-green-700 text-base font-bold text-white shadow-md hover:from-emerald-600 hover:to-green-800"
+                      className="btn h-14 w-full rounded-[1.35rem] border-none bg-emerald-500 text-base font-semibold text-white shadow-none transition hover:bg-emerald-600 disabled:bg-emerald-100"
                       callback={handleSwapSuccess}
                     />
                   )}
@@ -732,61 +1058,92 @@ export default function BBBFiSwap() {
               </div>
             ) : (
               <div>
-                <div className="mb-4 rounded-2xl border border-sky-100 bg-sky-50 px-4 py-3 text-xs leading-relaxed text-sky-900">
+                <div className="mx-1 mb-2 rounded-[1.2rem] border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-xs leading-relaxed text-emerald-900">
+                  <span className="font-semibold">{tokenSymbol}/XDC · </span>
                   {hasLiquidity ? t.poolRatioHint : t.firstLiquidityHint}
                 </div>
 
                 <AssetField
                   label={t.tokenAmount}
                   symbol={tokenSymbol}
+                  address={tokenAddress}
                   value={liquidityTokenAmount}
                   onChange={handleLiquidityTokenChange}
                   balance={tokenBalanceLabel}
-                  onMax={setMaxLiquidityToken}
+                  onMax={address ? setMaxLiquidityToken : undefined}
+                  onSelectToken={() => setTokenSelectorOpen(true)}
+                  selectLabel={t.selectToken}
+                  hasError={Boolean(address && liquidityTokenWei > tokenBalance && liquidityTokenWei > 0n)}
                 />
-                <div className="my-2 text-center text-xl font-bold text-emerald-600">+</div>
+                <div className="relative z-10 -my-2 flex justify-center">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border-4 border-white bg-slate-100 text-lg font-medium text-slate-500">+</div>
+                </div>
                 <AssetField
                   label={t.xdcAmount}
                   symbol="XDC"
                   value={liquidityXdcAmount}
                   onChange={handleLiquidityXdcChange}
                   balance={xdcBalanceLabel}
-                  onMax={setMaxLiquidityXdc}
+                  onMax={address ? setMaxLiquidityXdc : undefined}
                   native
+                  hasError={Boolean(address && liquidityXdcWei > xdcBalance && liquidityXdcWei > 0n)}
                 />
 
-                <div className="mt-4 rounded-2xl border border-gray-100 bg-gray-50 px-4 py-3 text-xs text-gray-600">
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.poolStatus}</span>
-                    <span className="font-semibold text-gray-800">
+                <dl className="mx-2 mt-3 grid grid-cols-2 gap-2 text-xs">
+                  <div className="rounded-2xl bg-slate-50 p-3">
+                    <dt className="text-slate-500">{t.poolStatus}</dt>
+                    <dd className="mt-1 font-semibold text-slate-900">
                       {hasLiquidity ? t.activePool : pairAddress ? t.emptyPoolShort : t.newPool}
-                    </span>
+                    </dd>
                   </div>
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.minimumToken}</span>
-                    <span className="font-semibold tabular-nums text-gray-800">
-                      {liquidityTokenMin > 0n
-                        ? `${formatAmount(liquidityTokenMin, tokenDecimals ?? 18)} ${tokenSymbol}`
+                  <div className="rounded-2xl bg-slate-50 p-3">
+                    <dt className="text-slate-500">{t.pair}</dt>
+                    <dd className="mt-1 truncate font-semibold text-slate-900">{tokenSymbol}/XDC</dd>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 p-3">
+                    <dt className="text-slate-500">{t.tokenReserve}</dt>
+                    <dd className="mt-1 truncate font-semibold tabular-nums text-slate-900">
+                      {hasLiquidity && tokenDecimals != null
+                        ? `${formatAmount(tokenReserve, tokenDecimals)} ${tokenSymbol}`
                         : "—"}
-                    </span>
+                    </dd>
                   </div>
-                  <div className="flex items-center justify-between gap-3 py-1">
-                    <span>{t.minimumXdc}</span>
-                    <span className="font-semibold tabular-nums text-gray-800">
-                      {liquidityXdcMin > 0n
-                        ? `${formatAmount(liquidityXdcMin, 18)} XDC`
-                        : "—"}
-                    </span>
+                  <div className="rounded-2xl bg-slate-50 p-3">
+                    <dt className="text-slate-500">{t.xdcReserve}</dt>
+                    <dd className="mt-1 truncate font-semibold tabular-nums text-slate-900">
+                      {hasLiquidity ? `${formatAmount(xdcReserve, 18)} XDC` : "—"}
+                    </dd>
                   </div>
-                </div>
+                </dl>
 
-                <div className="mt-4">
+                {(liquidityTokenMin > 0n || liquidityXdcMin > 0n) ? (
+                  <div className="mx-2 mt-2 rounded-2xl border border-slate-100 px-3 py-2.5 text-xs text-slate-500">
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>{t.minimumToken}</span>
+                      <span className="font-semibold tabular-nums text-slate-800">
+                        {liquidityTokenMin > 0n
+                          ? `${formatAmount(liquidityTokenMin, tokenDecimals ?? 18)} ${tokenSymbol}`
+                          : "—"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 py-1">
+                      <span>{t.minimumXdc}</span>
+                      <span className="font-semibold tabular-nums text-slate-800">
+                        {liquidityXdcMin > 0n
+                          ? `${formatAmount(liquidityXdcMin, 18)} XDC`
+                          : "—"}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="mt-3">
                   {liquidityNeedsApproval ? (
                     <WriteButton
                       data={approveLiquidityData}
                       disabled={!tokenReady || liquidityTokenWei <= 0n || liquidityTokenWei > tokenBalance}
                       buttonName={t.approve.replace("{symbol}", tokenSymbol)}
-                      className="btn h-12 w-full rounded-2xl border-none bg-emerald-600 text-white hover:bg-emerald-700"
+                      className="btn h-14 w-full rounded-[1.35rem] border-none bg-emerald-600 text-base font-semibold text-white shadow-none hover:bg-emerald-700"
                       callback={refetchToken}
                     />
                   ) : (
@@ -794,7 +1151,7 @@ export default function BBBFiSwap() {
                       data={liquidityData}
                       disabled={liquidityDisabled}
                       buttonName={chainId !== xdc.id ? t.switchToXdc : t.addLiquidity}
-                      className="btn h-12 w-full rounded-2xl border-none bg-gradient-to-r from-emerald-500 to-green-700 text-base font-bold text-white shadow-md hover:from-emerald-600 hover:to-green-800"
+                      className="btn h-14 w-full rounded-[1.35rem] border-none bg-emerald-500 text-base font-semibold text-white shadow-none transition hover:bg-emerald-600"
                       callback={handleLiquiditySuccess}
                     />
                   )}
@@ -802,95 +1159,42 @@ export default function BBBFiSwap() {
               </div>
             )}
 
-            <div className="mt-5 flex items-center gap-3 border-t border-gray-100 pt-4">
-              <label htmlFor="bbbfiswap-slippage" className="text-xs font-semibold text-gray-500">
-                {t.slippage}
-              </label>
-              <div className="ml-auto flex items-center rounded-lg border border-gray-200 bg-white px-2 py-1">
-                <input
-                  id="bbbfiswap-slippage"
-                  type="number"
-                  min="0.1"
-                  max="20"
-                  step="0.1"
-                  value={slippage}
-                  onChange={(event) => setSlippage(event.target.value)}
-                  className="w-14 bg-transparent text-right text-xs font-bold outline-none"
-                />
-                <span className="text-xs font-bold text-gray-500">%</span>
-              </div>
-              {!slippageValid ? <span className="text-xs text-red-600">{t.slippageRange}</span> : null}
-            </div>
-          </div>
-        </div>
-
-        <aside className="space-y-4 lg:pt-[8.4rem]">
-          <div className="rounded-3xl border border-emerald-100 bg-white/90 p-5 shadow-card backdrop-blur">
-            <h2 className="text-sm font-black text-gray-900">{t.poolOverview}</h2>
-            <dl className="mt-4 space-y-3 text-xs">
-              <div className="flex items-center justify-between gap-4">
-                <dt className="text-gray-500">{t.pair}</dt>
-                <dd className="font-bold text-gray-900">{tokenSymbol}/XDC</dd>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <dt className="text-gray-500">{t.tokenReserve}</dt>
-                <dd className="max-w-[12rem] truncate font-semibold tabular-nums text-gray-900">
-                  {hasLiquidity && tokenDecimals != null
-                    ? `${formatAmount(tokenReserve, tokenDecimals)} ${tokenSymbol}`
-                    : "—"}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <dt className="text-gray-500">{t.xdcReserve}</dt>
-                <dd className="max-w-[12rem] truncate font-semibold tabular-nums text-gray-900">
-                  {hasLiquidity ? `${formatAmount(xdcReserve, 18)} XDC` : "—"}
-                </dd>
-              </div>
-            </dl>
-            {pairAddress ? (
-              <a
-                href={`https://xdcscan.com/address/${pairAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-800 hover:bg-emerald-100"
-              >
-                {t.viewPair} · {shortenAddress(pairAddress)}
-              </a>
-            ) : null}
-          </div>
-
-          <div className="rounded-3xl border border-gray-200 bg-gray-950 p-5 text-white shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-400/15 text-xl">✓</div>
-              <div>
-                <h2 className="text-sm font-black">{t.contractTitle}</h2>
-                <p className="mt-0.5 text-xs text-gray-400">{t.contractSubtitle}</p>
-              </div>
-            </div>
-            <div className="mt-4 space-y-2 text-xs">
-              <a
-                href={`https://xdcscan.com/address/${BBBFISWAP_FACTORY_ADDRESS}#code`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 rounded-xl bg-white/5 px-3 py-2 hover:bg-white/10"
-              >
-                <span className="text-gray-400">Factory</span>
-                <span className="font-mono">{shortenAddress(BBBFISWAP_FACTORY_ADDRESS)}</span>
-              </a>
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-3 pb-2 pt-4 text-[11px] text-slate-400">
+              <span>{t.poweredBy}</span>
               <a
                 href={`https://xdcscan.com/address/${BBBFISWAP_ROUTER_ADDRESS}#code`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 rounded-xl bg-white/5 px-3 py-2 hover:bg-white/10"
+                className="font-medium text-slate-500 transition hover:text-emerald-700"
               >
-                <span className="text-gray-400">Router</span>
-                <span className="font-mono">{shortenAddress(BBBFISWAP_ROUTER_ADDRESS)}</span>
+                Router {shortenAddress(BBBFISWAP_ROUTER_ADDRESS)} ↗
               </a>
+              {pairAddress ? (
+                <a
+                  href={`https://xdcscan.com/address/${pairAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-slate-500 transition hover:text-emerald-700"
+                >
+                  {t.viewPair} ↗
+                </a>
+              ) : null}
             </div>
-            <p className="mt-4 text-[11px] leading-relaxed text-gray-400">{t.riskNote}</p>
           </div>
-        </aside>
-      </div>
-    </section>
+
+          <p className="mx-auto mt-4 max-w-md text-center text-[11px] leading-relaxed text-slate-500">
+            {t.riskNote}
+          </p>
+        </div>
+      </section>
+
+      <TokenSelectorModal
+        open={tokenSelectorOpen}
+        onClose={closeTokenSelector}
+        onSelect={selectToken}
+        currentAddress={tokenAddress}
+        t={t}
+      />
+    </>
   );
 }

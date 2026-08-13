@@ -102,6 +102,9 @@ const WriteButton = (props) => {
 
   const openConnect = useConnectWallet();
   const wrongChain = isConnected && chainId !== xdc.id;
+  const actionDisabled = Boolean(
+    props?.disabled || !write || isLoading || (isStarted && !txSuccess) || !props?.data
+  );
 
   return (
     mounted &&
@@ -124,31 +127,17 @@ const WriteButton = (props) => {
           )}
         </button>
       ) : (
-      <div
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
+        disabled={actionDisabled}
         className={
-          props.className +
-          (props?.disabled || !write || isLoading || !props?.data ? " btn-disabled" : "")
+          (props.className || "btn") +
+          (actionDisabled ? " btn-disabled" : "")
         }
         aria-busy={isLoading || (isStarted && !txSuccess)}
-        aria-disabled={
-          Boolean(
-            (props?.disabled || !write || isLoading || isStarted || !props?.data) && !txSuccess
-          )
-        }
         style={{
           minWidth: 112,
-          cursor:
-            (props?.disabled || !write || isLoading || isStarted || !props?.data) && !txSuccess
-              ? "not-allowed"
-              : "pointer",
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            e.currentTarget.click();
-          }
+          cursor: actionDisabled ? "not-allowed" : "pointer",
         }}
         onClick={async () => {
           if (!props?.data) {
@@ -180,17 +169,16 @@ const WriteButton = (props) => {
           </>
         )}
         {((!isLoading && !isStarted) || txSuccess) && props?.buttonName}
-      </div>
+      </button>
       )
     ) : (
-      <div
-        className="btn btn-sm"
-        onClick={() => {
-          openConnect();
-        }}
+      <button
+        type="button"
+        className={props.className || "btn btn-sm"}
+        onClick={openConnect}
       >
         {wb.writeButton.connect}
-      </div>
+      </button>
     ))
   );
 };
