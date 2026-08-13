@@ -11,8 +11,8 @@ export default function Document() {
         />
         <meta property="og:url" content="https://defi.bbbfi.com/" />
         <meta property="og:site_name" content="BBBFiSwap" />
-        <meta property="og:image" content="https://defi.bbbfi.com/bbb.jpg" />
-        <meta name="twitter:image" content="https://defi.bbbfi.com/bbb.jpg" />
+        <meta property="og:image" content="https://defi.bbbfi.com/logo.png" />
+        <meta name="twitter:image" content="https://defi.bbbfi.com/logo.png" />
       </Head>
       <body>
         <Main />

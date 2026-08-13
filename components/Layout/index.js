@@ -9,7 +9,7 @@ export default function Layout({ children }) {
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "")
   ).replace(/\/$/, "");
-  const ogImage = siteOrigin ? `${siteOrigin}/bbb.jpg` : "";
+  const ogImage = siteOrigin ? `${siteOrigin}/logo.png` : "";
 
   return (
     <main className="min-h-screen">

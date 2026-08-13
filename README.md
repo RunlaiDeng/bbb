@@ -4,7 +4,7 @@ BBBFiSwap is a focused XDC Network DeFi interface with three user flows:
 
 - Swap XDC and ERC-20 tokens.
 - Add permissionless XDC/token liquidity.
-- Stake BBB or USDC to earn BBB rewards.
+- Preview the upcoming BBB staking experience (Coming Soon).
 
 ## Development
 

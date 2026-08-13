@@ -81,15 +81,31 @@ function shortenAddress(value) {
 
 function TokenMark({ symbol, address, native = false, size = "md" }) {
   const normalizedAddress = address?.toLowerCase();
+  const isBbb =
+    normalizedAddress === BBB_TOKEN_ADDRESS.toLowerCase() || symbol === "BBB";
   const imageSrc =
     native || symbol === "XDC"
       ? "/xdc.png"
       : normalizedAddress === XDC_USDC_ADDRESS.toLowerCase() || symbol === "USDC"
         ? "/usdc.jpg"
-        : normalizedAddress === BBB_TOKEN_ADDRESS.toLowerCase() || symbol === "BBB"
-          ? "/bbb.jpg"
-          : null;
+        : null;
   const dimensions = size === "sm" ? "h-7 w-7" : "h-9 w-9";
+
+  if (isBbb) {
+    return (
+      <span
+        className={`relative ${dimensions} shrink-0 overflow-hidden rounded-full bg-emerald-50 ring-1 ring-black/5`}
+      >
+        <Image
+          src="/logo.png"
+          alt="BBB carrot token logo"
+          width={86}
+          height={36}
+          className="absolute left-0 top-0 h-full w-auto max-w-none object-contain object-left"
+        />
+      </span>
+    );
+  }
 
   if (imageSrc) {
     return (
