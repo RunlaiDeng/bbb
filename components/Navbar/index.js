@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId, useSwitchChain } from "wagmi";
 import useConnectWallet from "../Hook/useConnectWallet";
 import { useLanguage } from "../Context/LanguageContext";
 import { useAccountModal } from "@rainbow-me/rainbowkit";
+import { bsc, xdc } from "@/config/chains";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
 function shortenAddress(addr) {
@@ -20,6 +21,10 @@ const Navbar = () => {
   const [mount, setMount] = useState(false);
 
   const { address, isConnected } = useAccount();
+  const chainId = useChainId();
+  const isBscChain = chainId === bsc.id;
+  const isSupportedChain = chainId === xdc.id || chainId === bsc.id;
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
 
   const { locale, setLocale } = useLanguage();
   const t = useTranslation();
@@ -47,6 +52,15 @@ const Navbar = () => {
     else if (q === "en") setLocale("en");
   }, [router.isReady, router.query.lang, setLocale]);
 
+  const handleChainChange = useCallback(
+    (event) => {
+      const nextChainId = Number(event.target.value);
+      if (!nextChainId || nextChainId === chainId) return;
+      switchChain?.({ chainId: nextChainId });
+    },
+    [chainId, switchChain]
+  );
+
   return (
     mount && (
       <header className="sticky top-0 z-[100] w-full border-b border-black/[0.05] bg-white/80 backdrop-blur-2xl supports-[backdrop-filter]:bg-white/70">
@@ -62,59 +76,81 @@ const Navbar = () => {
               width={150}
               alt="BBBFi"
               priority
-              className="h-auto w-[108px] sm:w-[136px]"
+              className="h-auto w-[92px] sm:w-[136px]"
             />
           </Link>
 
-          <nav className="hidden items-center gap-1 rounded-full bg-slate-100/90 p-1 md:flex" aria-label="Primary navigation">
-            <Link
-              href="/?tab=swap"
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                dexHomeActive
-                  ? "bg-white text-slate-950 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              aria-current={dexHomeActive ? "page" : undefined}
+          {!isBscChain ? (
+            <nav
+              className="hidden items-center gap-1 rounded-full bg-slate-100/90 p-1 md:flex"
+              aria-label="Primary navigation"
             >
-              {t.nav.dex}
-            </Link>
-            <Link
-              href="/?tab=liquidity"
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                liquidityHomeActive
-                  ? "bg-white text-slate-950 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              aria-current={liquidityHomeActive ? "page" : undefined}
-            >
-              {t.nav.liquidity}
-            </Link>
-            <Link
-              href="/stake"
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                stakeActive
-                  ? "bg-white text-slate-950 shadow-sm"
-                  : "text-slate-500 hover:text-slate-900"
-              }`}
-              aria-current={stakeActive ? "page" : undefined}
-            >
-              {t.nav.stake}
-            </Link>
-          </nav>
+              <Link
+                href="/?tab=swap"
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  dexHomeActive
+                    ? "bg-white text-slate-950 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+                aria-current={dexHomeActive ? "page" : undefined}
+              >
+                {t.nav.dex}
+              </Link>
+              <Link
+                href="/?tab=liquidity"
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  liquidityHomeActive
+                    ? "bg-white text-slate-950 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+                aria-current={liquidityHomeActive ? "page" : undefined}
+              >
+                {t.nav.liquidity}
+              </Link>
+              <Link
+                href="/stake"
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  stakeActive
+                    ? "bg-white text-slate-950 shadow-sm"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+                aria-current={stakeActive ? "page" : undefined}
+              >
+                {t.nav.stake}
+              </Link>
+            </nav>
+          ) : null}
 
           <div className="ml-auto flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">
-            <div
-              className="hidden h-10 items-center gap-2 rounded-full border border-black/[0.06] bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm sm:flex"
-              aria-label={t.nav.network}
-            >
-              <Image src="/xdc.png" alt="" width={22} height={22} className="h-[22px] w-[22px] rounded-full" />
-              XDC
+            <div className="flex h-10 items-center gap-1.5 rounded-full border border-black/[0.06] bg-white px-2 text-xs font-semibold text-slate-700 shadow-sm sm:gap-2 sm:px-3">
+              <span
+                className={`h-2.5 w-2.5 shrink-0 rounded-full ${
+                  isBscChain
+                    ? "bg-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.14)]"
+                    : chainId === xdc.id
+                      ? "bg-sky-500 shadow-[0_0_0_3px_rgba(14,165,233,0.12)]"
+                      : "bg-slate-300"
+                }`}
+                aria-hidden
+              />
+              <select
+                value={isSupportedChain ? chainId : ""}
+                onChange={handleChainChange}
+                disabled={isSwitchingChain}
+                className="max-w-[3.9rem] cursor-pointer bg-transparent text-xs font-bold text-slate-700 outline-none disabled:cursor-wait disabled:opacity-60 sm:max-w-none"
+                aria-label={t.nav.switchChain}
+                aria-busy={isSwitchingChain}
+              >
+                {!isSupportedChain ? <option value="">—</option> : null}
+                <option value={xdc.id}>XDC</option>
+                <option value={bsc.id}>BSC</option>
+              </select>
             </div>
 
             {!isConnected ? (
               <button
                 type="button"
-                className="h-10 rounded-full bg-emerald-500 px-4 text-sm font-semibold text-white transition hover:bg-emerald-600 active:scale-[0.98] sm:px-5"
+                className="h-10 rounded-full bg-emerald-500 px-3 text-sm font-semibold text-white transition hover:bg-emerald-600 active:scale-[0.98] sm:px-5"
                 onClick={openConnect}
                 aria-label={t.nav.connect}
               >

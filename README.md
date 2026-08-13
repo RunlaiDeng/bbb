@@ -1,10 +1,11 @@
 # BBBFiSwap
 
-BBBFiSwap is a focused XDC Network DeFi interface with three user flows:
+BBBFiSwap is a multi-chain interface with XDC DeFi and a BSC wallet view:
 
 - Swap XDC and ERC-20 tokens.
 - Add permissionless XDC/token liquidity.
 - Preview the upcoming BBB staking experience (Coming Soon).
+- View the connected wallet's BBB balance on BNB Smart Chain.
 
 ## Development
 
@@ -22,4 +23,4 @@ npm run lint
 npm run build
 ```
 
-The application uses XDC RPC endpoints and on-chain contracts; it has no local database.
+The application uses XDC and BSC RPC endpoints and on-chain contracts; it has no local database.
