@@ -10,8 +10,9 @@ const MobileNav = () => {
   const t = useTranslation();
   const [moreOpen, setMoreOpen] = useState(false);
 
-  const onHomeIdo =
-    router.pathname === "/" && (router.asPath.includes("#ido") || router.asPath.includes("/#ido"));
+  const homeTab = Array.isArray(router.query.tab) ? router.query.tab[0] : router.query.tab;
+  const swapHomeActive = router.pathname === "/" && homeTab !== "liquidity";
+  const liquidityHomeActive = router.pathname === "/" && homeTab === "liquidity";
 
   const moreActive = useMemo(() => isMoreNavRouteActive(router.pathname), [router.pathname]);
 
@@ -102,16 +103,16 @@ const MobileNav = () => {
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] border-t border-base-300/60 bg-base-100/95 pb-[env(safe-area-inset-bottom,0px)] shadow-shell backdrop-blur-md supports-[backdrop-filter]:bg-base-100/90">
         <div className="flex justify-around items-center h-16 px-2 py-1">
           <Link
-            href="/"
+            href="/?tab=swap"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] ${
-              router.pathname === "/" && !onHomeIdo
+              swapHomeActive
                 ? "text-green-600 font-semibold bg-green-50"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
             <div
               className={`p-1.5 rounded-xl ${
-                router.pathname === "/" && !onHomeIdo ? "bg-green-100" : "bg-transparent"
+                swapHomeActive ? "bg-green-100" : "bg-transparent"
               }`}
             >
               <svg viewBox="0 0 1024 1024" width="22" height="22">
@@ -121,38 +122,28 @@ const MobileNav = () => {
                 />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.home}</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.dex}</span>
           </Link>
 
           <Link
-            href="/#ido"
+            href="/?tab=liquidity"
             className={`flex flex-col items-center justify-center p-2 rounded-2xl transition-all duration-300 flex-1 max-w-[5.5rem] ${
-              onHomeIdo
+              liquidityHomeActive
                 ? "text-green-600 font-semibold bg-green-50"
                 : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
             }`}
           >
             <div
               className={`p-1.5 rounded-xl ${
-                onHomeIdo ? "bg-green-100" : "bg-transparent"
+                liquidityHomeActive ? "bg-green-100" : "bg-transparent"
               }`}
             >
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M3 3H21V21H3V3Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M3 9H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 3s5 5.2 5 9a5 5 0 0 1-10 0c0-3.8 5-9 5-9Z" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M9.5 13.5a2.7 2.7 0 0 0 2.5 1.6" strokeLinecap="round" />
               </svg>
             </div>
-            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.ido}</span>
+            <span className="text-[11px] mt-0.5 font-medium leading-tight">{t.nav.liquidity}</span>
           </Link>
 
           <button

@@ -244,6 +244,7 @@ const Layout = ({ children }) => {
   const chainId = useChainId();
   const isBscChain = chainId === bsc.id;
   const { isReady, pathname, replace } = router;
+  const showBscLanding = isBscChain && pathname !== "/";
   const siteOrigin = useMemo(() => {
     const explicit = process.env.NEXT_PUBLIC_SITE_URL;
     if (explicit) return explicit.replace(/\/$/, "");
@@ -268,12 +269,12 @@ const Layout = ({ children }) => {
         {ogImage ? <meta property="og:image" content={ogImage} /> : null}
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <div className={`min-h-screen ${isBscChain ? "bg-white" : "mobile-safe-bottom"}`}>
+      <div className={`min-h-screen ${showBscLanding ? "bg-white" : "mobile-safe-bottom"}`}>
         <Navbar />
-        {isBscChain ? <BscHome t={t} /> : children}
+        {showBscLanding ? <BscHome t={t} /> : children}
       </div>
 
-      {!isBscChain && <MobileNav />}
+      {!showBscLanding && <MobileNav />}
     </main>
   );
 };

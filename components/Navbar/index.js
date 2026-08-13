@@ -45,8 +45,9 @@ const Navbar = () => {
     []
   );
 
-  const idoHomeActive =
-    router.pathname === "/" && (router.asPath.includes("#ido") || router.asPath.includes("/#ido"));
+  const homeTab = Array.isArray(router.query.tab) ? router.query.tab[0] : router.query.tab;
+  const dexHomeActive = router.pathname === "/" && homeTab !== "liquidity";
+  const liquidityHomeActive = router.pathname === "/" && homeTab === "liquidity";
   const moreSectionActive = isMoreNavRouteActive(router.pathname);
 
   useEffect(() => {
@@ -81,25 +82,37 @@ const Navbar = () => {
                   height={150}
                   width={150}
                   alt=""
-                  className="cursor-pointer transform hover:scale-105 transition-all duration-300"
+                  className="h-auto w-[112px] cursor-pointer transform transition-all duration-300 hover:scale-105 sm:w-[150px]"
                   onClick={() => {
                     router.push("/");
                   }}
                 />
 
-                {!isBscChain && (
+                {(!isBscChain || router.pathname === "/") && (
                   <div className="ml-1 sm:ml-2 hidden md:flex items-center pt-1 space-x-1 sm:space-x-2">
                     <Link
-                      href={"/#ido"}
+                      href="/?tab=swap"
                       className={
                         "btn btn-ghost transition-all duration-300 rounded-xl " +
-                        (idoHomeActive
+                        (dexHomeActive
                           ? "text-green-700 bg-green-50 font-semibold"
                           : "hover:text-green-600 hover:bg-green-50")
                       }
-                      aria-current={idoHomeActive ? "page" : undefined}
+                      aria-current={dexHomeActive ? "page" : undefined}
                     >
-                      {t.nav.ido}
+                      {t.nav.dex}
+                    </Link>
+                    <Link
+                      href="/?tab=liquidity"
+                      className={
+                        "btn btn-ghost transition-all duration-300 rounded-xl " +
+                        (liquidityHomeActive
+                          ? "text-green-700 bg-green-50 font-semibold"
+                          : "hover:text-green-600 hover:bg-green-50")
+                      }
+                      aria-current={liquidityHomeActive ? "page" : undefined}
+                    >
+                      {t.nav.liquidity}
                     </Link>
 
                     <div className="dropdown dropdown-hover font-bold">
